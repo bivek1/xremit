@@ -1,0 +1,209 @@
+/* Component Styling */
+.bg-primary{
+    background-color: rgb(17, 5, 73)!important;
+}
+.text-primary{
+    color: rgb(17, 5, 73)!important;
+}
+.btn-primary{
+    /* border: 1px solid #325cc7;; */
+    background-color: rgb(17, 5, 73);
+    color: rgb(250, 250, 250);
+    border: none;
+    outline: none;
+    padding: 5px;
+    
+}
+.btn-primary:hover{
+    /* border: 1px solid #325cc7;; */
+    background-color: rgb(38, 12, 155);
+    color: rgb(255, 255, 255);
+    transition-duration: 200ms;
+}
+
+.form-control{
+    border: none;
+    color: black;
+    border-radius: 0px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-bottom: 1px solid #110c5e;
+    box-shadow: rgb(rgb(1rgb(169, 169, 169)84, 184), rgb(141rgb(92, 92, 92)1, 141), #1e1780);
+}
+
+.form-control:focus{
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+    transition-delay:.4s;
+    
+}
+/* End Component styling */
+
+
+
+/* Adjusment */
+
+
+*{
+    font-family: 'Dosis'
+}
+body{
+    background-color: #f3f3f3;
+}
+a{
+    text-decoration: none;
+    color: inherit;
+}
+.maintain{
+    height: 65px;
+}
+
+.dropdown-menu-start[data-bs-popper] {
+    right: auto;
+    left: -119px!important;
+}
+/* End Adjusment Styling */
+
+
+/* Styling Basic component*/
+.navbar{
+    padding: 14px;
+    
+    background-color: rgb(17, 5, 73);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+.nav-link{
+    color: white;
+}
+
+.nav-link:hover{
+    color: #574de2;
+}
+
+.active{
+    color: #ffffff!important;
+    background-color: #110c5e
+}
+.navbar-brand{
+    padding-left: 16px;
+    color: white;
+    
+}
+/* Styling */
+
+
+
+/* Login page styling */
+#login-card{
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+}
+.login-img{
+    width: 100%;
+    height: 100%;
+}
+#signIn-banner{
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    padding: 10px;
+}
+.form-head{
+    background-color: rgb(17, 5, 73);
+    padding: 7px;
+    color: white;
+    border-radius: 5px;
+}
+.back-img{
+    background-image: url('../resources/background-login.webp');
+    background-size: contain;
+    height: 100vh;
+}
+.login-flex i{
+    background-color: white;
+    font-size: 19px;
+    color: #110c5e;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-bottom: 1px solid #110c5e;
+    box-shadow: rgb(rgb(1rgb(169, 169, 169)84, 184), rgb(141rgb(92, 92, 92)1, 141), #1e1780);
+}
+
+/* Login page end */
+
+
+
+/* Styling Dashboard page of Owner */
+.side-bar{
+    background-color: white;
+    height: 100vh;
+    left: 0;
+    top: 55px;
+    bottom: 0;
+    border-right: 2px solid rgb(17, 5, 73);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+.activedb{
+    background-color: rgb(17, 5, 73);
+    color: white;
+    border-radius: 5px;
+}
+
+
+
+/* Register Page Login */
+.video-back{
+    position: relative;
+    width: 100%;
+    /*padding-bottom: 56.25%; /* 16:9 aspect ratio (adjust as needed) */
+    /* overflow: hidden; */
+}
+#register-video{
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.register-div{
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+/* Register Page */
+
+/* Dashboard Design */
+.dashboard-box{
+    width: 100%;
+    padding: 20px;
+    background-color: white;
+    display: flex;
+    border-radius: 5px;
+    justify-content: space-between;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    cursor: pointer;
+}
+.dashboard-box:hover{
+    background-color: rgb(234, 234, 234);
+    box-shadow: rgba(83, 83, 88, 0.2) 0px 7px 29px 0px;
+    transition-delay: .2s;
+}
+.breadcum{
+    padding: 5px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+
+}
+.topBox{
+    background-color: white;
+    border-bottom: 2px solid rgb(17, 5, 73);
+    border-radius: 5px;
+
+}
+.side-item{
+    cursor: pointer;
+}
+.side-item:hover{
+    background-color: #3f37aa;
+    color: white;
+    border-radius: 5px;
+    transition-duration: 300ms;
+}

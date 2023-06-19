@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Create a new account
+{% endblock title %}
+
+
+{% block content %}
+    <div class="container-fluid p-0">
+        <div class="row p-0 m-0 mt-5">
+            <div class="col-lg-10 col-md-8 col-12 m-auto">
+                <div class="row p-0 m-0 register-div">
+                    <div class="col-lg-4 col-md-5 col-12 p-0 m-0">
+                        <div class="mt-5">
+                            <span class="bg-primary text-light" id="signIn-banner">
+                                <i class="fa-solid fa-arrow-right-to-bracket fa-flip"></i>
+                                    CREATE A NEW ACCOUNT
+                            </span>
+                        </div>
+                        <div class="mt-3 p-3">
+                            <h2 class="text-primary">
+                                xRemit
+                            </h2>
+                            
+                    
+                            <p class="text-secondary">
+                                Already have an account? 
+                                <a href="{%url 'homepage:login'%}">
+                                    <span class="text-primary">
+                                        Login from here...
+                                    </span>
+                                </a>
+                                
+                            </p>
+                            <hr>
+                            <form action="" method="post">
+                                <div class="row p-0 m-0">
+                                    <div class="col-6 p-0  m-0 mt-2">
+                                        <label for="email">First Name</label>
+                                        <div class=" login-flex d-flex mt-2">
+                                            <i class="fa fa-f my-auto p-2"></i>
+                                            <input type="text" name="first_name" class="form-control"  placeholder="First Name" required id="">
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="col-6 p-0  m-0 mt-2">
+                                        <label for="email">Last Name</label>
+                                        <div class=" login-flex d-flex mt-2">
+                                            <i class="fa fa-l my-auto p-2"></i>
+                                            <input type="text" name="last_name" class="form-control"  placeholder="Last Name" required id="">
+                                        </div>
+                                        
+                                    </div>
+
+                                    <div class="col-12 p-0  m-0 mt-2">
+                                        <label c for="email">Email</label>
+                                        <div class="p-0 m-0 login-flex d-flex mt-2">
+                                         <i class="fa fa-user my-auto p-2"></i>
+                                         <input type="text" name="email" class="form-control"  placeholder="someone@email.com" required id="">
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="col-12 p-0  m-0 mt-2">
+                                        <label for="email">Password</label>
+                                        <div class=" login-flex d-flex mt-2">
+                                            <i class="fa fa-key my-auto p-2"></i>
+                                            <input type="password" name="password" class="form-control"  placeholder="*************" required id="">
+                                        </div>
+                                    </div>
+                                     
+                                    
+                                    
+                                </div>
+                        
+                                {% csrf_token %}
+                                <button class="btn-primary mt-3 w-100" type="submit">
+                                    Create an account
+                                </button>
+                                <div class="mt-3 text-center">
+                                    <small>Your Trusted Money Transfer</small>
+                                </div>
+                                
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-7 col-12 p-0 m-0" id="video-back">
+                        <video id="register-video"  autoplay loop muted class="p-0 m-0" src="{%static 'resources/register-background.mp4'%}">
+        
+                        </video>
+                       
+                       
+                    </div>
+                </div>
+            </div>
+          
+          
+        </div>
+    
+
+    </div>
+{% endblock content %}
+    
