@@ -1,9 +1,12 @@
+
 /* Component Styling */
 .bg-primary{
     background-color: rgb(17, 5, 73)!important;
+    border-radius: 5px;
 }
 .text-primary{
     color: rgb(17, 5, 73)!important;
+   
 }
 .btn-primary{
     /* border: 1px solid #325cc7;; */
@@ -39,6 +42,9 @@
     transition-delay:.4s;
     
 }
+.item-list-div{
+    background-color: #110c5e;
+}
 /* End Component styling */
 
 
@@ -50,7 +56,7 @@
     font-family: 'Dosis'
 }
 body{
-    background-color: #f3f3f3;
+    background-color: #ebebeb;
 }
 a{
     text-decoration: none;
@@ -216,4 +222,13 @@ a{
     background-color: rgb(247, 247, 247);
     padding: 10px;
     border-radius: 10px;
+}
+.item-list-div{
+    background-color: #343070;
+    display: flex;
+    justify-content: space-around;
+    border-radius: 10px;
+}
+.flex-wr{
+    flex-grow: 1;
 }

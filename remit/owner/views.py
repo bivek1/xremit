@@ -49,40 +49,85 @@ class Dashboard(View):
         return render(request, self.template_name, dist)
     
 
+# Add Customer
+class CustomerView(View):
+    template_name = 'owner/customer.html'
+    dist = {
+            'form':CustomerForm(),
+            'form_head': "Add new customer",
+            'button':"Add new customer",
+            'customer': CustomUser.objects.filter(user_type ="customer")
+        }
+    def get(self, request, *args, **kwargs):
+      
+
+        return render(request, self.template_name, self.dist)
+    def post(self, request, *args, **kwars):
+        form = CustomerForm(request.POST)
+        # try:
+        # custom_user = 
+        if form.is_valid():
+            try:
+                admin = CustomUser.objects.create_user(first_name = request.POST['first_name'], last_name = request.POST['last_name'], email = request.POST['email'], username = request.POST['email'], password = request.POST['password'], user_type = 'customer')
+
+                obj = admin.customer
+                obj.number = request.POST['number']
+                obj.mail_address = request.POST['mail_address']
+                obj.state = request.POST['state']
+                obj.zip_code = request.POST['zip_code']
+                obj.city = request.POST['city']
+                obj.country = request.POST['country']
+                obj.address = request.POST['address']
+                obj.added_by = request.user
+                obj.save()
+                 # admin.save()
+                messages.success(request, "Successfully Added Customer")
+                return HttpResponseRedirect(reverse('owner:customer'))
+            except:      
+                messages.error(request, "Email already exist")
+                return render(request, self.template_name, self.dist)
+        else:
+            error = form.errors()
+            print(error)
+            messages.error(request, str(error))
+            return render(request, self.template_name, self.dist)
+
+
+def deleteCustomer(request, id):
+    cust = Customer.objects.get(id = id)
+    cust.delete()
+    messages.success(request, "Successfully delete customer")
+    return HttpResponseRedirect(reverse('owner:customer'))
+
+def customerProfile(request, id):
+    pass
 
 # Add Customer
-class CustomerView(CreateView):
-    model = Customer
-    form_class = CustomerForm
-    template_name = 'owner/customer.html'
-    # success_url = reverse_lazy('owner/customer')
-    custom_user = None
+# class CustomerView(CreateView):
+#     model = Customer
+    
+#     template_name = 
+#     custom_user = None
 
-    def post(self, request):
-        form = CustomerForm(request.POST)
-        try:
-            custom_user = CustomUser.objects.create_user(first_name = request.POST['first_name'], last_name = request.POST['last_name'], email = request.POST['email'], username = request.POST['email'], password = request.POST['password'], user_type = 'customer')
-            if form.is_valid():
-                form.save(commit = False)
-                form.admin = custom_user
-                form.added_by = request.user
-                form.save()
-                messages.success(request, "Successfully Added Customer")
-        except:
-            messages.error(request, "Email already exist")
-            # return render(request, self.template_name, self.get_context_data)
+#     def post(self, request):
+#         form = CustomerForm(request.POST)
+#         # try:
+#         custom_user = CustomUser.objects.create_user(first_name = request.POST['first_name'], last_name = request.POST['last_name'], email = request.POST['email'], username = request.POST['email'], password = request.POST['password'], user_type = 'customer')
+#         if form.is_valid():
+#             form.save(commit = False)
+#             form.admin = custom_user
+#             form.added_by = request.user
+#             form.save()
+#             messages.success(request, "Successfully Added Customer")
+#         except:
+#             messages.error(request, "Email already exist")
+#             # return render(request, self.template_name, self.get_context_data)
        
-        return HttpResponseRedirect(reverse('owner:customer'))
+#         return HttpResponseRedirect(reverse('owner:customer'))
 
  
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['head'] = 'Customer'
-        context['form_head'] = "Add new customer"
-        context['button'] = "Add new customer"
-        context['customer'] = CustomUser.objects.all()
-        return context
+   
     
 
 # Add Agent

@@ -1,5 +1,5 @@
 {% extends 'owner/dashboard.html' %}
-
+{% load static %}
 
 {% block title %}
     Customer
@@ -29,8 +29,8 @@
     
     <div class="row p-0 m-0 mt-3">
 
-        <div class="col-lg-6 col-12 m-0 p-0">
-            <div id="login-card" class="p-3">
+        <div class="col-lg-4 col-12 m-0 p-0">
+            <div id="login-card" class="p-1">
                 <h6 class="form-head m-2">{{form_head}}</h6>
                
                 <form action="" method="post">
@@ -104,40 +104,172 @@
             </div>
         </div>
 
-        <div class="col-lg-6 col-12 mt-3">
-            <h6>
+        <div class="col-lg-8 col-12 mt-3 ">
+            <h6 class="bg-primary p-2 text-light">
                 Customer List
             </h6>
             <hr>
-            <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Address</th>
-                    <th scope="col">Email</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    
-                    {% for i in customer  %}
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                     
-                    {% endfor %}
+            <div class="card p-2">
+                <div class=" login-flex d-flex my-auto" style="width: 100%;">
+                    <i class="fa fa-magnifying-glass my-auto p-2"></i>
+                    <input type="text" name="search"  id="search" onkeyup="SearchName()" class="form-control"  placeholder="Search Customer by their name" required id="">
+                   </div>
+                <table class="table border-1" id="myTable">
+            
+                    <tbody>
                         
-                 
-                </tbody>
-              </table>
+                        {% for i in customer  %}
+                        <tr>
+                            <td>
+                                <div class="item-list-div mt-2 p-1">
+                            
+                                    {% if i.profile_pic %}
+                                        <img class="my-auto" src="{{i.profile_pic.url}}" alt="" style="height: auto; width: 70px;">
+                                    {%else%}
+                                        <i class="fa fa-user-circle text-light my-auto" style="font-size: 30px;">
+        
+                                        </i> 
+                                    {% endif %}
+                                    <div class="flex-wr">
+                                        <p class="m-0 p-2 text-light">
+                                            {{i.get_full_name}}
+                                        </p>
+                                        <small class="p-1 text-light">
+                                            <i class="fa fa-mobile p-2"></i>
+                                            {{i.customer.number}}
+                                        </small>
+                                        <small class="p-1 text-light">
+                                            <i class="fa fa-envelope-circle-check p-2"></i>
+                                            {{i.email}}
+                                        </small>
+                                    </div>
+                                    <div class="my-auto">
+                                        <button class="btn btn-sm btn-light">
+                                            <i class="fa fa-eye-dropper"></i>
+                                            View and Edit
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}"> 
+                                            <i class="fa fa-trash-alt"></i>
+                                            Delete
+                                        </button>
+
+                                        <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                
+                                                    <div class="modal-body">
+                                                        <div class="text-center">
+                                                            <img src="{%static 'resources/delete.gif'%}" alt="" style="width: 30%;">
+                                                        </div>
+                                                
+                                                        <h5>Are you sure want to delete {{i.get_full_name}}</h5>
+                                                        <small>Deleting customer will delete customer transaction history as well</small>
+                                                        <div class="text-end mt-2">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change my mind</button>
+                                                            <button type="button" class="btn btn-danger">
+                                                                <i class="fa fa-trash"></i> Delete
+                                                            </button>
+                                                        </div>
+                                                    
+                                                    </div>
+                                                
+                                              </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                   
+                                   
+                                        
+                                        
+                                   </div>
+                            </td>
+                          
+                        </tr>
+                         
+                        {% endfor %}
+                        <div id="items-container"></div>
+                     
+                    </tbody>
+                </table>
+            </div>
+            
         </div>
     </div>
   
    
 </div>
+
+
+
+
+<script>
+tr = table.getElementsByTagName("tr");
+const itemsPerPage = 3; // Number of items to display per page
+let currentPage = 1; // Current page number
+
+function paginate(pageNumber, tr) {
+  const startIndex = (pageNumber - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  return data.slice(startIndex, endIndex);
+}
+
+function renderItems(pageNumber, data) {
+  const container = document.getElementById('items-container');
+  container.innerHTML = ''; // Clear the container before rendering
+
+  const paginatedData = paginate(pageNumber, data);
+
+  for (let i = 0; i < paginatedData.length; i++) {
+    const item = paginatedData[i];
+
+    const itemElement = document.createElement('div');
+    itemElement.textContent = item.name;
+
+    container.appendChild(itemElement);
+  }
+}
+
+function renderPagination(pageNumber, totalPages) {
+  const paginationContainer = document.getElementById('pagination');
+  paginationContainer.innerHTML = ''; // Clear the pagination container
+
+  const previousButton = document.createElement('button');
+  previousButton.textContent = 'Previous';
+  previousButton.disabled = pageNumber === 1;
+  previousButton.addEventListener('click', () => {
+    if (pageNumber > 1) {
+      currentPage--;
+      renderItems(currentPage, data);
+      renderPagination(currentPage, totalPages);
+    }
+  });
+
+  const nextButton = document.createElement('button');
+  nextButton.textContent = 'Next';
+  nextButton.disabled = pageNumber === totalPages;
+  nextButton.addEventListener('click', () => {
+    if (pageNumber < totalPages) {
+      currentPage++;
+      renderItems(currentPage, data);
+      renderPagination(currentPage, totalPages);
+    }
+  });
+
+  const pageNumberElement = document.createElement('span');
+  pageNumberElement.textContent = `Page ${pageNumber} of ${totalPages}`;
+
+  paginationContainer.appendChild(previousButton);
+  paginationContainer.appendChild(pageNumberElement);
+  paginationContainer.appendChild(nextButton);
+}
+
+// Example usage
+const totalPages = Math.ceil(data.length / itemsPerPage);
+
+renderItems(currentPage, data);
+renderPagination(currentPage, totalPages);
+</script>
 {% endblock inside %}
     
     
