@@ -1,20 +1,26 @@
 
 from django.shortcuts import render
 from django.views.generic import View, UpdateView
-from homepage.models import Product, Service, Client, Testomonial
+from homepage.models import Product, Service, Client, Testomonial, Footor
 from homepage.models import CompanyInformation, CustomUser
 from django.urls import reverse
 from django.http.response import HttpResponseRedirect
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
-from homepage.models import Blog, Category, SubCategory, Customer, Agent, Owner
+from homepage.models import Blog, Category, SubCategory, Customer, Agent, Owner, LoginInterface, signupInterface, Policy, Terms, SocialLink
 
+
+from .models import SiteSetting, SEO
+from .forms import SiteForm, SEOForm
 from homepage.forms import CustomerForm
 
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse, reverse_lazy
 
 from homepage.forms import UserCreateForm, UserUpdateForm, ProductForm, ServiceForm, ClientForm, TestomonialForm, CompanyInformationForm, BlogForm, CategoryForm, SubCategoryForm
+
+from .forms import LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, BrandForm, FootorForm, SocialForm, PolicyForm, TermForm
+
 # Create your views here.
 
 
@@ -56,7 +62,7 @@ class CustomerView(View):
             'form':CustomerForm(),
             'form_head': "Add new customer",
             'button':"Add new customer",
-            'customer': CustomUser.objects.filter(user_type ="customer")
+            'customer': Customer.objects.all().order_by('-id')
         }
     def get(self, request, *args, **kwargs):
       
@@ -94,13 +100,42 @@ class CustomerView(View):
 
 
 def deleteCustomer(request, id):
-    cust = Customer.objects.get(id = id)
+    cust = CustomUser.objects.get(id = id)
     cust.delete()
     messages.success(request, "Successfully delete customer")
     return HttpResponseRedirect(reverse('owner:customer'))
 
 def customerProfile(request, id):
-    pass
+    real_customer = Customer.objects.get(id = id)
+
+
+    form = CustomerForm(instance=real_customer)
+    dist = {
+        'real_customer':real_customer,
+        'form':form,
+        'form_head':"Update Customer",
+        'button':"Update customer",
+    
+    }
+
+    if request.method == 'POST':
+        try: 
+            real_customer.admin.first_name = request.POST['first_name']
+            real_customer.admin.last_name = request.POST['last_name']
+            real_customer.admin.email = request.POST['email']
+            real_customer.admin.username = request.POST['email']
+            real_customer.admin.save()
+        except:
+            messages.error(request, "Email is added already..")
+            return HttpResponseRedirect(reverse('owner:customerProfile',args=[real_customer.id]))
+        form = CustomerForm(request.POST, instance=real_customer)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Successfully Updated Customer")
+            return HttpResponseRedirect(reverse('owner:customerProfile',args=[real_customer.id]))
+        else:
+            messages.error(request, "Something went wrong")
+    return render(request, 'owner/customerProfile.html',dist)
 
 # Add Customer
 # class CustomerView(CreateView):
@@ -297,6 +332,8 @@ class UpdateService(SuccessMessageMixin, UpdateView):
     def get_success_url(self, *args, **kwargs):
         id = self.kwargs['pk']
         return reverse('manager:updateService', args=[id])
+    
+
 def deleteService(request, id):
     blog = Service.objects.get(id = id)
     blog.delete()
@@ -666,3 +703,323 @@ class Profile(UpdateView, SuccessMessageMixin):
     def get_success_url(self, *args, **kwargs):
         id = self.kwargs['pk']
         return reverse('manager:updateAdmin', args=[id])
+    
+
+
+# Site Settings
+
+def site(request):
+    # Login Information Mangemenet
+
+    login = LoginInterface.objects.all()
+    
+    if login:
+        for i in login:
+            login = i
+            break
+    if login:
+        loginform = LoginInterfaceForm(instance=login)
+    else:
+        loginform = LoginInterfaceForm()
+
+
+    # Sign Up information management
+
+
+    signup = signupInterface.objects.all()    
+    if signup:
+        for i in signup:
+            signup = i
+            break
+    print(signup)
+    if signup:
+        signform = signupInterfaceForm(instance=signup)
+    else:
+        signform = signupInterfaceForm()
+
+
+    # Site Information and Manipulation
+
+    site = SiteSetting.objects.all()    
+    if site:
+        for i in site:
+            site = i
+            break
+    print(site)
+    if site:
+        form = SiteForm(instance=site)
+    else:
+        form = SiteForm()
+
+    dist = {
+        'form':form,
+        'loginForm':loginform,
+        'signForm': signform,
+        'site':site,
+        'login':login,
+        'signup':signup
+    }
+
+    if request.method == 'POST':
+        if site:
+            form = SiteForm(request.POST, request.FILES, instance=site)
+        else:
+            form = SiteForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Successfully Updated Site Information")
+            return HttpResponseRedirect(reverse('owner:site'))
+        else:
+            messages.error(request, "Something went Wrong")
+
+    return render(request, 'owner/site.html', dist)
+
+# Add Login Information
+def addLoginData(request):
+
+    login = LoginInterface.objects.all()
+    
+    if login:
+        for i in login:
+            login = i
+            break
+    
+    if login:
+        form = LoginInterfaceForm(request.POST, request.FILES, instance=i)
+    else:
+        form = LoginInterfaceForm(request.POST, request.FILES)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Successfully updated login information")
+        
+    else:
+        messages.success(request, "Something went wrong")
+    return HttpResponseRedirect(reverse('owner:site'))
+
+
+def addSignData(request):
+
+    login = signupInterface.objects.all()
+    
+    if login:
+        for i in login:
+            login = i
+            break
+    
+    if login:
+        form = signupInterfaceForm(request.POST, request.FILES, instance=login)
+    else:
+        form = signupInterfaceForm(request.POST, request.FILES)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Successfully updated Sign up information")
+        
+    else:
+       
+        messages.success(request, "Something went wrong")
+    return HttpResponseRedirect(reverse('owner:site'))
+
+
+def footerView(request):
+    footer = Footor.objects.all().order_by('-id')
+    form = FootorForm()
+    dist = {
+        'footer':footer,
+        'form': form
+    }
+
+    if request.method == 'POST':
+        form = FootorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Successfully Added new footer")
+            return HttpResponseRedirect(reverse('owner:footer'))
+        else:
+            dist.update({'form':form})
+            messages.error(request,"something went wrong")
+
+    return render(request, "owner/siteSetting/footor.html", dist)
+
+
+def SiteInformationView(request):
+    # footer = Footor.objects.all().order_by('-id')
+
+    dist = {
+        # 'footer':footer,
+    }
+
+    return render(request, "owner/siteSetting/siteInfo.html", dist)
+
+
+def PolicyView(request):
+    # Terms and Condiroon information management
+    terms = Terms.objects.all()    
+    if terms:
+        for i in terms:
+            terms = i
+            break
+    print(terms)
+    if terms:
+        terms_form = TermForm(instance=terms)
+    else:
+        terms_form = TermForm()
+
+
+    # Site Information and Manipulation
+
+    policy = Policy.objects.all()    
+    if policy:
+        for i in policy:
+            policy = i
+            break
+    print(policy)
+    if policy:
+        policy_form = PolicyForm(instance=policy)
+    else:
+        policy_form = PolicyForm()
+
+    dist = {
+        'terms':terms,
+        'policy':policy,
+        'policy_form':policy_form,
+        'terms_form':terms_form
+    }
+
+    return render(request, "owner/siteSetting/policy.html", dist)
+
+
+def updateTerms(request):
+
+    login = Terms.objects.all()
+    
+    if login:
+        for i in login:
+            login = i
+            break
+    
+    if login:
+        form = TermForm(request.POST, request.FILES, instance=login)
+    else:
+        form = TermForm(request.POST, request.FILES)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Successfully updated Terms and Conditions")
+        
+    else:
+       
+        messages.success(request, "Something went wrong")
+    return HttpResponseRedirect(reverse('owner:policy'))
+
+
+def updatePolicy(request):
+
+    login = Policy.objects.all()
+    
+    if login:
+        for i in login:
+            login = i
+            break
+    
+    if login:
+        form = PolicyForm(request.POST, request.FILES, instance=login)
+    else:
+        form = PolicyForm(request.POST, request.FILES)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Successfully updated Policy and Privacy")
+        
+    else:
+       
+        messages.success(request, "Something went wrong")
+    return HttpResponseRedirect(reverse('owner:policy'))
+
+def SocialLinkView(request):
+    social_link = SocialLink.objects.all().order_by('-id')
+    form = SocialForm()
+    dist = {
+        'social':social_link,
+        'form':form
+    }
+
+    if request.method == 'POST':
+        form = SocialForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,"Successfully Added Social Link")
+        else:
+            dist.update({'form':form})
+            messages.error(request,"something went wrong")
+
+    return render(request, "owner/siteSetting/socialLink.html", dist)
+
+
+def SEOView(request):
+    site = SEO.objects.all()    
+    if site:
+        for i in site:
+            site = i
+            break
+    print(site)
+    if site:
+        form = SEOForm(instance=site)
+    else:
+        form = SEOForm()
+
+    dist = {
+        'form':form,
+        'site':site,
+    }
+
+    if request.method == 'POST':
+        if site:
+            form = SEOForm(request.POST, request.FILES, instance=site)
+        else:
+            form = SEOForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Successfully Updated SEO Information")
+            return HttpResponseRedirect(reverse('owner:seo'))
+        else:
+            messages.error(request, "Something went Wrong")
+
+
+    return render(request, "owner/siteSetting/seo.html", dist)
+
+
+def editFooter(request, id):
+    footer = Footor.objects.get(id = id)
+    footer.name = request.POST['footer_name']
+    footer.link = request.POST['footer_link']
+    footer.save()
+    messages.success(request, "Successfully Edit Footer")
+    return HttpResponseRedirect(reverse('owner:footer'))
+
+
+def deleteFooter(request, id):
+    footer = Footor.objects.get(id = id)
+    footer.delete()
+    messages.success(request, "Successfully deleted Footer")
+    return HttpResponseRedirect(reverse('owner:footer'))
+
+
+def editSocialLink(request, id):
+    footer = SocialLink.objects.get(id = id)
+    footer.name = request.POST['social_link_name']
+    footer.icon = request.POST['social_icon']
+    footer.link = request.POST['social_link']
+    footer.save()
+    messages.success(request, "Successfully Edited Social Link")
+    return HttpResponseRedirect(reverse('owner:socialLink'))
+
+
+def deleteSocialLink(request, id):
+    footer = SocialLink.objects.get(id = id)
+    footer.delete()
+    messages.success(request, "Successfully deleted Social Link")
+    return HttpResponseRedirect(reverse('owner:socialLink'))

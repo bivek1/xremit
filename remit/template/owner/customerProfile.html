@@ -12,7 +12,7 @@
          
     <div> 
       <div class="topBox mt-3 p-2">
-        <h4 class="text-primary">{{head}}</h4>
+        <h4 class="text-primary text-capitalize">{{real_customer.admin.get_full_name}}</h4>
         <small>This is customer details page where you can addd-update-delete customer/small>
       </div>
     </div>
@@ -22,81 +22,106 @@
         <a href="{%url 'owner:dashboard'%}">
             Dashboard
         </a>/
-            {{head}}
+        <a href="{%url 'owner:customer'%}">
+            Customer
+        </a>/
+        {{real_customer.admin.get_full_name}} Profile
       </span>
     </div>
 
     
     <div class="row p-0 m-0 mt-3">
 
-        <div class="col-lg-6 col-12 mt-3 ">
-            <h6 class="bg-primary p-2 text-light">
-               {{customer.admin.get_full_name}} Profile
-            </h6>
-            <hr>
-            <div class="card p-2">
-                <div class=" login-flex d-flex my-auto" style="width: 100%;">
-                    <i class="fa fa-magnifying-glass my-auto p-2"></i>
-                    <input type="text" name="search"  id="search" onkeyup="SearchName()" class="form-control"  placeholder="Search Customer by their name" required id="">
-                   </div>
-                <table class="table border-1" id="myTable">
-            
-                    <tbody>
-                        
-                        {% for i in customer  %}
-                        <tr>
-                            <td>
-                                <div class="item-list-div mt-2 p-1">
-                            
-                                    {% if i.profile_pic %}
+        <div class="col-lg-8 col-12 ps-0 mt-3">
+            <div id="login-card" class="p-1">
+                <h6 class="bg-primary p-2 text-light text-capitalize">
+                    {{real_customer.get_full_name}} Profile
+                </h6>
+
+                <div class="col-12  mt-2">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                          <p class="nav-link active text-primary" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</p>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <p class="nav-link text-primary" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Enqueries</p>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <p class="nav-link text-primary" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab" aria-controls="messages" aria-selected="false">Note</p>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <p class="nav-link text-primary" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Booking</p>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <p class="nav-link text-primary" id="transaction-tab" data-bs-toggle="tab" data-bs-target="#transaction" type="button" role="tab" aria-controls="transaction" aria-selected="false">Transaction</p>
+                        </li>
+                    </ul>
+                </div>
+    
+    
+                <div class="col-12 mt-2 p-0">
+                    <div class="tab-content">
+                        <div style="background-color:white;" class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="row p-1">
+                                <div class="col-lg-8 col-12 pt-3 pb-3">
+                                    <div class="contactDetails p-2">
+                                        <h6>Contact Details</h6>
+                                        <h4 class="text-primary text-capitalize">
+                                            {{real_customer.admin.get_full_name}}
+                                        </h4>
+                                        <p class="text-secondary p-0 m-0">Primary Email</p>
+                                        <small>
+                                        <i class="fa fa-envelope"></i>
+                                        {{real_customer.admin.email}}</small>
+                                        <p class="text-secondary p-0 m-0">Number</p>
+                                        <small>
+                                        <i class="fa fa-mobile"></i>
+                                        {{real_customer.number}}</small>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-12 pt-3 pb-3 m-auto">
+                                    {% if real_customer.profile_pic %}
                                         <img class="my-auto" src="{{i.profile_pic.url}}" alt="" style="height: auto; width: 70px;">
                                     {%else%}
-                                        <i class="fa fa-user-circle text-light my-auto" style="font-size: 30px;">
+                                        <i class="fa fa-user-circle text-primary my-auto" style="font-size: 100px;">
         
                                         </i> 
                                     {% endif %}
-                                    <div class="flex-wr">
-                                        <p class="m-0 p-2 text-light">
-                                            {{i.get_full_name}}
-                                        </p>
-                                        <small class="p-1 text-light">
-                                            <i class="fa fa-mobile p-2"></i>
-                                            {{i.customer.number}}
-                                        </small>
-                                        <small class="p-1 text-light">
-                                            <i class="fa fa-envelope-circle-check p-2"></i>
-                                            {{i.email}}
-                                        </small>
-                                    </div>
-                                    <div class="my-auto">
-                                        <button class="btn btn-sm btn-light">
-                                            <i class="fa fa-eye-dropper"></i>
-                                            View and Edit
-                                        </button>
-                                        <button class="btn btn-sm btn-danger">
-                                            <i class="fa fa-trash-alt"></i>
-                                            Delete
-                                        </button>
-                                    </div>
-                                   
-                                   
-                                        
-                                        
-                                   </div>
-                            </td>
+                                </div>
+
+                              
+                            </div>
+        
+                        </div>
+                        <!-- ENquires -->
+                        <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            profile
                           
-                        </tr>
+                        
+                        </div>
+                        <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+                            Messages
+                        </div>
+                        <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                                Settings
                          
-                        {% endfor %}
-                        <div id="items-container"></div>
-                     
-                    </tbody>
-                </table>
+                        </div>
+                        <div  class="tab-pane" id="transaction" role="tabpanel" aria-labelledby="transaction-tab">
+                        
+                            Transaction
+    
+                        </div>
+                    
+                    </div>
+                </div>
             </div>
-            
+
+           
+
         </div>
 
-        <div class="col-lg-6 col-12 m-0 p-0">
+
+        <div class="col-lg-4 col-12 m-0 p-0">
             <div id="login-card" class="p-1">
                 <h6 class="form-head m-2">{{form_head}}</h6>
                
@@ -104,15 +129,15 @@
                     <div class="row p-0 m-0">
                         <div class="col-6">
                             <label for="first_name">First Name</label>
-                            <input type="text" name="first_name" id="" required class="form-control" placeholder="First Name">
+                            <input type="text" name="first_name" id="" value="{{real_customer.admin.first_name}}" required class="form-control" placeholder="First Name">
                         </div>
                         <div class="col-6">
                             <label for="last_name">Last Name</label>
-                            <input type="text" name="last_name" id="" required class="form-control" placeholder="Last Name">
+                            <input type="text" name="last_name" id="" value="{{real_customer.admin.last_name}}" required class="form-control" placeholder="Last Name">
                         </div>
                         <div class="col-12">
                             <label for="email">Email</label>
-                            <input type="email" name="email" id="" required class="form-control" placeholder="Email Address">
+                            <input type="email" name="email" id="" value="{{real_customer.admin.email}}" required class="form-control" placeholder="Email Address">
                         </div>
                         <div class="col-6">
                             <label for="email">{{form.number.label_tag}}</label>
@@ -153,12 +178,7 @@
                             {{form.address}}
                             {{form.address.errors}}
                         </div>
-                        
-
-                        <div class="col-12">
-                            <label for="password">Password</label>
-                            <input type="password" name="password" id="" required class="form-control" placeholder="Password">
-                        </div>
+                    
                         {% csrf_token %}
                         <button class="btn btn-primary mt-3" type="submit">
                             <i class="fa fa-user-plus"></i>  {{button}}
@@ -170,6 +190,8 @@
                 </form>
             </div>
         </div>
+
+    
     </div>
   
    

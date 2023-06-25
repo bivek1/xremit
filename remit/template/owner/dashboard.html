@@ -7,59 +7,7 @@
     
 
 
-{% block navbar %}
-<!-- <div class="container-fluid">
-  <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="{%url 'homepage:homepage'%}">XRemit</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-         
-        
-          <div class="nav-item dropdown ms-auto">
-              <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <div class="bg-primary text-light  text-center rounded-circle" style="width: 30px; height: 30px;">
-                  <i class="fa fa-user my-auto mt-1" style="font-size: 20px;"></i>
-                  </div>
-                  
-              </a>
-              <ul class="dropdown-menu dropdown-menu-start">
-                  
-                  {% if user.is_authenticated %}
-                  <li><a class="dropdown-item" href="#">
-                  <i class="fa fa-dashboard"></i> Dashboard
-                  </a></li>
-                  <li><a class="dropdown-item" href="#">
-                    <i class="fa fa-user"></i> Profile
-                    </a>
-                  </li>
 
-                  <li><a class="dropdown-item" href="#">
-                    <i class="fa fa-globe"></i> Site Setting
-                    </a>
-                  </li>
-
-                  <li><a class="dropdown-item" href="#">
-                    <i class="fa fa-sign-out-alt"></i> Logout
-                    </a>
-                  </li>
-
-                  {% endif %}
-                  
-                  
-                  
-              </ul>
-          </div>
-        </div>
-      </div>
-  </nav>
-</div> -->
-<!-- <div class="maintain">
-
-</div> -->
-{% endblock navbar %}
   
 
 {% block content %}
@@ -106,13 +54,17 @@
             Currency
           </span> 
         </div>
-  
-        <div class="mt-2 p-2 side-item">
-          <i class="fa fa-globe"></i>  
-          <span class="ms-3">
-            Site Settings
-          </span>
-        </div>
+        
+
+        <a href="{%url 'owner:site'%}">
+          <div class="mt-2 p-2 side-item">
+            <i class="fa fa-globe"></i>  
+            <span class="ms-3">
+              Site Settings
+            </span>
+          </div>
+        </a>
+       
   
         <div class="mt-2 p-2 side-item">
           <i class="fa fa-user"></i>   

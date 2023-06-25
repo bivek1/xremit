@@ -73,26 +73,6 @@ class Customer(models.Model):
 
 
 
-@receiver(post_save, sender=CustomUser)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        if instance.user_type == "owner":
-            Owner.objects.create(admin = instance)
-        if instance.user_type == "agent":
-            Agent.objects.create(admin = instance)
-        if instance.user_type == "customer":
-            Customer.objects.create(admin = instance)
-       
-
-@receiver(post_save, sender=CustomUser)
-def post_save_receiver(sender, instance, **kwargs):
-    if instance.user_type == "owner":
-        instance.owner.save()
-    if instance.user_type == "agent":
-        instance.agent.save()
-    if instance.user_type == "customer":
-        instance.customer.save()
- 
 
 
 
@@ -155,7 +135,7 @@ class Policy(models.Model):
 class LoginInterface(models.Model):
     name = models.CharField(max_length=200)
     information = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='login_image')
+    image = models.ImageField(upload_to='login_image/')
     
     def __str__(self) -> str:
         return self.name
@@ -163,8 +143,8 @@ class LoginInterface(models.Model):
 class signupInterface(models.Model):
     name = models.CharField(max_length=200)
     information = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='login_image')
-    
+    image = models.ImageField(upload_to='signup_image/', null = True, blank=True)
+    video = models.FileField(upload_to='signup_video/', null = True, blank=True)
     def __str__(self) -> str:
         return self.name
 
@@ -246,7 +226,7 @@ class SubCategory(models.Model):
 
 class Blog(models.Model):
     title = models.CharField(max_length=300)
-    category = models.ForeignKey(Category, related_name  = "blog_category", on_delete = models.PROTECT)
+    category = models.ForeignKey(Category, related_name  = "blog_category", on_delete = models.PROTECT, null = True, blank = True)
     sub_category = models.ForeignKey(SubCategory, related_name = "blog_sub_category", on_delete= models.PROTECT, null = True, blank = True)
     description = RichTextUploadingField()
     visit = models.IntegerField(null = True, blank = True)
@@ -257,3 +237,27 @@ class Blog(models.Model):
     def __str__(self):
         return self.title
     
+
+
+    
+
+@receiver(post_save, sender=CustomUser)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        if instance.user_type == "owner":
+            Owner.objects.create(admin = instance)
+        if instance.user_type == "agent":
+            Agent.objects.create(admin = instance)
+        if instance.user_type == "customer":
+            Customer.objects.create(admin = instance)
+       
+
+@receiver(post_save, sender=CustomUser)
+def post_save_receiver(sender, instance, **kwargs):
+    if instance.user_type == "owner":
+        instance.owner.save()
+    if instance.user_type == "agent":
+        instance.agent.save()
+    if instance.user_type == "customer":
+        instance.customer.save()
+ 

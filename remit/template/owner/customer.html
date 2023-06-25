@@ -22,7 +22,7 @@
         <a href="{%url 'owner:dashboard'%}">
             Dashboard
         </a>/
-            {{head}}
+            Customer
       </span>
     </div>
 
@@ -104,7 +104,7 @@
             </div>
         </div>
 
-        <div class="col-lg-8 col-12 mt-3 ">
+        <div class="col-lg-8 col-12 mt-3">
             <h6 class="bg-primary p-2 text-light">
                 Customer List
             </h6>
@@ -132,22 +132,25 @@
                                     {% endif %}
                                     <div class="flex-wr">
                                         <p class="m-0 p-2 text-light">
-                                            {{i.get_full_name}}
+                                            {{i.admin.get_full_name}}
                                         </p>
                                         <small class="p-1 text-light">
                                             <i class="fa fa-mobile p-2"></i>
-                                            {{i.customer.number}}
+                                            {{i.number}}
                                         </small>
                                         <small class="p-1 text-light">
                                             <i class="fa fa-envelope-circle-check p-2"></i>
-                                            {{i.email}}
+                                            {{i.admin.email}}
                                         </small>
                                     </div>
                                     <div class="my-auto">
-                                        <button class="btn btn-sm btn-light">
-                                            <i class="fa fa-eye-dropper"></i>
-                                            View and Edit
-                                        </button>
+                                        <a href="{%url 'owner:customerProfile' i.id%}">
+                                            <button class="btn btn-sm btn-light">
+                                                <i class="fa fa-eye-dropper"></i>
+                                                View and Edit
+                                            </button>
+                                        </a>
+                                     
                                         <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}"> 
                                             <i class="fa fa-trash-alt"></i>
                                             Delete
@@ -166,9 +169,13 @@
                                                         <small>Deleting customer will delete customer transaction history as well</small>
                                                         <div class="text-end mt-2">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change my mind</button>
-                                                            <button type="button" class="btn btn-danger">
-                                                                <i class="fa fa-trash"></i> Delete
-                                                            </button>
+                                                            <!-- Delete URL -->
+                                                            <a href="{%url 'owner:deleteCustomer' i.id%}">
+                                                                <button type="button" class="btn btn-danger">
+                                                                    <i class="fa fa-trash"></i> Delete
+                                                                </button>
+                                                            </a>
+                                                            
                                                         </div>
                                                     
                                                     </div>
@@ -203,73 +210,7 @@
 
 
 
-<script>
-tr = table.getElementsByTagName("tr");
-const itemsPerPage = 3; // Number of items to display per page
-let currentPage = 1; // Current page number
 
-function paginate(pageNumber, tr) {
-  const startIndex = (pageNumber - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  return data.slice(startIndex, endIndex);
-}
-
-function renderItems(pageNumber, data) {
-  const container = document.getElementById('items-container');
-  container.innerHTML = ''; // Clear the container before rendering
-
-  const paginatedData = paginate(pageNumber, data);
-
-  for (let i = 0; i < paginatedData.length; i++) {
-    const item = paginatedData[i];
-
-    const itemElement = document.createElement('div');
-    itemElement.textContent = item.name;
-
-    container.appendChild(itemElement);
-  }
-}
-
-function renderPagination(pageNumber, totalPages) {
-  const paginationContainer = document.getElementById('pagination');
-  paginationContainer.innerHTML = ''; // Clear the pagination container
-
-  const previousButton = document.createElement('button');
-  previousButton.textContent = 'Previous';
-  previousButton.disabled = pageNumber === 1;
-  previousButton.addEventListener('click', () => {
-    if (pageNumber > 1) {
-      currentPage--;
-      renderItems(currentPage, data);
-      renderPagination(currentPage, totalPages);
-    }
-  });
-
-  const nextButton = document.createElement('button');
-  nextButton.textContent = 'Next';
-  nextButton.disabled = pageNumber === totalPages;
-  nextButton.addEventListener('click', () => {
-    if (pageNumber < totalPages) {
-      currentPage++;
-      renderItems(currentPage, data);
-      renderPagination(currentPage, totalPages);
-    }
-  });
-
-  const pageNumberElement = document.createElement('span');
-  pageNumberElement.textContent = `Page ${pageNumber} of ${totalPages}`;
-
-  paginationContainer.appendChild(previousButton);
-  paginationContainer.appendChild(pageNumberElement);
-  paginationContainer.appendChild(nextButton);
-}
-
-// Example usage
-const totalPages = Math.ceil(data.length / itemsPerPage);
-
-renderItems(currentPage, data);
-renderPagination(currentPage, totalPages);
-</script>
 {% endblock inside %}
     
     
