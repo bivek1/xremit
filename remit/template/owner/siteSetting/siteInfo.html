@@ -13,7 +13,7 @@
     <div> 
       <div class="topBox mt-3 p-2">
         <h4 class="text-primary text-capitalize">
-            <i class="fa fa-f"></i> Site Information Setting
+            <i class="fa fa-cog"></i> Site Information Setting
         </h4>
         <small>Manipulate your site Site Information setting from here...</small>
       </div>
@@ -38,12 +38,12 @@
             Site Information settings
         </h6>
         <hr>
-        <div class="row mt-2 p-2" id="login-card">
+        <div class="row mt-2 p-2">
             <div class="col-6 col-lg-2 mt-2">
-              <a href="{%url 'owner:socialLink'%}">
+              <a href="{%url 'owner:addService'%}">
                   <div class="dashboard-box">
                       <div class="my-auto bg-info text-light p-2">
-                          <i class="fa fa-f text-light" style="font-size: 17px; "></i>
+                          <i class="fa fa-s text-light" style="font-size: 17px; "></i>
                       </div>
                       <div class="my-auto p-1">
                           <h6 class="text-center">
@@ -56,10 +56,10 @@
             </div>
 
             <div class="col-6 col-lg-2 mt-2">
-              <a href="{%url 'owner:socialLink'%}">
+              <a href="{%url 'owner:addClient'%}">
                   <div class="dashboard-box">
-                      <div class="my-auto bg-info text-light p-2">
-                          <i class="fa fa-f text-light" style="font-size: 17px; "></i>
+                      <div class="my-auto bg-warning text-light p-2">
+                          <i class="fa fa-users text-light" style="font-size: 17px; "></i>
                       </div>
                       <div class="my-auto p-1">
                           <h6 class="text-center">
@@ -73,14 +73,14 @@
 
 
             <div class="col-6 col-lg-2 mt-2">
-              <a href="{%url 'owner:socialLink'%}">
+              <a href="{%url 'owner:addFeature'%}">
                   <div class="dashboard-box">
-                      <div class="my-auto bg-info text-light p-2">
+                      <div class="my-auto bg-primary text-light p-2">
                           <i class="fa fa-f text-light" style="font-size: 17px; "></i>
                       </div>
                       <div class="my-auto p-1">
                           <h6 class="text-center">
-                              Product
+                              Features
                           </h6>
                       </div>
                   </div>
@@ -89,10 +89,10 @@
             </div>
 
             <div class="col-6 col-lg-2 mt-2">
-              <a href="{%url 'owner:socialLink'%}">
+              <a href="{%url 'owner:addTestomonial'%}">
                   <div class="dashboard-box">
-                      <div class="my-auto bg-info text-light p-2">
-                          <i class="fa fa-f text-light" style="font-size: 17px; "></i>
+                      <div class="my-auto bg-danger text-light p-2">
+                          <i class="fa fa-t text-light" style="font-size: 17px; "></i>
                       </div>
                       <div class="my-auto p-1">
                           <h6 class="text-center">
@@ -105,36 +105,64 @@
             </div>
 
             <div class="col-6 col-lg-2 mt-2">
-              <a href="{%url 'owner:socialLink'%}">
-                  <div class="dashboard-box">
-                      <div class="my-auto bg-info text-light p-2">
-                          <i class="fa fa-f text-light" style="font-size: 17px; "></i>
-                      </div>
-                      <div class="my-auto p-1">
-                          <h6 class="text-center">
-                              Package
-                          </h6>
-                      </div>
-                  </div>
-              </a>
-              
+                <a href="{%url 'owner:addTestomonial'%}">
+                    <div class="dashboard-box">
+                        <div class="my-auto bg-secondary text-light p-2">
+                            <i class="fa fa-info-circle text-light" style="font-size: 17px; "></i>
+                        </div>
+                        <div class="my-auto p-1">
+                            <h6 class="text-center">
+                                About Us
+                            </h6>
+                        </div>
+                    </div>
+                </a>
+                
             </div>
 
             <div class="col-6 col-lg-2 mt-2">
-              <a href="{%url 'owner:socialLink'%}">
-                  <div class="dashboard-box">
-                      <div class="my-auto bg-info text-light p-2">
-                          <i class="fa fa-f text-light" style="font-size: 17px; "></i>
-                      </div>
-                      <div class="my-auto p-1">
-                          <h6 class="text-center">
-                              Brand
-                          </h6>
-                      </div>
-                  </div>
-              </a>
-              
+                <a href="{%url 'owner:addBrand'%}">
+                    <div class="dashboard-box">
+                        <div class="my-auto bg-info text-dark p-2">
+                            <i class="fa fa-b text-light" style="font-size: 17px; "></i>
+                        </div>
+                        <div class="my-auto p-1">
+                            <h6 class="text-center">
+                                Brand
+                            </h6>
+                        </div>
+                    </div>
+                </a>
             </div>
+            <div class="col-6 col-lg-6 mt-2">
+                <a href="{%url 'owner:addTestomonial'%}">
+                    <div class="dashboard-box">
+                        <div class="my-auto bg-primary text-dark p-2">
+                            <i class="fa fa-question-circle text-light" style="font-size: 17px; "></i>
+                        </div>
+                        <div class="my-auto p-1">
+                            <h6 class="text-center">
+                                Why Choose Us?
+                            </h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-lg-6 mt-2">
+                <a href="{%url 'owner:addTestomonial'%}">
+                    <div class="dashboard-box">
+                        <div class="my-auto bg-danger text-dark p-2">
+                            <i class="fa fa-home text-light" style="font-size: 17px; "></i>
+                        </div>
+                        <div class="my-auto p-1">
+                            <h6 class="text-center">
+                                Home Service
+                            </h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
         </div>
     
 

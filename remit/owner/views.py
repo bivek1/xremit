@@ -1,7 +1,7 @@
 
 from django.shortcuts import render
 from django.views.generic import View, UpdateView
-from homepage.models import Product, Service, Client, Testomonial, Footor
+from homepage.models import Feature, Service, Client, Testomonial, Footor, Brand
 from homepage.models import CompanyInformation, CustomUser
 from django.urls import reverse
 from django.http.response import HttpResponseRedirect
@@ -11,13 +11,13 @@ from homepage.models import Blog, Category, SubCategory, Customer, Agent, Owner,
 
 
 from .models import SiteSetting, SEO
-from .forms import SiteForm, SEOForm
+from .forms import SiteForm, SEOForm, FeatureForm
 from homepage.forms import CustomerForm
 
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse, reverse_lazy
 
-from homepage.forms import UserCreateForm, UserUpdateForm, ProductForm, ServiceForm, ClientForm, TestomonialForm, CompanyInformationForm, BlogForm, CategoryForm, SubCategoryForm
+from homepage.forms import UserCreateForm, UserUpdateForm, ServiceForm, ClientForm, TestomonialForm, CompanyInformationForm, BlogForm, CategoryForm, SubCategoryForm
 
 from .forms import LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, BrandForm, FootorForm, SocialForm, PolicyForm, TermForm
 
@@ -37,7 +37,7 @@ class Dashboard(View):
         blog_count = Blog.objects.all().count()
         staff_count = CustomUser.objects.all().count()
         client_count = Client.objects.all().count()
-        product_count = Product.objects.all().count()
+        # product_count = Product.objects.all().count()
         service_count = Service.objects.all().count()
         testo_count = Testomonial.objects.all().count()
 
@@ -45,7 +45,7 @@ class Dashboard(View):
             'blog_count':blog_count,
             'staff':staff_count,
             'client_count':client_count,
-            'product':product_count,
+            # 'product':product_count,
             'service':service_count,
             'testo_count':testo_count
         }
@@ -168,123 +168,104 @@ def customerProfile(request, id):
 # Add Agent
 class AgentView(CreateView):
     pass
-# ADMIN CRUD
-class AddAdmin(View):
-    template_name = "staff/addAdmin.html"
 
-    def get(self, request, *args, **kwargs ):
-        form = UserCreateForm()
-        blog = CustomUser.objects.all().order_by('-id')
-        dist = {
-            'form':form,
-            'blog':blog,
-            'button':'Add Admin',
-        }
-        blog_count = Blog.objects.all().count()
-        staff_count = CustomUser.objects.all().count()
-        client_count = Client.objects.all().count()
-        product_count = Product.objects.all().count()
-        service_count = Service.objects.all().count()
-        testo_count = Testomonial.objects.all().count()
 
-        public = {
-            'blog_count':blog_count,
-            'staff':staff_count,
-            'client_count':client_count,
-            'product':product_count,
-            'service':service_count,
-            'testo_count':testo_count
-        }
-        dist.update(public)
 
-        return render(request, self.template_name, dist)
-    def post(self, request, *args, **kwargs):
-        form = UserCreateForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Successfully Added Admin")
-            return HttpResponseRedirect(reverse('manager:addAdmin'))
-        else:
-            messages.success(request, "Something went Wrong")
-            return HttpResponseRedirect(reverse('manager:addAdmin'))
-  
-class UpdateAdmin(SuccessMessageMixin, UpdateView):
-    template_name = "staff/editAdmin.html"
-    model = CustomUser
-    form_class = UserUpdateForm
-    success_message = "Successfully Updated Admin"
-    
-    def get_success_url(self, *args, **kwargs):
-        id = self.kwargs['pk']
-        return reverse('manager:updateAdmin', args=[id])
-def deleteAdmin(request, id):
-    blog = User.objects.get(id = id)
-    blog.delete()
-    messages.success(request, "Succesfully Deleted Admin")
-    return HttpResponseRedirect(reverse('manager:addAdmin')) 
 
 # -----------CRUD PRODUCT----------------------->
 # Product CRUD
-class AddProduct(View):
-    template_name = "manager/addProduct.html"
+class AddFeature(View):
+    template_name = "owner/siteSetting/addFeature.html"
 
     def get(self, request, *args, **kwargs ):
-        form = ProductForm()
-        blog = Product.objects.all().order_by('-id')
+        form = FeatureForm()
+        blog = Feature.objects.all().order_by('-id')
         dist = {
             'form':form,
             'blog':blog,
-            'button':'Add Product',
+            'button':'Add Features',
         }
-        blog_count = Blog.objects.all().count()
-        staff_count = CustomUser.objects.all().count()
-        client_count = Client.objects.all().count()
-        product_count = Product.objects.all().count()
-        service_count = Service.objects.all().count()
-        testo_count = Testomonial.objects.all().count()
-
-        public = {
-            'blog_count':blog_count,
-            'staff':staff_count,
-            'client_count':client_count,
-            'product':product_count,
-            'service':service_count,
-            'testo_count':testo_count
-        }
-        dist.update(public)
+     
 
         return render(request, self.template_name, dist)
     def post(self, request, *args, **kwargs):
-        form = ProductForm(request.POST)
+        form = FeatureForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Successfully Added Product")
-            return HttpResponseRedirect(reverse('manager:addProduct'))
+            messages.success(request, "Successfully Added Feature")
+            return HttpResponseRedirect(reverse('owner:addFeature'))
         else:
             messages.success(request, "Something went Wrong")
-            return HttpResponseRedirect(reverse('manager:addProduct'))
+            return HttpResponseRedirect(reverse('owner:addFeature'))
   
 
-class UpdateProduct(SuccessMessageMixin, UpdateView):
-    template_name = "manager/editProduct.html"
-    model = Product
-    form_class = ProductForm
-    success_message = "Successfully Updated Product"
+class UpdateFeature(SuccessMessageMixin, UpdateView):
+    template_name = "owner/siteSetting/editFeature.html"
+    model = Feature
+    form_class = FeatureForm
+    success_message = "Successfully Updated Feature"
     
     def get_success_url(self, *args, **kwargs):
         id = self.kwargs['pk']
-        return reverse('manager:updateProduct', args=[id])
-def deleteProduct(request, id):
-    blog = Product.objects.get(id = id)
+        return reverse('owner:updateFeature', args=[id])
+    
+def deleteFeature(request, id):
+    blog = Feature.objects.get(id = id)
     blog.delete()
-    messages.success(request, "Succesfully Deleted Product")
-    return HttpResponseRedirect(reverse('manager:addProduct')) 
+    messages.success(request, "Succesfully Deleted Feature")
+    return HttpResponseRedirect(reverse('owner:addFeature')) 
+
+
+
+
+# Crud Brand
+
+class AddBrand(View):
+    template_name = "owner/siteSetting/addBrand.html"
+
+    def get(self, request, *args, **kwargs ):
+        form = BrandForm()
+        blog = Brand.objects.all().order_by('-id')
+        dist = {
+            'form':form,
+            'blog':blog,
+            'button':'Add Brands',
+        }
+     
+
+        return render(request, self.template_name, dist)
+    def post(self, request, *args, **kwargs):
+        form = BrandForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Successfully Added Brand")
+            return HttpResponseRedirect(reverse('owner:addBrand'))
+        else:
+            messages.success(request, "Something went Wrong")
+            return HttpResponseRedirect(reverse('owner:addBrand'))
+  
+
+class UpdateBrand(SuccessMessageMixin, UpdateView):
+    template_name = "owner/siteSetting/editBrand.html"
+    model = Brand
+    form_class = BrandForm
+    success_message = "Successfully Updated Brand"
+    
+    def get_success_url(self, *args, **kwargs):
+        id = self.kwargs['pk']
+        return reverse('owner:updateBrand', args=[id])
+    
+def deleteBrand(request, id):
+    blog = Brand.objects.get(id = id)
+    blog.delete()
+    messages.success(request, "Succesfully Deleted Brand")
+    return HttpResponseRedirect(reverse('owner:addBrand'))
 
 # -------------------------------------------->
 # CRUD Service -------------------------------->
 # -------------------------------------------->
 class AddService(View):
-    template_name = "manager/service/addService.html"
+    template_name = "owner/service/addService.html"
 
     def get(self, request, *args, **kwargs ):
         form = ServiceForm()
@@ -294,22 +275,7 @@ class AddService(View):
             'blog':blog,
             'button':'Add Service',
         }
-        blog_count = Blog.objects.all().count()
-        staff_count = User.objects.all().count()
-        client_count = Client.objects.all().count()
-        product_count = Product.objects.all().count()
-        service_count = Service.objects.all().count()
-        testo_count = Testomonial.objects.all().count()
-
-        public = {
-            'blog_count':blog_count,
-            'staff':staff_count,
-            'client_count':client_count,
-            'product':product_count,
-            'service':service_count,
-            'testo_count':testo_count
-        }
-        dist.update(public)
+      
 
         return render(request, self.template_name, dist)
     def post(self, request, *args, **kwargs):
@@ -317,28 +283,28 @@ class AddService(View):
         if form.is_valid():
             form.save()
             messages.success(request, "Successfully Added Service")
-            return HttpResponseRedirect(reverse('manager:addService'))
+            return HttpResponseRedirect(reverse('owner:addService'))
         else:
             messages.success(request, "Something went Wrong")
-            return HttpResponseRedirect(reverse('manager:addService'))
+            return HttpResponseRedirect(reverse('owner:addService'))
   
 
 class UpdateService(SuccessMessageMixin, UpdateView):
-    template_name = "manager/service/editService.html"
+    template_name = "owner/service/editService.html"
     model = Service
     form_class = ServiceForm
     success_message = "Successfully Updated Service"
     
     def get_success_url(self, *args, **kwargs):
         id = self.kwargs['pk']
-        return reverse('manager:updateService', args=[id])
+        return reverse('owner:updateService', args=[id])
     
 
 def deleteService(request, id):
     blog = Service.objects.get(id = id)
     blog.delete()
     messages.success(request, "Succesfully Deleted Service")
-    return HttpResponseRedirect(reverse('manager:addService')) 
+    return HttpResponseRedirect(reverse('owner:addService')) 
 
 
 
@@ -350,7 +316,7 @@ def deleteService(request, id):
 # CRUD Client -------------------------------->
 # -------------------------------------------->
 class AddClient(View):
-    template_name = "manager/client/addClient.html"
+    template_name = "owner/client/addClient.html"
 
     def get(self, request, *args, **kwargs ):
         form = ClientForm()
@@ -360,22 +326,7 @@ class AddClient(View):
             'blog':blog,
             'button':'Add Client',
         }
-        blog_count = Blog.objects.all().count()
-        staff_count = CustomUser.objects.all().count()
-        client_count = Client.objects.all().count()
-        product_count = Product.objects.all().count()
-        service_count = Service.objects.all().count()
-        testo_count = Testomonial.objects.all().count()
-
-        public = {
-            'blog_count':blog_count,
-            'staff':staff_count,
-            'client_count':client_count,
-            'product':product_count,
-            'service':service_count,
-            'testo_count':testo_count
-        }
-        dist.update(public)
+       
 
         return render(request, self.template_name, dist)
     def post(self, request, *args, **kwargs):
@@ -383,26 +334,26 @@ class AddClient(View):
         if form.is_valid():
             form.save()
             messages.success(request, "Successfully Added Client")
-            return HttpResponseRedirect(reverse('manager:addClient'))
+            return HttpResponseRedirect(reverse('owner:addClient'))
         else:
             messages.success(request, "Something went Wrong")
-            return HttpResponseRedirect(reverse('manager:addClient'))
+            return HttpResponseRedirect(reverse('owner:addClient'))
   
 
 class UpdateClient(SuccessMessageMixin, UpdateView):
-    template_name = "manager/client/editClient.html"
+    template_name = "owner/client/editClient.html"
     model = Client
     form_class = ClientForm
     success_message = "Successfully Updated Client"
     
     def get_success_url(self, *args, **kwargs):
         id = self.kwargs['pk']
-        return reverse('manager:updateClient', args=[id])
+        return reverse('owner:updateClient', args=[id])
 def deleteClient(request, id):
     blog = Client.objects.get(id = id)
     blog.delete()
     messages.success(request, "Succesfully Deleted Client")
-    return HttpResponseRedirect(reverse('manager:addClient')) 
+    return HttpResponseRedirect(reverse('owner:addClient')) 
 
 
 
@@ -414,7 +365,7 @@ def deleteClient(request, id):
 # -------------------------------------------->
 
 class AddTestomonial(View):
-    template_name = "manager/testomonial/addTestomonial.html"
+    template_name = "owner/testomonial/addTestomonial.html"
 
     def get(self, request, *args, **kwargs ):
         form = TestomonialForm()
@@ -424,103 +375,36 @@ class AddTestomonial(View):
             'blog':blog,
             'button':'Add Testomonial',
         }
-        blog_count = Blog.objects.all().count()
-        staff_count = CustomUser.objects.all().count()
-        client_count = Client.objects.all().count()
-        product_count = Product.objects.all().count()
-        service_count = Service.objects.all().count()
-        testo_count = Testomonial.objects.all().count()
-
-        public = {
-            'blog_count':blog_count,
-            'staff':staff_count,
-            'client_count':client_count,
-            'product':product_count,
-            'service':service_count,
-            'testo_count':testo_count
-        }
-        dist.update(public)
+       
         return render(request, self.template_name, dist)
     def post(self, request, *args, **kwargs):
         form = TestomonialForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, "Successfully Added Testomonial")
-            return HttpResponseRedirect(reverse('manager:addTestomonial'))
+            return HttpResponseRedirect(reverse('owner:addTestomonial'))
         else:
             messages.success(request, "Something went Wrong")
-            return HttpResponseRedirect(reverse('manager:addTestomonial'))
+            return HttpResponseRedirect(reverse('owner:addTestomonial'))
   
 
 class UpdateTestomonial(SuccessMessageMixin, UpdateView):
-    template_name = "manager/testomonial/editTestomonial.html"
+    template_name = "owner/testomonial/editTestomonial.html"
     model = Testomonial
     form_class = TestomonialForm
     success_message = "Successfully Updated Testomonial"
     
     def get_success_url(self, *args, **kwargs):
         id = self.kwargs['pk']
-        return reverse('manager:updateTestomonial', args=[id])
+        return reverse('owner:updateTestomonial', args=[id])
 def deleteTestomonial(request, id):
     blog = Testomonial.objects.get(id = id)
     blog.delete()
     messages.success(request, "Succesfully Deleted Testomonial")
-    return HttpResponseRedirect(reverse('manager:addTestomonial')) 
+    return HttpResponseRedirect(reverse('owner:addTestomonial')) 
 
 
-# Company Information:
 
-def Company(request):
-    sett = CompanyInformation.objects.all()
-    form = CompanyInformationForm()
-    setting = None
-    if sett:
-        for i in sett:
-            setting = i 
-            break
-        form.fields['name'].initial = setting.name
-        form.fields['short'].initial = setting.short
-        form.fields['aims'].initial = setting.aims
-
-    dist = {
-        'setting':setting,
-        'form':form
-    }
-    blog_count = Blog.objects.all().count()
-    staff_count = CustomUser.objects.all().count()
-    client_count = Client.objects.all().count()
-    product_count = Product.objects.all().count()
-    service_count = Service.objects.all().count()
-    testo_count = Testomonial.objects.all().count()
-
-    public = {
-        'blog_count':blog_count,
-        'staff':staff_count,
-        'client_count':client_count,
-        'product':product_count,
-        'service':service_count,
-        'testo_count':testo_count
-    }
-    dist.update(public)
-    if request.method == 'POST':
-        form = CompanyInformationForm(request.POST, request.FILES)
-        if form.is_valid():
-            
-            if sett:
-                setting.name = request.POST['name']
-                setting.short = request.POST['short']
-                setting.aims = request.POST['aims']
-                try:
-                    setting.logo = request.FILES['logo']
-                except:
-                    pass
-                setting.save()
-            else:
-                form.save()
-            messages.success(request, "Successfully Updated Settings")
-            return HttpResponseRedirect(reverse("manager:company"))
-    else:
-        return render(request, "staff/other/setting.html", dist)
     
 # CRUD BLOG
 class AddBlog(View):
@@ -530,27 +414,13 @@ class AddBlog(View):
         form = BlogForm()
         blog = Blog.objects.all().order_by('-id')
 
-        blog_count = Blog.objects.all().count()
-        staff_count = CustomUser.objects.all().count()
-        client_count = Client.objects.all().count()
-        product_count = Product.objects.all().count()
-        service_count = Service.objects.all().count()
-        testo_count = Testomonial.objects.all().count()
-
-        public = {
-            'blog_count':blog_count,
-            'staff':staff_count,
-            'client_count':client_count,
-            'product':product_count,
-            'service':service_count,
-            'testo_count':testo_count
-        }
+       
         dist = {
             'form':form,
             'blog':blog,
             'button':'Add Blog',
         }
-        dist.update(public)
+
 
         return render(request, self.template_name, dist)
     def post(self, request, *args, **kwargs):
@@ -580,116 +450,6 @@ def deleteBlog(request, id):
     return HttpResponseRedirect(reverse('staff:addBlog')) 
 
 
-# CATEGORY CRUD
-class AddCategory(View):
-    template_name = "staff/addCategory.html"
-
-    def get(self, request, *args, **kwargs ):
-        form = CategoryForm()
-        blog = Category.objects.all().order_by('-id')
-        blog_count = Blog.objects.all().count()
-        staff_count = CustomUser.objects.all().count()
-        client_count = Client.objects.all().count()
-        product_count = Product.objects.all().count()
-        service_count = Service.objects.all().count()
-        testo_count = Testomonial.objects.all().count()
-
-        public = {
-            'blog_count':blog_count,
-            'staff':staff_count,
-            'client_count':client_count,
-            'product':product_count,
-            'service':service_count,
-            'testo_count':testo_count
-        }
-        dist = {
-            'form':form,
-            'blog':blog,
-            'button':'Add Category',
-        }
-        dist.update(public)
-        return render(request, self.template_name, dist)
-    def post(self, request, *args, **kwargs):
-        form = CategoryForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Successfully Added Category")
-            return HttpResponseRedirect(reverse('staff:addCategory'))
-        else:
-            messages.success(request, "Something went Wrong")
-            return HttpResponseRedirect(reverse('staff:addCategory'))
-  
-
-class UpdateCategory(SuccessMessageMixin, UpdateView):
-    template_name = "staff/editCategory.html"
-    model = Category
-    form_class = CategoryForm
-    success_message = "Successfully Updated Category"
-    
-    def get_success_url(self, *args, **kwargs):
-        id = self.kwargs['pk']
-        return reverse('staff:updateCategory', args=[id])
-def deleteCategory(request, id):
-    blog = Category.objects.get(id = id)
-    blog.delete()
-    messages.success(request, "Succesfully Deleted Category")
-    return HttpResponseRedirect(reverse('staff:addCategory')) 
-
-#############################
-# Sub CATEGORY CRUD
-class AddSubCategory(View):
-    template_name = "staff/addSubCategory.html"
-
-    def get(self, request, *args, **kwargs ):
-        form = SubCategoryForm()
-        blog = SubCategory.objects.all().order_by('-id')
-        dist = {
-            'form':form,
-            'blog':blog,
-            'button':'Add Sub Category',
-        }
-        blog_count = Blog.objects.all().count()
-        staff_count = CustomUser.objects.all().count()
-        client_count = Client.objects.all().count()
-        product_count = Product.objects.all().count()
-        service_count = Service.objects.all().count()
-        testo_count = Testomonial.objects.all().count()
-
-        public = {
-            'blog_count':blog_count,
-            'staff':staff_count,
-            'client_count':client_count,
-            'product':product_count,
-            'service':service_count,
-            'testo_count':testo_count
-        }
-        dist.update(public)
-        return render(request, self.template_name, dist)
-    def post(self, request, *args, **kwargs):
-        form = SubCategoryForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Successfully Added Sub Category")
-            return HttpResponseRedirect(reverse('staff:addSubCategory'))
-        else:
-            messages.success(request, "Something went Wrong")
-            return HttpResponseRedirect(reverse('staff:addSubCategory'))
-  
-
-class UpdateSubCategory(SuccessMessageMixin, UpdateView):
-    template_name = "staff/editSubCategory.html"
-    model = SubCategory
-    form_class = SubCategoryForm
-    success_message = "Successfully Updated Sub Category"
-    
-    def get_success_url(self, *args, **kwargs):
-        id = self.kwargs['pk']
-        return reverse('staff:updateSubCategory', args=[id])
-def deleteSubCategory(request, id):
-    blog = SubCategory.objects.get(id = id)
-    blog.delete()
-    messages.success(request, "Succesfully Deleted Sub Category")
-    return HttpResponseRedirect(reverse('staff:addSubCategory')) 
 
 
 # Profle Crud>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -702,7 +462,7 @@ class Profile(UpdateView, SuccessMessageMixin):
     
     def get_success_url(self, *args, **kwargs):
         id = self.kwargs['pk']
-        return reverse('manager:updateAdmin', args=[id])
+        return reverse('owner:updateAdmin', args=[id])
     
 
 
@@ -1023,3 +783,10 @@ def deleteSocialLink(request, id):
     footer.delete()
     messages.success(request, "Successfully deleted Social Link")
     return HttpResponseRedirect(reverse('owner:socialLink'))
+
+
+
+# Site Information More and More
+def brandView(request):
+    return render(request, 'owner/siteSetting/brand.html')
+

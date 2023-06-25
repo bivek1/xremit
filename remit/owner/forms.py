@@ -1,5 +1,5 @@
 from django import forms
-from homepage.models import AboutUs, Brand ,LoginInterface, signupInterface, Policy, Footor, Service, Client, Testomonial, Terms, SocialLink, TopHeader, CompanyInformation
+from homepage.models import Feature, AboutUs, Brand ,LoginInterface, signupInterface, Policy, Footor, Service, Client, Testomonial, Terms, SocialLink, TopHeader, CompanyInformation
 from .models import SiteSetting, SEO
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
@@ -37,6 +37,22 @@ class SocialForm(forms.ModelForm):
             'name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Facebook or Instagram or Gmail....'}),
             'icon':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'fa fa-facebook'}),
             'link':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'https://yoursite.com'}),
+        }
+
+
+# Social Link
+class FeatureForm(forms.ModelForm):
+   
+   
+    class Meta:
+        model = Feature
+
+        fields = ('__all__')
+
+        widgets= {
+            'name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Features or Name....'}),
+            'feature':CKEditorUploadingWidget(attrs={'class':'form-control mt-2', 'placeholder':'Features of the company'}),
+            
         }
 
 
@@ -102,7 +118,7 @@ class BrandForm(forms.ModelForm):
         widgets= {
             'name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Brand Name'}),
             'link':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'https://yoursite.com'}),
-            'link':forms.FileInput(attrs={'class':'form-control mt-2', 'placeholder':'Image of Brand'}),
+            'image':forms.FileInput(attrs={'class':'form-control mt-2', 'placeholder':'Image of Brand'}),
         }
 
 

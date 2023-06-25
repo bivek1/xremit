@@ -131,6 +131,16 @@ class Policy(models.Model):
         return super().__str__()
     
 
+
+# Features
+class Feature(models.Model):
+    name = models.CharField(max_length=200)
+    feature = RichTextUploadingField()
+
+
+    def __str__(self) -> str:
+        return super().__str__()
+
 # Login and Sign Up interface page Model
 class LoginInterface(models.Model):
     name = models.CharField(max_length=200)
