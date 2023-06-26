@@ -57,4 +57,9 @@ urlpatterns = [
     path('owner-Service', views.AddService.as_view(), name="addService"),
     path('<int:id>/deleteService', views.deleteService, name="deleteService"),
     path('<pk>/updateService', views.UpdateService.as_view(), name="updateService"),
+
+    path('addabout', views.aboutData, name = "aboutdata"),
+    path('addservice', views.serviceData, name = "serviceData"),
+    path('chooseData', views.chooseData, name = "chooseData"),
+
 ]   

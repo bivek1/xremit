@@ -4,9 +4,18 @@
     background-color: rgb(17, 5, 73)!important;
     border-radius: 5px;
 }
+.bg-secondary, .bg-warning, .bg-light, .bg-danger, .bg-info{
+    border-radius: 5px;
+    padding: 4px;
+}
 .text-primary{
     color: rgb(17, 5, 73)!important;
    
+}
+.menu-icon{
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 .btn-primary{
     /* border: 1px solid #325cc7;; */
@@ -27,17 +36,19 @@
 .form-control{
     border: none;
     color: black;
+    height: 40px;
+    border-radius: 8px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    /* box-shadow: rgb(rgb(1rgb(169, 169, 169)84, 184), rgb(141rgb(92, 92, 92)1, 141), #1e1780); */
+}
+#searchBtn{
     border-radius: 0px;
-    /* border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px; */
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    border-bottom: 1px solid #110c5e;
-    box-shadow: rgb(rgb(1rgb(169, 169, 169)84, 184), rgb(141rgb(92, 92, 92)1, 141), #1e1780);
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .form-control:focus{
     border: none;
-    border-bottom: 1px solid #110c5e;
     box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
     transition-delay:.4s;
     
@@ -53,7 +64,7 @@
 
 
 *{
-    font-family: 'Dosis'
+    font-family:  sans-serif;
 }
 body{
     background-color: #ebebeb;
@@ -105,7 +116,7 @@ a{
 #login-card{
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
     background-color: rgb(255, 255, 255);
-    border-radius: 5px;
+    border-radius: 8px;
 }
 .login-img{
     width: 100%;
@@ -129,10 +140,11 @@ a{
 }
 .login-flex i{
     background-color: white;
-    font-size: 19px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    font-size: 24px;
     color: #110c5e;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    border-bottom: 1px solid #110c5e;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
     box-shadow: rgb(rgb(1rgb(169, 169, 169)84, 184), rgb(141rgb(92, 92, 92)1, 141), #1e1780);
 }
 
@@ -141,11 +153,17 @@ a{
 
 
 /* Styling Dashboard page of Owner */
+
+.whole-content{
+    width: 80%;
+    float: right;
+}
 .side-bar{
     background-color: white;
     height: 100vh;
-    left: 20;
-    top: 80px;
+    margin-left: 14px;
+    width: 18%;
+    top: 16px;
     position: fixed;
     bottom: 0;
     border-radius: 10px;
@@ -198,6 +216,7 @@ a{
 }
 .breadcum{
     padding: 5px;
+    font-weight: bold;
     background-color: white;
     border-radius: 5px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
@@ -206,6 +225,7 @@ a{
 .topBox{
     background-color: white;
     border-radius: 5px;
+    display: none;
 
 }
 

@@ -101,7 +101,26 @@ class AboutUs(models.Model):
     hide = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return self.about_us
+    
+
+class ChooseUs(models.Model):
+    choose = RichTextUploadingField()
+    objects = models.Manager()
+    hide = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.choose
+    
+
+class HomeService(models.Model):
+    service = RichTextUploadingField()
+    image = models.ImageField(upload_to ="home_image/", blank = True, null = True)
+    objects = models.Manager()
+    hide = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.service
     
 class SocialLink(models.Model):
     name = models.CharField(max_length=200)

@@ -1,17 +1,17 @@
 
 from django.shortcuts import render
 from django.views.generic import View, UpdateView
-from homepage.models import Feature, Service, Client, Testomonial, Footor, Brand
+from homepage.models import Feature, Service, Client, Testomonial, Footor, Brand, AboutUs, ChooseUs, HomeService
 from homepage.models import CompanyInformation, CustomUser
 from django.urls import reverse
 from django.http.response import HttpResponseRedirect
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
-from homepage.models import Blog, Category, SubCategory, Customer, Agent, Owner, LoginInterface, signupInterface, Policy, Terms, SocialLink
+from homepage.models import Blog, Customer, Agent, Owner, LoginInterface, signupInterface, Policy, Terms, SocialLink
 
 
 from .models import SiteSetting, SEO
-from .forms import SiteForm, SEOForm, FeatureForm
+from .forms import SiteForm, SEOForm, FeatureForm, AboutForm, HomeServiceForm, ChooseForm
 from homepage.forms import CustomerForm
 
 from django.views.generic import CreateView, UpdateView, DeleteView
@@ -605,13 +605,125 @@ def footerView(request):
 
 
 def SiteInformationView(request):
-    # footer = Footor.objects.all().order_by('-id')
+
+    # About Us
+    about = AboutUs.objects.all()
+    
+    if about:
+        for i in about:
+            about = i
+            break
+    if about:
+        aboutform = AboutForm(instance=about)
+    else:
+        aboutform = AboutForm()
+
+
+    # Why Choose Us
+    choose = ChooseUs.objects.all()
+    
+    if choose:
+        for i in choose:
+            choose = i
+            break
+    if choose:
+        chooseform = ChooseForm(instance=choose)
+    else:
+        chooseform = ChooseForm()
+
+
+    # Home Service
+    homes = HomeService.objects.all()
+    
+    if homes:
+        for i in homes:
+            homes = i
+            break
+    if homes:
+        homeform = HomeServiceForm(instance=homes)
+    else:
+        homeform = HomeServiceForm()
 
     dist = {
-        # 'footer':footer,
+        'aboutform':aboutform,
+        'about':about,
+        'choose':choose,
+        'chooseform':chooseform,
+        'home':homes,
+        'homeform':homeform
     }
 
     return render(request, "owner/siteSetting/siteInfo.html", dist)
+
+# Add About Us Information
+def aboutData(request):
+
+    login = AboutUs.objects.all()
+    
+    if login:
+        for i in login:
+            login = i
+            break
+    
+    if login:
+        form = AboutForm(request.POST, request.FILES, instance=i)
+    else:
+        form = AboutForm(request.POST, request.FILES)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Successfully updated about us...")
+        
+    else:
+        messages.success(request, "Something went wrong")
+    return HttpResponseRedirect(reverse('owner:siteInfo'))
+
+
+def chooseData(request):
+
+    login = ChooseUs.objects.all()
+    
+    if login:
+        for i in login:
+            login = i
+            break
+    
+    if login:
+        form = ChooseForm(request.POST, request.FILES, instance=i)
+    else:
+        form = ChooseForm(request.POST, request.FILES)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Successfully updated why choose us...")
+        
+    else:
+        messages.success(request, "Something went wrong")
+    return HttpResponseRedirect(reverse('owner:siteInfo'))
+
+
+def serviceData(request):
+
+    login = HomeService.objects.all()
+    
+    if login:
+        for i in login:
+            login = i
+            break
+    
+    if login:
+        form = HomeServiceForm(request.POST, request.FILES, instance=i)
+    else:
+        form = HomeServiceForm(request.POST, request.FILES)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Successfully updated home service information...")
+        
+    else:
+        messages.success(request, "Something went wrong")
+    return HttpResponseRedirect(reverse('owner:siteInfo'))
+
 
 
 def PolicyView(request):

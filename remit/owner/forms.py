@@ -1,5 +1,5 @@
 from django import forms
-from homepage.models import Feature, AboutUs, Brand ,LoginInterface, signupInterface, Policy, Footor, Service, Client, Testomonial, Terms, SocialLink, TopHeader, CompanyInformation
+from homepage.models import Feature, AboutUs, ChooseUs, HomeService, Brand ,LoginInterface, signupInterface, Policy, Footor, Service, Client, Testomonial, Terms, SocialLink, TopHeader, CompanyInformation
 from .models import SiteSetting, SEO
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
@@ -39,6 +39,41 @@ class SocialForm(forms.ModelForm):
             'link':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'https://yoursite.com'}),
         }
 
+
+# About Us form
+class AboutForm(forms.ModelForm):
+    class Meta:
+        model = AboutUs
+        fields = ('__all__')
+
+        widgets= {
+           
+            'about_us':CKEditorUploadingWidget(attrs={'class':'form-control mt-2', 'placeholder':'About of the company'}),
+            
+        }
+
+
+# Choose Us form
+class ChooseForm(forms.ModelForm):
+    class Meta:
+        model = ChooseUs
+        fields = ('__all__')
+
+        widgets= {
+           
+            'choose':CKEditorUploadingWidget(attrs={'class':'form-control mt-2', 'placeholder':'About of the company'}),
+            
+        }
+
+# Choose Us form
+class HomeServiceForm(forms.ModelForm):
+    class Meta:
+        model = HomeService
+        fields = ('__all__')
+
+        widgets= {
+            'service':CKEditorUploadingWidget(attrs={'class':'form-control mt-2', 'placeholder':'Home service description of the company'}),
+        }
 
 # Social Link
 class FeatureForm(forms.ModelForm):
