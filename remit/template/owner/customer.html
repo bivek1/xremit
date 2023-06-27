@@ -29,59 +29,60 @@
     
     <div class="row p-0 m-0 mt-3">
 
-        <div class="col-lg-4 col-12 m-0 p-0">
-            <div id="login-card" class="p-1">
-                <h6 class="form-head m-2">{{form_head}}</h6>
+        <div class="col-lg-5 col-12 m-0 p-0 mt-3">
+            
+            <div id="login-card" class="p-0 m-0">
+                <h5 class="m-0 text-center p-2 text-capitalize">{{form_head}}</h5>
                
-                <form action="" method="post">
+                <form class="p-2" action="" method="post">
                     <div class="row p-0 m-0">
-                        <div class="col-6">
+                        <div class="col-6 mt-2">
                             <label for="first_name">First Name</label>
                             <input type="text" name="first_name" id="" required class="form-control" placeholder="First Name">
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 mt-2">
                             <label for="last_name">Last Name</label>
                             <input type="text" name="last_name" id="" required class="form-control" placeholder="Last Name">
                         </div>
-                        <div class="col-12">
+                        <div class="col-12 mt-2">
                             <label for="email">Email</label>
                             <input type="email" name="email" id="" required class="form-control" placeholder="Email Address">
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 mt-2">
                             <label for="email">{{form.number.label_tag}}</label>
                             {{form.number}}
                             {{form.number.errors}}
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 mt-2">
                             <label for="email">{{form.mail_address.label_tag}}</label>
                             {{form.mail_address}}
                             {{form.mail_address.errors}}
                         </div>
-
-                        <div class="col-12">
+ 
+                        <div class="col-12 mt-2">
                             <label for="email">{{form.country.label_tag}}</label>
                             {{form.country }}
                             {{form.country.errors}}
                         </div>
 
-                        <div class="col-6">
+                        <div class="col-6 mt-2">
                             <label for="email">{{form.city.label_tag}}</label>
                             {{form.city}}
                             {{form.city.errors}}
                         </div>
 
-                        <div class="col-6">
+                        <div class="col-6 mt-2">
                             <label for="email">{{form.zip_code.label_tag}}</label>
                             {{form.zip_code}}
                             {{form.zip_code.errors}}
                         </div>
 
-                        <div class="col-6">
+                        <div class="col-6 mt-2">
                             <label for="email">{{form.state.label_tag}}</label>
                             {{form.state}}
                             {{form.state.errors}}
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 mt-2">
                             <label for="email">{{form.address.label_tag}}</label>
                             {{form.address}}
                             {{form.address.errors}}
@@ -104,50 +105,54 @@
             </div>
         </div>
 
-        <div class="col-lg-8 col-12 mt-3">
-            <h6 class="bg-primary p-2 text-light">
-                Customer List
-            </h6>
-            <hr>
-            <div class="card p-2">
+        <div class="col-lg-7 col-12 mt-3">
+            <div class="p-2">
                 <div class=" login-flex d-flex my-auto" style="width: 100%;">
                     <i class="fa fa-magnifying-glass my-auto p-2"></i>
                     <input type="text" name="search"  id="search" onkeyup="SearchName()" class="form-control"  placeholder="Search Customer by their name" required id="">
                    </div>
-                <table class="table border-1" id="myTable">
+                <table class="table border-1 " id="myTable">
             
                     <tbody>
                         
-                        {% for i in customer  %}
+                        {% if not user %}
+                            <h6 class="text-center text-secondary mt-3">
+                                No Customer has been added
+                            </h6>
+                        {% endif %}
+                            
+                        {% for i in user  %}
                         <tr>
                             <td>
                                 <div class="item-list-div mt-2 p-1">
-                            
-                                    {% if i.profile_pic %}
-                                        <img class="my-auto" src="{{i.profile_pic.url}}" alt="" style="height: auto; width: 70px;">
+                                    <!-- <img class="my-auto" src="{{i.customer.profile_pic.url}}" alt="" style="height: 70px; width: 70px; border-radius: 50%;"> -->
+                                    {% if i.customer.profil_pic %}
+                                        <img class="my-auto" src="{{i.customer.profil_pic.url}}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
                                     {%else%}
                                         <i class="fa fa-user-circle text-light my-auto" style="font-size: 30px;">
-        
                                         </i> 
                                     {% endif %}
                                     <div class="flex-wr">
-                                        <p class="m-0 p-2 text-light">
-                                            {{i.admin.get_full_name}}
+                                        <p class="m-0 p-2">
+                                            {{i.get_full_name}}
                                         </p>
-                                        <small class="p-1 text-light">
+                                        <small class="p-1">
                                             <i class="fa fa-mobile p-2"></i>
-                                            {{i.number}}
+                                            {{i.customer.number}}
                                         </small>
-                                        <small class="p-1 text-light">
+                                        <small class="p-1">
                                             <i class="fa fa-envelope-circle-check p-2"></i>
-                                            {{i.admin.email}}
+                                            {{i.email}}
                                         </small>
                                     </div>
                                     <div class="my-auto">
                                         <a href="{%url 'owner:customerProfile' i.id%}">
-                                            <button class="btn btn-sm btn-light">
-                                                <i class="fa fa-eye-dropper"></i>
-                                                View and Edit
+                                            <button class="btn btn-sm btn-info text-white">
+                                                
+                                                <span class="text-light">
+                                                    <i class="fa fa-eye-dropper"></i>
+                                                    View and Edit
+                                                </span>
                                             </button>
                                         </a>
                                      
@@ -189,13 +194,13 @@
                                    
                                         
                                         
-                                   </div>
+                                </div>
                             </td>
                           
                         </tr>
                          
                         {% endfor %}
-                        <div id="items-container"></div>
+                        <!-- <div id="items-container"></div> -->
                      
                     </tbody>
                 </table>

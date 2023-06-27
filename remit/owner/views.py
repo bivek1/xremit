@@ -62,7 +62,7 @@ class CustomerView(View):
             'form':CustomerForm(),
             'form_head': "Add new customer",
             'button':"Add new customer",
-            'customer': Customer.objects.all().order_by('-id')
+            'user': CustomUser.objects.filter(user_type = "customer").order_by('-id')
         }
     def get(self, request, *args, **kwargs):
       

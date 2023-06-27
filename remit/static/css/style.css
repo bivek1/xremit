@@ -1,15 +1,55 @@
 
 /* Component Styling */
 .bg-primary{
-    background-color: rgb(17, 5, 73)!important;
-    border-radius: 5px;
+    background-color: #003399!important;
+
 }
+.bg-secondary{
+    background-color: #66CCFF!important;
+}
+.bg-info{
+    background-color:#0099CC;
+}
+.bg-warning{
+    background-color: #CCFFCC;
+}
+
+
+.btn-primary{
+    color: #003399!important;
+
+}
+.btn-secondary{
+    color: #66CCFF!important;
+}
+.btn-info{
+    color:#0099CC!important;
+}
+.btn-warning{
+    color: #CCFFCC!important;
+}
+
+
+.text-primary{
+    color: #003399!important;
+
+}
+.text-secondary{
+    color: #66CCFF!important;
+}
+.text-info{
+    color:#0099CC;
+}
+.text-warning{
+    color: #CCFFCC;
+}
+
 .bg-secondary, .bg-warning, .bg-light, .bg-danger, .bg-info{
-    border-radius: 5px;
+  
     padding: 4px;
 }
 .text-primary{
-    color: rgb(17, 5, 73)!important;
+    color: #003399!important;
    
 }
 .menu-icon{
@@ -19,7 +59,7 @@
 }
 .btn-primary{
     /* border: 1px solid #325cc7;; */
-    background-color: rgb(17, 5, 73);
+    background-color: #003399;
     color: rgb(250, 250, 250);
     border: none;
     outline: none;
@@ -53,9 +93,7 @@
     transition-delay:.4s;
     
 }
-.item-list-div{
-    background-color: #110c5e;
-}
+
 /* End Component styling */
 
 
@@ -63,8 +101,11 @@
 /* Adjusment */
 
 
-*{
-    font-family:  sans-serif;
+small, span, p{
+    font-family: 'Alegreya Sans SC', sans-serif;
+}
+h1, h2, h3, h4, h5, h6{
+    font-family: 'Advent Pro', sans-serif;
 }
 body{
     background-color: #ebebeb;
@@ -88,7 +129,7 @@ a{
 .navbar{
     padding: 14px;
     
-    background-color: rgb(17, 5, 73);
+    background-color: #003399;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 }
 .nav-link{
@@ -96,12 +137,12 @@ a{
 }
 
 .nav-link:hover{
-    color: #574de2;
+    color: #aaaaaa;
 }
 
 .active{
-    color: #a5a5a5!important;
-    background-color: #110c5e;
+    color: #ffffff!important;
+    background-color: #cccccc;
 }
 .navbar-brand{
     padding-left: 16px;
@@ -128,10 +169,14 @@ a{
     padding: 10px;
 }
 .form-head{
-    background-color: rgb(17, 5, 73);
-    padding: 7px;
+    background-color: #003399;
+    padding:10px;
+    text-align: center;
     color: white;
-    border-radius: 5px;
+    overflow: none;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+
 }
 .back-img{
     background-image: url('../resources/background-login.webp');
@@ -141,7 +186,8 @@ a{
 .login-flex i{
     background-color: white;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-    font-size: 24px;
+    font-size: 18px;
+    height: 40px;
     color: #110c5e;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
@@ -171,11 +217,14 @@ a{
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 }
 .activedb{
-    background-color: rgb(17, 5, 73);
-    color: white;
+    background-color: rgb(165, 165, 165);
+    color: rgb(255, 255, 255);
     border-radius: 5px;
 }
-
+.activedbs{
+    background-color: #1e1780;
+    color: white;
+}
 
 
 /* Register Page Login */
@@ -231,7 +280,23 @@ a{
 
 .side-item{
     cursor: pointer;
+    display: flex;
+    justify-content: space-between;
 }
+
+.side-item div{
+    background-color: #5b38da;
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+}
+
+.side-item i{
+
+    color: #ebebeb;    
+
+} 
+
 .side-item:hover{
     background-color: #3f37aa;
     color: white;
@@ -245,13 +310,31 @@ a{
     border-radius: 10px;
 }
 .item-list-div{
-    background-color: #343070;
+    background-color: #f7f7f7;
+    padding: 12px!important;
     display: flex;
     justify-content: space-around;
     border-radius: 10px;
 }
 .flex-wr{
     flex-grow: 1;
+}
+.flex-wr i{
+    font-size: 12px;
+}
+#search{
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+
+}
+#myTable{
+    outline: none!important;
+    border-color: #f3f3f3;
+}
+
+.flex-wr p{
+    font-size: 12px;
+    font-weight: bold;
 }
 .logo_show{
     height: auto;
