@@ -77,6 +77,8 @@ class Country(models.Model):
     name = models.CharField(max_length=200)
     flag_img = models.ImageField(upload_to ="flag/", null = True, blank = True)
     allowed = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add= True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -87,6 +89,8 @@ class PickupPoint(models.Model):
     name = models.CharField(max_length=200)
     country = models.ForeignKey(Country, related_name='pickuppoint_country', on_delete=models.CASCADE)
     pickup_point = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add= True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -107,6 +111,8 @@ class Recipient(models.Model):
     city = models.CharField(max_length=200)
     zip_code = models.CharField(max_length=200)
     number = models.BigIntegerField()
+    created_at = models.DateTimeField(auto_now_add= True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
     def __str__(self):
@@ -118,10 +124,14 @@ class Currency(models.Model):
     conversion_rate = models.IntegerField()
     commision_rate = models.IntegerField()
     currecy_sign = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add= True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.currecy_sign
     
+
+
 class KYC(models.Model):
     customer = models.ForeignKey(Customer, related_name='kyc_customer', on_delete=models.CASCADE)
     country = models.ForeignKey(Country, related_name='kyc_country', on_delete=models.CASCADE)
@@ -155,6 +165,8 @@ class KYC(models.Model):
     document_back_image = models.ImageField(upload_to="document/", null =True, blank = True)
     postal_address = models.CharField(max_length=200)
     date_of_birth = models.DateField()
+    created_at = models.DateTimeField(auto_now_add= True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.customer.admin.usernamer

@@ -3,7 +3,103 @@ from homepage.models import Feature, AboutUs, ChooseUs, HomeService, Brand ,Logi
 from .models import SiteSetting, SEO
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
+from homepage.models import Currency, Country, Recipient, PickupPoint, KYC
 
+
+# KYCForm
+
+class KYCForm(forms.ModelForm):
+    class Meta:
+        model = KYC
+        fields = ('__all__')
+        excludes = ('customer',)
+
+        widgets= {
+           
+            'country':forms.Select(attrs={'class':'form-control mt-2', 'placeholder':'Country'}),
+            'address':forms.FileInput(attrs={'class':'form-control mt-2', 'placeholder':'Title of the site'}),
+            'state ':forms.FileInput(attrs={'class':'form-control mt-2', 'placeholder':'Title of the site'}),
+            'city':forms.FileInput(attrs={'class':'form-control mt-2', 'placeholder':'Title of the site'}),
+            'zip_code':forms.EmailInput(attrs={'class':'form-control mt-2', 'placeholder':'zipcode'}),
+            'postal_address':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Your postal code'}),
+            'number':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'+61989229298'}),
+            'gender':forms.Select(attrs={'class':'form-control mt-2', 'placeholder':'Your Gender'}),
+            'document_front_image':forms.FileInput(attrs={'class':'form-control mt-2',}),
+              'document_back_image':forms.FileInput(attrs={'class':'form-control mt-2'}),
+                  'date_of_birth':forms.DateInput(attrs={'type':'date','class':'form-control mt-2',})
+                   
+        }
+
+
+# PickupPointForm
+
+class PickupPointForm(forms.ModelForm):
+    class Meta:
+        model = PickupPoint
+        fields = ('__all__')
+
+        widgets= {
+            'name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Name of the Pickup Point'}),
+            'country':forms.Select(attrs={'class':'form-control mt-2'}),
+            'pickup_point':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Address of Pickup Point'}),
+            
+        }
+
+
+
+# RecipientForm
+class RecipientForm(forms.ModelForm):
+    class Meta:
+        model = Recipient
+        fields = ('__all__')
+
+        widgets= {
+            'transaction_type':forms.Select(attrs={'class':'form-control mt-2'}),
+            'first_name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'First Name'}),
+            'middle_name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Middle Name'}),
+            'last_name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Last Name'}),
+            'city':forms.FileInput(attrs={'class':'form-control mt-2', 'placeholder':'Name of the City'}),
+            'zip_code':forms.EmailInput(attrs={'class':'form-control mt-2', 'placeholder':'zipcode'}),
+            'postal_address':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Postal code'}),
+            'number':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'+61989229298'}),
+            'country':forms.Select(attrs={'class':'form-control mt-2', 'placeholder':'Recipient Country'}),   
+        }
+
+
+
+# CountryForm
+
+class CountryForm(forms.ModelForm):
+    class Meta:
+        model = Country
+        fields = ('__all__')
+
+        widgets= {
+            'name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Nepal'}),
+            'flag_img':forms.FileInput(attrs={'class':'form-control mt-2'}),
+            'allowed':forms.Select(attrs={'class':'form-control mt-2'}),
+        }
+
+
+# CurrencyForm
+class CurrencyForm(forms.ModelForm):
+    class Meta:
+        model = Currency
+        fields = ('__all__')
+
+        widgets= {
+            'country':forms.Select(attrs={'class':'form-control mt-2'}),
+            'currecy_rate':forms.NumberInput(attrs={'class':'form-control mt-2','placeholder':'Rate of selected country currency'}),
+            'conversion_rate':forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'Your conversion rate of selected country currency'}),
+            'commision_rate':forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'Your commsion rate of selected country currency'}),
+            'currecy_sign':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Sign of selected country currency: NPR, AUD, USD'}),
+        }
+
+
+
+
+# Above new currency and payment related plus, verificaton
+# Bellow Site forms
 
 class SiteForm(forms.ModelForm):
     class Meta:

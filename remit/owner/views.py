@@ -9,9 +9,9 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from homepage.models import Blog, Customer, Agent, Owner, LoginInterface, signupInterface, Policy, Terms, SocialLink
 
-
+from homepage.models import Country, Currency, Recipient, PickupPoint, KYC
 from .models import SiteSetting, SEO
-from .forms import SiteForm, SEOForm, FeatureForm, AboutForm, HomeServiceForm, ChooseForm
+from .forms import SiteForm, SEOForm, FeatureForm, AboutForm, HomeServiceForm, ChooseForm, CountryForm, CurrencyForm, RecipientForm, PickupPointForm, KYCForm
 from homepage.forms import CustomerForm
 
 from django.views.generic import CreateView, UpdateView, DeleteView
@@ -903,3 +903,124 @@ def deleteSocialLink(request, id):
 def brandView(request):
     return render(request, 'owner/siteSetting/brand.html')
 
+
+
+# Country View
+def countryView(request):
+    country = Country.objects.all().order_by('-id')
+    form = CountryForm()
+    dist = {
+        'country':country,
+        'form': form
+    }
+
+    if request.method == 'POST':
+        form = CountryForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Successfully Added new country")
+            return HttpResponseRedirect(reverse('owner:country'))
+        else:
+            dist.update({'form':form})
+            messages.error(request,"something went wrong")
+
+    return render(request, "owner/country.html", dist)
+
+
+def editCountry(request, id):
+    footer = Country.objects.get(id = id)
+    footer.name = request.POST['country_name']
+    footer.flag_img = request.FILES['country_link']
+    footer.save()
+    messages.success(request, "Successfully Edited Country")
+    return HttpResponseRedirect(reverse('owner:country'))
+
+
+def deleteCountry(request, id):
+    footer = Country.objects.get(id = id)
+    footer.delete()
+    messages.success(request, "Successfully deleted Country")
+    return HttpResponseRedirect(reverse('owner:country'))
+
+
+# Currency View
+def currencyView(request):
+    currency = Currency.objects.all().order_by('-id')
+    form = CurrencyForm()
+    dist = {
+        'currency':currency,
+        'form': form,
+        'country':Country.objects.all()
+    }
+
+    if request.method == 'POST':
+        form = CurrencyForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Successfully Added new currency")
+            return HttpResponseRedirect(reverse('owner:currency'))
+        else:
+            dist.update({'form':form})
+            messages.error(request,"something went wrong")
+
+    return render(request, "owner/currency.html", dist)
+
+
+def editCurrency(request, id):
+    currency = Currency.objects.get(id = id)
+    currency.country = request.POST['country']
+    currency.currecy_rate = request.POST['currecy_rate']
+    currency.conversion_rate = request.POST['conversion_rate']
+    currency.commision_rate = request.POST['commision_rate']
+    currency.currecy_sign = request.POST['currecy_sign']
+    currency.save()
+    messages.success(request, "Successfully Edited Currency")
+    return HttpResponseRedirect(reverse('owner:currency'))
+
+
+def deleteCurrency(request, id):
+    footer = Currency.objects.get(id = id)
+    footer.delete()
+    messages.success(request, "Successfully deleted currency")
+    return HttpResponseRedirect(reverse('owner:currency'))
+
+
+
+# Country View
+def pickupView(request):
+    country = PickupPoint.objects.all().order_by('-id')
+    form = PickupPointForm()
+    dist = {
+        'pickup':country,
+        'form': form,
+        'country':Country.objects.all()
+    }
+
+    if request.method == 'POST':
+        form = PickupPointForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Successfully Added new pickup point")
+            return HttpResponseRedirect(reverse('owner:pickup'))
+        else:
+            dist.update({'form':form})
+            messages.error(request,"something went wrong")
+
+    return render(request, "owner/pickup.html", dist)
+
+
+def editPickup(request, id):
+    footer = PickupPoint.objects.get(id = id)
+    footer.name = request.POST['name']
+    footer.pickup_point  = request.POST['pickup_point']
+    footer.country = Country.objects.get(id = request.POST['country'])
+    footer.save()
+    messages.success(request, "Successfully Edited Pickup Point")
+    return HttpResponseRedirect(reverse('owner:pickup'))
+
+
+def deletePickup(request, id):
+    footer = PickupPoint.objects.get(id = id)
+    footer.delete()
+    messages.success(request, "Successfully deleted pickup point")
+    return HttpResponseRedirect(reverse('owner:pickup'))

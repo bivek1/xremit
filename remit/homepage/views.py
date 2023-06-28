@@ -71,7 +71,10 @@ def LoginV(request):
         use = authenticate(request, username = username, password = password)
         if use is not None:
             login(request, use)
-            return HttpResponseRedirect(reverse('owner:dashboard'))
+            if use.user_type == 'owner':
+                return HttpResponseRedirect(reverse('owner:dashboard'))
+            elif use.user_type == "customer":
+                return HttpResponseRedirect(reverse('customer:dashboard'))
         else:
             messages.error(request, "Incorrect Username and Password")
             return render(request, tempate_name)

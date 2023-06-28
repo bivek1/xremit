@@ -62,4 +62,18 @@ urlpatterns = [
     path('addservice', views.serviceData, name = "serviceData"),
     path('chooseData', views.chooseData, name = "chooseData"),
 
+    path('country-setting', views.countryView, name = "country"),
+    path('editCountry/<int:id>', views.editCountry, name ="editCountry"),
+    path('delete-Country/<int:id>', views.deleteCountry, name = "deleteCountry"),
+
+    path('currency-setting', views.currencyView, name = "currency"),
+    path('editCurrency/<int:id>', views.editCurrency, name ="editCurrency"),
+    path('delete-Currency/<int:id>', views.deleteCurrency, name = "deleteCurrency"),
+
+    path('pickup-setting', views.pickupView, name = "pickup"),
+    path('editpickup/<int:id>', views.editPickup, name ="editPickup"),
+    path('delete-pickup/<int:id>', views.deletePickup, name = "deletePickup"),
+
+
+
 ]   
