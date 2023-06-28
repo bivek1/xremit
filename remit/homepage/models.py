@@ -73,6 +73,94 @@ class Customer(models.Model):
 
 
 
+class Country(models.Model):
+    name = models.CharField(max_length=200)
+    flag_img = models.ImageField(upload_to ="flag/", null = True, blank = True)
+    allowed = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name
+    
+
+    
+class PickupPoint(models.Model):
+    name = models.CharField(max_length=200)
+    country = models.ForeignKey(Country, related_name='pickuppoint_country', on_delete=models.CASCADE)
+    pickup_point = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+    
+class Recipient(models.Model):
+    transaction_type = models.CharField(max_length=300, choices=(
+        ('CashPickup', 'Cash Pickup'),
+        ('BankTransfer', 'Bank Transfer'),
+        ('MobileTransfer', 'Mobile Transfer'),
+        ('WallettoWalletTransfer', 'Wallet to Wallet Transfer')
+    ))
+    first_name = models.CharField(max_length=200)
+    middle_name = models.CharField(max_length=200, null=True, blank=True)
+    last_name = models.CharField(max_length=200)
+    country = models.ForeignKey(Country, related_name='recipent_country', on_delete=models.CASCADE)
+    address = models.CharField(max_length=200)
+    state = models.CharField(max_length=200, null = True, blank= True)
+    city = models.CharField(max_length=200)
+    zip_code = models.CharField(max_length=200)
+    number = models.BigIntegerField()
+
+
+    def __str__(self):
+        return self.first_name
+
+class Currency(models.Model):
+    country = models.ForeignKey(Country, related_name='currency_country', on_delete=models.CASCADE)
+    currecy_rate = models.IntegerField()
+    conversion_rate = models.IntegerField()
+    commision_rate = models.IntegerField()
+    currecy_sign = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.currecy_sign
+    
+class KYC(models.Model):
+    customer = models.ForeignKey(Customer, related_name='kyc_customer', on_delete=models.CASCADE)
+    country = models.ForeignKey(Country, related_name='kyc_country', on_delete=models.CASCADE)
+    address = models.CharField(max_length=200)
+    state = models.CharField(max_length=200, null = True, blank= True)
+    city = models.CharField(max_length=200)
+    zip_code = models.CharField(max_length=200)
+    number = models.BigIntegerField()
+    gender = models.CharField(max_length=200, choices=(
+        ('Male','Male'),
+        ('Female', 'Female'),
+        ('Other', 'Other')
+    ))
+    document_type = models.CharField(max_length=200, choices=(
+        ('Bank Account','Bank Account'),
+        ('Benefits Card/ID', 'Benefits Card/ID'),
+        ('Birth Certificate', 'Birth Certificate'),
+        ('Business Registration/licence', 'Business Registration/licence'),
+        ('Credit/debit card', 'Credit/debit card'),
+        ('Driver licence', 'Driver licence'),
+        ('Identity Card', 'Identity Card'),
+        ('Passport', 'Passport'),
+        ('Photo ID', 'Photo ID'),
+        ('Security ID', 'Security ID'),
+        ('Social Security ID', 'Social Security ID'),
+        ('Student ID', 'Student ID'),
+        ('Tax ID', 'Tax ID'),
+        ('Other', 'Other'),
+    ))
+    document_front_image = models.ImageField(upload_to="document/")
+    document_back_image = models.ImageField(upload_to="document/", null =True, blank = True)
+    postal_address = models.CharField(max_length=200)
+    date_of_birth = models.DateField()
+
+    def __str__(self):
+        return self.customer.admin.usernamer
+
+
+
 
 
 

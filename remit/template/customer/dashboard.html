@@ -1,0 +1,372 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {{user.get_full_name}} Dashboard
+{% endblock title %}
+    
+
+{% block navbar %}
+  
+{% endblock navbar %}
+  
+
+
+  
+
+{% block content %}
+<div class="p-0 m-0 ">
+    <!-- Side Bar -->
+    <div class="p-3 side-bar pb-5 hidePhone" >
+    
+        <h3 class="text-primary mt-3 text-center text-capitalize">
+          xRemit
+        </h3>
+        <hr>
+        <a href="{%url 'customer:dashboard'%}">
+            <div class="mt-3 p-2  activedb side-item">
+              <div class="text-center activedbs">
+                <i class="fa fa-dashboard mt-2"></i>  
+              </div>
+              
+              <span class="ms-3 my-auto text-primary text-bold">
+                Dashboard
+              </span>
+              
+            </div>
+          </a>
+
+          <a href="{%url 'customer:recipient'%}">
+            <div class="mt-2 p-2 side-item">
+                <div class="text-center">
+                  <i class="fa fa-users mt-2"></i>   
+                </div>
+                <span class="ms-3 my-auto text-primary text-bold">
+                  Recipients
+                </span> 
+              </div>
+          </a>
+        
+
+
+          <a href="{%url 'customer:currency'%}">
+            <div class="mt-2 p-2 side-item">
+                <div class="text-center">
+                  <i class="fa fa-money-bills mt-2"></i>   
+                </div>
+                <span class="ms-3 my-auto text-primary text-bold">
+                  Currency
+                </span> 
+              </div>
+          </a>
+          
+        
+    
+          <div class="mt-2 p-2 side-item">
+            <div class="text-center">
+              <i class="fa-solid fa-money-bill-transfer mt-2"></i>
+            </div>
+            <span class="ms-3 my-auto text-primary text-bold">
+              Transaction
+            </span>
+          </div>
+
+          <a href="{%url 'customer:sendMoney'%}">
+            <div class="mt-2 p-2 side-item">
+                <div class="text-center">
+                  <i class="fa-solid fa-money-bill-wave  mt-2"></i>  
+                </div>
+                <span class="ms-3 my-auto text-primary text-bold">
+                  Send Money
+                </span>
+            </div>
+          </a>
+         
+
+          <div class="mt-2 p-2 side-item">
+            <div class="text-center">
+              <i class="fa-solid fa-lock  mt-2"></i>  
+            </div>
+            <span class="ms-3 my-auto text-primary text-bold">
+              2FA Security
+            </span>
+          </div>
+          
+          
+          <div class="mt-2 p-2 side-item">
+            <div class="text-center">
+              <i class="fa fa-user mt-2"></i>  
+            </div>
+            <span class="ms-3 my-auto text-primary text-bold">
+              Profile
+            </span>
+          </div>
+
+          <a href="{%url 'homepage:logout'%}">
+            <div class="mt-2 p-2 side-item">
+              <div class="text-center">
+                <i class="fa fa-sign-out-alt mt-2"></i>
+              </div>
+              <span class="ms-3 my-auto text-primary text-bold">
+                Logout
+              </span>
+            </div>
+          </a>
+       
+     
+    </div>
+   
+    <!-- SideBar -->
+    <div class="whole-content pb-5 mb-5">
+
+      <div class=" d-flex justify-content-between mt-3 p-2">
+
+        <div class="login-flex d-flex my-auto" style="width: 50%;">
+         <i class="fa fa-magnifying-glass my-auto p-2"></i>
+         <input type="text" name="email" class="form-control" id="searchBtn"  placeholder="Ex: Transaction, Customer, Agent, Currency and regions" required id="">
+        </div>
+        <div class="my-auto">
+          <i class="far fa-bell p-2 menu-icon"></i>
+
+           <i class="fa fa-cog p-2 menu-icon"></i>
+           
+           <a href="{%url 'homepage:logout'%}">
+              <i class="fa fa-sign-out p-2 menu-icon"></i>
+           </a>
+           <a class="showphone" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+            <i class="fa fa-bars p-2 menu-icon"></i>
+          </a>
+          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header">
+              <h3 class="text-primary mt-3 text-center text-capitalize">
+                xRemit
+              </h3>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <a href="{%url 'customer:dashboard'%}">
+                <div class="mt-3 p-2  activedb side-item">
+                  <div class="text-center activedbs">
+                    <i class="fa fa-dashboard mt-2"></i>  
+                  </div>
+                  
+                  <span class="ms-3 my-auto text-primary text-bold">
+                    Dashboard
+                  </span>
+                  
+                </div>
+              </a>
+              <div class="mt-2 p-2 side-item">
+                <div class="text-center">
+                  <i class="fa fa-users mt-2"></i>   
+                </div>
+                <span class="ms-3 my-auto text-primary text-bold">
+                  Recipients
+                </span> 
+              </div>
+
+              <div class="mt-2 p-2 side-item">
+                <div class="text-center">
+                  <i class="fa fa-money-bills mt-2"></i>   
+                </div>
+                <span class="ms-3 my-auto text-primary text-bold">
+                  Currency
+                </span> 
+              </div>
+            
+        
+              <div class="mt-2 p-2 side-item">
+                <div class="text-center">
+                  <i class="fa-solid fa-money-bill-transfer mt-2"></i>
+                </div>
+                <span class="ms-3 my-auto text-primary text-bold">
+                  Transaction
+                </span>
+              </div>
+
+      
+              <div class="mt-2 p-2 side-item">
+                <div class="text-center">
+                  <i class="fa-solid fa-money-bill-wave  mt-2"></i>  
+                </div>
+                <span class="ms-3 my-auto text-primary text-bold">
+                  Send Money
+                </span>
+              </div>
+    
+              <div class="mt-2 p-2 side-item">
+                <div class="text-center">
+                  <i class="fa-solid fa-lock  mt-2"></i>  
+                </div>
+                <span class="ms-3 my-auto text-primary text-bold">
+                  2FA Security
+                </span>
+              </div>
+              
+              <div class="mt-2 p-2 side-item">
+                <div class="text-center">
+                  <i class="fa fa-user mt-2"></i>  
+                </div>
+                <span class="ms-3 my-auto text-primary text-bold">
+                  Profile
+                </span>
+              </div>
+
+              <a href="{%url 'homepage:logout'%}">
+                <div class="mt-2 p-2 side-item">
+                  <div class="text-center">
+                    <i class="fa fa-sign-out-alt mt-2"></i>
+                  </div>
+                  <span class="ms-3 my-auto text-primary text-bold">
+                    Logout
+                  </span>
+                </div>
+              </a>
+            </div>
+          </div>
+           
+        </div>
+      </div>
+      {% block inside %}
+
+        <div class="row m-0 mt-3">
+         
+          <div class="mt-3 m-0">
+            <span class="breadcum">
+              Dashboard 
+            </span>
+          </div>
+          
+          <div class="container mt-2">
+            {% if not user.customer.kyc_verified %}
+            <div class="alert alert-light">
+                <i class="fa fa-user-times text-danger"></i>
+                <span class="text-danger">
+                    Your KYC is not verified yet.
+                </span>
+                 Please follow the link to verify.
+                <a href="{%url 'customer:verify'%}" class="text-success">
+                    Verify now
+                </a>
+            </div>
+          {% endif %}
+          </div>
+         
+            
+          <div class="row">
+            <div class="mt-3 col-12 ">
+              <div>
+                <div class="d-flex justify-content-between">
+                  <h5 class="m-0 p-2 text-primary">Your Recent Transactions</h5>
+                  <button class="btn btn-primary">
+                    See All
+                  </button>
+                </div>
+                 
+
+                  <div class="transaction-div p-2" id="login-card" >
+                    <div class="d-flex">
+                     
+                          <i class="trans-icon fa fa-arrow-alt-circle-up"></i>
+                          <span class="ps-2 my-auto" >
+                            <h6 class="text-primary">
+                              Transfer Money to Rajesh
+                            </h6>
+                            <p class="text-danger">
+                              <i class="fa fa-circle-dot"></i>
+                              Cancelled
+                            </p>
+                          </span>
+                         
+                     
+                    </div>
+                    
+                    <div>
+                      <h6 class="text-danger">
+                        - 152.30 AUD
+                      </h6>
+                      <p class="text-success">
+                       
+                        <b>
+                          16,000 BDT
+                        </b>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="transaction-div p-2" id="login-card" >
+                    <div class="d-flex">
+                     
+                          <i class="trans-icon fa fa-arrow-alt-circle-up"></i>
+                          <span class="ps-2 my-auto" >
+                            <h6 class="text-primary">
+                              Transfer Money to Hijab
+                            </h6>
+                            <p class="text-warning">
+                              <i class="fa fa-circle-dot"></i>
+                              Pending
+                            </p>
+                          </span>
+                         
+                     
+                    </div>
+                    
+                    <div>
+                      <h6 class="text-danger">
+                        - 152.30 AUD
+                      </h6>
+                      <p class="text-success">
+                       
+                        <b>
+                          16,000 BDT
+                        </b>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="transaction-div p-2" id="login-card" >
+                    <div class="d-flex">
+                     
+                          <i class="trans-icon fa fa-arrow-alt-circle-up"></i>
+                          <span class="ps-2 my-auto" >
+                            <h6 class="text-primary">
+                              Transfer Money to Hijab
+                            </h6>
+                            <p class="text-success">
+                              <i class="fa fa-circle-dot"></i>
+                              Success
+                            </p>
+                          </span>
+                         
+                     
+                    </div>
+                    
+                    <div>
+                      <h6 class="text-danger">
+                        - 152.30 AUD
+                      </h6>
+                      <p class="text-success">
+                       
+                        <b>
+                          16,000 BDT
+                        </b>
+                      </p>
+                    </div>
+                  </div>
+                  
+              </div>
+             
+             
+            </div>
+          </div>
+         
+    
+        </div>
+      {% endblock inside %}
+    </div>
+    
+      
+</div>
+    
+{% endblock content %}
+    

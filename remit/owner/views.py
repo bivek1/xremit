@@ -47,7 +47,8 @@ class Dashboard(View):
             'client_count':client_count,
             # 'product':product_count,
             'service':service_count,
-            'testo_count':testo_count
+            'testo_count':testo_count,
+            'user':CustomUser.objects.filter(user_type = "customer")
         }
 
         dist.update(public)

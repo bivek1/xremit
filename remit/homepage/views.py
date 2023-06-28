@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import TemplateView, DetailView
 from .models import Feature, Service, Client, Testomonial, Footor, Brand, AboutUs, ChooseUs, HomeService
-from .models import Blog
+from .models import Blog, CustomUser
 from django.contrib.auth import authenticate
 from django.urls import reverse
 from django.contrib import messages
@@ -83,12 +83,21 @@ def Register(request):
 
     tempate_name = 'homepage/register.html'
     if request.method == 'POST':
-        username = request.POST['username']
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        username = request.POST['email']
         password = request.POST['password']
+        
+        admin = CustomUser.objects.create_user(first_name = request.POST['first_name'], last_name = request.POST['last_name'], email = request.POST['email'], username = request.POST['email'], password = request.POST['password'], user_type = 'customer')
+
+        obj = admin.customer
+        obj.added_by = admin
+        obj.save()
         use = authenticate(request, username = username, password = password)
         if use is not None:
             login(request, use)
-            return HttpResponseRedirect(reverse('manager:dashboard'))
+            messages.success(request, "Successfully Registered")
+            return HttpResponseRedirect(reverse('customer:dashboard'))
         else:
             messages.error(request, "Incorrect Username and Password")
             return render(request, tempate_name)

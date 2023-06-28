@@ -1,6 +1,6 @@
 
 /* Component Styling */
-.bg-primary{
+/* .bg-primary{
     background-color: #003399!important;
 
 }
@@ -47,31 +47,19 @@
 .bg-secondary, .bg-warning, .bg-light, .bg-danger, .bg-info{
   
     padding: 4px;
-}
+} */
 .text-primary{
-    color: #003399!important;
+    color: #263159!important;
    
 }
+
+
 .menu-icon{
     background-color: rgb(255, 255, 255);
     border-radius: 8px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
-.btn-primary{
-    /* border: 1px solid #325cc7;; */
-    background-color: #003399;
-    color: rgb(250, 250, 250);
-    border: none;
-    outline: none;
-    padding: 5px;
-    
-}
-.btn-primary:hover{
-    /* border: 1px solid #325cc7;; */
-    background-color: rgb(38, 12, 155);
-    color: rgb(255, 255, 255);
-    transition-duration: 200ms;
-}
+
 
 .form-control{
     border: none;
@@ -105,8 +93,9 @@ small, span, p{
     font-family: 'Alegreya Sans SC', sans-serif;
 }
 h1, h2, h3, h4, h5, h6{
-    font-family: 'Advent Pro', sans-serif;
+    font-family: 'Quicksand', sans-serif;
 }
+
 body{
     background-color: #ebebeb;
 }
@@ -128,29 +117,66 @@ a{
 /* Styling Basic component*/
 .navbar{
     padding: 14px;
-    
-    background-color: #003399;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 }
 .nav-link{
-    color: white;
+    color: white
 }
 
 .nav-link:hover{
     color: #aaaaaa;
 }
 
-.active{
-    color: #ffffff!important;
-    background-color: #cccccc;
-}
-.navbar-brand{
-    padding-left: 16px;
-    color: white;
-    
-}
+
 /* Styling */
 
+
+/* Homepage Design */
+.background{
+    background-image: url('../resources/aus.jpg');
+    background-size: cover;
+    height: 100vh;
+    width: 100%;
+}
+.currecyBox{
+    border: 1px solid #a7a7a7;
+    border-radius: 5px;
+    display: flex;
+ 
+}
+.left-currency{
+    width: 70%;
+}
+.head-home {
+    font-size: 50px;
+    font-weight: bold;
+}
+.head-para{
+    font-size: 25px;
+    font-weight: 500;
+    /* background-color: #3f37aa; */
+    color: white;
+    padding: 10px;
+}
+.currecyBox input{
+    width: 100%;
+    border: none;
+    height: 23px;
+    color: #110c5e;
+    font-size: 20px;
+}
+.right-currency img{
+    height: 50%;
+    width: 50%;
+}
+.right-currency{
+    width: 30%;
+    background-color: rgb(231, 231, 231);
+    display: flex;
+}
+
+.currecyBox input:focus{
+    outline: none;
+}
 
 
 /* Login page styling */
@@ -199,7 +225,15 @@ a{
 
 
 /* Styling Dashboard page of Owner */
+.das-img img{
+    width: 70px;
+    height: 70px;
+}
 
+.below-tag img{
+    height: 150px;
+    width: 150px;
+}
 .whole-content{
     width: 80%;
     float: right;
@@ -213,7 +247,7 @@ a{
     position: fixed;
     bottom: 0;
     border-radius: 10px;
-   
+    overflow-y: scroll;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 }
 .activedb{
@@ -250,7 +284,7 @@ a{
 /* Dashboard Design */
 .dashboard-box{
     width: 100%;
-    padding: 20px;
+    padding: 10px;
     background-color: white;
     display: flex;
     border-radius: 5px;
@@ -281,25 +315,62 @@ a{
 .side-item{
     cursor: pointer;
     display: flex;
-    justify-content: space-between;
+
 }
 
+.side-item span{
+    font-weight: lighter;
+}
+
+.transaction-div{
+    display: flex;
+    margin-top: 10px;
+    justify-content: space-between;
+}
+.trans-icon {
+    background-color: #ebebeb;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 30px;
+    color: #263159!important;
+    
+}
+/* Scrollbar Track */
+.side-bar::-webkit-scrollbar-track {
+    background-color: #263159; /* Adjust the track color */
+  }
+  
+  /* Scrollbar Thumb */
+  .side-bar::-webkit-scrollbar-thumb {
+    background-color: #263159; /* Adjust the thumb color */
+  }
+  
+  /* Scrollbar Thumb on hover */
+  .side-bar::-webkit-scrollbar-thumb:hover {
+    background-color: #20294b; /* Adjust the thumb color on hover */
+  }
+  
+  /* Scrollbar Width and Height */
+  .side-bar::-webkit-scrollbar {
+    width: 5px; /* Adjust the scrollbar width */
+    height: 5px; /* Adjust the scrollbar height */
+  }
+  
+
 .side-item div{
-    background-color: #5b38da;
+    background-color: #263159;
     width: 30px;
     height: 30px;
     border-radius: 10px;
 }
 
 .side-item i{
-
     color: #ebebeb;    
-
 } 
 
 .side-item:hover{
-    background-color: #3f37aa;
-    color: white;
+    background-color: #908cc9;
+    color: white!important;
     border-radius: 5px;
     transition-duration: 300ms;
 }
@@ -344,3 +415,18 @@ a{
 .django-ckeditor-widget{
     width: 100%!important;
 }
+.showphone{
+    display: none;
+}
+
+@media only screen and (max-width: 600px) {
+    .hidePhone {
+      display: none;
+    }
+    .whole-content{
+        width: 100%;
+    }
+    .showphone{
+        display: inline;
+    }
+  }
