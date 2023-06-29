@@ -1,5 +1,5 @@
 {% extends 'customer/dashboard.html' %}
-
+{% load static %}
 
 {% block title %}
     Recipients
@@ -15,10 +15,93 @@
             Dashboard
         </a>/
         Recipients
+      
       </span>
     </div>
 
     <div class="row p-0 m-0 mt-3">
+      <div class="d-flex justify-content-between">
+        <h5>
+          Your Recipients List
+        </h5>
+        <a href="{%url 'customer:addRecipient'%}">
+          <button class="btn btn-primary">
+            Add New Recipients
+          </button>
+        </a>
+      
+      </div>
+
+
+      <div>
+        {% for i in recipient %}
+          <div class="transaction-div p-2" id="login-card" >
+            <div class="d-flex">
+            
+                  <i class="trans-icon fa fa-user-circle"></i>
+                  <span class="ps-2 my-auto" >
+                    <h6 class="text-primary">
+                      {{i.first_name}} {{i.middle_name}} {{i.last_name}}
+                    </h6>
+                    <p class="text-danger">
+                      <i class="fa fa-location-dot"></i>
+                      {{i.country}}, {{i.city}}, {{i.state}}, {{i.zip_code}}, {{i.address}}
+                    </p>
+                  </span>
+
+            </div>
+            
+            <div class="d-flex">
+              
+              {% if i.country.flag_img %}
+                  <img class=" my-auto" src="{{i.country.flag_img.url}}" alt="" height="30px;" width="auto">
+              {% endif %}
+                
+             
+                <p class="text-success my-auto  ps-4">
+                  <a  class="" href="{%url 'customer:editRecipient' i.id%}">
+                    <i class="fa fa-pencil-square p-3 bg-light"></i>
+                  </a>
+                </p>
+              
+              
+              <p class="text-danger my-auto ps-1 pe-4"  data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}">
+                <i class="fa fa-trash p-3 bg-light"></i>
+              </p>
+
+               <!-- Delete Model -->
+               <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                    
+                        <div class="modal-body">
+                            <div class="text-center">
+                                <img src="{%static 'resources/delete.gif'%}" alt="" style="width: 30%;">
+                            </div>
+                    
+                            <h5> Are you sure want to delete recipient  {{i.first_name}} {{i.middle_name}} {{i.last_name}} </h5>
+                           
+                            <div class="text-end mt-2">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change my mind</button>
+                                <!-- Delete URL -->
+                                <a href="{%url 'customer:deleteRecipient' i.id%}">
+                                    <button type="button" class="btn btn-danger">
+                                        <i class="fa fa-trash"></i> Delete
+                                    </button>
+                                </a>
+                                
+                            </div>
+                        
+                        </div>
+                    
+                </div>
+                </div>
+            </div>
+        <!-- Delete Model -->
+            </div>
+          </div>
+        {% endfor %}
+      </div>
     </div>
 </div>
 {% endblock inside %}

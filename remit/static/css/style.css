@@ -355,7 +355,24 @@ a{
     width: 5px; /* Adjust the scrollbar width */
     height: 5px; /* Adjust the scrollbar height */
   }
-  
+
+.currency-box{
+    background-color:#f3f3f3;
+ 
+    border-radius: 10px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.currencyBelow{
+    background-color: #486bb1;
+    color: #f3f3f3;
+    border-bottom-left-radius:10px;
+    border-bottom-right-radius:10px;
+
+}
+
+:-ms-input-placeholder{
+    color: black;
+}
 
 .side-item div{
     background-color: #263159;

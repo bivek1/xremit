@@ -7,7 +7,6 @@ from homepage.models import Currency, Country, Recipient, PickupPoint, KYC
 
 
 # KYCForm
-
 class KYCForm(forms.ModelForm):
     class Meta:
         model = KYC
@@ -25,9 +24,9 @@ class KYCForm(forms.ModelForm):
             'number':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'+61989229298'}),
             'gender':forms.Select(attrs={'class':'form-control mt-2', 'placeholder':'Your Gender'}),
             'document_front_image':forms.FileInput(attrs={'class':'form-control mt-2',}),
-              'document_back_image':forms.FileInput(attrs={'class':'form-control mt-2'}),
-                  'date_of_birth':forms.DateInput(attrs={'type':'date','class':'form-control mt-2',})
-                   
+            'document_back_image':forms.FileInput(attrs={'class':'form-control mt-2'}),
+            'date_of_birth':forms.DateInput(attrs={'type':'date','class':'form-control mt-2',})
+                
         }
 
 
@@ -58,11 +57,13 @@ class RecipientForm(forms.ModelForm):
             'first_name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'First Name'}),
             'middle_name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Middle Name'}),
             'last_name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Last Name'}),
-            'city':forms.FileInput(attrs={'class':'form-control mt-2', 'placeholder':'Name of the City'}),
-            'zip_code':forms.EmailInput(attrs={'class':'form-control mt-2', 'placeholder':'zipcode'}),
-            'postal_address':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Postal code'}),
+            'city':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Name of the City'}),
+            'zip_code':forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'zipcode'}),
+          
             'number':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'+61989229298'}),
-            'country':forms.Select(attrs={'class':'form-control mt-2', 'placeholder':'Recipient Country'}),   
+            'country':forms.Select(attrs={'class':'form-control mt-2', 'placeholder':'Recipient Country'}), 
+            'address':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Address'}),
+            'state':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Recipient state'}),  
         }
 
 

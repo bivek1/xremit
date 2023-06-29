@@ -1,5 +1,5 @@
 {% extends 'customer/dashboard.html' %}
-
+{% load static %}
 
 {% block title %}
     KYC Verification
@@ -19,6 +19,58 @@
     </div>
 
     <div class="row p-0 m-0 mt-3">
+        <div class="col-12">
+          <h5>KYC Verification</h5>
+          <hr>
+        
+        </div>
+        <div class="col-12 col-lg-3">
+            <div class="alert alert-danger">
+                <ul>
+                  <li>Make your your upload valid document.</li>
+                  <li>Your name, number and profile image must match with your document image.</li>
+                  <li>
+                    Your document should be clear and not shakey
+                  </li>
+                  <li>
+                    Your infomation should be legit and valid
+                  </li>
+                  <li>
+                    By verifying your kyc, it is made sure that you agree to our terms and policy
+                  </li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="col-12 col-lg-9">
+            <div class="p-3" id="login-card">
+                {% if not user.customer.kyc_verified %}
+                  <div class="alert alert-light">
+                      <img src="{%static 'resources/not-verified.png'%}" alt="" height="30px;" width="30px;">
+                      <span class="text-danger">
+                          Your KYC is not verified yet.
+                      </span>
+                    
+                  </div>
+                {%else%}
+                  <div class="alert alert-light">
+                    <img src="{%static 'resources/verified.png'%}" alt="" height="30px;" width="30px;">
+                    <span class="text-danger">
+                        Your KYC is  verified
+                    </span>
+                  
+                  </div>
+
+                {% endif %}
+              <form action="" method="post">
+                {{form}}
+              </form>
+          </div>
+         
+            
+        </div>
+
+
     </div>
 </div>
 {% endblock inside %}

@@ -96,6 +96,7 @@ class PickupPoint(models.Model):
         return self.name
     
 class Recipient(models.Model):
+    # customer = models.ForeignKey(Customer, related_name='recipient_customer', on_delete=models.CASCADE)
     transaction_type = models.CharField(max_length=300, choices=(
         ('CashPickup', 'Cash Pickup'),
         ('BankTransfer', 'Bank Transfer'),
@@ -133,7 +134,7 @@ class Currency(models.Model):
 
 
 class KYC(models.Model):
-    customer = models.ForeignKey(Customer, related_name='kyc_customer', on_delete=models.CASCADE)
+    customer = models.OneToOneField(Customer, related_name='kyc_customer', on_delete=models.CASCADE)
     country = models.ForeignKey(Country, related_name='kyc_country', on_delete=models.CASCADE)
     address = models.CharField(max_length=200)
     state = models.CharField(max_length=200, null = True, blank= True)

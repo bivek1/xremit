@@ -93,8 +93,73 @@
                         </div>
                         <!-- ENquires -->
                         <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                            profile
-                          
+                            <div class="m-0 p-0">
+                                <div class="p-2" id="login-card">
+                               
+                                    <form action="" method="post">
+                                        <div class="row p-0 m-0">
+                                            <div class="col-6">
+                                                <label for="first_name">First Name</label>
+                                                <input type="text" name="first_name" id="" value="{{real_customer.admin.first_name}}" required class="form-control" placeholder="First Name">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="last_name">Last Name</label>
+                                                <input type="text" name="last_name" id="" value="{{real_customer.admin.last_name}}" required class="form-control" placeholder="Last Name">
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="email">Email</label>
+                                                <input type="email" name="email" id="" value="{{real_customer.admin.email}}" required class="form-control" placeholder="Email Address">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="email">{{form.number.label_tag}}</label>
+                                                {{form.number}}
+                                                {{form.number.errors}}
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="email">{{form.mail_address.label_tag}}</label>
+                                                {{form.mail_address}}
+                                                {{form.mail_address.errors}}
+                                            </div>
+                    
+                                            <div class="col-12">
+                                                <label for="email">{{form.country.label_tag}}</label>
+                                                {{form.country }}
+                                                {{form.country.errors}}
+                                            </div>
+                    
+                                            <div class="col-6">
+                                                <label for="email">{{form.city.label_tag}}</label>
+                                                {{form.city}}
+                                                {{form.city.errors}}
+                                            </div>
+                    
+                                            <div class="col-6">
+                                                <label for="email">{{form.zip_code.label_tag}}</label>
+                                                {{form.zip_code}}
+                                                {{form.zip_code.errors}}
+                                            </div>
+                    
+                                            <div class="col-6">
+                                                <label for="email">{{form.state.label_tag}}</label>
+                                                {{form.state}}
+                                                {{form.state.errors}}
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="email">{{form.address.label_tag}}</label>
+                                                {{form.address}}
+                                                {{form.address.errors}}
+                                            </div>
+                                        
+                                            {% csrf_token %}
+                                            <button class="btn btn-primary mt-3 m-auto w-80" type="submit">
+                                                <i class="fa fa-user-plus"></i>  {{button}}
+                                            </button>
+                    
+                                        </div>
+                                    
+                                    </form>
+                                </div>
+                            </div>
                         
                         </div>
                         <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
@@ -119,73 +184,7 @@
         </div>
 
 
-        <div class="col-lg-4 col-12 m-0 p-0">
-            <div class="p-2" id="login-card">
-           
-                <form action="" method="post">
-                    <div class="row p-0 m-0">
-                        <div class="col-6">
-                            <label for="first_name">First Name</label>
-                            <input type="text" name="first_name" id="" value="{{real_customer.admin.first_name}}" required class="form-control" placeholder="First Name">
-                        </div>
-                        <div class="col-6">
-                            <label for="last_name">Last Name</label>
-                            <input type="text" name="last_name" id="" value="{{real_customer.admin.last_name}}" required class="form-control" placeholder="Last Name">
-                        </div>
-                        <div class="col-12">
-                            <label for="email">Email</label>
-                            <input type="email" name="email" id="" value="{{real_customer.admin.email}}" required class="form-control" placeholder="Email Address">
-                        </div>
-                        <div class="col-6">
-                            <label for="email">{{form.number.label_tag}}</label>
-                            {{form.number}}
-                            {{form.number.errors}}
-                        </div>
-                        <div class="col-6">
-                            <label for="email">{{form.mail_address.label_tag}}</label>
-                            {{form.mail_address}}
-                            {{form.mail_address.errors}}
-                        </div>
-
-                        <div class="col-12">
-                            <label for="email">{{form.country.label_tag}}</label>
-                            {{form.country }}
-                            {{form.country.errors}}
-                        </div>
-
-                        <div class="col-6">
-                            <label for="email">{{form.city.label_tag}}</label>
-                            {{form.city}}
-                            {{form.city.errors}}
-                        </div>
-
-                        <div class="col-6">
-                            <label for="email">{{form.zip_code.label_tag}}</label>
-                            {{form.zip_code}}
-                            {{form.zip_code.errors}}
-                        </div>
-
-                        <div class="col-6">
-                            <label for="email">{{form.state.label_tag}}</label>
-                            {{form.state}}
-                            {{form.state.errors}}
-                        </div>
-                        <div class="col-6">
-                            <label for="email">{{form.address.label_tag}}</label>
-                            {{form.address}}
-                            {{form.address.errors}}
-                        </div>
-                    
-                        {% csrf_token %}
-                        <button class="btn btn-primary mt-3 m-auto w-80" type="submit">
-                            <i class="fa fa-user-plus"></i>  {{button}}
-                        </button>
-
-                    </div>
-                
-                </form>
-            </div>
-        </div>
+       
 
     
     </div>

@@ -92,16 +92,17 @@
             </span>
           </div>
           
+          <a href="{%url 'customer:profile'%}">
+              <div class="mt-2 p-2 side-item">
+                <div class="text-center">
+                  <i class="fa fa-user mt-2"></i>  
+                </div>
+                <span class="ms-3 my-auto text-primary text-bold">
+                  Profile
+                </span>
+              </div>
+          </a>
           
-          <div class="mt-2 p-2 side-item">
-            <div class="text-center">
-              <i class="fa fa-user mt-2"></i>  
-            </div>
-            <span class="ms-3 my-auto text-primary text-bold">
-              Profile
-            </span>
-          </div>
-
           <a href="{%url 'homepage:logout'%}">
             <div class="mt-2 p-2 side-item">
               <div class="text-center">
@@ -203,14 +204,16 @@
                 </span>
               </div>
               
-              <div class="mt-2 p-2 side-item">
-                <div class="text-center">
-                  <i class="fa fa-user mt-2"></i>  
-                </div>
-                <span class="ms-3 my-auto text-primary text-bold">
-                  Profile
-                </span>
-              </div>
+              <a href="{%url 'customer:profile'%}">
+                  <div class="mt-2 p-2 side-item">
+                    <div class="text-center">
+                      <i class="fa fa-user mt-2"></i>  
+                    </div>
+                    <span class="ms-3 my-auto text-primary text-bold">
+                      Profile
+                    </span>
+                  </div>
+              </a>
 
               <a href="{%url 'homepage:logout'%}">
                 <div class="mt-2 p-2 side-item">
@@ -358,6 +361,36 @@
              
              
             </div>
+          </div>
+
+          <div class="row mt-3">
+            <h5>Currency....</h5>
+            {% for i in currency  %}
+            <div class="col-lg-4 col-12 mt-3">
+    
+                <div class="currency-box my-auto text-center">
+                  <div class="p-2">
+                    {% if i.country.flag_img %}
+                    <img src="{{i.country.flag_img.url}}" alt="" height="30px;" width="auto">
+                    {% endif %}
+                      
+                    <div class="d-flex mt-2 justify-content-between">
+                      <h1 class="text-dark">{{i.currecy_sign}}</h1>
+                      <h1 class="text-info">
+                        {{i.currecy_rate}}
+                      </h1>
+                    </div>
+                  </div>
+                 
+                  <div class="currencyBelow">
+                    <p>Conversion Rate {{i.conversion_rate}}</p>
+                  </div>
+                 
+                </div>
+            </div>
+               
+            {% endfor %}
+              
           </div>
          
     

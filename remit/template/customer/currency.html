@@ -19,6 +19,33 @@
     </div>
 
     <div class="row p-0 m-0 mt-3">
+        
+        {% for i in currency  %}
+        <div class="col-lg-4 col-12 mt-3">
+
+            <div class="currency-box my-auto text-center">
+              <div class="p-2">
+                {% if i.country.flag_img %}
+                <img src="{{i.country.flag_img.url}}" alt="" height="30px;" width="auto">
+                {% endif %}
+                  
+                <div class="d-flex mt-2 justify-content-between">
+                  <h1 class="text-dark">{{i.currecy_sign}}</h1>
+                  <h1 class="text-info">
+                    {{i.currecy_rate}}
+                  </h1>
+                </div>
+              </div>
+             
+              <div class="currencyBelow">
+                <p>Conversion Rate {{i.conversion_rate}}</p>
+              </div>
+             
+            </div>
+        </div>
+           
+        {% endfor %}
+          
     </div>
 </div>
 {% endblock inside %}

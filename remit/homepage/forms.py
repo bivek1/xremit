@@ -5,8 +5,31 @@ from homepage.models import Product, Service,Client, Testomonial, Blog, SubCateg
 from homepage.models import CompanyInformation
 from django import forms
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import password_validation
 
 
+
+
+class PasswordChangeFormUpdate(PasswordChangeForm):
+    new_password1 = forms.CharField(
+        label=("New password"),
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password", 'class':'form-control', 'placeholder':'Enter New Password'}),
+        strip=False,
+        help_text=password_validation.password_validators_help_text_html(),
+    )
+    new_password2 = forms.CharField(
+        label=("New password confirmation"),
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password", 'class':'form-control', 'placeholder':'Enter New Password Again'}),
+    )
+    old_password = forms.CharField(
+        label=("Old password"),
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={"autocomplete": "current-password", "autofocus": True , 'class':'form-control', 'placeholder':'Enter Your Old Password'}
+        ),
+    )
 
 # User Create and Update form
 class UserCreateForm(UserCreationForm):
