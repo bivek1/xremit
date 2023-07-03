@@ -6,7 +6,22 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import View
 from homepage.forms import PasswordChangeFormUpdate, CustomerForm, Customer
+from django.http import JsonResponse
+from homepage.forms import TransactionForm
 
+def changeCurone(request):
+    if request.method == 'POST':
+        my_data = request.POST.get('id')  # Get the sent data
+        currency = Currency.objects.get(id = int(my_data))
+        print(currency)
+        # Process the data and prepare the response
+        response_data = {
+            'currency_rate':  currency.currecy_rate,
+            'fee' : currency.conversion_rate,
+            'cur_sign' : currency.currecy_sign
+        }
+
+        return JsonResponse(response_data)  # Return the response as JSON
 
 
 
@@ -74,8 +89,7 @@ def editRecipient(request, id):
             return HttpResponseRedirect(reverse('customer:recipient'))
         else:
             messages.error(request,"Something went wrong")
-            
-
+        
     return render(request, "customer/editRecipient.html", dist)
 
 
@@ -85,15 +99,25 @@ def deleteRecipient(request, id):
     messages.success(request, "Successfully Deleted Recipient")
     return HttpResponseRedirect(reverse('customer:recipient'))
 
+
 def sendMoney(request):
 
     default = Currency.objects.last()
 
     dist = {
         'recp':Recipient.objects.filter(customer__admin = request.user),
-        'currency':Currency.objects.all(),
-        'default':default
+        'currency':Currency.objects.all().exclude(id = default.id),
+        'default':default,
+        'form':TransactionForm(),
+        'customer':request.user.customer
     }
+
+    if request.method == 'POST':
+        form = TransactionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Successfully added Transaction.")
+            return HttpResponseRedirect(reverse('customer:completePayment'))
     return render(request, "customer/sendMoney.html", dist)
 
 def currency(request):

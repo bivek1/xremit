@@ -1,13 +1,24 @@
 
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
-from homepage.models import Product, Service,Client, Testomonial, Blog, SubCategory, Category, Customer, Agent
+from homepage.models import Product, Service,Client, Testomonial, Blog, SubCategory, Category, Customer, Agent, Transaction
 from homepage.models import CompanyInformation
 from django import forms
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import password_validation
 
+
+
+
+# Transaction Form
+class TransactionForm(forms.ModelForm):
+
+
+    class Meta:
+        model = Transaction
+        fields = ('__all__')
+        
 
 
 

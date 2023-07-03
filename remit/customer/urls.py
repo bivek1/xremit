@@ -13,5 +13,6 @@ urlpatterns = [
     path('currency-now', views.currency, name = "currency"),
     path('send-money', views.sendMoney, name ="sendMoney"),
     path('profile-customer', views.Profile.as_view(), name = "profile"),
+    path('changeCurone', views.changeCurone, name ="changeCurone"),
 
 ]   

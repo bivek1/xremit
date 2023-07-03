@@ -140,10 +140,30 @@ class Currency(models.Model):
 
     def __str__(self):
         return self.currecy_sign
+
+
+class Transaction(models.Model):
+    customer = models.ForeignKey(Customer, related_name='customer_transaction', on_delete=models.CASCADE)
+    recipient = models.ForeignKey(Recipient, related_name='recipient_transaction', on_delete=models.CASCADE)
+    sending_currency = models.ForeignKey(Currency, related_name='sending_currency', on_delete=models.CASCADE)
+    receiving_currency = models.ForeignKey(Currency, related_name='receiving_currency', on_delete=models.CASCADE)
+    fee = models.IntegerField()
+    converting_rate = models.IntegerField()
+    commision_rate = models.IntegerField(null=True, blank=True)
+    sent = models.IntegerField()
+    received = models.IntegerField()
+    sent_money_to_us = models.BooleanField(default=False)
+    sent_to_client = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.customer.admin.get_full_name()
+
+
     
 
 
 class KYC(models.Model):
+    image = models.ImageField(upload_to='kyc_image')
     customer = models.ForeignKey(Customer, related_name='kyc_customer', on_delete=models.CASCADE, null = True, blank=True)
     country = models.ForeignKey(Country, related_name='kyc_country', on_delete=models.CASCADE)
     address = models.CharField(max_length=200)

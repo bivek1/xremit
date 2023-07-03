@@ -78,13 +78,9 @@
     color: rgb(218, 77, 77);
     font-size: 100px;
     font-weight: bolder;
-    height: 100%;
+    height: 100vh;
 }
-.loader-content h1{
-    animation-iteration-count: infinite;
-    animation-name: headShake;
-    animation-duration: 2s;
-}
+
 .loaded {
     opacity: 0;
     pointer-events: none;
@@ -202,8 +198,13 @@ a{
 }
 .right-currency img{
     height: 100%;
-    width: 50%;
+    width: 55%;
 }
+
+.receipt-card{
+    background-color: rgb(236, 241, 247);
+}
+
 .right-currency{
     height: 100%;
     width: 100%;
@@ -219,7 +220,7 @@ a{
 }
 .right-currency-drop img{
     height: auto;
-    width: 30%;
+    width: 55%;
 }
 .right-currency-drop:hover{
     background-color: rgb(231, 231, 231);
@@ -248,7 +249,7 @@ a{
 
 /* Login page styling */
 #login-card{
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; */
     background-color: rgb(255, 255, 255);
     border-radius: 8px;
 }
@@ -278,7 +279,7 @@ a{
 }
 .login-flex i{
     background-color: white;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    /* box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px; */
     font-size: 18px;
     height: 40px;
     color: #110c5e;
@@ -315,7 +316,7 @@ a{
     bottom: 0;
     border-radius: 10px;
     overflow-y: scroll;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px; */
 }
 .activedb{
     background-color: rgb(165, 165, 165);
@@ -344,7 +345,7 @@ a{
 }
 .register-div{
     background-color: white;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
 }
 /* Register Page */
 
@@ -427,7 +428,7 @@ a{
     background-color:#f3f3f3;
  
     border-radius: 10px;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
 }
 .currencyBelow{
     background-color: #486bb1;
@@ -522,11 +523,19 @@ a{
     border-radius: 10px;
 }
 .top-link{
+    font-size: 20px;
     color: rgb(175, 175, 175);
 }
-
-
-
+#profile{
+    background-color: #f3f5f8;
+}
+#personal{
+    background-color: #eaf1ff;
+    
+}
+#document{
+    background-color:#e3e8f0;
+}
 @media only screen and (max-width: 600px) {
     .hidePhone {
       display: none;

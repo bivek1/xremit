@@ -14,8 +14,8 @@ class KYCForm(forms.ModelForm):
 
 
         widgets= {
-           
-            'country':forms.Select(attrs={'class':'form-control mt-2', 'placeholder':'Country'}),
+            'image':forms.FileInput(attrs={'class':'form-control  custom-input mt-2', 'id':'image-upload' ,'onchange':"showImage(this)"}),
+            'country':forms.Select(attrs={'class':'form-control mt-2', 'placeholder':'Country' }),
             'address':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Your Address'}),
             'state':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Your state'}),
             'city':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Sydney'}),
@@ -23,7 +23,7 @@ class KYCForm(forms.ModelForm):
             'postal_address':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Your postal code'}),
             'number':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'+61989229298'}),
             'gender':forms.Select(attrs={'class':'form-control mt-2', 'placeholder':'Your Gender'}),
-            'document_front_image':forms.FileInput(attrs={'class':'form-control mt-2',}),
+            'document_front_image':forms.FileInput(attrs={'class':'form-control mt-2'}),
             'document_back_image':forms.FileInput(attrs={'class':'form-control mt-2'}),
             'date_of_birth':forms.DateInput(attrs={'type':'date','class':'form-control mt-2',}),
             'document_type':forms.Select(attrs={'class':'form-control mt-2'})

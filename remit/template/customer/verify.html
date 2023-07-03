@@ -8,6 +8,47 @@
 
 
 {% block inside %}
+<style>
+ .custom-input {
+      display: none; /* Hide the default input element */
+    }
+    
+    .custom-label {
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 6px 10px;
+      background-color: #f8f8f8;
+      color: #555;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    
+    .custom-label::before {
+      
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      text-align: center;
+      margin-right: 5px;
+      background-color: #ccc;
+      color: #fff;
+      font-weight: bold;
+      border-radius: 50%;
+    }
+    
+    /* Hide the plus icon when an image is selected */
+    .custom-label.with-image::before {
+      display: none;
+    }
+    
+    #image-preview {
+      display: none;
+      max-width: 60%;
+      max-height: auto;
+    }
+</style>
+
 <div class="row p-0 m-0 mt-3">
     <div class="mt-3 mb-3">
       <span class="breadcum">
@@ -63,117 +104,139 @@
 
                 {% endif %}
               <form action="" method="post" enctype="multipart/form-data">
-                <div class="row m-0">
-                    <div class="col-12 col-lg-12 mt-2">
-                      <h6>
-                        Please Select Your Country*
-                      </h6>
-                      {{form.country}}
-                      {{form.country.erros}}
-                    </div>
 
-                    <div class="col-12 col-lg-6 mt-2">
-                        <h6>
-                         Enter your address*
-                        </h6>
-                        {{form.address}}
-                        {{form.address.erros}}
-                    </div>
 
-                    <div class="col-12 col-lg-6 mt-2">
-                      <h6>
-                       Enter your state*
-                      </h6>
-                      {{form.state}}
-                      {{form.state.erros}}
+                <div class="row m-0 pb-4" id="profile">
+                  <h5 class="mt-2">User Image Information*</h5>
+                  <hr>
+                  <div class="col-6 mt-3">
+                    {{form.image}}
+                    <label for="image-upload" id="custom-label" class="custom-label text-center">
+                      <p>Choose your real image for verifcation</p>
+                      <i class="fa fa-image" style="font-size: 60px;"></i>
+                    </label>
                   </div>
-
-                  <div class="col-12 col-lg-6 mt-2">
-                    <h6>
-                     Enter your city*
-                    </h6>
-                    {{form.city}}
-                    {{form.city.erros}}
+                  <div class="col-6 text-center">
+                    <img id="image-preview" class="my-auto" src="#" alt="Preview">
+                  </div>
                 </div>
 
-                      <div class="col-12 col-lg-6 mt-2">
-                        <h6>
-                        Enter your zip code*
-                        </h6>
-                        {{form.zip_code}}
-                        {{form.zip_code.erros}}
-                    </div>
-
-                    <div class="col-12 col-lg-6 mt-2">
-                      <h6>
-                      Enter your postal code*
-                      </h6>
-                      {{form.postal_address}}
-                      {{form.postal_address.erros}}
-                  </div>
-
-                  <div class="col-12 col-lg-6 mt-2">
-                      <h6>
-                      Enter your gender*
-                      </h6>
-                      {{form.gender}}
-                      {{form.gender.erros}}
-                  </div>
-
-             
-
-                  <div class="col-12 col-lg-12 mt-2">
-                    <h6>
-                    Enter your Phone number*
-                    </h6>
-                    {{form.number}}
-                    {{form.number.erros}}
-                </div>
+                <div class="row m-0 p-2 pb-4 mt-3" id="personal">
 
               
-              <div class="col-12 col-lg-12 mt-2">
-                <h6>
-                Select your document type*
-                </h6>
-                {{form.document_type}}
-                {{form.document_type.erros}}
-              </div>
-
-            <div class="col-12 col-lg-12 mt-2">
-                <div class="alert alert-info">
-
-                  <i class="fa fa-info-circle"></i>
-                  Please upload valid and clear document. Subimmision of expired and unclear image will result the rejection of kyc verification.
+                <h5>Your Personal Details</h5>
+                <hr>
+                <div class="col-12 col-lg-12 mt-2">
+                  <h6>
+                    Please Select Your Country*
+                  </h6>
+                  {{form.country}}
+                  {{form.country.erros}}
                 </div>
-                <h6>
-                  Upload Front image of your selected document*
-                </h6>
-                {{form.document_front_image}}
-                {{form.document_front_image.erros}}
-         
-            </div>
 
-            <div class="col-12 col-lg-12 mt-2">
-              <h6>
-              Upload back image  of your selected documents
-              </h6>
-              {{form.document_back_image}}
-              {{form.document_back_image.erros}}
-            </div>
+                <div class="col-12 col-lg-6 mt-2">
+                    <h6>
+                      Enter your address*
+                    </h6>
+                    {{form.address}}
+                    {{form.address.erros}}
+                </div>
 
-            <div class="col-12 col-lg-12 mt-2">
-              <h6>
-              Select your date of birth
-              </h6>
-              {{form.date_of_birth}}
-              {{form.date_of_birth.erros}}
-            </div>
-          </div>
-          {% csrf_token %}
+                <div class="col-12 col-lg-6 mt-2">
+                    <h6>
+                      Enter your state*
+                    </h6>
+                    {{form.state}}
+                    {{form.state.erros}}
+                </div>
 
-          <button class="btn btn-primary w-100 mt-3">
-            Verify
-          </button>
+                <div class="col-12 col-lg-6 mt-2">
+                  <h6>
+                    Enter your city*
+                  </h6>
+                  {{form.city}}
+                  {{form.city.erros}}
+                </div>
+
+                <div class="col-12 col-lg-6 mt-2">
+                  <h6>
+                  Enter your zip code*
+                  </h6>
+                  {{form.zip_code}}
+                  {{form.zip_code.erros}}
+                </div>
+
+                <div class="col-12 col-lg-6 mt-2">
+                    <h6>
+                    Enter your postal code*
+                    </h6>
+                    {{form.postal_address}}
+                    {{form.postal_address.erros}}
+                </div>
+
+                <div class="col-12 col-lg-6 mt-2">
+                    <h6>
+                    Enter your gender*
+                    </h6>
+                    {{form.gender}}
+                    {{form.gender.erros}}
+                </div>
+
+                <div class="col-12 col-lg-12 mt-2">
+                  <h6>
+                  Enter your Phone number*
+                  </h6>
+                  {{form.number}}
+                  {{form.number.erros}}
+                </div>
+                </div>
+
+                <div class="row m-0 p-2 pb-4 mt-3" id="document">
+                  <h5>Please Upload Your Valid Documents..</h5>
+                  <small>Your document image must match your profile image</small>
+                  <div class="col-12 col-lg-12 mt-2" id="front">
+                    <h6>
+                    Select your document type*
+                    </h6>
+                    {{form.document_type}}
+                    {{form.document_type.erros}}
+                  </div>
+
+                <div class="col-12 col-lg-12 mt-2">
+                    <div class="alert alert-info">
+
+                      <i class="fa fa-info-circle"></i>
+                      Please upload valid and clear document. Subimmision of expired and unclear image will result the rejection of kyc verification.
+                    </div>
+                    <h6>
+                      Upload Front image of your selected document*
+                    </h6>
+                    {{form.document_front_image}}
+                    {{form.document_front_image.erros}}
+            
+                </div>
+
+                <div class="col-12 col-lg-12 mt-2">
+                  <h6>
+                  Upload back image  of your selected documents
+                  </h6>
+                  {{form.document_back_image}}
+                  {{form.document_back_image.erros}}
+                </div>
+
+                <div class="col-12 col-lg-12 mt-2">
+                  <h6>
+                  Select your date of birth
+                  </h6>
+                  {{form.date_of_birth}}
+                  {{form.date_of_birth.erros}}
+                </div>
+                </div>
+                {% csrf_token %}
+
+                <button class="btn btn-primary w-100 mt-3">
+                  Verify
+                </button>
           </form>
         </div>
          
@@ -183,5 +246,24 @@
 
     </div>
 </div>
+
+
+<script>
+  function showImage(input) {
+    var file = input.files[0];
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      var imageElement = document.getElementById('image-preview');
+      imageElement.src = e.target.result;
+      imageElement.style.display = 'block';
+      
+      var labelElement = document.getElementById('custom-label');
+      labelElement.classList.add('with-image');
+    }
+
+    reader.readAsDataURL(file);
+  }
+</script>
 {% endblock inside %}
     

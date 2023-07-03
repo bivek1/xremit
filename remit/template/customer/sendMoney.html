@@ -1,5 +1,5 @@
 {% extends 'customer/dashboard.html' %}
-
+{% load static %}
 
 {% block title %}
     Send Money
@@ -34,240 +34,351 @@
       </span>
     </div>
     <div class="row backBox p-0 m-0">
-        <div class="col-11 p-2 m-auto">
-            <div class="row contentBox">
-                
+  
+        <div class="row contentBox">
             
-                <div class="bookContent p-2">
-                        <div class="BookBox ">
-                            <div class="topHead">
-                                    <div class="top-link active p-2 text-center" id="info">
-                                        <i class="fa fa-dice-one me-2"></i>
-                                        Amount
-                               
+        
+            <div class="bookContent p-2">
+                    <div class="BookBox ">
+                        <div class="topHead ps-4 pe-4 pt-3">
+                                <div class="top-link active  text-center" id="info">
+                                    <i class="fa fa-dice-one me-2"></i>
+                                    Amount
+                                </div>
+                                
+                                <div class="top-link p-2 text-center" id ="book">
+                                    <i class="fa fa-dice-two me-2"></i>
+                                    Recipients
+                                </div>
+                                <div class="top-link p-2 text-center" id ="trip">
+                                    <i class="fa fa-dice-three me-2"></i>
+                                    Review 
+                                </div>
+                                
+                                <div class="top-link p-2 text-center" id ="pay">
+                                    <i class="fa fa-dice-four me-2"></i>
+                                    Pay 
+                                </div>
+                                
+                        
+                        </div>
+                        <hr>
+               
+                        <div class="buttonContent p-2">
+                            <div id="buttonInfo" class="gets">
+                                
+                                <div class="col-11 col-lg-8 mt-3 m-auto">
+                                    <div  class="p-3">
+                                        <h5 class="text-center">
+                                            HOW MUCH YOU WANT TO TRANSFER?
+                                        </h5>
+                                        <p class="text-danger" id="infoerror">
+                                            
+                                        </p>
+                                        <div class="currecyBox mt-2">
+                                            <div class="left-currency p-2">
+                                                <span class="text-secondary">You Send</span>
+                                                <input type="text" name="sendingMoney" id="sendingMoney" placeholder="1000" onkeyup="checkCurrency();">
+                                            </div>
+
+                                            <div class="dropdown">
+                                                <a class="right-currency my-auto" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" >
+                                                    <img id="sending_currency_img" class="my-auto" src="{{default.country.flag_img.url}}">
+                                                    <h6 id="sending_currency_sign"   class="my-auto">{{default.currecy_sign}}</h6>
+                                                    <i class="fa fa-caret-down p-1 my-auto"></i>
+                                                </a>
+                                                
+                                                
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                    {% for i in currency %}
+                                                        <div class="right-currency-drop mb-3 p-3" onclick="changeState('{{i.id}}', '{{i.country.flag_img}}' , '{{i.currecy_sign}}');">
+                                                            <img class="my-auto" src="{{i.country.flag_img.url}}">
+                                                            <h6 class="my-auto">{{i.currecy_sign}}</h6>
+                                                        </div>
+
+                                                    {% endfor %}
+                                                </ul>
+                                                
+                                                
+                                            
+                                            </div>
+                                                
+                                        </div>
+                        
+                                        <div class="ps-3 pe-3 mt-2 mb-2">
+                                            <p class="d-flex justify-content-between">
+                                                <span id ="fee">
+                                                    <b>
+                                                        {{default.conversion_rate}} {{default.currecy_sign}} 
+                                                    </b>
+                                                </span>
+                                                <span>
+                                                    Total Fees
+                                                </span>
+                                            </p>
+                        
+                                            <p class="d-flex justify-content-between">
+                                                <span id ="converting_amt">
+                                                    <b>
+                                                        0 {{default.currecy_sign}} 
+                                                    </b>
+                                                </span>
+                                                <span>
+                                                    Amout we'll convert
+                                                </span>
+                                            </p>
+                                            <p class="d-flex justify-content-between">
+                                                <span id="rate">
+                                                    <b>
+                                                        {{default.conversion_rate}} 
+                                                    </b>
+                                                </span>
+                                                <span>
+                                                    Conversion rate
+                                                </span>
+                                            </p>
+                                        </div>
+                        
+                                        <div class="currecyBox">
+                                            <div class="left-currency p-2">
+                                                <span class="text-success">Receiptions gets</span>
+                                                <input type="text" name="gets" id="gets" placeholder="84000" disabled>
+                                            </div>
+                                            
+                                            <div class="dropdown">
+                                                <a class="right-currency my-auto" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <img id="recv_currency_img" class="my-auto" src="{{default.country.flag_img.url}}">
+                                                    <h6 id="recv_currency_sign" class="my-auto">{{default.currecy_sign}}</h6>
+                                                    <i class="fa fa-caret-down p-1 my-auto"></i>
+                                                </a>
+                                                
+                                                
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                    {% for i in currency %}
+                                                        <div class="right-currency-drop mb-3 p-3" onclick="changeStateTwo('{{i.id}}', '{{i.country.flag_img}}' , '{{i.currecy_sign}}');">
+                                                            <img class="my-auto" src="{{i.country.flag_img.url}}">
+                                                            <h6 class="my-auto">{{i.currecy_sign}}</h6>
+                                                        </div>
+
+                                                    {% endfor %}
+                                                </ul>
+                                                
+                                                
+                                            
+                                            </div>
+                        
+                                        </div>
+                        
+                                        <p class="text-success p-0 m-0 mt-3">
+                                            Your money will arived by <b>Jan 10</b>
+                                        </p>
+                                        <small>
+                                            By sending money you accept our 
+                                            <a href="http://">
+                                                terms and condition
+                                            </a>
+                                        </small>
+                        
+                                        <button type="button" class="btn btn-primary p-2 mt-3 w-100" id="procees_one">
+                                            Procced
+                                        </button>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <div id="flightInfo">
+                                <div class="row p-2" id="recipient">
+                                    <h5 class="text-center">
+                                        Select Your Recipients
+                                    </h5>
+                                    <div class="row m-0">
+                                        {% for i in  recp%}
+                                        <div class="col-12 col-md-6 col-lg-4" >
+                                            <div class="box p-2 mb-3" id="login-card"  onclick="toggleBorder(this)" >
+                                                <div class="d-flex">
+                                                    
+                                                    {% if i.country.flag_img %}
+                                                        <img class="my-auto" src="{{i.country.flag_img.url}}" alt="">
+                                                    {% endif %}
+                                                    <span class="ps-2 my-auto" >
+                                                        <h6 class="text-primary p-0 m-0">
+                                                        {{i.first_name}} {{i.middle_name}} {{i.last_name}}
+                                                        </h6>
+                                                        
+                                                        <p class="p-0 m-0">
+                                                            {{i.transaction_type}}
+                                                        </p>
+                                                        
+                                                    </span>
+                                                </div>
+                                                <div class="text-center">
+                                                    <hr>
+                                                    <small class="text-success">
+                                                        <i class="fa fa-location-dot"></i>
+                                                        {{i.country}}, {{i.city}}, {{i.state}}, {{i.zip_code}}, {{i.address}}
+                                                    </small>
+                                                    
+                                                </div>
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                            
+                                    {% endfor %}
                                     </div>
                                     
-                                    <div class="top-link p-2 text-center" id ="book">
-                                        <i class="fa fa-dice-two me-2"></i>
-                                        Recipients
+                                    
+                                        
+                                </div>
+
+                                <div class="row p-2 text-center mt-3" id="reason">
+                                    <div class="col-10 col-lg-9 m-auto">
+                                        <i class="fa fa-question-circle text-warning" style="font-size: 100px;"></i>
+                                        <h5>
+                                            What's the reason for your transfer?
+                                        </h5>
+                                        <small>
+                                            To make this money transfering service safe and secure. Please let us know your reason for the transfer.
+                                        </small>
+
+                                        <select name="reason" id="" class="form-control">
+                                            <option value="reason">Reason for your transfer</option>
+                                            <option value="family">Family Maintanance</option>
+                                            <option value="saving">Savings</option>
+                                            <option value="deposit">Deposit To Non Residenet Accounts</option>
+                                            <option value="friend">Payment To Friends</option>
+                                            <option value="personal">Other Personal Expenses</option>
+                                        </select>
+
+                                        <button type="button" class="btn btn-primary p-2 mt-3 w-100" id="procees_two">
+                                            Procced
+                                        </button>
                                     </div>
-                                    <div class="top-link p-2 text-center" id ="trip">
-                                        <i class="fa fa-dice-three me-2"></i>
-                                        Review 
-                                    </div>
-                                   
-                                    <div class="top-link p-2 text-center" id ="pay">
-                                        <i class="fa fa-dice-four me-2"></i>
-                                        Pay 
-                                    </div>
-                                  
-                           
+                                    
+                                </div>
                             </div>
-                            <hr>
-                            <form action="" method="post" enctype="multipart/form-data">
-                                <div class="buttonContent p-2">
-                                    <div id="buttonInfo" class="gets">
-                                       
-                                        <div class="col-11 col-lg-8 mt-3 m-auto">
-                                            <div  class="p-3">
-                                                <h5 class="text-center">
-                                                    HOW MUCH YOU WANT TO TRANSFER?
+        
+                            <div id="tripInfo">
+                                <div class="row p-2">
+                                    
+                                    
+                                    <div class="col-10 col-lg-6 m-auto col-md-8">
+                                        <h5 class="text-center">
+                                            Review Details
+                                        </h5>   
+
+                                        <div class="receipt-card p-3" id="receipt">
+                                            <div class="d-flex justify-content-between">
+                                                <h5>
+                                                    Transfer Details
                                                 </h5>
-                                                <p class="text-danger" id="infoerror">
-                                                    
-                                                </p>
-                                                <div class="currecyBox mt-2">
-                                                    <div class="left-currency p-2">
-                                                        <span class="text-secondary">You Send</span>
-                                                        <input type="text" name="sendingMoney" id="sendingMoney" placeholder="1000">
-                                                    </div>
-
-                                                    <div class="dropdown">
-                                                        <a class="right-currency my-auto" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <img class="my-auto" src="{{default.country.flag_img.url}}">
-                                                            <h6 class="my-auto">{{default.currecy_sign}}</h6>
-                                                            <i class="fa fa-caret-down p-1 my-auto"></i>
-                                                        </a>
-                                                        
-                                                        
-                                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                            {% for i in currency %}
-                                                                <div class="right-currency-drop mb-3 p-3">
-                                                                    <img class="my-auto" src="{{i.country.flag_img.url}}">
-                                                                    <h6 class="my-auto">{{i.currecy_sign}}</h6>
-                                                                </div>
-
-                                                            {% endfor %}
-                                                        </ul>
-                                                        
-                                                        
-                                                    
-                                                    </div>
-                                                       
-                                                </div>
-                                
-                                                <div class="ps-3 pe-3 mt-2 mb-2">
-                                                    <p class="d-flex justify-content-between">
-                                                        <span>
-                                                            <b>
-                                                                3 AUD 
-                                                            </b>
-                                                        </span>
-                                                        <span>
-                                                            Total Fees
-                                                        </span>
-                                                    </p>
-                                
-                                                    <p class="d-flex justify-content-between">
-                                                        <span>
-                                                            <b>
-                                                                97.00 AUD 
-                                                            </b>
-                                                        </span>
-                                                        <span>
-                                                            Amout we'll convert
-                                                        </span>
-                                                    </p>
-                                                    <p class="d-flex justify-content-between">
-                                                        <span>
-                                                            <b>
-                                                               87 
-                                                            </b>
-                                                        </span>
-                                                        <span>
-                                                            Conversion rate
-                                                        </span>
-                                                    </p>
-                                                </div>
-                                
-                                                <div class="currecyBox">
-                                                    <div class="left-currency p-2">
-                                                        <span class="text-success">Receiptions gets</span>
-                                                        <input type="text" name="gets" id="gets" placeholder="84000">
-                                                    </div>
-                                                   
-                                                    <div class="dropdown">
-                                                        <a class="right-currency my-auto" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <img class="my-auto" src="{{default.country.flag_img.url}}">
-                                                            <h6 class="my-auto">{{default.currecy_sign}}</h6>
-                                                            <i class="fa fa-caret-down p-1 my-auto"></i>
-                                                        </a>
-                                                        
-                                                        
-                                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                            {% for i in currency %}
-                                                                <div class="right-currency-drop mb-3 p-3">
-                                                                    <img class="my-auto" src="{{i.country.flag_img.url}}">
-                                                                    <h6 class="my-auto">{{i.currecy_sign}}</h6>
-                                                                </div>
-
-                                                            {% endfor %}
-                                                        </ul>
-                                                        
-                                                        
-                                                    
-                                                    </div>
-                                
-                                                </div>
-                                
-                                                <p class="text-success p-0 m-0 mt-3">
-                                                    Your money will arived by <b>Jan 10</b>
-                                                </p>
-                                                <small>
-                                                    By sending money you accept our 
-                                                    <a href="http://">
-                                                        terms and condition
-                                                    </a>
-                                                </small>
-                                
-                                                <button type="button" class="btn btn-primary p-2 mt-3 w-100" id="procees_one">
-                                                    Procced
-                                                </button>
-                                              
+                                                <span class="text-primary">
+                                                    Edit
+                                                </span>
                                             </div>
-                                        </div>
-                                    </div>
-                
-                                    <div id="flightInfo">
-                                        <div class="row p-2">
-                                            <h5 class="text-center">
-                                                Select Your Recipients
-                                            </h5>
-                                            <div class="row m-0">
-                                                {% for i in  recp%}
-                                                <div class="col-12 col-md-6 col-lg-4" >
-                                                    <div class="box p-2 mb-3" id="login-card"  onclick="toggleBorder(this)" >
-                                                        <div class="d-flex">
-                                                            
-                                                            {% if i.country.flag_img %}
-                                                             <img class="my-auto" src="{{i.country.flag_img.url}}" alt="">
-                                                            {% endif %}
-                                                            <span class="ps-2 my-auto" >
-                                                                <h6 class="text-primary p-0 m-0">
-                                                                {{i.first_name}} {{i.middle_name}} {{i.last_name}}
-                                                                </h6>
-                                                               
-                                                                <p class="p-0 m-0">
-                                                                   {{i.transaction_type}}
-                                                                </p>
-                                                              
-                                                            </span>
-                                                        </div>
-                                                        <div class="text-center">
-                                                            <hr>
-                                                            <small class="text-success">
-                                                                <i class="fa fa-location-dot"></i>
-                                                                {{i.country}}, {{i.city}}, {{i.state}}, {{i.zip_code}}, {{i.address}}
-                                                            </small>
-                                                          
-                                                        </div>
-                                                       
-                                                    </div>
-                                                   
-                                                </div>
-                                                   
-                                            {% endfor %}
-                                            </div>
-                                            <button type="button" class="btn btn-primary p-2 mt-3 w-100" id="procees_two">
-                                                Procced
-                                            </button>
-                                           
-                                                
-                                        </div>
-                                    </div>
-                
-                                    <div id="tripInfo">
-                                        <div class="row p-2">
-                                            <h6>You are sending money to this person</h6>
+                                            
                                             <div class="d-flex justify-content-between">
-                                                <p>
-                                                    Total Amount
+                                                <p class="text-secondary">
+                                                    You Send
                                                 </p>
 
-                                                <p>
-                                                    $200
-                                                </p>
+                                                <b id="r_sent_money">
+                                                    1000 AUD
+                                                </b>
 
                                             </div>
 
                                             <div class="d-flex justify-content-between">
-                                                <p>
-                                                    Currency rate
+                                                <p class="text-secondary">
+                                                    Total Fee
                                                 </p>
 
-                                                <p>
-                                                    1500
+                                                <p class="text-secondary" id="r_commision">
+                                                    -3 AUD
                                                 </p>
                                                 
                                             </div>
 
                                             <div class="d-flex justify-content-between">
-                                                <p>
-                                                    Receiptions gets
+                                                <p class="text-secondary">
+                                                    Amount after converting
                                                 </p>
 
-                                                <p>
+                                                <p class="text-secondary" id="r_covert">
                                                     1000
+                                                </p>
+                                                
+                                            </div>
+
+                                            <div class="d-flex justify-content-between">
+                                                <p class="text-secondary">
+                                                    Conversion Rate
+                                                </p>
+
+                                                <p class="text-secondary" id="r_rate">
+                                                    87
+                                                </p>
+                                                
+                                            </div>
+
+                                            <div class="d-flex justify-content-between">
+                                                <p class="text-secondary">
+                                                    Other get
+                                                </p>
+
+                                                <b>
+                                                    9854 NPR
+                                                </b>
+                                                
+                                            </div>
+                                            <h6 class="mt-2 text-center">You are sending money to this person</h6>
+                                            <hr>
+                                            <div class="d-flex justify-content-between">
+                                                <b>
+                                                    Recipients Details
+                                                </b>
+                                                <small class="text-primary">
+                                                    Change
+                                                </small>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <p class="text-secondary">
+                                                    Name
+                                                </p>
+
+                                                <b>
+                                                    Ram Prasad Yadav
+                                                </b>
+                                                
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <p class="text-secondary">
+                                                    Bank Name
+                                                </p>
+
+                                                <p class="text-secondary">
+                                                    Citizen Bank Limited
+                                                </p>
+                                                
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <p class="text-secondary">
+                                                    Account Number
+                                                </p>
+
+                                                <p class="text-secondary">
+                                                    0021255622111
+                                                </p>
+                                                
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <p class="text-secondary">
+                                                    Account Name
+                                                </p>
+
+                                                <p class="text-secondary">
+                                                    Ram Prasad Yadav
                                                 </p>
                                                 
                                             </div>
@@ -275,29 +386,202 @@
                                             <button type="button" class="btn btn-primary p-2 mt-3 w-100" id="procees_three">
                                                 Procced
                                             </button>
+
+                                        </div>
+
+                                        <div class="p-3" id="review2">
+                                            <div class="text-center">
+                                                <img src="{%static 'resources/transfer.webp'%}" alt="">
+                                            </div>
+                                            
+                                            <h3 class="text-dark text-center">
+                                                Xremit won't take money from your bank automatically
+                                            </h3>
+                                            <small class="text-center">
+                                                You'll nedd to do this a bit from your side to pay by bank transfer
+                                            </small>
+                                            <div class="d-flex justify-content-start p-2">
+                                                <i class="fa fa-file text-secondary p-2 my-auto"></i>
+                                                <span class="text-secondary p-2">
+                                                    We'll give you our bank account details
+                                                </span>
+                                            </div>
+                                            <div class="d-flex justify-content-between p-2">
+                                                <i class="fa fa-bank text-secondary p-2 my-auto"></i>
+                                                <span class="text-secondary p-2">
+                                                    You will have to transfer your money from your bank account to us
+                                                </span>
+                                            </div>
+                                            <div class="d-flex justify-content-between p-2">
+                                                <i class="fa fa-rocket text-secondary p-2 my-auto"></i>
+                                                <span class="text-secondary p-2">
+                                                    Once, we get your payment. We'll start the transfer asap.
+                                                </span>
+                                            </div>
+
+                                            <button type="button" class="btn btn-primary p-2 mt-3 w-100" id="procees_four">
+                                                I Understand and Procced
+                                            </button>
                                         </div>
                                     </div>
+                                    
+                                    
 
-                                    <div id="complete">
-                                        <div class="row p-2 text-center">
-                                            <i class="fa fa-check" style="font-size: 100px;"></i>
-                                            <h6>Completed</h6>
+                                    
+                                </div>
+                            </div>
+
+                            <div class="row" id="complete">
+                                <div class="col-12 col-lg-10  m-auto p-2 text-center">
+                                    <i class="fa fa-check-circle text-success" style="font-size: 100px;"></i>
+                                    <H4 class="text-center">Final Review</H4>
+                                    <div>
+                                        <div class="d-flex justify-content-between">
+                                            <h5>
+                                                Transfer Details
+                                            </h5>
+                                            <span class="text-primary">
+                                                Edit
+                                            </span>
+                                        </div>
+                                        
+                                        <div class="d-flex justify-content-between">
+                                            <p class="text-secondary">
+                                                You Send
+                                            </p>
+
+                                            <b>
+                                                1000 AUD
+                                            </b>
+
+                                        </div>
+
+                                        <div class="d-flex justify-content-between">
+                                            <p class="text-secondary">
+                                                Total Fee
+                                            </p>
+
+                                            <p class="text-secondary">
+                                                -3 AUD
+                                            </p>
+                                            
+                                        </div>
+
+                                        <div class="d-flex justify-content-between">
+                                            <p class="text-secondary">
+                                                Amount after converting
+                                            </p>
+
+                                            <p class="text-secondary">
+                                                1000
+                                            </p>
+                                            
+                                        </div>
+
+                                        <div class="d-flex justify-content-between">
+                                            <p class="text-secondary">
+                                                Conversion Rate
+                                            </p>
+
+                                            <p class="text-secondary">
+                                                87
+                                            </p>
+                                            
+                                        </div>
+
+                                        <div class="d-flex justify-content-between">
+                                            <p class="text-secondary">
+                                                Other get
+                                            </p>
+
+                                            <b>
+                                                9854 NPR
+                                            </b>
+                                            
+                                        </div>
+                                        <h6 class="mt-2">You are sending money to this person</h6>
+                                        <hr>
+
+                                        <div class="d-flex justify-content-between">
+                                            <b>
+                                                Recipients Details
+                                            </b>
+                                            <small class="text-primary">
+                                                Change
+                                            </small>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <p class="text-secondary">
+                                                Name
+                                            </p>
+
+                                            <b>
+                                                Ram Prasad Yadav
+                                            </b>
+                                            
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <p class="text-secondary">
+                                                Bank Name
+                                            </p>
+
+                                            <p class="text-secondary">
+                                                Citizen Bank Limited
+                                            </p>
+                                            
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <p class="text-secondary">
+                                                Account Number
+                                            </p>
+
+                                            <p class="text-secondary">
+                                                0021255622111
+                                            </p>
+                                            
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <p class="text-secondary">
+                                                Account Name
+                                            </p>
+
+                                            <p class="text-secondary">
+                                                Ram Prasad Yadav
+                                            </p>
                                             
                                         </div>
                                     </div>
-                
-                            
+                                    <div class="d-flex">
+                                        <form action="" method="post">
+                                            {{form}}
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-success m-2">
+                                                Make a Payment
+                                            </button>
+                                        </form>
+                                       
+
+                                        <a href="{%url 'customer:dashboard'%}">
+                                            <button type="button" class="btn btn-danger m-2">
+                                                Cancel Transfer
+                                            </button>
+                                        </a>
+                                        
+                                    </div>
+                                    
                                 </div>
-                        
+                            </div>
+
                         </div>
-            
                     
-                </div>
-                
+                    </div>
+        
                 
             </div>
-          
+            
+            
         </div>
+ 
     </div>
 
 </div>
@@ -305,6 +589,8 @@
 
 <script>
   $('#flightInfo').hide()
+  $('#reason').hide()
+  $('#review2').hide()
   $('#tripInfo').hide()
   $('#complete').hide()
   $('#procees_one').click(function(){
@@ -319,7 +605,7 @@
       else{
           
         $('#infoerror').hide()
-        $('#flightInfo').show()
+        $('#flightInfo').show().fadeIn(1000);
         $('#buttonInfo').hide()
         $('#book').addClass('active')
         $('#info').removeClass('active')
@@ -335,37 +621,134 @@
         $('#buttonInfo').hide()
         $('#tripInfo').show()
         $('#book').removeClass('active')
+        $('#book').addClass('completed')
         $('#info').removeClass('active')
+        
         $('#trip').addClass('active')
-        $('#trip').addClass('completed')
+     
     
   })
 
   $('#procees_three').click(function(){
+        $('#receipt').hide().fadeOut(1000)
+        $('#flightInfo').hide()
+        $('#buttonInfo').hide()
+        
+        $('#review2').show().fadeIn(1000)
+        // $('#complete').show()
+
+  })
+  $('#procees_four').click(function(){
+        $('#receipt').hide().fadeOut(1000)
         $('#flightInfo').hide()
         $('#buttonInfo').hide()
         $('#tripInfo').hide()
         $('#complete').show()
-        $('#book').removeClass('active')
-        $('#info').removeClass('active')
+        $('#trip').addClass('completed')
         $('#pay').addClass('active')
-        $('#pay').addClass('completed')
   })
 </script>
 
 
 <script>
 
-    function toggleBorder(element) {
-    // Remove border from all divs
-    const boxes = document.getElementsByClassName('box');
-    for (let i = 0; i < boxes.length; i++) {
-        boxes[i].classList.remove('selected');
+    currency_rate = '{{default.currecy_rate}}'
+    fee = '{{default.conversion_rate}}'
+    cur_sign = '{{default.currecy_sign}}'
+    converting_amt = 0
+    sending_amt = document.getElementById('fee').value
+    receiving_amt = 0 
+
+
+    function checkCurrency(){
+        sending_amt = document.getElementById('sendingMoney').value
+        console.log(sending_amt)
+        converting_amt =parseFloat(sending_amt) - parseFloat(fee)
+        $('#converting_amt').text(converting_amt +"  " + cur_sign  )
+        $('#rate').text(currency_rate + "  " + cur_sign) 
+        $('#fee').text(fee + "  " + cur_sign)
+        receiving_amt = parseFloat(currency_rate) * converting_amt
+        console.log(receiving_amt)
+        $('#gets').val(receiving_amt)
+
+        $('#r_sent_money').text(sending_amt + "  " + cur_sign)
+        $('#r_commision').text("-" + fee + "  " + cur_sign)
+        $('#r_covert').text(converting_amt +"  " + cur_sign)
+        $('#r_rate').text(currency_rate + "  " + cur_sign)
+
+        $('#id_customer').val('{{customer.id}}')
+        $('#id_sending_currency').val(cur_sign)
+        $('#r_covert').text(converting_amt +"  " + cur_sign)
+        $('#r_rate').text(currency_rate + "  " + cur_sign)
     }
 
-    // Add border to the clicked div
-    element.classList.add('selected');
+
+    function changeState(id, src, sign){
+
+        $('#sending_currency_sign').text(sign);
+        path ='/media/' + src
+        $('#sending_currency_img').attr('src', path);
+  
+        $.ajax({
+            type: 'POST',
+            url: '{%url "customer:changeCurone"%}', // Replace with the actual URL of your view
+            data: {
+                'id': id, // Send the data as a key-value pair
+                'csrfmiddlewaretoken': '{{ csrf_token }}' // Include the CSRF token for security
+            },
+            success: function(response) {
+                console.log(response.currency_rate)
+                console.log(response.fee)
+                console.log(response.cur_sign)
+                currency_rate = response.currency_rate
+                fee = response.fee
+                cur_sign = response.cur_sign
+                sending_amt = document.getElementById('sendingMoney').value
+                console.log(sending_amt)
+                converting_amt =parseFloat(sending_amt) - parseFloat(fee)
+                $('#converting_amt').text(converting_amt +"  " + cur_sign  )
+                $('#rate').text(currency_rate + "  " + cur_sign) 
+                $('#fee').text(fee + "  " + cur_sign)
+                receiving_amt = parseFloat(currency_rate) * converting_amt
+                console.log(receiving_amt)
+                $('#gets').val(receiving_amt)
+            }
+      });
+  
     }
+
+
+
+    function changeStateTwo(id, src, sign){
+        console.log(sign)
+        $('#recv_currency_sign').text(sign);
+        path ='/media/' + src
+        $('#recv_currency_img').attr('src', path);
+        console.log(sign)
+  
+    }
+
+
+    function toggleBorder(element) {
+        // Remove border from all divs
+        $('#reason').hide().slideDown(1000);
+        const boxes = document.getElementsByClassName('box');
+        for (let i = 0; i < boxes.length; i++) {
+            boxes[i].classList.remove('selected');
+        }
+    
+       
+      
+        $('#reason').show().slideDown(1000);
+      
+        
+        // Add border to the clicked div
+        element.classList.add('selected');
+    }
+
+
+
+   
 </script>
 
 
