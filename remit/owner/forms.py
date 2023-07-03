@@ -11,21 +11,22 @@ class KYCForm(forms.ModelForm):
     class Meta:
         model = KYC
         fields = ('__all__')
-        excludes = ('customer',)
+
 
         widgets= {
            
             'country':forms.Select(attrs={'class':'form-control mt-2', 'placeholder':'Country'}),
-            'address':forms.FileInput(attrs={'class':'form-control mt-2', 'placeholder':'Title of the site'}),
-            'state ':forms.FileInput(attrs={'class':'form-control mt-2', 'placeholder':'Title of the site'}),
-            'city':forms.FileInput(attrs={'class':'form-control mt-2', 'placeholder':'Title of the site'}),
-            'zip_code':forms.EmailInput(attrs={'class':'form-control mt-2', 'placeholder':'zipcode'}),
+            'address':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Your Address'}),
+            'state':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Your state'}),
+            'city':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Sydney'}),
+            'zip_code':forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'zipcode'}),
             'postal_address':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Your postal code'}),
             'number':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'+61989229298'}),
             'gender':forms.Select(attrs={'class':'form-control mt-2', 'placeholder':'Your Gender'}),
             'document_front_image':forms.FileInput(attrs={'class':'form-control mt-2',}),
             'document_back_image':forms.FileInput(attrs={'class':'form-control mt-2'}),
-            'date_of_birth':forms.DateInput(attrs={'type':'date','class':'form-control mt-2',})
+            'date_of_birth':forms.DateInput(attrs={'type':'date','class':'form-control mt-2',}),
+            'document_type':forms.Select(attrs={'class':'form-control mt-2'})
                 
         }
 

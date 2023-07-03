@@ -106,31 +106,46 @@ def deleteCustomer(request, id):
     messages.success(request, "Successfully delete customer")
     return HttpResponseRedirect(reverse('owner:customer'))
 
+
 def customerProfile(request, id):
-    real_customer = Customer.objects.get(id = id)
+    real_customer = CustomUser.objects.get(id = id)
+    cm = KYC.objects.filter(customer=real_customer.customer)
+  
+    for i in cm:
+        cm=i
+        break
 
-
-    form = CustomerForm(instance=real_customer)
+    form = CustomerForm(instance=real_customer.customer)
     dist = {
         'real_customer':real_customer,
         'form':form,
         'form_head':"Update Customer",
         'button':"Update customer",
+        'cm':cm
     
     }
 
     if request.method == 'POST':
         try: 
-            real_customer.admin.first_name = request.POST['first_name']
-            real_customer.admin.last_name = request.POST['last_name']
-            real_customer.admin.email = request.POST['email']
-            real_customer.admin.username = request.POST['email']
-            real_customer.admin.save()
+            real_customer.first_name = request.POST['first_name']
+            real_customer.last_name = request.POST['last_name']
+            real_customer.email = request.POST['email']
+            real_customer.username = request.POST['email']
+            real_customer.save()
         except:
             messages.error(request, "Email is added already..")
             return HttpResponseRedirect(reverse('owner:customerProfile',args=[real_customer.id]))
-        form = CustomerForm(request.POST, instance=real_customer)
+        form = CustomerForm(request.POST)
         if form.is_valid():
+            
+            real_customer.customer.number = request.POST['number']
+            real_customer.customer.mail_address = request.POST['mail_address']
+            real_customer.customer.state = request.POST['state']
+            real_customer.customer.zip_code = request.POST['zip_code']
+            real_customer.customer.city = request.POST['city']
+            real_customer.customer.country= request.POST['country']
+            real_customer.customer.address = request.POST['address']
+            real_customer.customer.save()
             form.save()
             messages.success(request, "Successfully Updated Customer")
             return HttpResponseRedirect(reverse('owner:customerProfile',args=[real_customer.id]))
@@ -930,7 +945,10 @@ def countryView(request):
 def editCountry(request, id):
     footer = Country.objects.get(id = id)
     footer.name = request.POST['country_name']
-    footer.flag_img = request.FILES['country_link']
+    try:
+        footer.flag_img = request.FILES['country_link']
+    except:
+        pass
     footer.save()
     messages.success(request, "Successfully Edited Country")
     return HttpResponseRedirect(reverse('owner:country'))
@@ -968,7 +986,7 @@ def currencyView(request):
 
 def editCurrency(request, id):
     currency = Currency.objects.get(id = id)
-    currency.country = request.POST['country']
+    currency.country = Country.objects.get(id =request.POST['country']) 
     currency.currecy_rate = request.POST['currecy_rate']
     currency.conversion_rate = request.POST['conversion_rate']
     currency.commision_rate = request.POST['commision_rate']
@@ -976,6 +994,7 @@ def editCurrency(request, id):
     currency.save()
     messages.success(request, "Successfully Edited Currency")
     return HttpResponseRedirect(reverse('owner:currency'))
+
 
 
 def deleteCurrency(request, id):
@@ -1024,3 +1043,30 @@ def deletePickup(request, id):
     footer.delete()
     messages.success(request, "Successfully deleted pickup point")
     return HttpResponseRedirect(reverse('owner:pickup'))
+
+
+def kycView(request):
+    kyc = KYC.objects.all().order_by('-id')
+    
+
+    dist = {
+        'kyc':kyc
+    }
+    return render(request, "owner/kyc.html", dist)
+
+def verifyView(request, id):
+    user = Customer.objects.get(id = id)
+    
+    cm = KYC.objects.filter(customer = user)
+  
+    for i in cm:
+        cm=i
+        break
+   
+    cust = user
+    cust.kyc_verified = True
+    cust.save()
+
+    messages.success(request, "Successfully Verified Account")
+    
+    return HttpResponseRedirect(reverse('owner:kyc'))

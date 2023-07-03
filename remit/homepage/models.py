@@ -46,31 +46,10 @@ class Agent(models.Model):
     objects = models.Manager()
     
     def __str__(self):
-        return self.admin.first_name
-
-    
-class Customer(models.Model):
-    id = models.AutoField(primary_key = True)
-    admin = models.OneToOneField(CustomUser, related_name ="customer", on_delete=models.CASCADE, null = True, blank = True)
-    number = models.BigIntegerField(null = True)
-    mail_address = models.CharField(max_length=100, null = True, blank = True)
-    state = models.CharField(max_length=100, null = True, blank = True)
-    zip_code = models.IntegerField(null = True, blank = True)
-    city = models.CharField(max_length=100, null = True, blank = True)
-    country = models.CharField(max_length=100, null = True, blank = True)
-    address = models.CharField(max_length = 200, null = True, blank = True)
-    profil_pic = models.ImageField(upload_to ="profile_pic/customer/", null = True, blank = True)
-    created_at = models.DateTimeField(auto_now_add= True)
-    added_by = models.ForeignKey(CustomUser, null=True, blank = True, related_name = 'student_adder', on_delete = models.CASCADE)
-    updated_at = models.DateTimeField(auto_now=True)
-    enable_2fa = models.BooleanField(default=False)
-    kyc_verified = models.BooleanField(default=False)
-    objects = models.Manager()
-    
-
-    def __str__(self):
-        return str(self.id)
-
+        try:
+            return self.admin.first_name
+        except:
+            return str(self.id)
 
 
 class Country(models.Model):
@@ -82,6 +61,37 @@ class Country(models.Model):
 
     def __str__(self):
         return self.name
+
+    
+class Customer(models.Model):
+    id = models.AutoField(primary_key = True)
+    admin = models.OneToOneField(CustomUser, related_name ="customer", on_delete=models.CASCADE, null = True, blank = True)
+    number = models.BigIntegerField(null = True)
+    mail_address = models.CharField(max_length=100, null = True, blank = True)
+    state = models.CharField(max_length=100, null = True, blank = True)
+    zip_code = models.IntegerField(null = True, blank = True)
+    city = models.CharField(max_length=100, null = True, blank = True)
+    country = models.ForeignKey(Country, related_name='customer_country', on_delete=models.CASCADE, null = True, blank= True)
+    address = models.CharField(max_length = 200, null = True, blank = True)
+    profil_pic = models.ImageField(upload_to ="profile_pic/customer/", null = True, blank = True)
+    created_at = models.DateTimeField(auto_now_add= True)
+    added_by = models.ForeignKey(CustomUser, null=True, blank = True, related_name = 'student_adder', on_delete = models.CASCADE)
+    updated_at = models.DateTimeField(auto_now=True)
+    enable_2fa = models.BooleanField(default=False)
+    kyc_verified = models.BooleanField(default=False)
+    
+    objects = models.Manager()
+    
+
+    def __str__(self):
+        try:
+            return self.admin.first_name
+        except:
+            return str(self.id)
+
+
+
+
     
 
     
@@ -96,7 +106,7 @@ class PickupPoint(models.Model):
         return self.name
     
 class Recipient(models.Model):
-    # customer = models.ForeignKey(Customer, related_name='recipient_customer', on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, related_name='recipient_customer', on_delete=models.CASCADE, null = True, blank=True)
     transaction_type = models.CharField(max_length=300, choices=(
         ('CashPickup', 'Cash Pickup'),
         ('BankTransfer', 'Bank Transfer'),
@@ -134,7 +144,7 @@ class Currency(models.Model):
 
 
 class KYC(models.Model):
-    customer = models.OneToOneField(Customer, related_name='kyc_customer', on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, related_name='kyc_customer', on_delete=models.CASCADE, null = True, blank=True)
     country = models.ForeignKey(Country, related_name='kyc_country', on_delete=models.CASCADE)
     address = models.CharField(max_length=200)
     state = models.CharField(max_length=200, null = True, blank= True)
@@ -170,7 +180,7 @@ class KYC(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.customer.admin.usernamer
+        return self.customer.admin.username
 
 
 

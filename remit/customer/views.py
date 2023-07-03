@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from owner.forms import RecipientForm, Recipient, KYC, KYCForm
-from homepage.models import Currency
+from homepage.models import Currency, Country
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -20,7 +20,7 @@ def customerDashboard(request):
 
 def recipient(request):
     
-    recipient = Recipient.objects.all().order_by('-id')
+    recipient = Recipient.objects.filter(customer__admin = request.user).order_by('-id')
     dist = {
         'recipient':recipient
     }
@@ -31,7 +31,7 @@ def recipient(request):
 
 def addRecipient(request):
     form = RecipientForm()
-    recipient = Recipient.objects.all().order_by('-id')
+    recipient = Recipient.objects.filter(customer__admin = request.user).order_by('-id')
     dist = {
         'recipient':recipient,
         'form':form
@@ -40,10 +40,15 @@ def addRecipient(request):
     if request.method == 'POST':
         form = RecipientForm(request.POST)
         if form.is_valid():
-            form.save()
+            sav = form.save(commit=False)
+            sav.customer = request.user.customer
+            sav.save()
+      
             messages.success(request, "Successfully added recipient")
             return HttpResponseRedirect(reverse('customer:recipient'))
         else:
+              
+            print(form.errors)
             messages.error(request,"Something went wrong")
             
 
@@ -60,9 +65,11 @@ def editRecipient(request, id):
     }
 
     if request.method == 'POST':
-        form = RecipientForm(request.POST)
+        form = RecipientForm(request.POST, instance=rec)
         if form.is_valid():
-            form.save()
+            sav = form.save(commit=False)
+            sav.customer = request.user.customer
+            sav.save()
             messages.success(request, "Successfully updated recipient")
             return HttpResponseRedirect(reverse('customer:recipient'))
         else:
@@ -79,7 +86,15 @@ def deleteRecipient(request, id):
     return HttpResponseRedirect(reverse('customer:recipient'))
 
 def sendMoney(request):
-    return render(request, "customer/sendMoney.html")
+
+    default = Currency.objects.last()
+
+    dist = {
+        'recp':Recipient.objects.filter(customer__admin = request.user),
+        'currency':Currency.objects.all(),
+        'default':default
+    }
+    return render(request, "customer/sendMoney.html", dist)
 
 def currency(request):
     currency = Currency.objects.all().order_by('-id')
@@ -91,17 +106,58 @@ def currency(request):
 
 def kycVerify(request):
 
-    form = KYCForm
+    form = KYCForm()
+    
+    cm = KYC.objects.filter(customer__admin = request.user)
+  
+    for i in cm:
+        cm=i
+        break
+    if cm:
+        form = KYCForm(instance=cm)
+    else:
+        form = KYCForm()
+
+    if request.user.customer.state:
+        form.fields['state'].initial = request.user.customer.state
+
+    if request.user.customer.state:
+        form.fields['city'].initial = request.user.customer.city
+
+    if request.user.customer.state:
+        form.fields['zip_code'].initial = request.user.customer.zip_code
+
+    if request.user.customer.state:
+        form.fields['number'].initial = request.user.customer.number
+
+    if request.user.customer.state:
+        form.fields['address'].initial = request.user.customer.address
+    
+    if request.user.customer.state:
+        form.fields['country'].initial = request.user.customer.country 
 
     dist = {
         'form':form
     }
 
     if request.method == 'POST':
-        form = KYCForm(request.POST, request.FILES)
+        if cm:
+            form = KYCForm(request.POST, request.FILES, instance=cm)
+        else:
+            form = KYCForm(request.POST, request.FILES)
+
+       
         if form.is_valid():
-            form.save()
+            aa = form.save(commit=False)
+            aa.customer = request.user.customer
+            aa.save()
             messages.success(request, "Successfully sent for verification")
+            return HttpResponseRedirect(reverse('customer:verify'))
+        else:
+            print(form.errors)
+            dist.update({'form':form})
+            messages.success(request, "Something went wrong! " )
+
     return render(request, "customer/verify.html", dist)
 
 
@@ -121,23 +177,30 @@ class Profile(View):
 
     def post(self, request, *args, **kwargs):
         real_customer = request.user.customer
-        if request.method == 'POST':
-            try: 
-                real_customer.admin.first_name = request.POST['first_name']
-                real_customer.admin.last_name = request.POST['last_name']
-                real_customer.admin.email = request.POST['email']
-                real_customer.admin.username = request.POST['email']
-                real_customer.admin.save()
-            except:
-                messages.error(request, "Email is added already..")
-                return HttpResponseRedirect(reverse('customer:profile'))
-            form = CustomerForm(request.POST, instance=real_customer)
-            if form.is_valid():
-                form.save()
-                messages.success(request, "Successfully Updated Customer")
-                return HttpResponseRedirect(reverse('customer:profile'))
-            else:
-                messages.error(request, "Something went wrong")
-
+        try:
+            real_customer.admin.first_name = request.POST['first_name']
+            real_customer.admin.last_name = request.POST['last_name']
+            real_customer.admin.email = request.POST['email']
+            real_customer.admin.username = request.POST['email']
+            real_customer.admin.save()
+        except:
+            messages.error(request, "Email is added already..")
+            return HttpResponseRedirect(reverse('customer:profile'))
+        form = CustomerForm(request.POST)
+        if form.is_valid():
+            real_customer.number = request.POST['number']
+            real_customer.mail_address = request.POST['mail_address']
+            real_customer.state = request.POST['state']
+            real_customer.zip_code = request.POST['zip_code']
+            real_customer.city = request.POST['city']
+            real_customer.country= Country.objects.get(id = request.POST['country'])
+            real_customer.address = request.POST['address']
+            real_customer.save()
+            
             messages.success(request, "Sucessfully Updated Profile")
+            return HttpResponseRedirect(reverse('customer:profile'))
+        else:
+            messages.error(request, "Something went wrong")
+
+        
         return HttpResponseRedirect(reverse('customer:profile'))

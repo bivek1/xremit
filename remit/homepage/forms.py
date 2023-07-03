@@ -49,11 +49,11 @@ class UserCreateForm(UserCreationForm):
                 'email',
                 'password',)
         labels = {
-            'first_name':'First Name',
-            'last_name':'Last Name',
-            'username':'Username',
-            'email':'Email',
-            'password':'Password'
+                'first_name':'First Name',
+                'last_name':'Last Name',
+                'username':'Username',
+                'email':'Email',
+                'password':'Password'
         }
    
 
@@ -71,7 +71,7 @@ class CustomerForm(forms.ModelForm):
             'state': forms.TextInput(attrs={'class':'form-control', 'placeholder':'You State'}),
             'zip_code' : forms.NumberInput(attrs={'class':'form-control', 'placeholder':'Zip Code'}),
             'city' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'City'}),
-            'country' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Country'}),
+            'country' : forms.Select(attrs={'class':'form-control', 'placeholder':'Country'}),
             'address' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Address'}),
             'profil_pic' : forms.FileInput(attrs={'class':'form-control', 'placeholder':'Profile Picture'}),
         }

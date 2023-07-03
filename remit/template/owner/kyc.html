@@ -1,0 +1,199 @@
+{% extends 'owner/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+   KYC Verify Management
+{% endblock title %}
+
+
+{% block inside %}
+<div class="row p-0 m-0 mt-3">
+         
+    <div class="mt-3 mb-3">
+      <span class="breadcum">
+        <a href="{%url 'owner:dashboard'%}">
+            Dashboard
+        </a>/
+
+        KYC Verification
+  
+      </span>
+    </div>
+
+
+    <div class="row m-0  mt-3">
+        <h5 class="p-0">
+            KYC Verify
+        </h5>
+        <hr>
+        <div class="row p-0 m-0 mt-3">
+            
+            <div class="p-2">
+                <div class=" login-flex d-flex my-auto" style="width: 100%;">
+                    <i class="fa fa-magnifying-glass my-auto p-2"></i>
+                    <input type="text" name="search"  id="search" onkeyup="SearchName()" class="form-control"  placeholder="Search Customer by their name" required id="">
+                   </div>
+                <table class="table border-1 " id="myTable">
+            
+                    <tbody>
+                        
+                        {% if not user %}
+                            <h6 class="text-center text-secondary mt-3">
+                                No Customer has been added
+                            </h6>
+                        {% endif %}
+                            
+                        {% for i in kyc  %}
+                        <tr>
+                            <td>
+                                <div class="item-list-div mt-2 p-1">
+                                    <!-- <img class="my-auto" src="{{i.customer.profile_pic.url}}" alt="" style="height: 70px; width: 70px; border-radius: 50%;"> -->
+                                    {% if i.customer.profil_pic %}
+                                        <img class="my-auto" src="{{i.customer.profil_pic.url}}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                                    {%else%}
+                                        <i class="fa fa-user-circle text-light my-auto" style="font-size: 30px;">
+                                        </i> 
+                                    {% endif %}
+                                    <div class="flex-wr">
+                                        <p class="m-0 p-2">
+                                            {{i.customer.admin.get_full_name}}
+                                        </p>
+                                        <small class="p-1">
+                                            <i class="fa fa-mobile p-2"></i>
+                                            {{i.number}}
+                                        </small>
+                                        <small class="p-1">
+                                            <i class="fa fa-envelope-circle-check p-2"></i>
+                                            {{i.customer.admin.email}}
+                                        </small>
+                                    </div>
+                                    <div class="my-auto">
+                                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}"> 
+                                            <i class="fa fa-eye-alt"></i>
+                                            View
+                                        </button>
+
+                                        <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                
+                                                    <div class="modal-body">
+                                                        <div class="d-flex justify-content-between">
+                                                            <h5>KYC DATA</h5>
+                                                            {% if i.customer.kyc_verified %}
+                                                                <button class="btn btn-success">
+                                                                    <i class="fa fa-check-circle"></i>
+                                                                    Verified
+                                                                </button> 
+                                                            {%else%}
+                                                                <a href="{%url 'owner:verify' i.id%}">
+                                                                    <button class="btn btn-danger">
+                                                                        <i class="fa fa-question"></i>
+                                                                       Verify?
+                                                                    </button>
+                                                                </a>
+                                                            {% endif %}
+                                                        </div>
+                                                        <div>
+                                                            <table class="table table-success table-striped mt-3">
+                                                                <thead>
+                                                                  <tr>
+                                                                    <th scope="col">First Name</th>
+                                                                    <th scope="col">Last Name</th>
+                                                                    <th scope="col">Middle Name</th>
+                                                                    <th scope="col">Gender</th>
+                                                                    <th scope="col">Country</th>
+                                                                  </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                  <tr>
+                                                                    <th scope="row"> {{real_customer.first_name}}</th>
+                                                                    <td>{{real_customer.last_name}}</td>
+                                                                    <td>{{real_customer.middle_name}}</td>
+                                                                    <td> {{cm.gender}}</td>
+                                                                    <td> {{cm.country}}</td>
+                                                                  </tr>
+                                                                </tbody>
+                                                            </table>
+                    
+                                                            <table class="table table-info table-striped mt-3">
+                                                                <thead>
+                                                                  <tr>
+                                                                    <th scope="col">Number</th>
+                                                                    <th scope="col">Address</th>
+                                                                    <th scope="col">State</th>
+                                                                    <th scope="col">Zip code</th>
+                                                                    <th scope="col">City</th>
+                                                                  </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                  <tr>
+                                                                    <th scope="row"> {{cm.number}}</th>
+                                                                    <td>{{cm.address }}</td>
+                                                                    <td>{{cm.state}}</td>
+                                                                    <td> {{cm.zip_code}}</td>
+                                                                    <td> {{cm.city}}</td>
+                                                                  </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <div class="alert alert-danger">
+                                                                <i class="fa fa-info-circle"></i> 
+                                                                Has Uploaded:
+                                                                {{cm.document_type}}
+                                                            </div>
+                                                            <div class="d-flex">
+                                                                <div>
+                                                                    <h5>
+                                                                        Document Front Image
+                                                                    </h5>
+                                                                    <img src="{{cm.document_front_image.url}}" alt="" style="width: 100%; height: auto;">
+                                                                </div>
+                                                                <div>
+                                                                    <h5>
+                                                                        Document Back Image
+                                                                    </h5>
+                                                                    
+                                                                    {% if cm.document_back_image %}
+                                                                        <img src="{{cm.document_back_image.url}}" alt="" style="width: 100%; height: auto;">
+                                                                    {%else%}
+                                                                        <small>Not Available</small>
+                                                                    {% endif %}
+                                                                        
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                          
+                                                        </div>
+                                                    </div>
+                                                
+                                              </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                   
+                                   
+                                        
+                                        
+                                </div>
+                            </td>
+                          
+                        </tr>
+                         
+                        {% endfor %}
+                        <!-- <div id="items-container"></div> -->
+                     
+                    </tbody>
+                </table>
+            </div>
+                
+        </div>
+    
+    </div>
+
+   
+</div>
+
+{% endblock inside %}
+    
+    

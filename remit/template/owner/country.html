@@ -106,7 +106,7 @@
                                                                     <label for="name"> Country Name</label>
                                                                     <input class="form-control" type="text" value = "{{i.name}}" name="country_name" id="" required>
                                                                     <label for="name"> Image of Flag </label>
-                                                                    <input class="form-control" type="file" value = "{{i.link}}" name="country_link" id="" required>
+                                                                    <input class="form-control" type="file" value = "{{i.link}}" name="country_link" id="">
                                                                     {% csrf_token %}
                                                                     <button type="submit" class="btn btn-danger mt-2">
                                                                         <i class="fa fa-pencil"></i> Edit

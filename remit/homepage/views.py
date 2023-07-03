@@ -157,12 +157,14 @@ def Register(request):
         last_name = request.POST['last_name']
         username = request.POST['email']
         password = request.POST['password']
-        
-        admin = CustomUser.objects.create_user(first_name = request.POST['first_name'], last_name = request.POST['last_name'], email = request.POST['email'], username = request.POST['email'], password = request.POST['password'], user_type = 'customer')
-
-        obj = admin.customer
-        obj.added_by = admin
-        obj.save()
+        try:
+            admin = CustomUser.objects.create_user(first_name = request.POST['first_name'], last_name = request.POST['last_name'], email = request.POST['email'], username = request.POST['email'], password = request.POST['password'], user_type = 'customer')
+            obj = admin.customer
+            obj.added_by = admin
+            obj.save()
+        except:
+            messages.error(request, "Email is already registered please try again with different email")
+            return HttpResponseRedirect(reverse('homepage:register'))
         use = authenticate(request, username = username, password = password)
         if use is not None:
             login(request, use)

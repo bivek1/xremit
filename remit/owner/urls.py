@@ -75,5 +75,17 @@ urlpatterns = [
     path('delete-pickup/<int:id>', views.deletePickup, name = "deletePickup"),
 
 
+    # KYC Verification
+
+    path(
+        'kyc-verification-request-list/asda283sd', views.kycView, name="kyc"
+    ),
+    path(
+        'verify-kyc-now/<int:id>', views.verifyView, name = "verify"
+    )
+
+    
+
+
 
 ]   

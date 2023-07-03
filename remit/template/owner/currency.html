@@ -100,7 +100,7 @@ Currency Management {% endblock title %} {% block inside %}
                           <div class="modal-content">
                             <div class="modal-body">
                               <div class="text-center">Edit {{i.currecy_sign }}</div>
-                              <form action="" method="post" enctype="multipart/form-data">
+                              <form action="{%url 'owner:editCurrency' i.id%}" method="post" enctype="multipart/form-data">
                                 <div class="row p-0 m-0">
                                   <label for="id_country">Country:</label>
                 
@@ -167,7 +167,7 @@ Currency Management {% endblock title %} {% block inside %}
                                   />
                 
                                   {% csrf_token %}
-                                  <button class="btn btn-primary mt-3" type="submit">
+                                  <button class="btn btn-primary mt-3">
                                     Update Currency
                                   </button>
                                 </div>

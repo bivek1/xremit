@@ -36,7 +36,7 @@
           </div>
         </a>
        
-        <a href="{%url 'owner:agent'%}">
+        <!-- <a href="{%url 'owner:agent'%}"> -->
           <div class="mt-2 p-2 side-item">
             <div class="text-center">
               <i class="fa fa-users mt-2"></i>  
@@ -45,7 +45,7 @@
               Agent
             </span> 
           </div>
-        </a>
+        <!-- </a> -->
   
         <a href="{%url 'owner:customer'%}">
             <div class="mt-2 p-2 side-item">
@@ -349,11 +349,11 @@
 
         <div class="row m-0 mt-3">
          
-   
+<!--    
           <div class="topBox mt-3 p-2">
             <h4 class="text-primary">Dashboard</h4>
             <small>This is admin dashboard. You can mainpulate everything from this dashboard</small>
-          </div>
+          </div> -->
      
           
           <div class="mt-3 m-0">
@@ -364,12 +364,24 @@
           <div class="row">
             <div class="mt-3 col-12 ">
               <div>
-                <div class="d-flex justify-content-between">
-                  <h5 class="m-0 p-2 text-primary">Recent Transactions</h5>
-                  <button class="btn btn-primary">
-                    See All
-                  </button>
-                </div>
+                  <div class="p-2">
+                    <a href="{%url 'owner:kyc'%}">
+                      <div class="alert alert-light" id="kyc_rec">
+                        <img src="{%static 'resources/verified.png'%}" alt="" height="30px;" width="30px;">
+                        <span class="text-danger">
+                           VIEW KYC VERIFICATION REQUEST
+                        </span>
+                      </div>
+                    </a>
+                     
+                  </div>
+
+                  <div class="d-flex justify-content-between">
+                    <h5 class="m-0 p-2 text-primary">Recent Transactions</h5>
+                    <button class="btn btn-primary">
+                      See All
+                    </button>
+                  </div>
                  
 
                   <div class="transaction-div p-2" id="login-card" >
