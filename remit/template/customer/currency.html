@@ -21,28 +21,105 @@
     <div class="row p-0 m-0 mt-3">
         
         {% for i in currency  %}
-        <div class="col-lg-4 col-12 mt-3">
+          <div class="col-lg-4 col-12 mt-3">
 
-            <div class="currency-box my-auto text-center">
-              <div class="p-2">
-                {% if i.country.flag_img %}
-                <img src="{{i.country.flag_img.url}}" alt="" height="30px;" width="auto">
-                {% endif %}
-                  
-                <div class="d-flex mt-2 justify-content-between">
-                  <h1 class="text-dark">{{i.currecy_sign}}</h1>
-                  <h1 class="text-info">
-                    {{i.currecy_rate}}
-                  </h1>
+              <div class="currency-box my-auto text-center" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}">
+                <div class="p-2">
+                  {% if i.country.flag_img %}
+                  <img src="{{i.country.flag_img.url}}" alt="" height="30px;" width="auto">
+                  {% endif %}
+                    
+                  <div class="d-flex mt-2 justify-content-between">
+                    <h1 class="text-dark">{{i.currecy_sign}}</h1>
+                    <h1 class="text-info">
+                      {{i.currecy_rate}}
+                    </h1>
+                  </div>
                 </div>
+              
+                <div class="currencyBelow">
+                  <p>Conversion Rate {{i.conversion_rate}}</p>
+                </div>
+              
               </div>
-             
-              <div class="currencyBelow">
-                <p>Conversion Rate {{i.conversion_rate}}</p>
+
+               <!-- Transaction Model -->
+              <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalEditLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered model-lg">
+                  <div class="modal-content">
+                  
+                      <div class="modal-body">
+                        
+                          <div class="row" id="complete">
+                              <div class="col-12 col-lg-10  m-auto p-2 text-center">
+                                 <img src="{{i.country.flag_img}}" alt="" width="40%" height="auto">
+                                  
+                                  <div>
+                                      <div class="d-flex justify-content-between">
+                                          <h5>
+                                              Currency Details
+                                          </h5>
+                                         
+                                      </div>
+                                      
+                                      <div class="d-flex justify-content-between">
+                                          <p class="text-secondary">
+                                              Currency Rate
+                                          </p>
+
+                                          <b>
+                                              {{i.currecy_rate}}
+                                          </b>
+
+                                      </div>
+
+                                      <div class="d-flex justify-content-between">
+                                          <p class="text-secondary">
+                                              Conversion Rate
+                                          </p>
+
+                                          <p class="text-secondary">
+                                            {{i.conversion_rate}}
+                                          </p>
+                                          
+                                      </div>
+
+                                      <div class="d-flex justify-content-between">
+                                          <p class="text-secondary">
+                                              Commision Rate
+                                          </p>
+
+                                          <p class="text-secondary">
+                                              {{i.commision_rate}}
+                                          </p>
+                                          
+                                      </div>
+                                      <hr>
+                                      <div class="text-center">
+                                          <h1 class="text-warning">
+                                              {{i.currecy_sign}}
+                                          </h1>
+
+                                         
+                                          
+                                      </div>
+                                  </div>
+                                  
+                                  
+                              </div>
+                          </div>
+                                                                                          
+                          <div class="text-end mt-2">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          </div>
+                      
+                      </div>
+                  
               </div>
-             
-            </div>
-        </div>
+              </div>
+              </div>
+           <!-- Transaction Model -->
+          </div>
            
         {% endfor %}
           

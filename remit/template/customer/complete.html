@@ -1,0 +1,59 @@
+{% extends 'customer/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    Completed Transaction
+{% endblock title %}
+    
+
+{% block navbar %}
+    
+{% endblock navbar %}
+    
+
+{% block inside %}
+<div class="row p-0 m-0 mt-3">
+   
+    <div class="row p-0 m-0 mt-3">
+        
+      
+
+        <div class="col-12 mt-3 col-lg-6 m-auto">
+            
+            <div id="login-card" class="p-3 text-center">
+                <img src="{%static 'resources/transacton.png'%}" alt="" height="auto;" width="100%">
+                
+                <div>
+                    <h5>Your Transaction has been successfully done..</h5>
+                    <small>Please note that unless we received money from you, your transcation will not be updated</small>
+                    <p class="text-success d-flex justify-content-between">
+                        <i class="fa fa-check-circle my-auto p-2"></i>
+                        <span>
+                            Once your trancation is proceed you will get notification in your email or mobile number. 
+                        </span>
+                        
+                    </p>
+                </div>
+              
+            </div>
+            <div class="my-auto d-flex justify-content-between" style="width: 80%;">
+                
+                <a class="mt-2 text-secondary" href="{%url 'customer:dashboard'%}">
+                    <i class="fa fa-arrow-left"></i>
+                    BACK TO DASHBOARD 
+                </a>
+        
+
+    
+                <a class="mt-2 text-warning" href="{%url 'customer:dashboard'%}">
+                    <i class="fa fa-file"></i>
+                    See All Transaction
+                </a>
+             
+            </div>
+        </div>
+          
+    </div>
+</div>
+{% endblock inside %}
+    

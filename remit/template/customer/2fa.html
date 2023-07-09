@@ -1,0 +1,35 @@
+{% extends 'customer/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    TWO FACTOR AUTHENTICATION
+{% endblock title %}
+    
+
+
+{% block inside %}
+<div class="row p-0 m-0 mt-3">
+    <div class="mt-3 mb-3">
+      <span class="breadcum">
+        <a href="{%url 'customer:dashboard'%}">
+            Dashboard
+        </a>/
+        Two Factor Authentication
+      </span>
+    </div>
+
+    <div class="row p-0 m-0 mt-3">
+       
+    </div>
+</div>
+
+<script>
+    function addOther(name, country){
+        console.log(name)
+        console.log(country)
+        $('#id_account_name').val(name)
+        $('#id_country').val(country)
+    }
+</script>
+{% endblock inside %}
+    

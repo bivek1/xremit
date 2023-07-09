@@ -26,13 +26,13 @@
 <body>
     {% include 'component/message.html' %}
     
-    <div id="loader" class="loader">
+    <!-- <div id="loader" class="loader">
       <div class="loader-content">
           <img src="{%static 'resources/loader.gif'%}" alt="" width="40%">
           
       </div>
      
-    </div>
+    </div> -->
   
     {% block content %}
     
@@ -139,6 +139,7 @@
         var loader = document.getElementById("loader");
         loader.style.display = "block";
       }
+     
        
     </script>
    

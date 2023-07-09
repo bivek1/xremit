@@ -14,5 +14,9 @@ urlpatterns = [
     path('send-money', views.sendMoney, name ="sendMoney"),
     path('profile-customer', views.Profile.as_view(), name = "profile"),
     path('changeCurone', views.changeCurone, name ="changeCurone"),
-
+    path('complete-transaction', views.completePayment, name ="completePayment"),
+    path('customer-transaction', views.transactionView, name ="transaction"),
+    path('customer-bank-account', views.bankView, name ="bank"),
+    path('customer-default-currency', views.defaultCurrencyView, name ="defaultCurrency"),
+    path('two-factor-authentication', views.TwoFactorView, name ="twoFactor"),
 ]   

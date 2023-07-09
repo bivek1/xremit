@@ -1,13 +1,59 @@
 from django.shortcuts import render
 from owner.forms import RecipientForm, Recipient, KYC, KYCForm
-from homepage.models import Currency, Country
+from homepage.models import Currency, Country, Transaction, BankAccount, DefaultCurrency
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import View
 from homepage.forms import PasswordChangeFormUpdate, CustomerForm, Customer
 from django.http import JsonResponse
-from homepage.forms import TransactionForm
+from homepage.forms import TransactionForm, BankForm
+
+
+
+def defaultCurrencyView(request):
+    dist = {
+        'currency':Currency.objects.all()
+    }
+    if request.method == "POST":
+        currency = Currency.objects.get(id = request.POST['currency']) 
+        try:
+            aa = request.user.customer.customer_currency
+            aa.currency = currency
+            aa.save()
+            messages.success(request, "Successfully updated Default Currency")
+        except:
+           DefaultCurrency.objects.create(customer = request.user.customer, currency = currency)
+           messages.success(request, "Successfully Added Default Currency") 
+    return render(request, "customer/default_currency.html", dist)
+
+
+def TwoFactorView(request):
+    return render(request, "customer/2fa.html")
+
+def bankView(request):
+    bank = BankAccount.objects.filter(customer = request.user.customer).order_by('-id')
+    form = BankForm()
+    recipient = Recipient.objects.filter(customer = request.user.customer).order_by('-id')
+    dist = {
+        'bank':bank,
+        'form':form,
+        'recipient':recipient
+    }
+
+    if request.method == 'POST':
+        form = BankForm(request.POST)
+
+        if form.is_valid():
+            recp = request.POST['recipient']
+            aa = form.save(commit= False)
+            aa.customer = request.user.customer
+            aa.recipient = Recipient.objects.get(id = recp)
+            aa.save()
+            messages.success(request, "Successfully Added Bank Account")
+        else:
+            messages.error(request, "Something went wrong")
+    return render(request, "customer/bank.html", dist)
 
 def changeCurone(request):
     if request.method == 'POST':
@@ -35,7 +81,7 @@ def customerDashboard(request):
 
 def recipient(request):
     
-    recipient = Recipient.objects.filter(customer__admin = request.user).order_by('-id')
+    recipient = Recipient.objects.filter(customer = request.user.customer).order_by('-id')
     dist = {
         'recipient':recipient
     }
@@ -115,10 +161,23 @@ def sendMoney(request):
     if request.method == 'POST':
         form = TransactionForm(request.POST)
         if form.is_valid():
-            form.save()
+            aa = form.save(commit= False)
+            aa.customer = request.user.customer
+            aa.save()
             messages.success(request, "Successfully added Transaction.")
             return HttpResponseRedirect(reverse('customer:completePayment'))
     return render(request, "customer/sendMoney.html", dist)
+
+def completePayment(request):
+    return render(request, "customer/complete.html")
+
+def transactionView(request):
+    transaction = Transaction.objects.filter(customer = request.user.customer)
+
+    dist = {
+        'transaction':transaction
+    }
+    return render(request, "customer/transaction.html", dist)
 
 def currency(request):
     currency = Currency.objects.all().order_by('-id')

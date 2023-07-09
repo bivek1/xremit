@@ -2,7 +2,7 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from homepage.models import Product, Service,Client, Testomonial, Blog, SubCategory, Category, Customer, Agent, Transaction
-from homepage.models import CompanyInformation
+from homepage.models import CompanyInformation, BankAccount
 from django import forms
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django.contrib.auth.forms import PasswordChangeForm
@@ -13,12 +13,30 @@ from django.contrib.auth import password_validation
 
 # Transaction Form
 class TransactionForm(forms.ModelForm):
-
-
+    def __init__(self, *args, **kwargs):
+        super(TransactionForm, self).__init__(*args, **kwargs)
+      
+        # for visible in self.visible_fields():
+        #     visible.field.widget.attrs['hidden'] = True
     class Meta:
         model = Transaction
         fields = ('__all__')
-        
+    
+# Transaction Form
+class BankForm(forms.ModelForm):
+    
+    class Meta:
+        model = BankAccount
+        fields = ('__all__')
+        exclude = ('customer','recipient',)
+
+        widgets= {
+            'account_name': forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Adam Smith'}),
+            'account_number': forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'02264871564112121BA'}),
+            'bank_name': forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Australian High Com Bank'}),
+            'country': forms.Select(attrs={'class':'form-control mt-2','placeholder':'Australia'}),
+            'swift_code': forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'AHCB21S'}),
+        }
 
 
 

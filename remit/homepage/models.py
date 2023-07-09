@@ -140,7 +140,25 @@ class Currency(models.Model):
 
     def __str__(self):
         return self.currecy_sign
+    
+class DefaultCurrency(models.Model):
+    customer = models.OneToOneField(Customer, related_name='customer_currency', on_delete=models.CASCADE)
+    currency = models.OneToOneField(Currency, related_name='default_currency', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.customer.admin.get_full_name
+    
+class BankAccount(models.Model):
+    customer = models.ForeignKey(Customer, related_name='customer_bank', on_delete=models.CASCADE)
+    recipient = models.ForeignKey(Recipient, related_name='recipient_bank', on_delete=models.CASCADE)
+    account_name = models.CharField(max_length=300)
+    account_number = models.CharField(max_length=500)
+    bank_name = models.CharField(max_length=200)
+    country = models.ForeignKey(Country, related_name='country_bank', on_delete=models.CASCADE)
+    swift_code = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.recipient.first_name
 
 class Transaction(models.Model):
     customer = models.ForeignKey(Customer, related_name='customer_transaction', on_delete=models.CASCADE)
@@ -154,12 +172,18 @@ class Transaction(models.Model):
     received = models.IntegerField()
     sent_money_to_us = models.BooleanField(default=False)
     sent_to_client = models.BooleanField(default=False)
+    status = models.CharField(max_length= 200, choices=(
+        ('Pending', 'Pending'),
+        ('Completed', 'Completed'),
+        ('Cancelled', 'Cancelled')
+    ), default='Pending')
+    bank = models.ForeignKey(BankAccount, related_name='transaction_bank', null = True, blank= True, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.customer.admin.get_full_name()
 
 
-    
+
 
 
 class KYC(models.Model):

@@ -58,11 +58,11 @@
               {% endif %}
                 
              
-                <p class="text-success my-auto  ps-4">
-                  <a  class="" href="{%url 'customer:editRecipient' i.id%}">
-                    <i class="fa fa-pencil-square p-3 bg-light"></i>
-                  </a>
-                </p>
+              <p class="text-success my-auto  ps-4">
+                <a  class="" href="{%url 'customer:editRecipient' i.id%}">
+                  <i class="fa fa-pencil-square p-3 bg-light"></i>
+                </a>
+              </p>
               
               
               <p class="text-danger my-auto ps-1 pe-4"  data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}">
@@ -70,7 +70,7 @@
               </p>
 
                <!-- Delete Model -->
-               <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                     
@@ -96,8 +96,8 @@
                     
                 </div>
                 </div>
-            </div>
-        <!-- Delete Model -->
+              </div>
+              <!-- Delete Model -->
             </div>
           </div>
         {% endfor %}
