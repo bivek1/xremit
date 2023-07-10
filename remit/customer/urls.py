@@ -23,5 +23,8 @@ urlpatterns = [
     path('two-factor-authentication-sms', views.phoneOtpView, name ="phoneOtp"),
     path('two-factor-authentication-phoneOtp', views.disablesms, name ="disablesms"),
     path('two-factor-authentication-disablegmail', views.disablegmail, name ="disablegmail"),
-    path('customer-prfile-pic', views.updatePic, name ="updatePic"),
+    path('customer-profile-pic', views.updatePic, name ="updatePic"),
+    path('customer-find-bank', views.findBank, name ="findBank"),
+    path('editBank/<int:id>', views.editBank, name ="editBank"),
+    path('deleteBank/<int:id>', views.deleteBank, name ="deleteBank"),
 ]   

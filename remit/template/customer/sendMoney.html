@@ -43,12 +43,13 @@
                         <div class="topHead ps-4 pe-4 pt-3">
                                 <div class="top-link active  text-center" id="info">
                                     <i class="fa fa-dice-one me-2"></i>
-                                    Amount
+                                    Recipients
+                                   
                                 </div>
                                 
                                 <div class="top-link p-2 text-center" id ="book">
                                     <i class="fa fa-dice-two me-2"></i>
-                                    Recipients
+                                    Amount
                                 </div>
                                 <div class="top-link p-2 text-center" id ="trip">
                                     <i class="fa fa-dice-three me-2"></i>
@@ -66,8 +67,88 @@
                
                         <div class="buttonContent p-2">
                             <div id="buttonInfo" class="gets">
-                                
-                                <div class="col-11 col-lg-7 mt-3 m-auto" >
+                                <div class="row p-2" id="recipient">
+                                    <h5 class="text-center">
+                                        Select Your Recipients
+                                    </h5>
+                                    <div class="row m-0">
+                                        {% for i in  recp%}
+                                        <div class="col-12 col-md-6 col-lg-4" >
+                                            <div class="box p-2 mb-3" id="login-card"  onclick="toggleBorder(this, '{{i.id}}')" >
+                                                <div class="d-flex">
+                                                    
+                                                   
+                                                    <span class="ps-2 my-auto" >
+                                                        <h6 class="text-primary p-0 m-0">
+                                                        {{i.first_name}} {{i.middle_name}} {{i.last_name}}
+                                                        </h6>
+                                                        
+                                                        <p class="p-0 m-0">
+                                                            {{i.transaction_type}}
+                                                        </p>
+                                                        <small>
+                                                            <i class="fa fa-location-dot"></i> {{i.city}}, {{i.state}}, {{i.zip_code}}, {{i.address}}
+                                                        </small>
+                                                        
+                                                    </span>
+                                                </div>
+                                                <hr>
+                                                <div class="d-flex justify-content-between p-2">
+                                                    {% if i.country.flag_img %}
+                                                        <img class="my-auto" src="{{i.country.flag_img.url}}" alt="" style="height: 30px; width: 20%;">
+                                                    {% endif %}
+                                                    <h5 class="text-secondary my-auto">
+                                                        
+                                                        {{i.country}}
+                                                    </h5>
+                                                    
+                                                </div>
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                            
+                                    {% endfor %}
+                                    </div>
+                                    
+                                    
+                                        
+                                </div>
+
+                                <div class="row p-2 text-center mt-3" id="bank">
+                                   
+                                </div>
+
+                                <div class="row p-2 text-center mt-3" id="reason">
+                                    <div class="col-10 col-lg-9 m-auto">
+                                        <i class="fa fa-question-circle text-warning" style="font-size: 100px;"></i>
+                                        <h5>
+                                            What's the reason for your transfer?
+                                        </h5>
+                                        <small>
+                                            To make this money transfering service safe and secure. Please let us know your reason for the transfer.
+                                        </small>
+
+                                        <select name="reason" id="" class="form-control">
+                                            <option value="reason">Reason for your transfer</option>
+                                            <option value="family">Family Maintanance</option>
+                                            <option value="saving">Savings</option>
+                                            <option value="deposit">Deposit To Non Residenet Accounts</option>
+                                            <option value="friend">Payment To Friends</option>
+                                            <option value="personal">Other Personal Expenses</option>
+                                        </select>
+                                        <button type="button" class="btn btn-primary p-2 mt-3 w-100" id="procees_one">
+                                            Procced
+                                        </button>
+                                      
+                                    </div>
+                                    
+                                </div>
+                               
+                            </div>
+        
+                            <div id="flightInfo">
+                                <div class="col-11 col-lg-6 mt-3 m-auto" >
                                     <div  class="p-3 box" >
                                         <h5 class="text-center">
                                             HOW MUCH YOU WANT TO TRANSFER?
@@ -84,16 +165,16 @@
                                             <div class="dropdown">
                                                 <a class="right-currency my-auto" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" >
                                                     <img id="sending_currency_img" class="my-auto" src="{{default.country.flag_img.url}}">
-                                                    <h6 id="sending_currency_sign"   class="my-auto">{{default.currecy_sign}}</h6>
+                                                    <small id="sending_currency_sign"   class="my-auto">{{default.currecy_sign}}</small>
                                                     <i class="fa fa-caret-down p-1 my-auto"></i>
                                                 </a>
                                                 
                                                 
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                     {% for i in currency %}
-                                                        <div class="right-currency-drop mb-3 p-3" onclick="changeState('{{i.id}}', '{{i.country.flag_img}}' , '{{i.currecy_sign}}');">
+                                                        <div class="right-currency-drop mb-2 p-1" onclick="changeState('{{i.id}}', '{{i.country.flag_img}}' , '{{i.currecy_sign}}');">
                                                             <img class="my-auto" src="{{i.country.flag_img.url}}">
-                                                            <h6 class="my-auto">{{i.currecy_sign}}</h6>
+                                                            <small class="my-auto">{{i.currecy_sign}}</small>
                                                         </div>
 
                                                     {% endfor %}
@@ -148,16 +229,16 @@
                                             <div class="dropdown">
                                                 <a class="right-currency my-auto" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <img id="recv_currency_img" class="my-auto" src="{{default.country.flag_img.url}}">
-                                                    <h6 id="recv_currency_sign" class="my-auto">{{default.currecy_sign}}</h6>
+                                                    <small id="recv_currency_sign" class="my-auto">{{default.currecy_sign}}</small>
                                                     <i class="fa fa-caret-down p-1 my-auto"></i>
                                                 </a>
                                                 
                                                 
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                     {% for i in currency %}
-                                                        <div class="right-currency-drop mb-3 p-3" onclick="changeStateTwo('{{i.id}}', '{{i.country.flag_img}}' , '{{i.currecy_sign}}');">
+                                                        <div class="right-currency-drop mb-2 p-1" onclick="changeStateTwo('{{i.id}}', '{{i.country.flag_img}}' , '{{i.currecy_sign}}');">
                                                             <img class="my-auto" src="{{i.country.flag_img.url}}">
-                                                            <h6 class="my-auto">{{i.currecy_sign}}</h6>
+                                                            <small class="my-auto">{{i.currecy_sign}}</small>
                                                         </div>
 
                                                     {% endfor %}
@@ -178,84 +259,12 @@
                                                 terms and condition
                                             </a>
                                         </small>
-                        
-                                        <button type="button" class="btn btn-primary p-2 mt-3 w-100" id="procees_one">
-                                            Procced
-                                        </button>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-        
-                            <div id="flightInfo">
-                                <div class="row p-2" id="recipient">
-                                    <h5 class="text-center">
-                                        Select Your Recipients
-                                    </h5>
-                                    <div class="row m-0">
-                                        {% for i in  recp%}
-                                        <div class="col-12 col-md-6 col-lg-4" >
-                                            <div class="box p-2 mb-3" id="login-card"  onclick="toggleBorder(this, '{{i.id}}')" >
-                                                <div class="d-flex">
-                                                    
-                                                    {% if i.country.flag_img %}
-                                                        <img class="my-auto" src="{{i.country.flag_img.url}}" alt="">
-                                                    {% endif %}
-                                                    <span class="ps-2 my-auto" >
-                                                        <h6 class="text-primary p-0 m-0">
-                                                        {{i.first_name}} {{i.middle_name}} {{i.last_name}}
-                                                        </h6>
-                                                        
-                                                        <p class="p-0 m-0">
-                                                            {{i.transaction_type}}
-                                                        </p>
-                                                        
-                                                    </span>
-                                                </div>
-                                                <div class="text-center">
-                                                    <hr>
-                                                    <small class="text-success">
-                                                        <i class="fa fa-location-dot"></i>
-                                                        {{i.country}}, {{i.city}}, {{i.state}}, {{i.zip_code}}, {{i.address}}
-                                                    </small>
-                                                    
-                                                </div>
-                                                
-                                            </div>
-                                            
-                                        </div>
-                                            
-                                    {% endfor %}
-                                    </div>
-                                    
-                                    
-                                        
-                                </div>
-
-                                <div class="row p-2 text-center mt-3" id="reason">
-                                    <div class="col-10 col-lg-9 m-auto">
-                                        <i class="fa fa-question-circle text-warning" style="font-size: 100px;"></i>
-                                        <h5>
-                                            What's the reason for your transfer?
-                                        </h5>
-                                        <small>
-                                            To make this money transfering service safe and secure. Please let us know your reason for the transfer.
-                                        </small>
-
-                                        <select name="reason" id="" class="form-control">
-                                            <option value="reason">Reason for your transfer</option>
-                                            <option value="family">Family Maintanance</option>
-                                            <option value="saving">Savings</option>
-                                            <option value="deposit">Deposit To Non Residenet Accounts</option>
-                                            <option value="friend">Payment To Friends</option>
-                                            <option value="personal">Other Personal Expenses</option>
-                                        </select>
-
                                         <button type="button" class="btn btn-primary p-2 mt-3 w-100" id="procees_two">
                                             Procced
                                         </button>
+                                       
+                                        
                                     </div>
-                                    
                                 </div>
                             </div>
         
@@ -595,7 +604,16 @@
   $('#tripInfo').hide()
   $('#complete').hide()
   $('#procees_one').click(function(){
-      if(document.getElementById('sendingMoney').value == '' || document.getElementById('gets').value ==""){
+        $('#flightInfo').show()
+        $('#buttonInfo').hide()
+        $('#info').removeClass('active')
+        $('#info').addClass('completed')        
+        $('#book').addClass('active')
+  })
+  
+  $('#procees_two').click(function(){
+
+    if(document.getElementById('sendingMoney').value == '' || document.getElementById('gets').value ==""){
           $('#infoerror').text("Enter all Fields Correctly") 
   
           $('#infoerror').show()
@@ -605,26 +623,14 @@
       else{
           
         $('#infoerror').hide()
-        $('#flightInfo').show().fadeIn(1000);
-        $('#buttonInfo').hide()
-        $('#book').addClass('active')
-        $('#info').removeClass('active')
-        $('#info').addClass('completed')
+        $('#flightInfo').hide()
+        $('#book').addClass('completed')
+        $('#tripInfo').show().fadeIn(1000);
+        $('#trip').addClass('active')
 
       }
     
-  })
-  
-  $('#procees_two').click(function(){
-    
-        $('#flightInfo').hide()
-        $('#buttonInfo').hide()
-        $('#tripInfo').show()
-        $('#book').removeClass('active')
-        $('#book').addClass('completed')
-        $('#info').removeClass('active')
-        
-        $('#trip').addClass('active')
+      
      
     
   })
@@ -756,7 +762,23 @@
         for (let i = 0; i < boxes.length; i++) {
             boxes[i].classList.remove('selected');
         }
-    
+
+        $.ajax({
+            type: 'POST',
+            url: '{%url "customer:findBank"%}', // Replace with the actual URL of your view
+            dataType: 'json',
+            data: {
+                'id': id, // Send the data as a key-value pair
+                'csrfmiddlewaretoken': '{{ csrf_token }}' // Include the CSRF token for security
+            },
+            success: function(response) {
+                console.log(response)
+
+               
+            }
+      });
+  
+
         $('#reason').show().slideDown(1000);
       
         

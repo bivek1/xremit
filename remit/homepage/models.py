@@ -152,7 +152,7 @@ class DefaultCurrency(models.Model):
     currency = models.OneToOneField(Currency, related_name='default_currency', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.customer.admin.get_full_name
+        return self.customer.admin.get_full_name()
     
 class BankAccount(models.Model):
     customer = models.ForeignKey(Customer, related_name='customer_bank', on_delete=models.CASCADE)

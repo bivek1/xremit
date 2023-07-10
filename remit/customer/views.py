@@ -55,6 +55,37 @@ def bankView(request):
             messages.error(request, "Something went wrong")
     return render(request, "customer/bank.html", dist)
 
+
+
+def editBank(request, id):
+    
+    rec = BankAccount.objects.get(id = id)
+    form = BankForm(instance=rec)
+    recipient = Recipient.objects.filter(customer = request.user.customer)
+    dist = {
+        'recipient':recipient,
+        'form':form,
+        'bank':rec
+    }
+
+    if request.method == 'POST':
+        form = BankForm(request.POST, instance=rec)
+        if form.is_valid():
+            sav = form.save(commit=False)
+            sav.customer = request.user.customer
+            sav.save()
+            messages.success(request, "Successfully updated bank details")
+            return HttpResponseRedirect(reverse('customer:bank'))
+        else:
+            messages.error(request,"Something went wrong")
+        
+    return render(request, "customer/editBank.html", dist)
+
+def deleteBank(request, id):
+    bank = BankAccount.objects.get(id = id)
+    bank.delete()
+    messages.success(request, "Successfully Deleted Bank")
+    return HttpResponseRedirect(reverse('customer:bank'))
 def changeCurone(request):
     if request.method == 'POST':
         my_data = request.POST.get('id')  # Get the sent data
@@ -70,6 +101,18 @@ def changeCurone(request):
         return JsonResponse(response_data)  # Return the response as JSON
 
 
+
+def findBank(request):
+    from django.forms.models import model_to_dict
+    if request.method == 'POST':
+        my_data = request.POST.get('id')  # Get the sent data
+        currency = Recipient.objects.get(id = int(my_data))
+        print(currency)
+        # Process the data and prepare the response
+        bank= BankAccount.objects.filter(recipient = currency)
+      
+
+        return JsonResponse({'bank':list(bank)}, safe=False)  # Return the response as JSON
 
 
 # Create your views here.
@@ -147,8 +190,10 @@ def deleteRecipient(request, id):
 
 
 def sendMoney(request):
-
-    default = Currency.objects.last()
+    try:
+        default = request.user.customer.customer_currency.currency
+    except:
+        default = Currency.objects.last()
 
     dist = {
         'recp':Recipient.objects.filter(customer__admin = request.user),
@@ -220,7 +265,8 @@ def kycVerify(request):
         form.fields['country'].initial = request.user.customer.country 
 
     dist = {
-        'form':form
+        'form':form,
+        'cm':cm
     }
 
     if request.method == 'POST':
