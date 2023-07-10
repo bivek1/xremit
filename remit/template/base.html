@@ -26,13 +26,18 @@
 <body>
     {% include 'component/message.html' %}
     
-    <!-- <div id="loader" class="loader">
+    <div id="loader" class="loader">
       <div class="loader-content">
-          <img src="{%static 'resources/loader.gif'%}" alt="" width="40%">
+        <div class="load-content m-auto">
+          <h6 class="text-center my-auto">
+            Loading...
+          </h6>
+        </div>
+         
           
       </div>
      
-    </div> -->
+    </div>
   
     {% block content %}
     
@@ -133,15 +138,52 @@
 
 
     <!-- Scripts to show loader -->
-    <script>
+<script>
      
-      function showLoader(){
-        var loader = document.getElementById("loader");
-        loader.style.display = "block";
-      }
-     
-       
-    </script>
+    
+// Show the loader when the page starts loading
+window.onload = function() {
+  loader.style.display = "block";
+};
+
+// Hide the loader when the page has finished loading
+window.onload = function() {
+  loader.style.display = "none";
+};
+
+// Show the loader when navigating away from the current page
+window.onbeforeunload = function() {
+  loader.style.display = "block";
+};
+        
+</script>
+
+
+<script>
+
+  count = 0
+  function makesmall(){
+    if (count == 0){
+      $('.sidebar-link').hide()
+      $('.side-bar').animate({ width: '8%' }, 500);
+      $('.whole-content').animate({ width: '90%' }, 500);
+      $('#text-head').hide()
+      count = 1
+    }else{
+      
+      $('.side-bar').animate({ width: '18%' }, 500);;
+      $('.whole-content').animate({ width: '80%' }, 500);
+      $('#text-head').show().delay(100)
+      $('.sidebar-link').show().delay(100)
+      count = 0
+    }
+   
+    
+   
+
+  }
+
+</script>
    
    
    

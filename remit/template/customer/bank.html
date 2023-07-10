@@ -78,11 +78,7 @@
             <div class="mt-3 col-12 col-lg-4">
                 <div class="box p-2 mb-3" id="login-card"  onclick="toggleBorder(this, '{{i.id}}')" >
                     <div>
-                        <div class="text-center">
-                            {% if i.country.flag_img %}
-                                <img class="my-auto m-auto" src="{{i.country.flag_img.url}}" alt="" height="100px" width="50%">
-                            {% endif %}
-                        </div>
+                       
                         
                         <span class="p-2" >
                             <div class="d-flex justify-content-between">
@@ -118,12 +114,21 @@
                             
                         </span>
                     </div>
-                    <div class="text-center">
-                        <hr>
-                        <small>Swift Code</small>
-                        <h4>
-                            {{i.swift_code}}
-                        </h4>
+                    <hr>
+                    <div class="text-center d-flex justify-content-between">
+                     
+                        <div class="text-center">
+                            {% if i.country.flag_img %}
+                                <img class="my-auto m-auto" src="{{i.country.flag_img.url}}" alt="" height="150px" width="90%">
+                            {% endif %}
+                        </div>
+                        <div>
+                            <small>Swift Code</small>
+                            <h4>
+                                {{i.swift_code}}
+                            </h4>
+                        </div>
+                       
                     </div>
                     
                 </div>

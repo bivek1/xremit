@@ -8,6 +8,22 @@
 
 
 {% block inside %}
+<style>
+    #profile-pic-container {
+  width: 200px;
+  height: 200px;
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#profile-pic {
+  max-width: 100%;
+  max-height: 100%;
+}
+</style>
 <div class="row p-0 m-0 mt-3">
     <div class="mt-3 mb-3">
       <span class="breadcum">
@@ -92,12 +108,32 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-12 pt-3 pb-3 m-auto">
-                                        {% if real_customer.profile_pic %}
-                                            <img class="my-auto" src="{{i.profile_pic.url}}" alt="" style="height: auto; width: 70px;">
+                                        {% if user.customer.profil_pic %}
+                                        <div class="text-center" id="profile-pic-container">
+                                            <img id="profile-pic" class="my-auto" src="{{user.customer.profil_pic.url}}" alt="" style="height: auto; width: 100%;">
+                                        </div>
+                                        <input type="file" id="profile-pic-input">
+                                        
+                                            
                                         {%else%}
-                                            <i class="fa fa-user-circle text-primary my-auto" style="font-size: 100px;">
-            
-                                            </i> 
+                                        <div class="text-center" id="profile-pic-container">
+                                            <form action="{%url 'customer:updatePic'%}" method="POST" enctype="multipart/form-data">
+                                                <input type="file" id="profile-pic-input" name ="profile" required>
+                                                <img src="" alt="" id="profile-pic">
+                                                <i class="fa fa-user-circle text-primary my-auto" style="font-size: 130px;">
+                
+                                                </i> 
+                                              
+                                                {% csrf_token %}
+                                                <button id="shownbtn" class="btn btn-success" type="submit">
+                                                    Update Profile
+                                                </button>
+                                            
+                                            </form>
+                                           
+                                            
+                                        </div>
+                                           
                                         {% endif %}
                                     </div>
     
@@ -111,6 +147,10 @@
                                     <div class="p-2" id="login-card">
                                    
                                         <form action="" method="post">
+                                            <h5>
+                                                Edit your profile
+                                            </h5>
+                                            <hr>
                                             <div class="row p-0 m-0">
                                                 <div class="col-6">
                                                     <label for="first_name">First Name</label>
@@ -177,23 +217,150 @@
                             
                             </div>
                             <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
-                                Messages
+                                {% for i in transaction %}
+                                    <div class="transaction-div p-2" id="login-card" data-bs-toggle="modal" data-bs-target="#exampleModalEdit{{i.id}}">
+                                        <div class="d-flex">
+                                        
+                                            <i class="trans-icon fa fa-arrow-alt-circle-up"></i>
+                                            <span class="ps-2 my-auto" >
+                                                <h6 class="text-primary">
+                                                Transfer Money to {{i.recipient.first_name}} {%if i.recipient.middle_name%} {{i.recipient.middle_name}} {%endif%} {{i.recipient.last_name}}
+                                                </h6>
+                                                
+                                                {% if i.status == 'Pending' %}
+                                                    <p class="text-warning p-0 m-0">
+                                                        <i class="fa fa-circle-dot"></i>
+                                                        Pending
+                                                    </p>
+                                                {% endif %}
+                        
+                                                {% if i.status == 'Cancelled' %}
+                                                    <p class="text-danger p-0 m-0">
+                                                        <i class="fa fa-circle-dot"></i>
+                                                        Cancelled
+                                                    </p>
+                                                {% endif %}
+                        
+                                                {% if i.status == 'Completed' %}
+                                                    <p class="text-success p-0 m-0">
+                                                        <i class="fa fa-circle-dot"></i>
+                                                        Completed
+                                                    </p>
+                                                {% endif %}
+                                                    
+                                                
+                                                <small class="text-secondary" style="font-size: 12px;">
+                                                    Click to view report
+                                                </small>
+                                            </span>
+                                            
+                                        
+                                        </div>
+                                        
+                                        <div>
+                                        <h6 class="text-danger">
+                                            - {{i.sent}} {{i.sending_currency.currecy_sign}}
+                                        </h6>
+                                        <p class="text-success">
+                                        
+                                            <b>
+                                                {{i.received}} {{i.receiving_currency.currecy_sign}}
+                                            </b>
+                                        </p>
+                                        </div>
+                                    </div>
+                                {%endfor%}
                             </div>
                             <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-                                    Settings
+                                {% for i in recipient %}
+                                <div class="transaction-div p-2" id="login-card" >
+                                  <div class="d-flex">
+                                  
+                                        <i class="trans-icon fa fa-user-circle"></i>
+                                        <span class="ps-2 my-auto" >
+                                          <h6 class="text-primary">
+                                            {{i.first_name}} {{i.middle_name}} {{i.last_name}}
+                                          </h6>
+                                          <p class="text-danger">
+                                            <i class="fa fa-location-dot"></i>
+                                            {{i.country}}, {{i.city}}, {{i.state}}, {{i.zip_code}}, {{i.address}}
+                                          </p>
+                                        </span>
+                      
+                                  </div>
+                                  
+                                  <div class="d-flex">
+                                    
+                                    {% if i.country.flag_img %}
+                                        <img class=" my-auto" src="{{i.country.flag_img.url}}" alt="" height="30px;" width="auto">
+                                    {% endif %}
+                                      
+                                   
+                                    <p class="text-success my-auto  ps-4">
+                                      <a  class="" href="{%url 'customer:editRecipient' i.id%}">
+                                        <i class="fa fa-pencil-square p-3 bg-light"></i>
+                                      </a>
+                                    </p>
+                                    
+                                    
+                                    <p class="text-danger my-auto ps-1 pe-4"  data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}">
+                                      <i class="fa fa-trash p-3 bg-light"></i>
+                                    </p>
+                      
+                                     <!-- Delete Model -->
+                                    <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                      <div class="modal-dialog modal-dialog-centered">
+                                          <div class="modal-content">
+                                          
+                                              <div class="modal-body">
+                                                  <div class="text-center">
+                                                      <img src="{%static 'resources/delete.gif'%}" alt="" style="width: 30%;">
+                                                  </div>
+                                          
+                                                  <h5 class="text-dark"> Are you sure want to delete recipient  {{i.first_name}} {{i.middle_name}} {{i.last_name}} </h5>
+                                                 
+                                                  <div class="text-end mt-2">
+                                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change my mind</button>
+                                                      <!-- Delete URL -->
+                                                      <a href="{%url 'customer:deleteRecipient' i.id%}">
+                                                          <button type="button" class="btn btn-danger">
+                                                              <i class="fa fa-trash"></i> Delete
+                                                          </button>
+                                                      </a>
+                                                      
+                                                  </div>
+                                              
+                                              </div>
+                                          
+                                      </div>
+                                      </div>
+                                    </div>
+                                    <!-- Delete Model -->
+                                  </div>
+                                </div>
+                              {% endfor %}
                              
                             </div>
                             <div  class="tab-pane" id="transaction" role="tabpanel" aria-labelledby="transaction-tab">
                             
-                                <h6 class="text-center">Change Your Password</h6>
-                                <p>Change Your Password From Here</p>
-                                <form action="{%url 'homepage:checkPassword'%}" method="post">
-                                    {{pcform}}
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-primary mt-2">
-                                        Change Password
-                                    </button>
-                                </form>
+                                <div class="row p-0 m-0">
+                                    <div class="col-12 col-lg-8 m-auto p-3" id="login-card">
+                                        <div class="text-center">
+                                            <img src="{%static 'resources/pw-change.png'%}" alt="" height="auto;" width="30%">
+                                        </div>
+                                       
+                                        <h5>Change Your Password From Here</h5>
+                                        <hr>
+                                        <form action="{%url 'homepage:checkPassword'%}" method="post">
+                                            {{pcform}}
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-primary mt-2">
+                                                Change Password
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                
         
                             </div>
                         
@@ -207,5 +374,19 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('profile-pic-input').addEventListener('change', function(event) {
+    var input = event.target;
+    if (input.files && input.files[0]) {
+        $('.fa-user-circle').hide()
+        var reader = new FileReader();
+        reader.onload = function(e) {
+        document.getElementById('profile-pic').setAttribute('src', e.target.result);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+    });
+</script>
 {% endblock inside %}
     

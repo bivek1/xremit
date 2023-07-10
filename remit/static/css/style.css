@@ -73,17 +73,48 @@
 }
 .loader-content {
     display: flex;
+    animation-iteration-count: infinite;
+    animation-duration: 200ms;
+    animation-name: flash;
+    color: white;
     justify-content: center;
     align-items: center;
-    color: rgb(218, 77, 77);
+
     font-size: 100px;
     font-weight: bolder;
     height: 100vh;
 }
 
+
+.load-content{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    text-align: center;
+    background-color: #110c5e;
+    color: white;
+    display: flex;
+    flex-direction: vertical;
+    align-items: center;
+    
+}
+.load-content h6{
+    width: 100%;
+}
 .loaded {
     opacity: 0;
     pointer-events: none;
+}
+
+.shortcut{
+    font-size: 14px;
+    color: #110c5e; 
+    cursor: pointer;
+    animation-name: bounce;
+}
+.shortcut:hover{
+    animation-duration: 1s;
+    animation-iteration-count: 1;
 }
 
 .menu-icon{
@@ -176,7 +207,7 @@ a{
  
 }
 .left-currency{
-    width: 70%;
+    width: 80%;
 }
 .head-home {
     font-size: 50px;
@@ -232,7 +263,7 @@ a{
     outline: none;
 }
 .currecyBox .dropdown{
-    width: 30%;
+    width: 20%;
   
 }
 .box{
@@ -243,7 +274,7 @@ a{
 
 .box img{
     height: 50px;
-    width: 30%;
+    width: 50%;
 }
 
 
@@ -374,6 +405,11 @@ a{
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 
 }
+
+.sendMoneyText{
+    font-size: 11px;
+}
+
 .topBox{
     background-color: white;
     border-radius: 5px;

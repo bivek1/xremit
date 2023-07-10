@@ -78,6 +78,12 @@ class Customer(models.Model):
     added_by = models.ForeignKey(CustomUser, null=True, blank = True, related_name = 'student_adder', on_delete = models.CASCADE)
     updated_at = models.DateTimeField(auto_now=True)
     enable_2fa = models.BooleanField(default=False)
+    security = models.CharField(max_length=200, choices=(
+        ('email', 'email'),
+        ('sms', 'sms'),
+        ('both', 'both'),
+        ('none','none')
+    ), default='none')
     kyc_verified = models.BooleanField(default=False)
     
     objects = models.Manager()

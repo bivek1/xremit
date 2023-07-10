@@ -19,4 +19,9 @@ urlpatterns = [
     path('customer-bank-account', views.bankView, name ="bank"),
     path('customer-default-currency', views.defaultCurrencyView, name ="defaultCurrency"),
     path('two-factor-authentication', views.TwoFactorView, name ="twoFactor"),
+    path('two-factor-authentication-google', views.GoogleOtpView, name ="gmailOtp"),
+    path('two-factor-authentication-sms', views.phoneOtpView, name ="phoneOtp"),
+    path('two-factor-authentication-phoneOtp', views.disablesms, name ="disablesms"),
+    path('two-factor-authentication-disablegmail', views.disablegmail, name ="disablegmail"),
+    path('customer-prfile-pic', views.updatePic, name ="updatePic"),
 ]   

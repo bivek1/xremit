@@ -26,7 +26,7 @@
               <div class="currency-box my-auto text-center" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}">
                 <div class="p-2">
                   {% if i.country.flag_img %}
-                  <img src="{{i.country.flag_img.url}}" alt="" height="30px;" width="auto">
+                    <img src="{{i.country.flag_img.url}}" alt="" height="40px;" width="auto">
                   {% endif %}
                     
                   <div class="d-flex mt-2 justify-content-between">
@@ -95,14 +95,17 @@
                                           
                                       </div>
                                       <hr>
-                                      <div class="text-center">
-                                          <h1 class="text-warning">
-                                              {{i.currecy_sign}}
-                                          </h1>
-
-                                         
-                                          
+                                      <div class="d-flex justify-content-between">
+                                        {% if i.country.flag_img %}
+                                            <img src="{{i.country.flag_img.url}}" alt="" height="40px;" width="auto">
+                                        {% endif %}
+                                        <div class="text-center">
+                                            <h1 class="text-warning">
+                                                {{i.currecy_sign}}
+                                            </h1>
+                                        </div>
                                       </div>
+                                     
                                   </div>
                                   
                                   

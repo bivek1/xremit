@@ -253,6 +253,8 @@ class Profile(View):
         dist = {
             'pcform':pcform,
             'form':form,
+            'transaction':Transaction.objects.filter(customer = request.user.customer).order_by('-id')[:5],
+            'recipient': Recipient.objects.filter(customer = request.user.customer).order_by('-id')[:5],
             'real_customer':request.user.customer
               
         }
@@ -287,3 +289,57 @@ class Profile(View):
 
         
         return HttpResponseRedirect(reverse('customer:profile'))
+    
+def GoogleOtpView(request):
+    cust = request.user.customer
+    if cust.security == "sms":
+        cust.security = 'both'
+        cust.save()
+    else:
+        cust.security = 'email'
+        cust.save()
+    messages.success(request, "Successfully added gmail security")
+    return HttpResponseRedirect(reverse('customer:twoFactor'))
+
+
+def phoneOtpView(request):
+    cust = request.user.customer
+    if cust.security == "email":
+        cust.security = 'both'
+        cust.save()
+    else:
+        cust.security = 'sms'
+        cust.save()
+    messages.success(request, "Successfully added gmail security")
+    return HttpResponseRedirect(reverse('customer:twoFactor'))
+
+def updatePic(request):
+    file = request.FILES['profile']
+    cust = request.user.customer
+    cust.profil_pic = file
+    cust.save()
+    messages.success(request, "Successfully updated profile picture")
+    return HttpResponseRedirect(reverse('customer:profile'))
+
+def disablesms(request):
+    cust = request.user.customer
+    if cust.security == "both":
+        cust.security = 'gmail'
+        cust.save()
+    else:
+        cust.security = 'none'
+        cust.save()
+    messages.success(request, "Successfully disabled sms security")
+    return HttpResponseRedirect(reverse('customer:twoFactor'))
+
+def disablegmail(request):
+    cust = request.user.customer
+    if cust.security == "both":
+        cust.security = 'sms'
+        cust.save()
+    else:
+        cust.security = 'none'
+        cust.save()
+    messages.success(request, "Successfully disabled gmail security")
+    return HttpResponseRedirect(reverse('customer:twoFactor'))
+
