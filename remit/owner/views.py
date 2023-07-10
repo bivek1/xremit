@@ -9,7 +9,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from homepage.models import Blog, Customer, Agent, Owner, LoginInterface, signupInterface, Policy, Terms, SocialLink
 
-from homepage.models import Country, Currency, Recipient, PickupPoint, KYC
+from homepage.models import Country, Currency, Recipient, PickupPoint, KYC, Transaction
 from .models import SiteSetting, SEO
 from .forms import SiteForm, SEOForm, FeatureForm, AboutForm, HomeServiceForm, ChooseForm, CountryForm, CurrencyForm, RecipientForm, PickupPointForm, KYCForm
 from homepage.forms import CustomerForm
@@ -24,7 +24,14 @@ from .forms import LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, 
 # Create your views here.
 
 
+def changeStatus(request, id):
+    status = request.POST['status']
+    trans = Transaction.objects.get(id = id)
+    trans.status = status
+    trans.save()
 
+    messages.success(request, "successfully changed status")
+    return HttpResponseRedirect(reverse('owner:dashboard'))
 
 class Dashboard(View):
     template_name = "owner/dashboard.html"
@@ -33,6 +40,7 @@ class Dashboard(View):
 
         dist = {
             'blog':blog,
+            'transaction': Transaction.objects.all().order_by('-id')[:5]
         }
         blog_count = Blog.objects.all().count()
         staff_count = CustomUser.objects.all().count()

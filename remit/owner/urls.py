@@ -82,6 +82,9 @@ urlpatterns = [
     ),
     path(
         'verify-kyc-now/<int:id>', views.verifyView, name = "verify"
+    ),
+    path(
+        'changeststus/<int:id>', views.changeStatus, name = "changeStatus"
     )
 
     

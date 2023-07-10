@@ -118,7 +118,8 @@ def findBank(request):
 # Create your views here.
 def customerDashboard(request):
     dist = {
-        'currency' : Currency.objects.all().order_by('-id')[:3]
+        'currency' : Currency.objects.all().order_by('-id')[:3],
+        'transaction': Transaction.objects.filter(customer = request.user.customer)[:4]
     }
     return render(request, "customer/dashboard.html", dist)
 
