@@ -63,7 +63,7 @@
             </div>
     
             <div class="col-lg-6 col-12 mt-3">
-                <h6 class="bg-primary p-2 text-light">
+                <h6 class="p-2 text-light">
                     Client List
                 </h6>
                 <hr>
@@ -81,16 +81,18 @@
                                 <td>
                                     <div class="item-list-div mt-2 p-1">
 
-                                        <div class="flex-wr">
-                                            <p class="m-0 p-2 text-light">
+                                        <div>
+                                            <p class="m-0 p-2">
                                                 {{i.name}}
                                             </p>
-                                            <small class="p-1 text-light">
-                                                <i class="fa fa-mobile p-2"></i>
-                                                {{i.link}}
+                                            <small class="p-2">
+                                                
+                                                {{i.description|truncatewords:5|safe}}
                                             </small>
-                                        
                                         </div>
+                                       
+                                        
+                                  
 
                                         <div class="my-auto">
                                             <a href="{%url 'owner:updateClient' i.id%}">

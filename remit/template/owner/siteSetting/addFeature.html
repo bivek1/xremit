@@ -44,7 +44,8 @@
 
             <div class="col-lg-6 col-12 m-0 p-0">
                 <div id="login-card" class="p-1">
-                    <h6 class="form-head m-2">Add New Feature</h6>
+                    <h6 class=" m-2">Add New Feature</h6>
+                    <hr>
                    
                     <form action="" method="post">
                         <div class="row p-0 m-0">
@@ -63,7 +64,7 @@
             </div>
     
             <div class="col-lg-6 col-12 mt-3">
-                <h6 class="bg-primary p-2 text-light">
+                <h6 class="p-2">
                     Feature List
                 </h6>
                 <hr>
@@ -82,12 +83,12 @@
                                     <div class="item-list-div mt-2 p-1">
 
                                         <div class="flex-wr">
-                                            <p class="m-0 p-2 text-light">
+                                            <p class="m-0 p-2">
                                                 {{i.name}}
                                             </p>
-                                            <small class="p-1 text-light">
-                                                <i class="fa fa-mobile p-2"></i>
-                                                {{i.link}}
+                                            <small class="p-1 ">
+                                 
+                                                {{i.description|truncatewords:5|safe}}
                                             </small>
                                         
                                         </div>

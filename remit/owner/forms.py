@@ -236,6 +236,7 @@ class FootorForm(forms.ModelForm):
         widgets= {
             'name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Footor Title'}),
             'link':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'https://yoursite.com'}),
+            'row':forms.Select(attrs={'class':'form-control mt-2'}),
         }
 
     # def selfForm(self, request):

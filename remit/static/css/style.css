@@ -125,7 +125,7 @@
 
 
 .form-control{
-    border: none;
+    border: 1px solid grey;
     color: black;
     height: 40px;
     border-radius: 8px;
@@ -592,3 +592,22 @@ a{
         display: inline;
     }
   }
+
+
+/* Homepage design */
+.choose-bg{
+    background-image: url('../resources/login.png');
+    background-size: cover;
+    background-attachment: fixed;
+    /* background-attachment: scroll; */
+    height: 300px;
+    width: 100%;
+}
+.back-bg{
+    height: 300px;
+    width: 100%;
+    background-color: rgba(44, 44, 44, 0.6);
+}
+.footer{
+    background-color:#110c5e;
+}

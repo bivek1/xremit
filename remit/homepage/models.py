@@ -343,7 +343,11 @@ class signupInterface(models.Model):
 class Footor(models.Model):
     name = models.CharField(max_length=200)
     link = models.CharField(max_length=1000)
-    
+    row = models.CharField(max_length=100, choices=(
+        ('First', 'First'),
+        ('Second', 'Second'),
+        ('Third', 'Third')
+    ), default="First")
     def __str__(self) -> str:
         return self.name
 

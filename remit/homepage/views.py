@@ -20,6 +20,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
+from homepage.models import Currency,SocialLink
 # Create your views here.
 
 
@@ -78,7 +79,11 @@ def password_reset_request(request):
 def Homepage(request):
     template_name = 'homepage/index.html'
     choose = ChooseUs.objects.all()
-    
+    try:
+        default = request.user.customer.customer_currency.currency
+    except:
+        default = Currency.objects.last()
+
     if choose:
         for i in choose:
             choose = i
@@ -100,21 +105,29 @@ def Homepage(request):
             homes = i
             break
 
-    service = Service.objects.all().order_by('-id')[:5]
-    testomonial = Testomonial.objects.all().order_by('-id')[:5]
+    service = Service.objects.all().order_by('-id')[:5],
+    test_last = Testomonial.objects.last()
+    testomonial = Testomonial.objects.all().exclude(id = test_last.id)[:5]
     client = Client.objects.all().order_by('-id')[:5]
     feature = Feature.objects.all().order_by('-id')[:5]
-    brand = Brand.objects.all().order_by('-id')[:5]
+    brand = Brand.objects.all().order_by('-id')[:4]
     
     dist = {
         'choose':choose,
         'about':about,
         'homes':homes,
         'service':service,
+        'last_test':test_last,
         'testomonial':testomonial,
+        'social':SocialLink.objects.all(),
         'client':client,
         'feature':feature,
-        'brand':brand
+        'brand':brand,
+        'currency':Currency.objects.all(),
+        'default':default,
+        'first_fo':Footor.objects.filter(row='First'),
+        'second_fo':Footor.objects.filter(row='Second'),
+        'third_fo':Footor.objects.filter(row='Third'),
     }
 
     return render(request, template_name, dist)
