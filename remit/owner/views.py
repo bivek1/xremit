@@ -213,7 +213,7 @@ class AddFeature(View):
 
         return render(request, self.template_name, dist)
     def post(self, request, *args, **kwargs):
-        form = FeatureForm(request.POST)
+        form = FeatureForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, "Successfully Added Feature")
@@ -354,7 +354,7 @@ class AddClient(View):
 
         return render(request, self.template_name, dist)
     def post(self, request, *args, **kwargs):
-        form = ClientForm(request.POST)
+        form = ClientForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, "Successfully Added Client")

@@ -44,7 +44,7 @@
     {% endblock content %}
     <script>
     function SearchName() {
-      console.log('printed')
+
       // Declare variables
       var input, filter, table, tr, td, i, txtValue;
       input = document.getElementById("search");
@@ -59,6 +59,9 @@
           txtValue = td.textContent || td.innerText;
           if (txtValue.toUpperCase().indexOf(filter) > -1) {
             tr[i].style.display = "";
+            tr[i].style.animationName = "flash"
+            tr[i].style.animationDuration = "1s"
+            tr[i].style.animationIterationCount= "1"
           } else {
             tr[i].style.display = "none";
           }
@@ -165,8 +168,8 @@ window.onbeforeunload = function() {
   function makesmall(){
     if (count == 0){
       $('.sidebar-link').hide()
-      $('.side-bar').animate({ width: '8%' }, 500);
-      $('.whole-content').animate({ width: '90%' }, 500);
+      $('.side-bar').animate({ width: '6%' }, 500);
+      $('.whole-content').animate({ width: '92%' }, 500);
       $('#text-head').hide()
       count = 1
     }else{

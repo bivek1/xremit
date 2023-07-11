@@ -68,7 +68,7 @@ class UserCreateForm(UserCreationForm):
         for fieldname in ['email', 'password']:
             self.fields[fieldname].help_text = None
         for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control ps-0 form-control-line'
+            visible.field.widget.attrs['class'] = 'form-control  form-control-line'
 
     class Meta:
         model = User
@@ -111,7 +111,7 @@ class AgentForm(forms.ModelForm):
         super(AgentForm, self).__init__(*args, **kwargs)
     
         for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control ps-0 form-control-line'
+            visible.field.widget.attrs['class'] = 'form-control  form-control-line'
 
     class Meta:
       
@@ -128,7 +128,7 @@ class UserUpdateForm(forms.ModelForm):
         for fieldname in ['email',]:
             self.fields[fieldname].help_text = None
         for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control ps-0 form-control-line'
+            visible.field.widget.attrs['class'] = 'form-control  form-control-line'
     class Meta:
       
         model = User
@@ -150,7 +150,7 @@ class ProductForm(forms.ModelForm):
         super(ProductForm, self).__init__(*args, **kwargs)
         
         for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control ps-0 form-control-line'
+            visible.field.widget.attrs['class'] = 'form-control  form-control-line'
 
     class Meta:
         model = Product
@@ -175,7 +175,7 @@ class ServiceForm(forms.ModelForm):
         super(ServiceForm, self).__init__(*args, **kwargs)
         
         for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control ps-0 form-control-line'
+            visible.field.widget.attrs['class'] = 'form-control  form-control-line'
 
     class Meta:
         model = Service
@@ -185,14 +185,16 @@ class ServiceForm(forms.ModelForm):
 
                 )
         labels = {
-            'name':'Name of the Service',
-            'description':'Description of Service',
-            'image':'Image for Service',
+            'name':'Name of the Service*',
+            'description':'Description of Service*',
+            'image':'Image for Service*',
     
         }
         widgets = {
-            'description':CKEditorUploadingWidget
-        }
+            'description':CKEditorUploadingWidget(),
+            'name':forms.TextInput(attrs={'placeholder':'Name of the your service...'}),
+            
+        }   
    
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -203,7 +205,7 @@ class ClientForm(forms.ModelForm):
         super(ClientForm, self).__init__(*args, **kwargs)
         
         for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control ps-0 form-control-line'
+            visible.field.widget.attrs['class'] = 'form-control  form-control-line'
 
     class Meta:
         model = Client
@@ -214,13 +216,15 @@ class ClientForm(forms.ModelForm):
      
                 )
         labels = {
-            'name':'Name of the Client',
+            'name':'Name of the Client*',
             'description':'Description of Client',
-            'image':'Image for Client',
+            'image':'Image of Client/Company',
             'link':'Link'
         }
         widgets = {
-            'description':CKEditorUploadingWidget
+            'description':CKEditorUploadingWidget(),
+            'name':forms.TextInput(attrs={'placeholder':'Name of the your client...'}),
+            'link':forms.TextInput(attrs={'placeholder':'Url link of the client if avaiable...'}),
         }
    
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -231,7 +235,7 @@ class TestomonialForm(forms.ModelForm):
         super(TestomonialForm, self).__init__(*args, **kwargs)
         
         for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control ps-0 form-control-line'
+            visible.field.widget.attrs['class'] = 'form-control  form-control-line'
 
     class Meta:
         model = Testomonial
@@ -240,9 +244,12 @@ class TestomonialForm(forms.ModelForm):
            
                 )
         labels = {
-            'name':'Name of the Product',
-            'description':'Description of Product',
-         
+            'name':'Name of the User*',
+            'description':'Description*',
+        },
+        widgets = {
+            'name':forms.TextInput(attrs={'placeholder':'Name of the user '}),
+            'description':forms.TextInput(attrs={'placeholder':'Write what they say about you..'})
         }
    
 
@@ -254,7 +261,7 @@ class CompanyInformationForm(forms.ModelForm):
         super(CompanyInformationForm, self).__init__(*args, **kwargs)
         
         for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control ps-0 form-control-line'
+            visible.field.widget.attrs['class'] = 'form-control  form-control-line'
 
     class Meta:
         model = CompanyInformation
@@ -329,6 +336,6 @@ class FormChangePassword(PasswordChangeForm):
     def __init__(self, *args, **kwargs):
         super(FormChangePassword, self).__init__(*args, **kwargs)
         for field in ('old_password', 'new_password1', 'new_password2'):
-            self.fields['old_password'].widget.attrs = {'class':'form-control ps-0 form-control-line', 'placeholder':"Old Password"}
-            self.fields['new_password1'].widget.attrs = {'class':'form-control ps-0 form-control-line', 'placeholder':"New Password"}
-            self.fields['new_password2'].widget.attrs = {'class':'form-control ps-0 form-control-line', 'placeholder':"Re New Password"}
+            self.fields['old_password'].widget.attrs = {'class':'form-control  form-control-line', 'placeholder':"Old Password"}
+            self.fields['new_password1'].widget.attrs = {'class':'form-control  form-control-line', 'placeholder':"New Password"}
+            self.fields['new_password2'].widget.attrs = {'class':'form-control  form-control-line', 'placeholder':"Re New Password"}

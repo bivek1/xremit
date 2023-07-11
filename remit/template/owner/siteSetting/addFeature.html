@@ -5,7 +5,14 @@
 {% endblock title %}
 
 {% block inside %}
-    
+
+<style>
+    label{
+       
+        padding: 0px!important;
+    }
+</style>   
+   
    
 <div class="row p-0 m-0 mt-3">
          
@@ -42,13 +49,13 @@
         <hr>
         <div class="row p-0 m-0 mt-3">
 
-            <div class="col-lg-6 col-12 m-0 p-0">
+            <div class="col-lg-6 col-12 m-0 p-0 mt-2">
                 <div id="login-card" class="p-1">
-                    <h6 class=" m-2">Add New Feature</h6>
+                    <h5 class=" m-2">Add New Feature</h5>
                     <hr>
                    
-                    <form action="" method="post">
-                        <div class="row p-0 m-0">
+                    <form action="" method="post" enctype="multipart/form-data">
+                        <div class="row p-0 m-0 p-2">
                             {{form}}
                             {{form.media}}
                             {% csrf_token %}
@@ -63,11 +70,8 @@
                 </div>
             </div>
     
-            <div class="col-lg-6 col-12 mt-3">
-                <h6 class="p-2">
-                    Feature List
-                </h6>
-                <hr>
+            <div class="col-lg-6 col-12 mt-2">
+               
                 <div class="card p-2">
                     <div class=" login-flex d-flex my-auto" style="width: 100%;">
                         <i class="fa fa-magnifying-glass my-auto p-2"></i>
@@ -81,62 +85,67 @@
                             <tr>
                                 <td>
                                     <div class="item-list-div mt-2 p-1">
-
-                                        <div class="flex-wr">
-                                            <p class="m-0 p-2">
+                                        <div class="d-flex justify-content-between">
+                                            <p class="m-0 my-auto">
                                                 {{i.name}}
                                             </p>
-                                            <small class="p-1 ">
+                                            <div class="my-auto">
+                                                <a href="{%url 'owner:updateFeature' i.id%}">
+                                                    <button class="btn btn-sm btn-light" >
+                                                        <i class="fa fa-eye-dropper"></i>
+                                                        Edit
+                                                    </button>
+                                                </a>
+    
+                                                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}"> 
+                                                    <i class="fa fa-trash-alt"></i>
+                                                    Delete
+                                                </button>
+    
+                                                <!-- Delete Model -->
+                                                    <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                            
+                                                                <div class="modal-body">
+                                                                    <div class="text-center">
+                                                                        <img src="{%static 'resources/delete.gif'%}" alt="" style="width: 30%;">
+                                                                    </div>
+                                                            
+                                                                    <h5> Are you sure want to delete {{i.name}} </h5>
+                                                                   
+                                                                    <div class="text-end mt-2">
+                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change my mind</button>
+                                                                        <!-- Delete URL -->
+                                                                        <a href="{%url 'owner:deleteFeature' i.id%}">
+                                                                            <button type="button" class="btn btn-danger">
+                                                                                <i class="fa fa-trash"></i> Delete
+                                                                            </button>
+                                                                        </a>
+                                                                        
+                                                                    </div>
+                                                                
+                                                                </div>
+                                                            
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                <!-- Delete Model -->
+        
+                                            </div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <b>
+                                                Description:
+                                            </b>
+                                            <small>
                                  
-                                                {{i.description|truncatewords:5|safe}}
+                                                {{i.feature|truncatewords:5|safe}}
                                             </small>
                                         
                                         </div>
 
-                                        <div class="my-auto">
-                                            <a href="{%url 'owner:updateFeature' i.id%}">
-                                                <button class="btn btn-sm btn-light" >
-                                                    <i class="fa fa-eye-dropper"></i>
-                                                    Edit
-                                                </button>
-                                            </a>
-
-                                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}"> 
-                                                <i class="fa fa-trash-alt"></i>
-                                                Delete
-                                            </button>
-
-                                            <!-- Delete Model -->
-                                                <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered">
-                                                        <div class="modal-content">
-                                                        
-                                                            <div class="modal-body">
-                                                                <div class="text-center">
-                                                                    <img src="{%static 'resources/delete.gif'%}" alt="" style="width: 30%;">
-                                                                </div>
-                                                        
-                                                                <h5> Are you sure want to delete {{i.name}} </h5>
-                                                               
-                                                                <div class="text-end mt-2">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change my mind</button>
-                                                                    <!-- Delete URL -->
-                                                                    <a href="{%url 'owner:deleteFeature' i.id%}">
-                                                                        <button type="button" class="btn btn-danger">
-                                                                            <i class="fa fa-trash"></i> Delete
-                                                                        </button>
-                                                                    </a>
-                                                                    
-                                                                </div>
-                                                            
-                                                            </div>
-                                                        
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                            <!-- Delete Model -->
-    
-                                        </div>
+                                       
                                       
                                     </div>
 

@@ -316,7 +316,7 @@ class Policy(models.Model):
 class Feature(models.Model):
     name = models.CharField(max_length=200)
     feature = RichTextUploadingField()
-
+    
 
     def __str__(self) -> str:
         return super().__str__()

@@ -1,5 +1,12 @@
 {% extends 'owner/dashboard.html' %} {% load static %} {% block title %}
 Currency Management {% endblock title %} {% block inside %}
+<style>
+  label{
+     
+      padding: 0px!important;
+  }
+</style>   
+ 
 <div class="row p-0 m-0 mt-3">
   <div class="mt-3 mb-3">
     <span class="breadcum">
@@ -8,13 +15,13 @@ Currency Management {% endblock title %} {% block inside %}
   </div>
 
   <div class="row m-0 mt-3">
-    <h5 class="p-0">Currency settings</h5>
+    <h6 class="p-0">Currency settings</h6>
     <hr />
     <div class="row p-0 m-0 mt-3">
       <div class="col-lg-4 col-12 m-0 p-0">
         <div id="login-card" class="p-3">
-          <h6 class="m-2">Add New Currency</h6>
-
+          <h5 class="m-2 text-center">Add New Currency</h5>
+          <hr>
           <form action="" method="post" enctype="multipart/form-data">
             <div class="row p-0 m-0">
                 {{form}}
@@ -48,12 +55,176 @@ Currency Management {% endblock title %} {% block inside %}
               <tr>
                 <td>
                   <div class="item-list-div mt-2 p-1">
-                    <div class="flex-wr">
-                      <p class="m-0">{{i.country.name}}</p>
-
-                      <h2 class="m-0 p-0 text-success">{{i.currecy_sign}}</h2>
+                    <div class="d-flex justify-content-between">
+                        <div class="my-auto">
+                          <p class="m-0">{{i.country.name}}</p>
+                          <h2 class="m-0 p-0 text-success">{{i.currecy_sign}}</h2>
+                        </div>
+                        <div class="my-auto">
+                          <button
+                            class="btn btn-sm btn-info"
+                            data-bs-toggle="modal"
+                            data-bs-target="#exampleModalEdit{{i.id}}"
+                          >
+                            <i class="fa fa-eye-dropper"></i>
+                            Edit
+                          </button>
+    
+                          <!-- Edit Model -->
+                          <div
+                            class="modal fade"
+                            id="exampleModalEdit{{i.id}}"
+                            tabindex="-1"
+                            aria-labelledby="exampleModalEditLabel"
+                            aria-hidden="true"
+                          >
+                            <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal-content">
+                                <div class="modal-body">
+                                  <div class="text-center">Edit {{i.currecy_sign }}</div>
+                                  <form action="{%url 'owner:editCurrency' i.id%}" method="post" enctype="multipart/form-data">
+                                    <div class="row p-0 m-0">
+                                      <label for="id_country">Country:</label>
+                    
+                                      <select
+                                        name="country"
+                                        class="form-control mt-2"
+                                        required=""
+                                        id="id_country"
+                                      >
+                                      <option value="" selected="">---------</option>
+                                      {% for j in country  %}
+                                         <option value="{{j.id}}" {%if j.id == i.country.id %} selected {%endif%}>{{j.name}}</option>
+                                      {% endfor %}
+                                        
+                                    </select>
+                    
+                                      <label for="id_currecy_rate">Currecy rate:</label>
+                    
+                                      <input
+                                        type="number"
+                                        name="currecy_rate"
+                                        class="form-control mt-2"
+                                        placeholder="Rate of selected country currency"
+                                        required=""
+                                        id="id_currecy_rate"
+                                        value ="{{i.currecy_rate}}"
+                                      />
+                    
+                                      <label for="id_conversion_rate">Conversion rate:</label>
+                    
+                                      <input
+                                        type="number"
+                                        name="conversion_rate"
+                                        class="form-control mt-2"
+                                        placeholder="Your conversion rate of selected country currency"
+                                        required=""
+                                        value ="{{i.conversion_rate}}"
+                                        id="id_conversion_rate"
+                                      />
+                    
+                                      <label for="id_commision_rate">Commision rate:</label>
+                    
+                                      <input
+                                        type="number"
+                                        name="commision_rate"
+                                        class="form-control mt-2"
+                                        placeholder="Your commsion rate of selected country currency"
+                                        required=""
+                                        id="id_commision_rate"
+                                        value ="{{i.commision_rate}}"
+                                      />
+                    
+                                      <label for="id_currecy_sign">Currecy sign:</label>
+                    
+                                      <input
+                                        type="text"
+                                        name="currecy_sign"
+                                        class="form-control mt-2"
+                                        placeholder="Sign of selected country currency: NPR, AUD, USD"
+                                        maxlength="200"
+                                        required=""
+                                        id="id_currecy_sign"
+                                        value ="{{i.currecy_sign}}"
+                                      />
+                    
+                                      {% csrf_token %}
+                                      <button class="btn btn-primary mt-3">
+                                        Update Currency
+                                      </button>
+                                    </div>
+                                  </form>
+                                  <hr />
+    
+                                  <div class="text-end mt-2">
+                                    <button
+                                      type="button"
+                                      class="btn btn-secondary"
+                                      data-bs-dismiss="modal"
+                                    >
+                                      Close
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Edit Model -->
+    
+                          <button
+                            class="btn btn-sm btn-danger"
+                            data-bs-toggle="modal"
+                            data-bs-target="#exampleModal{{i.id}}"
+                          >
+                            <i class="fa fa-trash-alt"></i>
+                            Delete
+                          </button>
+    
+                          <!-- Delete Model -->
+                          <div
+                            class="modal fade"
+                            id="exampleModal{{i.id}}"
+                            tabindex="-1"
+                            aria-labelledby="exampleModalLabel"
+                            aria-hidden="true"
+                          >
+                            <div class="modal-dialog modal-dialog-centered">
+                              <div class="modal-content">
+                                <div class="modal-body">
+                                  <div class="text-center">
+                                    <img
+                                      src="{%static 'resources/delete.gif'%}"
+                                      alt=""
+                                      style="width: 30%"
+                                    />
+                                  </div>
+    
+                                  <h5>Are you sure want to delete {{i.name}}</h5>
+    
+                                  <div class="text-end mt-2">
+                                    <button
+                                      type="button"
+                                      class="btn btn-secondary"
+                                      data-bs-dismiss="modal"
+                                    >
+                                      Change my mind
+                                    </button>
+                                    <!-- Delete URL -->
+                                    <a href="{%url 'owner:deleteCurrency' i.id%}">
+                                      <button type="button" class="btn btn-danger">
+                                        <i class="fa fa-trash"></i> Delete
+                                      </button>
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Delete Model -->
+                        </div>
                     </div>
-                    <div class="flex-grow-1 my-auto">
+                   
+                    <div class="mt-2">
                       <table>
                         <tr>
                           <td>
@@ -78,168 +249,7 @@ Currency Management {% endblock title %} {% block inside %}
                       </table>
                     </div>
 
-                    <div class="my-auto">
-                      <button
-                        class="btn btn-sm btn-info"
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModalEdit{{i.id}}"
-                      >
-                        <i class="fa fa-eye-dropper"></i>
-                        Edit
-                      </button>
-
-                      <!-- Edit Model -->
-                      <div
-                        class="modal fade"
-                        id="exampleModalEdit{{i.id}}"
-                        tabindex="-1"
-                        aria-labelledby="exampleModalEditLabel"
-                        aria-hidden="true"
-                      >
-                        <div class="modal-dialog modal-dialog-centered">
-                          <div class="modal-content">
-                            <div class="modal-body">
-                              <div class="text-center">Edit {{i.currecy_sign }}</div>
-                              <form action="{%url 'owner:editCurrency' i.id%}" method="post" enctype="multipart/form-data">
-                                <div class="row p-0 m-0">
-                                  <label for="id_country">Country:</label>
-                
-                                  <select
-                                    name="country"
-                                    class="form-control mt-2"
-                                    required=""
-                                    id="id_country"
-                                  >
-                                  <option value="" selected="">---------</option>
-                                  {% for j in country  %}
-                                     <option value="{{j.id}}" {%if j.id == i.country.id %} selected {%endif%}>{{j.name}}</option>
-                                  {% endfor %}
-                                    
-                                </select>
-                
-                                  <label for="id_currecy_rate">Currecy rate:</label>
-                
-                                  <input
-                                    type="number"
-                                    name="currecy_rate"
-                                    class="form-control mt-2"
-                                    placeholder="Rate of selected country currency"
-                                    required=""
-                                    id="id_currecy_rate"
-                                    value ="{{i.currecy_rate}}"
-                                  />
-                
-                                  <label for="id_conversion_rate">Conversion rate:</label>
-                
-                                  <input
-                                    type="number"
-                                    name="conversion_rate"
-                                    class="form-control mt-2"
-                                    placeholder="Your conversion rate of selected country currency"
-                                    required=""
-                                    value ="{{i.conversion_rate}}"
-                                    id="id_conversion_rate"
-                                  />
-                
-                                  <label for="id_commision_rate">Commision rate:</label>
-                
-                                  <input
-                                    type="number"
-                                    name="commision_rate"
-                                    class="form-control mt-2"
-                                    placeholder="Your commsion rate of selected country currency"
-                                    required=""
-                                    id="id_commision_rate"
-                                    value ="{{i.commision_rate}}"
-                                  />
-                
-                                  <label for="id_currecy_sign">Currecy sign:</label>
-                
-                                  <input
-                                    type="text"
-                                    name="currecy_sign"
-                                    class="form-control mt-2"
-                                    placeholder="Sign of selected country currency: NPR, AUD, USD"
-                                    maxlength="200"
-                                    required=""
-                                    id="id_currecy_sign"
-                                    value ="{{i.currecy_sign}}"
-                                  />
-                
-                                  {% csrf_token %}
-                                  <button class="btn btn-primary mt-3">
-                                    Update Currency
-                                  </button>
-                                </div>
-                              </form>
-                              <hr />
-
-                              <div class="text-end mt-2">
-                                <button
-                                  type="button"
-                                  class="btn btn-secondary"
-                                  data-bs-dismiss="modal"
-                                >
-                                  Close
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- Edit Model -->
-
-                      <button
-                        class="btn btn-sm btn-danger"
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal{{i.id}}"
-                      >
-                        <i class="fa fa-trash-alt"></i>
-                        Delete
-                      </button>
-
-                      <!-- Delete Model -->
-                      <div
-                        class="modal fade"
-                        id="exampleModal{{i.id}}"
-                        tabindex="-1"
-                        aria-labelledby="exampleModalLabel"
-                        aria-hidden="true"
-                      >
-                        <div class="modal-dialog modal-dialog-centered">
-                          <div class="modal-content">
-                            <div class="modal-body">
-                              <div class="text-center">
-                                <img
-                                  src="{%static 'resources/delete.gif'%}"
-                                  alt=""
-                                  style="width: 30%"
-                                />
-                              </div>
-
-                              <h5>Are you sure want to delete {{i.name}}</h5>
-
-                              <div class="text-end mt-2">
-                                <button
-                                  type="button"
-                                  class="btn btn-secondary"
-                                  data-bs-dismiss="modal"
-                                >
-                                  Change my mind
-                                </button>
-                                <!-- Delete URL -->
-                                <a href="{%url 'owner:deleteCurrency' i.id%}">
-                                  <button type="button" class="btn btn-danger">
-                                    <i class="fa fa-trash"></i> Delete
-                                  </button>
-                                </a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- Delete Model -->
-                    </div>
+                   
                   </div>
                 </td>
               </tr>

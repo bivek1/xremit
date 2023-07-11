@@ -163,7 +163,9 @@ def LoginV(request):
     
 
 def Register(request):
-
+    dist = {
+        'social':SocialLink.objects.all()
+    }
     tempate_name = 'homepage/register.html'
     if request.method == 'POST':
         first_name = request.POST['first_name']
@@ -185,9 +187,9 @@ def Register(request):
             return HttpResponseRedirect(reverse('customer:dashboard'))
         else:
             messages.error(request, "Incorrect Username and Password")
-            return render(request, tempate_name)
+            return render(request, tempate_name, dist)
     else:
-        return render(request, tempate_name)
+        return render(request, tempate_name, dist)
     
 def LogoutV(request):
     logout(request)

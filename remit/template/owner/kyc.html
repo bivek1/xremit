@@ -40,19 +40,250 @@
                         <tr>
                             <td>
                                 <div class="item-list-div mt-2 p-1">
-                                    <!-- <img class="my-auto" src="{{i.customer.profile_pic.url}}" alt="" style="height: 70px; width: 70px; border-radius: 50%;"> -->
-                                    {% if i.customer.profil_pic %}
-                                        <img class="my-auto" src="{{i.customer.profil_pic.url}}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
-                                    {%else%}
-                                        <i class="fa fa-user-circle text-light my-auto" style="font-size: 30px;">
-                                        </i> 
-                                    {% endif %}
-                                    <div class="flex-wr">
-                                        <p class="m-0 p-2">
+                                    <div class="d-flex justify-content-between">
+                                        {% if i.customer.profil_pic %}
+                                            <img class="my-auto" src="{{i.customer.profil_pic.url}}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                                        {%else%}
+                                            <i class="fa fa-user-circle text-light my-auto" style="font-size: 30px;">
+                                            </i> 
+                                        {% endif %}
+                                        <p class="m-0 p-2 my-auto">
                                             {{i.customer.admin.get_full_name}}
                                         </p>
-                                        <small class="p-1">
-                                            <i class="fa fa-mobile p-2"></i>
+                                        <div class="my-auto">
+                                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}"> 
+                                                <i class="fa fa-eye-alt"></i>
+                                                View
+                                            </button>
+    
+                                            <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                    <div class="modal-content">
+                                                    
+                                                        <div class="modal-body">
+                                                            
+                                                            <h5>KYC DATA</h5>
+                                                            {% if i.customer.kyc_verified %}
+                                                                <span class="badge bg-success">
+                                                                    Verified
+                                                                </span>
+                                                            {%else%}
+                                                                <span class="badge bg-warning">
+                                                                    Pending Verification
+                                                                </span>
+                                                            {%endif%}
+                                                            <div class="d-flex justify-content-between mt-3">
+                                                                <small>
+                                                                    <b>
+                                                                        First Name
+                                                                    </b>
+                                                                </small>
+                                                                <p class="text-secondary">
+                                                                    {{i.customer.admin.first_name}}
+                                                                </p>
+                                                            </div>
+                                                            
+                                                            {% if i.customer.admin.middle_name %}
+                                                                <div class="d-flex justify-content-between">
+                                                                    <small>
+                                                                        <b>
+                                                                            Middle Name
+                                                                        </b>
+                                                                        
+                                                                    </small>
+                                                                    <p class="text-secondary">
+                                                                        {{i.customer.admin.middle_name}}
+                                                                    </p>
+                                                                </div>
+                                                            {% endif %}
+                                                                
+                                                            <div class="d-flex justify-content-between">
+                                                                <small>
+                                                                    <b>
+                                                                        Last Name
+                                                                    </b>
+                                                                </small>
+                                                                <p class="text-secondary">
+                                                                    {{i.customer.admin.last_name}}
+                                                                </p>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between">
+                                                                <small class="text-dark">
+                                                                    <b>
+                                                                        <i class="fa fa-envelope-circle-check"></i>
+                                                                        Email
+                                                                    </b>
+                                                                    
+                                                                </small>
+                                                                <p class="text-secondary">
+                                                                    {{i.customer.admin.email}}
+                                                                </p>
+                                                            </div>
+    
+                                                            <div class="d-flex justify-content-between">
+                                                                <small class="text-dark">
+                                                                    <b>
+                                                                        <i class="fa fa-mobile-phone"></i>
+                                                                        Number
+                                                                    </b>
+                                                                    
+                                                                </small>
+                                                                <p class="text-secondary">
+                                                                    {{i.customer.number}}
+                                                                </p>
+                                                            </div>
+                                                            
+                                                            <div class="alert-info mt-2">
+                                                                <div class="row m-0 p-0">
+                                                                    <div class="col-12 col-lg-6">
+                                                                        <h5>Real Image of the user</h5>
+                                                                        <hr>
+                                                                        <img src="{{i.image.url}}" alt="" style="height: auto; width: 100%;"> 
+                                                                    </div>
+                                                                    <div class="col-12 col-lg-6">
+                                                                        <h5>Additional Informationr</h5>
+                                                                        <hr>
+                                                                        <div class="d-flex justify-content-between">
+                                                                            <small class="text-dark">
+                                                                                <b>
+                                                                                    <i class="fa fa-location-dot"></i>
+                                                                                    Address
+                                                                                </b>
+                                                                                
+                                                                            </small>
+                                                                            <p class="text-secondary">
+                                                                                {{i.address}}
+                                                                            </p>
+                                                                        </div>
+    
+                                                                        <div class="d-flex justify-content-between">
+                                                                            <small class="text-dark">
+                                                                                <b>
+                                                                                    <i class="fa fa-location-pin"></i>
+                                                                                    State
+                                                                                </b>
+                                                                                
+                                                                            </small>
+                                                                            <p class="text-secondary">
+                                                                                {{i.state}}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="d-flex justify-content-between">
+                                                                            <small class="text-dark">
+                                                                                <b>
+                                                                                    <i class="fa fa-code"></i>
+                                                                                    Zip Code
+                                                                                </b>
+                                                                                
+                                                                            </small>
+                                                                            <p class="text-secondary">
+                                                                                {{i.zip_code}}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="d-flex justify-content-between">
+                                                                            <small class="text-dark">
+                                                                                <b>
+                                                                                    <i class="fa fa-city"></i>
+                                                                                    City
+                                                                                </b>
+                                                                                
+                                                                            </small>
+                                                                            <p class="text-secondary">
+                                                                                {{i.city}}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="d-flex justify-content-between alert alert-light">
+                                                                           
+                                                                           {% if i.country.flag_img %}
+                                                                            <img src="{{i.country.flag_img.url}}" alt="" style="height: auto; width: 20%;">
+                                                                           {% endif %}
+                                                                            
+                                                                            <h5 class="text-dark my-auto">
+                                                                                {{i.country}}
+                                                                            </h6>
+                                                                        </div>
+    
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                               
+                                                            </div>
+                                                            <div class="d-flex justify-content-between alert alert-warning">
+                                                                <small class="text-dark my-auto">
+                                                                    <b>
+                                                                        <i class="fa fa-transgender"></i>
+                                                                        Gender
+                                                                    </b>
+                                                                    
+                                                                </small>
+                                                                <p class="text-secondary my-auto">
+                                                                    {{i.gender}}
+                                                                </p>
+                                                            </div>
+                                                            <h4>
+                                                                Verification recieved date: {{i.created_at}}
+                                                            </h4>
+                                                            <div class="alert alert-danger">
+                                                                <i class="fa fa-info-circle"></i> 
+                                                                Has Uploaded:
+                                                                {{i.document_type}}
+                                                            </div>
+                                                            <div class="row p-0 m-0">
+                                                                <div class="col-12 col-lg-6 mt-2">
+                                                                    <h5>
+                                                                        Document Front Image
+                                                                    </h5>
+                                                                    <a href="{{i.document_front_image.url}}" target="_blank">
+                                                                        <img src="{{i.document_front_image.url}}" alt="" style="width: 100%; height: auto;">
+                                                                    </a>
+                                                                    
+                                                                </div>
+                                                                <div class="col-12 col-lg-6 mt-2">
+                                                                    <h5>
+                                                                        Document Back Image
+                                                                    </h5>
+                                                                    
+                                                                    {% if i.document_back_image %}
+                                                                        <a href="col-12 col-lg-6 mt-2" target="_blank">
+                                                                            <img src="{{i.document_back_image.url}}" alt="" style="width: 100%; height: auto;">
+                                                                        </a>
+                                                                        
+                                                                    {%else%}
+                                                                        <small>Not Available</small>
+                                                                    {% endif %}
+                                                                        
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                              
+                                                            {% if i.customer.kyc_verified %}
+                                                                <button class="btn btn-success w-100 mt-3" disabled>
+                                                                    <i class="fa fa-check-circle"></i>
+                                                                    Verified
+                                                                </button> 
+                                                            {%else%}
+                                                                <a href="{%url 'owner:verify' i.customer.id%}">
+                                                                    <button class="btn btn-warning w-100 mt-3">
+                                                                        <i class="fa fa-question"></i>
+                                                                    Verify?
+                                                                    </button>
+                                                                </a>
+                                                            {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    
+                                                  </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                  
+                                  
+                                    <!-- <img class="my-auto" src="{{i.customer.profile_pic.url}}" alt="" style="height: 70px; width: 70px; border-radius: 50%;"> -->
+                                  
+                                    <div class="mt-2">
+                                       
+                                        <small>
+                                            <i class="fa fa-mobile"></i>
                                             {{i.number}}
                                         </small>
                                         <small class="p-1">
@@ -60,236 +291,7 @@
                                             {{i.customer.admin.email}}
                                         </small>
                                     </div>
-                                    <div class="my-auto">
-                                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}"> 
-                                            <i class="fa fa-eye-alt"></i>
-                                            View
-                                        </button>
-
-                                        <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered modal-lg">
-                                                <div class="modal-content">
-                                                
-                                                    <div class="modal-body">
-                                                        
-                                                        <h5>KYC DATA</h5>
-                                                        {% if i.customer.kyc_verified %}
-                                                            <span class="badge bg-success">
-                                                                Verified
-                                                            </span>
-                                                        {%else%}
-                                                            <span class="badge bg-warning">
-                                                                Pending Verification
-                                                            </span>
-                                                        {%endif%}
-                                                        <div class="d-flex justify-content-between mt-3">
-                                                            <small>
-                                                                <b>
-                                                                    First Name
-                                                                </b>
-                                                            </small>
-                                                            <p class="text-secondary">
-                                                                {{i.customer.admin.first_name}}
-                                                            </p>
-                                                        </div>
-                                                        
-                                                        {% if i.customer.admin.middle_name %}
-                                                            <div class="d-flex justify-content-between">
-                                                                <small>
-                                                                    <b>
-                                                                        Middle Name
-                                                                    </b>
-                                                                    
-                                                                </small>
-                                                                <p class="text-secondary">
-                                                                    {{i.customer.admin.middle_name}}
-                                                                </p>
-                                                            </div>
-                                                        {% endif %}
-                                                            
-                                                        <div class="d-flex justify-content-between">
-                                                            <small>
-                                                                <b>
-                                                                    Last Name
-                                                                </b>
-                                                            </small>
-                                                            <p class="text-secondary">
-                                                                {{i.customer.admin.last_name}}
-                                                            </p>
-                                                        </div>
-                                                        <div class="d-flex justify-content-between">
-                                                            <small class="text-dark">
-                                                                <b>
-                                                                    <i class="fa fa-envelope-circle-check"></i>
-                                                                    Email
-                                                                </b>
-                                                                
-                                                            </small>
-                                                            <p class="text-secondary">
-                                                                {{i.customer.admin.email}}
-                                                            </p>
-                                                        </div>
-
-                                                        <div class="d-flex justify-content-between">
-                                                            <small class="text-dark">
-                                                                <b>
-                                                                    <i class="fa fa-mobile-phone"></i>
-                                                                    Number
-                                                                </b>
-                                                                
-                                                            </small>
-                                                            <p class="text-secondary">
-                                                                {{i.customer.number}}
-                                                            </p>
-                                                        </div>
-                                                        
-                                                        <div class="alert-info mt-2">
-                                                            <div class="row m-0 p-0">
-                                                                <div class="col-12 col-lg-6">
-                                                                    <h5>Real Image of the user</h5>
-                                                                    <hr>
-                                                                    <img src="{{i.image.url}}" alt="" style="height: auto; width: 100%;"> 
-                                                                </div>
-                                                                <div class="col-12 col-lg-6">
-                                                                    <h5>Additional Informationr</h5>
-                                                                    <hr>
-                                                                    <div class="d-flex justify-content-between">
-                                                                        <small class="text-dark">
-                                                                            <b>
-                                                                                <i class="fa fa-location-dot"></i>
-                                                                                Address
-                                                                            </b>
-                                                                            
-                                                                        </small>
-                                                                        <p class="text-secondary">
-                                                                            {{i.address}}
-                                                                        </p>
-                                                                    </div>
-
-                                                                    <div class="d-flex justify-content-between">
-                                                                        <small class="text-dark">
-                                                                            <b>
-                                                                                <i class="fa fa-location-pin"></i>
-                                                                                State
-                                                                            </b>
-                                                                            
-                                                                        </small>
-                                                                        <p class="text-secondary">
-                                                                            {{i.state}}
-                                                                        </p>
-                                                                    </div>
-                                                                    <div class="d-flex justify-content-between">
-                                                                        <small class="text-dark">
-                                                                            <b>
-                                                                                <i class="fa fa-code"></i>
-                                                                                Zip Code
-                                                                            </b>
-                                                                            
-                                                                        </small>
-                                                                        <p class="text-secondary">
-                                                                            {{i.zip_code}}
-                                                                        </p>
-                                                                    </div>
-                                                                    <div class="d-flex justify-content-between">
-                                                                        <small class="text-dark">
-                                                                            <b>
-                                                                                <i class="fa fa-city"></i>
-                                                                                City
-                                                                            </b>
-                                                                            
-                                                                        </small>
-                                                                        <p class="text-secondary">
-                                                                            {{i.city}}
-                                                                        </p>
-                                                                    </div>
-                                                                    <div class="d-flex justify-content-between alert alert-light">
-                                                                       
-                                                                       {% if i.country.flag_img %}
-                                                                        <img src="{{i.country.flag_img.url}}" alt="" style="height: auto; width: 20%;">
-                                                                       {% endif %}
-                                                                        
-                                                                        <h5 class="text-dark my-auto">
-                                                                            {{i.country}}
-                                                                        </h6>
-                                                                    </div>
-
-                                                                    
-                                                                </div>
-                                                            </div>
-                                                           
-                                                        </div>
-                                                        <div class="d-flex justify-content-between alert alert-warning">
-                                                            <small class="text-dark my-auto">
-                                                                <b>
-                                                                    <i class="fa fa-transgender"></i>
-                                                                    Gender
-                                                                </b>
-                                                                
-                                                            </small>
-                                                            <p class="text-secondary my-auto">
-                                                                {{i.gender}}
-                                                            </p>
-                                                        </div>
-                                                        <h4>
-                                                            Verification recieved date: {{i.created_at}}
-                                                        </h4>
-                                                        <div class="alert alert-danger">
-                                                            <i class="fa fa-info-circle"></i> 
-                                                            Has Uploaded:
-                                                            {{i.document_type}}
-                                                        </div>
-                                                        <div class="row p-0 m-0">
-                                                            <div class="col-12 col-lg-6 mt-2">
-                                                                <h5>
-                                                                    Document Front Image
-                                                                </h5>
-                                                                <a href="{{i.document_front_image.url}}" target="_blank">
-                                                                    <img src="{{i.document_front_image.url}}" alt="" style="width: 100%; height: auto;">
-                                                                </a>
-                                                                
-                                                            </div>
-                                                            <div class="col-12 col-lg-6 mt-2">
-                                                                <h5>
-                                                                    Document Back Image
-                                                                </h5>
-                                                                
-                                                                {% if i.document_back_image %}
-                                                                    <a href="col-12 col-lg-6 mt-2" target="_blank">
-                                                                        <img src="{{i.document_back_image.url}}" alt="" style="width: 100%; height: auto;">
-                                                                    </a>
-                                                                    
-                                                                {%else%}
-                                                                    <small>Not Available</small>
-                                                                {% endif %}
-                                                                    
-                                                                
-                                                            </div>
-                                                        </div>
-                                                          
-                                                        {% if i.customer.kyc_verified %}
-                                                            <button class="btn btn-success w-100 mt-3" disabled>
-                                                                <i class="fa fa-check-circle"></i>
-                                                                Verified
-                                                            </button> 
-                                                        {%else%}
-                                                            <a href="{%url 'owner:verify' i.customer.id%}">
-                                                                <button class="btn btn-warning w-100 mt-3">
-                                                                    <i class="fa fa-question"></i>
-                                                                Verify?
-                                                                </button>
-                                                            </a>
-                                                        {% endif %}
-                                                        </div>
-                                                    </div>
-                                                
-                                              </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
                                    
-                                   
-                                        
                                         
                                 </div>
                             </td>
