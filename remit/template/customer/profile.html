@@ -279,7 +279,12 @@
                                         <i class="trans-icon fa fa-user-circle"></i>
                                         <span class="ps-2 my-auto" >
                                           <h6 class="text-primary">
-                                            {{i.first_name}} {{i.middle_name}} {{i.last_name}}
+
+                                            {{i.first_name}} 
+                                                {% if i.middle_name %}
+                                                    {{i.middle_name}} 
+                                                {% endif %}
+                                            {{i.last_name}}
                                           </h6>
                                           <p class="text-danger">
                                             <i class="fa fa-location-dot"></i>

@@ -15,18 +15,24 @@ class KYCForm(forms.ModelForm):
 
         widgets= {
             'image':forms.FileInput(attrs={'class':'form-control  custom-input mt-2', 'id':'image-upload' ,'onchange':"showImage(this)"}),
-            'country':forms.Select(attrs={'class':'form-control mt-2', 'placeholder':'Country' }),
-            'address':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Your Address'}),
-            'state':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Your state'}),
-            'city':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Sydney'}),
-            'zip_code':forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'zipcode'}),
-            'postal_address':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Your postal code'}),
-            'number':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'+61989229298'}),
-            'gender':forms.Select(attrs={'class':'form-control mt-2', 'placeholder':'Your Gender'}),
-            'document_front_image':forms.FileInput(attrs={'class':'form-control mt-2'}),
-            'document_back_image':forms.FileInput(attrs={'class':'form-control mt-2'}),
+            'country':forms.Select(attrs={'class':'form-control mt-2', 'placeholder':'Australia' }),
+            'address':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'123 Smith Street, Richmond, Victoria'}),
+            'state':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Victoria'}),
+            'city':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Melbourne'}),
+            'zip_code':forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'30001'}),
+            'postal_address':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'14428. Melbourne, VIC 8001'}),
+            'number':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'+61 4 91 575 789'}),
+            'gender':forms.Select(attrs={'class':'form-control mt-2'}),
+            'document_front_image':forms.FileInput(attrs={'class':'form-control mt-2','onchange':"showFrontImage(this);"}),
+            'document_back_image':forms.FileInput(attrs={'class':'form-control mt-2','onchange':"showBackImage(this);"}),
+            'passport_image':forms.FileInput(attrs={'class':'form-control mt-2','onchange':"showBackImage(this);"}),
+            'business_image':forms.FileInput(attrs={'class':'form-control mt-2','onchange':"showBackImage(this);"}),
             'date_of_birth':forms.DateInput(attrs={'type':'date','class':'form-control mt-2',}),
-            'document_type':forms.Select(attrs={'class':'form-control mt-2'})
+            'document_type':forms.Select(attrs={'class':'form-control mt-2', 'hidden':True}),
+            'issue_date' : forms.DateInput(attrs={'type':'date','class':'form-control mt-2','value':'{{cm.issue_date}}'}),
+            'expiry_date' : forms.DateInput(attrs={'type':'date','class':'form-control mt-2','value':'{{cm.expiry_date}}'}),
+            'passport_issued_country': forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Australia'}),
+            'business_registration_date' : forms.DateInput(attrs={'type':'date', 'class':'form-control mt-2','value':'{{cm.business_registration_date}}'}),
                 
         }
 
@@ -58,13 +64,12 @@ class RecipientForm(forms.ModelForm):
             'first_name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'First Name'}),
             'middle_name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Middle Name'}),
             'last_name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Last Name'}),
-            'city':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Name of the City'}),
-            'zip_code':forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'zipcode'}),
-          
-            'number':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'+61989229298'}),
-            'country':forms.Select(attrs={'class':'form-control mt-2', 'placeholder':'Recipient Country'}), 
-            'address':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Address'}),
-            'state':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Recipient state'}),  
+            'city':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Melbourne'}),
+            'zip_code':forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'30001'}),
+            'number':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'+61 4 91 575 789'}),
+            'country':forms.Select(attrs={'class':'form-control mt-2', 'placeholder':'Australia'}), 
+            'address':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'123 Smith Street, Richmond, Victoria'}),
+            'state':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Victoria'}),  
         }
 
 

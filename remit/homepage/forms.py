@@ -95,13 +95,13 @@ class CustomerForm(forms.ModelForm):
         fields = ('__all__')
 
         widgets = {
-            'number': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'Number'}),
-            'mail_address': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Mail Address'}),
-            'state': forms.TextInput(attrs={'class':'form-control', 'placeholder':'You State'}),
-            'zip_code' : forms.NumberInput(attrs={'class':'form-control', 'placeholder':'Zip Code'}),
-            'city' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'City'}),
-            'country' : forms.Select(attrs={'class':'form-control', 'placeholder':'Country'}),
-            'address' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Address'}),
+            'number': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'+61 4 91 575 789'}),
+            'mail_address': forms.TextInput(attrs={'class':'form-control', 'placeholder':'14428. Melbourne, VIC 8001'}),
+            'state': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Victoria'}),
+            'zip_code' : forms.NumberInput(attrs={'class':'form-control', 'placeholder':'30001'}),
+            'city' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Melbourne'}),
+            'country' : forms.Select(attrs={'class':'form-control', 'placeholder':'Australia'}),
+            'address' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'123 Smith Street, Richmond, Victoria'}),
             'profil_pic' : forms.FileInput(attrs={'class':'form-control', 'placeholder':'Profile Picture'}),
         }
 

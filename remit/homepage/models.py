@@ -83,7 +83,7 @@ class Customer(models.Model):
         ('sms', 'sms'),
         ('both', 'both'),
         ('none','none')
-    ), default='none')
+    ), default='none', null= True, blank = True)
     kyc_verified = models.BooleanField(default=False)
     
     objects = models.Manager()
@@ -207,27 +207,23 @@ class KYC(models.Model):
         ('Other', 'Other')
     ))
     document_type = models.CharField(max_length=200, choices=(
-        ('Bank Account','Bank Account'),
-        ('Benefits Card/ID', 'Benefits Card/ID'),
-        ('Birth Certificate', 'Birth Certificate'),
         ('Business Registration/licence', 'Business Registration/licence'),
-        ('Credit/debit card', 'Credit/debit card'),
         ('Driver licence', 'Driver licence'),
-        ('Identity Card', 'Identity Card'),
         ('Passport', 'Passport'),
-        ('Photo ID', 'Photo ID'),
-        ('Security ID', 'Security ID'),
-        ('Social Security ID', 'Social Security ID'),
-        ('Student ID', 'Student ID'),
-        ('Tax ID', 'Tax ID'),
-        ('Other', 'Other'),
     ))
     document_front_image = models.ImageField(upload_to="document/")
     document_back_image = models.ImageField(upload_to="document/", null =True, blank = True)
+    passport_image = models.ImageField(upload_to="document/", null =True, blank = True)
+    business_image = models.ImageField(upload_to='document/', null =True, blank = True)
     postal_address = models.CharField(max_length=200)
     date_of_birth = models.DateField()
     created_at = models.DateTimeField(auto_now_add= True)
     updated_at = models.DateTimeField(auto_now=True)
+    issue_date = models.DateField(null=True, blank=True)
+    expiry_date = models.DateField(null=True, blank=True)
+    passport_issued_country = models.CharField(max_length=200, null=True, blank=True)
+    business_registration_date = models.DateField(null = True, blank=True)
+
 
     def __str__(self):
         return self.customer.admin.username

@@ -105,23 +105,23 @@ def Homepage(request):
             homes = i
             break
 
-    service = Service.objects.all().order_by('-id')[:5],
+  
     test_last = Testomonial.objects.last()
     testomonial = Testomonial.objects.all().exclude(id = test_last.id)[:5]
     client = Client.objects.all().order_by('-id')[:5]
-    feature = Feature.objects.all().order_by('-id')[:5]
+
     brand = Brand.objects.all().order_by('-id')[:4]
     
     dist = {
         'choose':choose,
         'about':about,
         'homes':homes,
-        'service':service,
+        'service_man':Service.objects.all(),
         'last_test':test_last,
         'testomonial':testomonial,
         'social':SocialLink.objects.all(),
         'client':client,
-        'feature':feature,
+        'feature_b':Feature.objects.all(),
         'brand':brand,
         'currency':Currency.objects.all(),
         'default':default,

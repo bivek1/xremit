@@ -8,6 +8,7 @@ from django.views.generic import View
 from homepage.forms import PasswordChangeFormUpdate, CustomerForm, Customer
 from django.http import JsonResponse
 from homepage.forms import TransactionForm, BankForm
+from django.core import serializers
 
 
 
@@ -51,6 +52,7 @@ def bankView(request):
             aa.recipient = Recipient.objects.get(id = recp)
             aa.save()
             messages.success(request, "Successfully Added Bank Account")
+            return HttpResponseRedirect(reverse('customer:bank'))
         else:
             messages.error(request, "Something went wrong")
     return render(request, "customer/bank.html", dist)
@@ -86,6 +88,8 @@ def deleteBank(request, id):
     bank.delete()
     messages.success(request, "Successfully Deleted Bank")
     return HttpResponseRedirect(reverse('customer:bank'))
+
+
 def changeCurone(request):
     if request.method == 'POST':
         my_data = request.POST.get('id')  # Get the sent data
@@ -110,9 +114,9 @@ def findBank(request):
         print(currency)
         # Process the data and prepare the response
         bank= BankAccount.objects.filter(recipient = currency)
-      
-
-        return JsonResponse({'bank':list(bank)}, safe=False)  # Return the response as JSON
+        res = serializers.serialize('json', bank)
+    
+        return JsonResponse(res, safe=False)  # Return the response as JSON
 
 
 # Create your views here.
@@ -305,6 +309,7 @@ class Profile(View):
             'real_customer':request.user.customer
               
         }
+
         return render(request, self.template_name, dist)
 
     def post(self, request, *args, **kwargs):
@@ -332,10 +337,12 @@ class Profile(View):
             messages.success(request, "Sucessfully Updated Profile")
             return HttpResponseRedirect(reverse('customer:profile'))
         else:
+            err = form.errors
+            print(err)
             messages.error(request, "Something went wrong")
-
+            return render(request, self.template_name, self.get.dist)
         
-        return HttpResponseRedirect(reverse('customer:profile'))
+        # return HttpResponseRedirect(reverse('customer:profile'))
     
 def GoogleOtpView(request):
     cust = request.user.customer
@@ -371,7 +378,7 @@ def updatePic(request):
 def disablesms(request):
     cust = request.user.customer
     if cust.security == "both":
-        cust.security = 'gmail'
+        cust.security = 'email'
         cust.save()
     else:
         cust.security = 'none'
