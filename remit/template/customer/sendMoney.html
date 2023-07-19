@@ -30,35 +30,35 @@
     <div class="row backBox p-0 m-0">
   
         <div class="row contentBox">
-            
-        
+
             <div class="bookContent p-2">
-                    <div class="BookBox ">
-                        <div class="topHead ps-4 pe-4 pt-3">
-                                <div class="top-link active  text-center" id="info">
-                                    <i class="fa fa-dice-one me-2"></i>
-                                    Recipients
-                                   
-                                </div>
-                                
-                                <div class="top-link p-2 text-center" id ="book">
-                                    <i class="fa fa-dice-two me-2"></i>
-                                    Amount
-                                </div>
-                                <div class="top-link p-2 text-center" id ="trip">
-                                    <i class="fa fa-dice-three me-2"></i>
-                                    Review 
-                                </div>
-                                
-                                <div class="top-link p-2 text-center" id ="pay">
-                                    <i class="fa fa-dice-four me-2"></i>
-                                    Pay 
-                                </div>
-                                
-                        
-                        </div>
-                        <hr>
                
+                <div class="BookBox ">
+                    <div class="topHead ps-4 pe-4 pt-3">
+                            <div class="top-link active  text-center" id="info">
+                                <i class="fa fa-dice-one me-2"></i>
+                                Recipients
+                                
+                            </div>
+                            
+                            <div class="top-link p-2 text-center" id ="book">
+                                <i class="fa fa-dice-two me-2"></i>
+                                Amount
+                            </div>
+                            <div class="top-link p-2 text-center" id ="trip">
+                                <i class="fa fa-dice-three me-2"></i>
+                                Review 
+                            </div>
+                            
+                            <div class="top-link p-2 text-center" id ="pay">
+                                <i class="fa fa-dice-four me-2"></i>
+                                Pay 
+                            </div>
+                            
+                    
+                    </div>
+                    <hr>
+                    {% if user.customer.verified %}
                         <div class="buttonContent p-2">
                             <div id="buttonInfo" class="gets">
                                 <div class="row p-2" id="recipient">
@@ -126,16 +126,16 @@
                                     </h6>
                                     <div class="col-10 col-lg-9 m-auto">
                                         <div class="row m-0" id="bankList">
-                                           
+                                            
                                         </div>
                                         <button type="button" class="btn btn-primary p-2 mt-3 w-100" id="procees_one">
                                             Procced
                                         </button>
-                                      
+                                        
                                     </div>
                                     
                                 </div>
-                               
+                                
                             </div>
         
                             <div id="flightInfo">
@@ -393,7 +393,7 @@
                                             <small>
                                                 To make this money transfering service safe and secure. Please let us know your reason for the transfer.
                                             </small>
-    
+
                                             <select name="reason" id="" class="form-control">
                                                 <option value="reason">Reason for your transfer</option>
                                                 <option value="family">Family Maintanance</option>
@@ -571,14 +571,14 @@
                                             <div hidden>
                                                 {{form}}
                                             </div>
-                                              
+                                                
                                         
                                             {% csrf_token %}
                                             <button type="submit" class="btn btn-success m-2">
                                                 Make a Payment
                                             </button>
                                         </form>
-                                       
+                                        
                                         <a href="{%url 'customer:dashboard'%}">
                                             <button type="button" class="btn btn-danger m-2">
                                                 Cancel Transfer
@@ -591,13 +591,67 @@
                             </div>
 
                         </div>
+                    {%else%}
+                        <div class="row m-0">
+                            <div class="col-lg-9 col-12 m-auto">
+                                <div class="modal-body">
+                                    <div class="text-center">
+                                        <img src="{%static 'resources/notv.gif'%}" alt="" style="width: 30%;">
+                                    </div>
+                            
+                                    <h5 class="text-dark text-center"> 
+                                        We are sorry to inform you that yout KYC is not verified yet.
+                                    </h5>
                     
-                    </div>
-        
+                                    <p class="badge bg-danger badge-lg text-center d-block">
+                                        Thus you can not perform following action until your KYC is verified
+                                    </p>
+                                    <div>
+                                        <ul class="list-group">
+                                            <li class="list-group-item active ">
+                                                <i class="fa fa-times-circle"></i> Cannot add Recipients
+                                            </li>
+                                            <li class="list-group-item active mt-2">
+                                                <i class="fa fa-times-circle"></i> Cannot add Bank Account
+                                            </li>
+                                            <li class="list-group-item active mt-2">
+                                                <i class="fa fa-times-circle"></i> Cannot Send Money
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <hr>
+                                    {% if not user.customer.kyc_verified %}
+                                        <div class="alert alert-light">
+                                            <img src="{%static 'resources/not-verified.png'%}" alt="" height="30px;" width="30px;">
+                                            <span class="text-danger">
+                                                Your KYC is not verified yet.
+                                            </span>
+                                            Please follow the link to verify.
+                                            <a href="{%url 'customer:verify'%}" class="text-success">
+                                                Verify now
+                                            </a>
+                                            
+                                        </div>
+                                    {%else%}
+                                        <div class="alert alert-light">
+                                            <img src="{%static 'resources/verified.png'%}" alt="" height="30px;" width="30px;">
+                                            <span class="text-danger">
+                                                Your KYC is  verified
+                                            </span>
+                                        
+                                        </div>
+                    
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                
+                </div>
+             
                 
             </div>
-            
-            
+              
         </div>
  
     </div>

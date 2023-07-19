@@ -24,10 +24,18 @@
               Bank List
             </h5>
            
-
+            {% if user.customer.verified %}
             <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Add New Bank
+                Add New Bank
             </button>
+          {%else%}
+            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModalNotVerified">
+                Add New Bank
+            </button>
+            {% include 'customer/notverified.html' %}
+          {% endif %}
+
+           
             
             <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">

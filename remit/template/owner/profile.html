@@ -1,0 +1,95 @@
+{% extends 'owner/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+{{user.username}} Profile
+{% endblock title %}
+
+
+
+{% block inside %}
+<div class="row p-0 m-0 mt-3">
+         
+   
+    
+    <div class="mt-3 mb-3">
+      <span class="breadcum">
+        <a href="{%url 'owner:dashboard'%}">
+            Dashboard
+        </a>/
+        Update Profile /
+      </span>
+    </div>
+
+
+    <div class="row m-0  mt-3">
+        <h5 class="p-0">
+           Profile Settings
+        </h5>
+        <hr>
+        <div class="row p-0 m-0 mt-1">
+            <div class="col-12 col-lg-7 mt-2">
+                <form class="box" action="" method="post">
+                
+                    <div class="row p-3 m-0 form-box">
+                      
+                        <div class="d-flex" style="justify-content: space-between;">
+                            <div class="title">
+                                <h5>Edit Profile</h5>
+                            </div>
+                            
+                        </div>
+                        
+                        <hr>
+                        <div class="col-6 p-2">
+                            First Name
+                            <input class="form-control" type="text" name="first_name", value="{{user.first_name}}", placeholder="First Name" required>
+                        </div>
+                        <div class="col-6 p-2">
+                            Last Name
+                            <input class="form-control" type="text" name="last_name", value="{{user.last_name}}", placeholder="Last Name" required>
+                        </div>
+                        <div class="col-12 col-lg-12 p-2">
+                            Email
+                            <input class="form-control" type="email" name="email", value="{{user.email}}",  placeholder="Email" required>
+                        </div>
+                       
+                        {% csrf_token %}
+                        <button class="btn btn-primary mt-3">
+                           Update Profile
+                        </button>
+                    </div>
+                   
+                </form>
+            </div>
+            <div class="col-12 mt-2 col-lg-5 mt-2">
+                <div class="box">
+                    <div class="text-center">
+                        <img src="{%static 'resources/pw-change.png'%}" alt="">
+                    </div>
+                   
+                    <h5>Change Your Password From Here</h5>
+                    <hr>
+                    <form action="{%url 'homepage:checkPassword'%}" method="post">
+                        {{form}}
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary mt-2">
+                            Change Password
+                        </button>
+                    </form>
+                </div>
+               
+            </div>
+          
+        </div>
+      
+
+    
+    </div>
+
+   
+</div>
+
+{% endblock inside %}
+    
+    

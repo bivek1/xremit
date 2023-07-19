@@ -1,0 +1,58 @@
+{% load static %}
+<div class="modal fade" id="exampleModalNotVerified" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        
+            <div class="modal-body">
+                <div class="text-center">
+                    <img src="{%static 'resources/notv.gif'%}" alt="" style="width: 30%;">
+                </div>
+        
+                <h5 class="text-dark"> 
+                    We are sorry to inform you that yout KYC is not verified yet.
+                </h5>
+
+                <p class="badge bg-danger badge-lg text-center d-block">
+                    Thus you can not perform following action until your KYC is verified
+                </p>
+                <div>
+                    <ul class="list-group">
+                        <li class="list-group-item active ">
+                            <i class="fa fa-times-circle"></i> Cannot add Recipients
+                        </li>
+                        <li class="list-group-item active mt-2">
+                            <i class="fa fa-times-circle"></i> Cannot add Bank Account
+                        </li>
+                        <li class="list-group-item active mt-2">
+                            <i class="fa fa-times-circle"></i> Cannot Send Money
+                        </li>
+                    </ul>
+                </div>
+                <hr>
+                {% if not user.customer.kyc_verified %}
+                    <div class="alert alert-light">
+                        <img src="{%static 'resources/not-verified.png'%}" alt="" height="30px;" width="30px;">
+                        <span class="text-danger">
+                            Your KYC is not verified yet.
+                        </span>
+                        Please follow the link to verify.
+                        <a href="{%url 'customer:verify'%}" class="text-success">
+                            Verify now
+                        </a>
+                        
+                    </div>
+                {%else%}
+                    <div class="alert alert-light">
+                        <img src="{%static 'resources/verified.png'%}" alt="" height="30px;" width="30px;">
+                        <span class="text-danger">
+                            Your KYC is  verified
+                        </span>
+                    
+                    </div>
+
+                {% endif %}
+            </div>
+        
+        </div>
+    </div>
+  </div>

@@ -18,7 +18,9 @@ class CustomUser(AbstractUser):
     user_type_data = (("owner", "owner"), ("agent", 'agent'), ("customer", 'customer'))
     user_type = models.CharField(default = "owner", choices = user_type_data, max_length = 20)
     email = models.EmailField(unique = True)
-    
+
+
+
 class Owner(models.Model):
     id = models.AutoField(primary_key = True)
     admin = models.OneToOneField(CustomUser, related_name ="owner", on_delete=models.CASCADE, null = True, blank = True)
@@ -29,6 +31,17 @@ class Owner(models.Model):
         return self.admin.first_name
 
 
+class Country(models.Model):
+    name = models.CharField(max_length=200)
+    flag_img = models.ImageField(upload_to ="flag/", null = True, blank = True)
+    allowed = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add= True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Agent(models.Model):
     id = models.AutoField(primary_key = True)
     admin = models.OneToOneField(CustomUser, related_name ="agent", on_delete=models.CASCADE, null = True, blank = True)
@@ -37,7 +50,7 @@ class Agent(models.Model):
     state = models.CharField(max_length=100, null = True, blank = True),
     zip_code = models.IntegerField(null = True, blank = True),
     city = models.CharField(max_length=100, null = True, blank = True),
-    country = models.CharField(max_length=100, null = True, blank = True),
+    country = models.ForeignKey(Country, related_name='agent_country', on_delete=models.CASCADE, null = True, blank= True),
     address = models.CharField(max_length = 200, null = True, blank = True)
     created_at = models.DateTimeField(auto_now_add= True)
     profil_pic = models.ImageField(upload_to ="profile_pic/agent/", null = True, blank = True)
@@ -51,16 +64,6 @@ class Agent(models.Model):
         except:
             return str(self.id)
 
-
-class Country(models.Model):
-    name = models.CharField(max_length=200)
-    flag_img = models.ImageField(upload_to ="flag/", null = True, blank = True)
-    allowed = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add= True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.name
 
     
 class Customer(models.Model):
@@ -77,7 +80,7 @@ class Customer(models.Model):
     created_at = models.DateTimeField(auto_now_add= True)
     added_by = models.ForeignKey(CustomUser, null=True, blank = True, related_name = 'student_adder', on_delete = models.CASCADE)
     updated_at = models.DateTimeField(auto_now=True)
-    enable_2fa = models.BooleanField(default=False)
+    banned = models.BooleanField(default=False)
     security = models.CharField(max_length=200, choices=(
         ('email', 'email'),
         ('sms', 'sms'),
@@ -96,11 +99,36 @@ class Customer(models.Model):
             return str(self.id)
 
 
+class EmailSetting(models.Model):
+    email_host = models.CharField(max_length=200)
+    email_port = models.IntegerField()
+    email_host_user = models.CharField(max_length=200)
+    email_host_password = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.email_host
 
 
+
+class DefaultNumber(models.Model):
+    number = models.BigIntegerField()
+
+    def  __str__(self):
+        return str(self.number)
+
+class SMSSetting(models.Model):
+    account_sid  = models.CharField(max_length=400)
+    auth_token  = models.CharField(max_length=400)
+   
+  
+
+    def __str__(self):
+        return str(self.to)
     
 
-    
+
+
+ 
 class PickupPoint(models.Model):
     name = models.CharField(max_length=200)
     country = models.ForeignKey(Country, related_name='pickuppoint_country', on_delete=models.CASCADE)
@@ -134,6 +162,39 @@ class Recipient(models.Model):
 
     def __str__(self):
         return self.first_name
+    
+
+class SMSList(models.Model):
+    customer = models.ForeignKey(Customer, related_name='sms_customer', on_delete=models.DO_NOTHING, null = True, blank= True)
+    reciptient = models.ForeignKey(Recipient, related_name='sms_recipient', on_delete=models.DO_NOTHING, null = True, blank= True)
+    agent = models.ForeignKey(Recipient, related_name='sms_agent', on_delete=models.DO_NOTHING, null = True, blank= True)
+    to = models.BigIntegerField()
+    from_sim = models.ForeignKey(DefaultNumber, related_name='sending_number', on_delete=models.DO_NOTHING, null = True, blank=True)
+    message = RichTextUploadingField()
+    
+    def __str__(self):
+        return self.subject
+    
+
+class EmailList(models.Model):
+    customer = models.ForeignKey(Customer, related_name='customer_email', on_delete=models.CASCADE, null = True, blank=True)
+    reciptient = models.ForeignKey(Recipient, related_name='email_recipient', on_delete=models.DO_NOTHING, null = True, blank= True)
+    agent = models.ForeignKey(Agent, related_name='agent_email', on_delete=models.CASCADE, null = True, blank=True)
+    subject = models.CharField(max_length=200)
+    message = RichTextUploadingField()
+    group = models.CharField(max_length=200, choices=(
+        ('Agent', 'Agent'),
+        ('Customer', 'Customer'),
+        ('Recipient', 'Recipient'),
+        ('All', 'All'),
+        ('Individual', 'Individual')
+    ), default= 'Individual')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.subject
+    
 
 class Currency(models.Model):
     country = models.ForeignKey(Country, related_name='currency_country', on_delete=models.CASCADE)
@@ -149,7 +210,7 @@ class Currency(models.Model):
     
 class DefaultCurrency(models.Model):
     customer = models.OneToOneField(Customer, related_name='customer_currency', on_delete=models.CASCADE)
-    currency = models.OneToOneField(Currency, related_name='default_currency', on_delete=models.CASCADE)
+    currency = models.ForeignKey(Currency, related_name='default_currency', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.customer.admin.get_full_name()

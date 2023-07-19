@@ -107,17 +107,23 @@ class CustomerForm(forms.ModelForm):
 
 
 class AgentForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(AgentForm, self).__init__(*args, **kwargs)
-    
-        for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control  form-control-line'
 
     class Meta:
       
         model = Agent
 
         fields = ('__all__')
+        
+        widgets = {
+            'number': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'+61 4 91 575 789'}),
+            'mail_address': forms.TextInput(attrs={'class':'form-control', 'placeholder':'14428. Melbourne, VIC 8001'}),
+            'state': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Victoria'}),
+            'zip_code' : forms.NumberInput(attrs={'class':'form-control', 'placeholder':'30001'}),
+            'city' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Melbourne'}),
+            'country' : forms.Select(attrs={'class':'form-control', 'placeholder':'Australia'}),
+            'address' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'123 Smith Street, Richmond, Victoria'}),
+            'profil_pic' : forms.FileInput(attrs={'class':'form-control', 'placeholder':'Profile Picture'}),
+        }
 
 
 

@@ -9,19 +9,165 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from homepage.models import Blog, Customer, Agent, Owner, LoginInterface, signupInterface, Policy, Terms, SocialLink
 
-from homepage.models import Country, Currency, Recipient, PickupPoint, KYC, Transaction
+from homepage.models import Country, Currency, Recipient, PickupPoint, KYC, Transaction, BankAccount
 from .models import SiteSetting, SEO
 from .forms import SiteForm, SEOForm, FeatureForm, AboutForm, HomeServiceForm, ChooseForm, CountryForm, CurrencyForm, RecipientForm, PickupPointForm, KYCForm
-from homepage.forms import CustomerForm
+from homepage.forms import CustomerForm, AgentForm, PasswordChangeFormUpdate
 
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse, reverse_lazy
+from homepage.models import EmailSetting, SMSSetting, EmailList, SMSList
+from homepage.forms import BankForm, UserCreateForm, UserUpdateForm, ServiceForm, ClientForm, TestomonialForm, CompanyInformationForm, BlogForm, CategoryForm, SubCategoryForm
 
-from homepage.forms import UserCreateForm, UserUpdateForm, ServiceForm, ClientForm, TestomonialForm, CompanyInformationForm, BlogForm, CategoryForm, SubCategoryForm
-
-from .forms import LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, BrandForm, FootorForm, SocialForm, PolicyForm, TermForm
+from .forms import EmailSettingForm, SMSSettingForm, LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, BrandForm, FootorForm, SocialForm, PolicyForm, TermForm, EmailListForm, SMSListForm
 
 # Create your views here.
+
+
+
+
+
+
+# EMAIL AND SMS
+def emailSetting(request):
+    email = EmailSetting.objects.all()
+    form = EmailSettingForm()
+    if email:
+        for i in email:
+            email = i
+            form = EmailSettingForm(instance=i)
+            break
+    dist = {
+        'form': form,
+        'email':email,
+        'all_email':EmailList.objects.all(),
+        'customer':Customer.objects.all().order_by('-id'),
+        'agent':Agent.objects.all().order_by('-id'),
+        'recipient': Recipient.objects.all().order_by('-id'),
+        'sendform':EmailListForm()
+    }
+
+    if request.method == 'POST':
+        sendform = EmailListForm(request.POST)
+        
+        if sendform.is_valid():
+            sendform.save()
+            messages.success(request, 'Successfully sent emails')
+            return HttpResponseRedirect(reverse('owner:emailSetting'))
+        else:
+            print(sendform.errors)
+            dist.update({'sendform':sendform})
+            messages.error(request, "something went wrong")
+
+   
+    return render(request, "owner/email.html", dist)
+
+def addEmailSetting(request, id):
+    if id == 0:
+        form = EmailSettingForm(request.POST)
+    else:
+        instance = EmailSetting.objects.get(id = id)
+        form = EmailSettingForm(request.POST, instance=instance)
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Successfully updated email settings")
+        return HttpResponseRedirect(reverse('owner:emailSetting'))
+    else:
+        
+        dist = {
+            'form': form
+        }
+        messages.error(request, "Something went wrong")
+        return render(request, "owner/email.html", dist)    
+
+def smsSetting(request):
+    return render(request, "owner/sms.html")
+
+
+# BANNED USER
+
+def bannedSetting(request):
+    return render(request, "owner/banned.html")
+
+
+
+# Bank Information
+def bankView(request):
+    bank = BankAccount.objects.all().order_by('-id')
+    total_bank = bank.count()
+    form = BankForm()
+    customer = Customer.objects.all().order_by('-id')
+    dist = {
+        'bank':bank,
+        'form':form,
+        'customer':customer,
+        'total_bank':total_bank,
+        'recipient':Recipient.objects.all()
+    }
+
+    # if request.method == 'POST':
+    #     form = BankForm(request.POST)
+
+    #     if form.is_valid():
+    #         recp = request.POST['recipient']
+    #         aa = form.save(commit= False)
+    #         aa.recipient = Recipient.objects.get(id = recp)
+    #         aa.save()
+    #         messages.success(request, "Successfully Added Bank Account")
+    #         return HttpResponseRedirect(reverse('owner:bank'))
+    #     else:
+    #         messages.error(request, "Something went wrong")
+    return render(request, "owner/bank.html", dist)
+
+
+def filterBank(request):
+    idS = request.GET['customer']
+    print(idS)
+    bank = BankAccount.objects.filter(customer_id = idS ).order_by('-id')
+    total_bank = bank.count()
+    form = BankForm()
+    customer = Customer.objects.all().order_by('-id')
+    dist = {
+        'cust_id':idS,
+        'bank':bank,
+        'form':form,
+        'customer':customer,
+        'total_bank':total_bank,
+        'recipient':Recipient.objects.all()
+    }
+
+    return render(request, "owner/bank.html", dist)
+
+
+def editBank(request, id):
+    
+    rec = BankAccount.objects.get(id = id)
+    form = BankForm(instance=rec)
+    recipient = Recipient.objects.filter(customer = request.user.customer)
+    dist = {
+        'recipient':recipient,
+        'form':form,
+        'bank':rec
+    }
+
+    if request.method == 'POST':
+        form = BankForm(request.POST, instance=rec)
+        if form.is_valid():
+            sav = form.save(commit=False)
+            sav.customer = request.user.customer
+            sav.save()
+            messages.success(request, "Successfully updated bank details")
+            return HttpResponseRedirect(reverse('owner:bank'))
+        else:
+            messages.error(request,"Something went wrong")
+        
+    return render(request, "owner/editBank.html", dist)
+
+def deleteBank(request, id):
+    bank = BankAccount.objects.get(id = id)
+    bank.delete()
+    messages.success(request, "Successfully Deleted Bank")
+    return HttpResponseRedirect(reverse('owner:bank'))
 
 
 def changeStatus(request, id):
@@ -160,39 +306,96 @@ def customerProfile(request, id):
         else:
             messages.error(request, "Something went wrong")
     return render(request, 'owner/customerProfile.html',dist)
-
-# Add Customer
-# class CustomerView(CreateView):
-#     model = Customer
-    
-#     template_name = 
-#     custom_user = None
-
-#     def post(self, request):
-#         form = CustomerForm(request.POST)
-#         # try:
-#         custom_user = CustomUser.objects.create_user(first_name = request.POST['first_name'], last_name = request.POST['last_name'], email = request.POST['email'], username = request.POST['email'], password = request.POST['password'], user_type = 'customer')
-#         if form.is_valid():
-#             form.save(commit = False)
-#             form.admin = custom_user
-#             form.added_by = request.user
-#             form.save()
-#             messages.success(request, "Successfully Added Customer")
-#         except:
-#             messages.error(request, "Email already exist")
-#             # return render(request, self.template_name, self.get_context_data)
-       
-#         return HttpResponseRedirect(reverse('owner:customer'))
-
- 
-    
    
-    
 
 # Add Agent
-class AgentView(CreateView):
-    pass
+class AgentView(View):
+    template_name = 'owner/agent.html'
+    dist = {
+            'agent_form':AgentForm(),
+            'form_head': "Add new agent",
+            'button':"Add new agent",
+            'user': CustomUser.objects.filter(user_type = "agent").order_by('-id')
+        }
+    def get(self, request, *args, **kwargs):
+      
+        return render(request, self.template_name, self.dist)
+    
+    def post(self, request, *args, **kwars):
+        form = AgentForm(request.POST)
+        # try:
+        # custom_user = 
+        if form.is_valid():
+            try:
+                admin = CustomUser.objects.create_user(first_name = request.POST['first_name'], last_name = request.POST['last_name'], email = request.POST['email'], username = request.POST['email'], password = request.POST['password'], user_type = 'agent')
+                obj = admin.agent
+                obj.number = request.POST['number']
+                obj.mail_address = request.POST['mail_address']
+                obj.state = request.POST['state']
+                obj.zip_code = request.POST['zip_code']
+                obj.city = request.POST['city']
+                obj.country = request.POST['country']
+                obj.address = request.POST['address']
+                obj.added_by = request.user
+                obj.save()
+                 # admin.save()
+                messages.success(request, "Successfully Added Agent")
+                return HttpResponseRedirect(reverse('owner:agent'))
+            except:      
+                messages.error(request, "Email already exist")
+                return render(request, self.template_name, self.dist)
+        else:
+            error = form.errors()
+            print(error)
+            messages.error(request, str(error))
+            return render(request, self.template_name, self.dist)
 
+def deleteAgent(request, id):
+    cust = CustomUser.objects.get(id = id)
+    cust.delete()
+    messages.success(request, "Successfully delete agent")
+    return HttpResponseRedirect(reverse('owner:agent'))
+
+
+def agentProfile(request, id):
+    real_customer = CustomUser.objects.get(id = id)
+   
+    form = AgentForm(instance=real_customer.agent)
+    dist = {
+        'real_customer':real_customer,
+        'form':form,
+        'form_head':"Update Agent",
+        'button':"Update Agent",
+    
+    }
+
+    if request.method == 'POST':
+        try: 
+            real_customer.first_name = request.POST['first_name']
+            real_customer.last_name = request.POST['last_name']
+            real_customer.email = request.POST['email']
+            real_customer.username = request.POST['email']
+            real_customer.save()
+        except:
+            messages.error(request, "Email is added already..")
+            return HttpResponseRedirect(reverse('owner:agentProfile',args=[real_customer.id]))
+        form = AgentForm(request.POST)
+        if form.is_valid():
+            
+            real_customer.agent.number = request.POST['number']
+            real_customer.agent.mail_address = request.POST['mail_address']
+            real_customer.agent.state = request.POST['state']
+            real_customer.agent.zip_code = request.POST['zip_code']
+            real_customer.agent.city = request.POST['city']
+            real_customer.agent.country= request.POST['country']
+            real_customer.agent.address = request.POST['address']
+            real_customer.agent.save()
+            form.save()
+            messages.success(request, "Successfully Updated agent")
+            return HttpResponseRedirect(reverse('owner:agentProfile',args=[real_customer.id]))
+        else:
+            messages.error(request, "Something went wrong")
+    return render(request, 'owner/agentProfile.html',dist)
 
 
 
@@ -478,15 +681,30 @@ def deleteBlog(request, id):
 
 # Profle Crud>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-class Profile(UpdateView, SuccessMessageMixin):
-    template_name = "staff/other/profile.html"
-    model = CustomUser
-    form_class = UserUpdateForm
-    success_message = "Successfully Updated Profile"
+class Profile(View):
+    template_name = 'owner/profile.html'
+    def get(self, request, *args, **kwargs):
+        form = PasswordChangeFormUpdate(request.user)
+        dist = {
+            'form':form
+        }
+        return render(request, self.template_name, dist)
+
+    def post(self, request, *args, **kwargs):
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        email = request.POST['email']
     
-    def get_success_url(self, *args, **kwargs):
-        id = self.kwargs['pk']
-        return reverse('owner:updateAdmin', args=[id])
+        adm = request.user
+        adm.first_name = first_name
+        adm.last_name = last_name
+        adm.email = email
+        try:
+            adm.save()
+            messages.success(request, "Sucessfully Updated Profile")
+        except:
+            messages.success(request, "Email you entered is already in used")
+        return HttpResponseRedirect(reverse('owner:profile'))
     
 
 

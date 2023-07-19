@@ -5,6 +5,7 @@ app_name = "owner"
 
 urlpatterns = [
     path('', views.Dashboard.as_view(), name ='dashboard'),
+    path('super-profile', views.Profile.as_view(), name="profile"),
 
     # Customer Part
     path('customer-data', views.CustomerView.as_view(), name="customer"),
@@ -13,7 +14,8 @@ urlpatterns = [
 
     # Agent Part
     path('agent-data', views.AgentView.as_view(), name = "agent"),
-
+    path('agent-profile/<int:id>', views.agentProfile, name="agentProfile"),
+    path('delete-agent/<int:id>', views.deleteAgent, name = "deleteAgent"),
     #Site Settings
     path('site-setting', views.site, name="site"),
     path('AddLoginData', views.addLoginData, name = "addLoginData"),
@@ -85,9 +87,20 @@ urlpatterns = [
     ),
     path(
         'changeststus/<int:id>', views.changeStatus, name = "changeStatus"
-    )
+    ),
 
-    
+
+    # Bank Information
+    path(
+        'owner-bank-information', views.bankView, name ="bank"
+    ),
+    path('filter-bank-account', views.filterBank, name ="filterBank"),
+
+    # Email and SMS Settings
+    path('email-setting', views.emailSetting, name = "emailSetting"),
+    path('addEmailSetting/<int:id>', views.addEmailSetting, name = "addEmailSetting"),
+    path('sms-setting', views.smsSetting, name = "smsSetting"),
+    path('banned-user-settings', views.bannedSetting, name = "bannedSetting")
 
 
 

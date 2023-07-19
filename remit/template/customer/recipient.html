@@ -24,11 +24,21 @@
         <h5>
           Your Recipients List
         </h5>
-        <a href="{%url 'customer:addRecipient'%}">
-          <button class="btn btn-primary">
+        
+        {% if user.customer.verified %}
+          <a href="{%url 'customer:addRecipient'%}">
+            <button class="btn btn-primary">
+              Add New Recipients
+            </button>
+          </a>
+        {%else%}
+          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalNotVerified">
             Add New Recipients
           </button>
-        </a>
+          {% include 'customer/notverified.html' %}
+        {% endif %}
+          
+       
       
       </div>
 

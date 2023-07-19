@@ -865,3 +865,9 @@ a{
     transition-duration: 200ms;
 
 }
+
+.emailBox{
+    border: 1px solid rgb(111, 255, 111);
+    border-radius: 5px;
+
+}

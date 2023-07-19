@@ -3,11 +3,62 @@ from homepage.models import Feature, AboutUs, ChooseUs, HomeService, Brand ,Logi
 from .models import SiteSetting, SEO
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
-from homepage.models import Currency, Country, Recipient, PickupPoint, KYC
+from homepage.models import Currency, Country, Recipient, PickupPoint, KYC, EmailSetting, SMSSetting, EmailList, SMSList
 
 
+
+# EMAIL AND SMS SETTINGS
+class EmailSettingForm(forms.ModelForm):
+    class Meta:
+        model = EmailSetting
+        fields = ('__all__')
+
+        widgets = {
+            'email_host':forms.TextInput(attrs = {'class':'form-control','placeholder':'mail.xremit.com'}),
+            'email_port':forms.TextInput(attrs = {'class':'form-control','placeholder':'465'}),
+            'email_host_user':forms.TextInput(attrs = {'class':'form-control','placeholder':'info@xremit.com'}),
+            'email_host_password':forms.TextInput(attrs = {'class':'form-control','placeholder':'*******', 'type':'password'}),
+        }
+
+
+class EmailListForm(forms.ModelForm):
+    class Meta:
+        model = EmailList
+        fields = ("subject", 'message','customer', 'reciptient', 'agent', 'group')
+
+        widgets = {
+            'subject':forms.TextInput(attrs = {'class':'form-control','placeholder':'Subject of your email'}),
+            'customer':forms.TextInput(attrs = {'class':'form-control','hidden':True}),
+            'reciptient':forms.TextInput(attrs = {'class':'form-control','hidden':True}),
+            'group':forms.Select(attrs = {'class':'form-control','hidden':True}),
+            'agent':forms.TextInput(attrs = {'class':'form-control','hidden':True}),
+            'message':CKEditorUploadingWidget()
+        }
+
+
+class SMSSettingForm(forms.ModelForm):
+    class Meta:
+        model = SMSSetting
+        fields = ('__all__')
+
+        widgets = {
+            'account_sid':forms.TextInput(attrs = {'class':'form-control mt-2','placeholder':'Account id'}),
+            'auth_token':forms.TextInput(attrs = {'class':'form-control mt-2','placeholder':'authentication token'}),
+        }
+
+
+class SMSListForm(forms.ModelForm):
+    class Meta:
+        model = SMSList
+        fields = ("from_sim", 'to' , 'message',)
+
+        widgets = {
+            'from_sim':forms.Select(attrs = {'class':'form-control'}),
+            'to':forms.NumberInput(attrs={'class':'form-control', 'placeholder':'+61782782'}),
+            'message':CKEditorUploadingWidget()
+        }
 # KYCForm
-class KYCForm(forms.ModelForm):
+class KYCForm(forms.ModelForm): 
     class Meta:
         model = KYC
         fields = ('__all__')
