@@ -171,6 +171,15 @@ class SMSList(models.Model):
     to = models.BigIntegerField()
     from_sim = models.ForeignKey(DefaultNumber, related_name='sending_number', on_delete=models.DO_NOTHING, null = True, blank=True)
     message = RichTextUploadingField()
+    group = models.CharField(max_length=200, choices=(
+        ('Agent', 'Agent'),
+        ('Customer', 'Customer'),
+        ('Recipient', 'Recipient'),
+        ('All', 'All'),
+        ('Individual', 'Individual')
+    ), default= 'Individual')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return self.subject

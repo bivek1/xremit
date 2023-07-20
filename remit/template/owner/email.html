@@ -110,8 +110,8 @@ Email Settings
                             </span>
                         </h5>
 
-                        <div class="col-lg-4 col-4 text-center mt-2" id="licence">
-                            <div class="docFile box" onclick="selectEmail(this, 'customer')">
+                        <div class="col-lg-4 col-4 text-center mt-2 " id="customer">
+                            <div class="docFile box selected" onclick="selectEmail(this, 'customer')">
                             <img src="{%static 'resources/customer.png'%}" alt="" >
                             <p class="text-secondary  mt-1">
                                 Customer
@@ -280,16 +280,24 @@ Email Settings
                             <div class="d-flex justify-content-between">
                                 <small>
                                     {% if  i.group  == "Individual"%}
-                                        <i class="fa fa-envelope-circle-check"></i>
-                                        {% if i.customer %}
                                        
+                                        {% if i.customer %}
+                                        <span class="badge bg-success">
+                                            Customer
+                                        </span>
                                         {{i.customer.admin.email}}
                                         {% endif %}
 
                                         {% if i.reciptient %}
+                                            <span class="badge bg-danger">
+                                                Reciptient
+                                            </span>
                                             {{i.reciptient.email}}
                                         {% endif %}
                                         {% if i.agent %}
+                                            <span class="badge bg-warning">
+                                                Agent
+                                            </span>
                                             {{i.agent.admin.email}}
                                         {% endif %}
                                     {%else%}
@@ -305,13 +313,18 @@ Email Settings
                                     {{i.created_at}}
                                 </small>
                             </div>
-                            <h6 class="mt-2">
+                            <h6 class="mt-1  text-capitalize">
                                 Subject:
                                 {{i.subject}}
                             </h6>
-                            <hr>
-                            <small>
-                                {{i.message|safe|truncatewords:20}}
+                            
+                            <small class="mt-1">
+    
+                                    Message:
+                                    <span class="text-secondary">
+                                        {{i.message|safe|truncatewords:20}}
+                                    </span>
+                                
                             </small>
                         </div>
                     {% endfor %}
@@ -320,7 +333,7 @@ Email Settings
               
                     
             </div>
-    </div>
+        </div>
         
 
 </div>

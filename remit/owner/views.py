@@ -16,10 +16,10 @@ from homepage.forms import CustomerForm, AgentForm, PasswordChangeFormUpdate
 
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse, reverse_lazy
-from homepage.models import EmailSetting, SMSSetting, EmailList, SMSList
+from homepage.models import EmailSetting, SMSSetting, EmailList, SMSList, DefaultNumber
 from homepage.forms import BankForm, UserCreateForm, UserUpdateForm, ServiceForm, ClientForm, TestomonialForm, CompanyInformationForm, BlogForm, CategoryForm, SubCategoryForm
 
-from .forms import EmailSettingForm, SMSSettingForm, LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, BrandForm, FootorForm, SocialForm, PolicyForm, TermForm, EmailListForm, SMSListForm
+from .forms import DefaultForm, EmailSettingForm, SMSSettingForm, LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, BrandForm, FootorForm, SocialForm, PolicyForm, TermForm, EmailListForm, SMSListForm
 
 # Create your views here.
 
@@ -27,7 +27,19 @@ from .forms import EmailSettingForm, SMSSettingForm, LoginInterfaceForm, signupI
 
 
 
+def banCustomer(request, id):
+    customer = Customer.objects.get(id = id)
+    customer.banned = True
+    customer.save()
+    messages.success(request ,"Successfully Banned Customer")
+    return HttpResponseRedirect(reverse('owner:customerProfile', args=[customer.admin.id]))
 
+def banCustomerDisable(request, id):
+    customer = Customer.objects.get(id = id)
+    customer.banned = False
+    customer.save()
+    messages.success(request ,"Successfully Allowed banned Customer")
+    return HttpResponseRedirect(reverse('owner:customerProfile', args=[customer.admin.id]))
 # EMAIL AND SMS
 def emailSetting(request):
     email = EmailSetting.objects.all()
@@ -81,7 +93,67 @@ def addEmailSetting(request, id):
         return render(request, "owner/email.html", dist)    
 
 def smsSetting(request):
-    return render(request, "owner/sms.html")
+    email = SMSSetting.objects.all()
+    form = SMSSettingForm()
+    defautForm = DefaultForm()
+    if email:
+        for i in email:
+            email = i
+            form = SMSSettingForm(instance=i)
+            break
+    dist = {
+        'form': form,
+        'email':email,
+        'all_email':SMSList.objects.all(),
+        'customer':Customer.objects.all().order_by('-id'),
+        'agent':Agent.objects.all().order_by('-id'),
+        'recipient': Recipient.objects.all().order_by('-id'),
+        'sendform':SMSListForm(),
+        'defautForm':defautForm
+    }
+
+    if request.method == 'POST':
+        sendform = SMSListForm(request.POST)
+        
+        if sendform.is_valid():
+            sendform.save()
+            messages.success(request, 'Successfully sent sms')
+            return HttpResponseRedirect(reverse('owner:smsSetting'))
+        else:
+            print(sendform.errors)
+            dist.update({'sendform':sendform})
+            messages.error(request, "something went wrong")
+
+    return render(request, "owner/sms.html", dist)
+
+def addDefaultNumber(request):
+    form = DefaultForm(request.POST)
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Successfully added new number")
+        return HttpResponseRedirect(reverse('owner:smsSetting'))
+    else:
+        messages.error(request, "Something went wrong")
+        return HttpResponseRedirect(reverse('owner:smsSetting'))
+
+def addSMSSetting(request, id):
+    if id == 0:
+        form = SMSSettingForm(request.POST)
+    else:
+        instance = SMSSetting.objects.get(id = id)
+        form = SMSSettingForm(request.POST, instance=instance)
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Successfully updated SMS settings")
+        return HttpResponseRedirect(reverse('owner:smsSetting'))
+    else:
+        
+        dist = {
+            'form': form
+        }
+        messages.error(request, "Something went wrong")
+        return render(request, "owner/sms.html", dist) 
 
 
 # BANNED USER

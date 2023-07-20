@@ -89,6 +89,54 @@
                                         <i class="fa fa-mobile"></i>
                                         {{real_customer.customer.number}}</small>
                                     </div>
+                                    <hr>
+                                    <p class="m-0">Addition settings <i class="fa fa-cog"></i></p>
+                                    {% if real_customer.customer.banned%}
+                                    <a href="{%url 'owner:banCustomerDisable' real_customer.customer.id%}">
+                                        <button type="button" class="btn btn-danger">
+                                            <i class="fa fa-ban"></i> Disable Banned status
+                                        </button>
+                                    </a>
+                                    {%else%}
+                                    <button class="btn btn-danger btm-sm me-2" data-bs-toggle="modal" data-bs-target="#exampleModalBanned">
+                                        <i class="fa fa-ban"></i>
+                                        Ban this user?
+                                    </button>
+                                    {% endif %}
+                                  
+                                    <!-- Banned Model -->
+                                    <div class="modal fade" id="exampleModalBanned" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                            
+                                                <div class="modal-body">
+                                                    <div class="text-center">
+                                                        <img src="{%static 'resources/ban.webp'%}" alt="" style="width: 30%;">
+                                                    </div>
+                                            
+                                                    <h5>Are you sure want to ban {{real_customer.get_full_name}}</h5>
+                                                    <small>Banning customer will disable all the function that customer can perform</small>
+                                                    <div class="text-end mt-2">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change my mind</button>
+                                                        <a href="{%url 'owner:banCustomer' real_customer.customer.id%}">
+                                                            <button type="button" class="btn btn-danger">
+                                                                <i class="fa fa-ban"></i> Ban Now
+                                                            </button>
+                                                        </a>
+                                                        
+                                                    </div>
+                                                
+                                                </div>
+                                            
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Banned Model -->
+
+                                    <button class="btn btn-secondary btm-sm ms-2">
+                                        <i class="fa fa-trash"></i>
+                                        Delete this user?
+                                    </button>
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-12 mt-3 text-center my-auto">
                                     <div class="my-auto">

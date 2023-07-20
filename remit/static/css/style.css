@@ -867,7 +867,7 @@ a{
 }
 
 .emailBox{
-    border: 1px solid rgb(111, 255, 111);
+    background-color: #f7f7f7;
     border-radius: 5px;
 
 }

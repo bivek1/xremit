@@ -3,7 +3,7 @@ from homepage.models import Feature, AboutUs, ChooseUs, HomeService, Brand ,Logi
 from .models import SiteSetting, SEO
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
-from homepage.models import Currency, Country, Recipient, PickupPoint, KYC, EmailSetting, SMSSetting, EmailList, SMSList
+from homepage.models import Currency, Country, Recipient, PickupPoint, KYC, EmailSetting, SMSSetting, EmailList, SMSList, DefaultNumber
 
 
 
@@ -20,6 +20,14 @@ class EmailSettingForm(forms.ModelForm):
             'email_host_password':forms.TextInput(attrs = {'class':'form-control','placeholder':'*******', 'type':'password'}),
         }
 
+class DefaultForm(forms.ModelForm):
+    class Meta:
+        model = DefaultNumber
+        fields = ('__all__')
+
+        widgets={
+            'number': forms.NumberInput(attrs = {'class':'form-control mt-2', 'placeholder':'Enter your twilo phone number'})
+        }
 
 class EmailListForm(forms.ModelForm):
     class Meta:
@@ -50,11 +58,15 @@ class SMSSettingForm(forms.ModelForm):
 class SMSListForm(forms.ModelForm):
     class Meta:
         model = SMSList
-        fields = ("from_sim", 'to' , 'message',)
+        fields = ("from_sim", 'to' , 'message', 'reciptient', 'agent', 'group', 'customer')
 
         widgets = {
             'from_sim':forms.Select(attrs = {'class':'form-control'}),
             'to':forms.NumberInput(attrs={'class':'form-control', 'placeholder':'+61782782'}),
+            'reciptient':forms.Select(attrs={'hidden':True}),
+            'agent':forms.Select(attrs={'hidden':True}),
+            'group':forms.Select(attrs={'hidden':True}),
+            'customer':forms.Select(attrs={'hidden':True}),
             'message':CKEditorUploadingWidget()
         }
 # KYCForm

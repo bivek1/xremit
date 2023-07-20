@@ -15,7 +15,20 @@
   
 
 {% block content %}
-<div class="p-0 m-0 ">
+
+
+{% if user.customer.banned %}
+  <div class="row m-0 mt-3">
+    <div class="text-center mt-5">
+      <img src="{%static 'resources/ban.webp'%}" alt="">
+      <h4>
+        WE ARE SORRY TO INFORM YOU THAT YOUR ACCOUNT HAS BEEN BANNED.
+      </h4>
+    </div>
+  </div>
+
+  {%else%}
+  <div class="p-0 m-0 ">
     <!-- Side Bar -->
     <div class="p-3 side-bar pb-5 hidePhone" >
         <div class="d-flex justify-content-between">
@@ -587,7 +600,8 @@
     
       
 </div>
-
+{% endif %}
+  
 
 
 {% endblock content %}

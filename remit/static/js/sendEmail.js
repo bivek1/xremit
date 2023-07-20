@@ -1,5 +1,6 @@
-$('#sendEmail').hide()
-$('#customerList').hide()
+
+// $('#sendEmail').hide()
+// $('#customerList').hide()
 $('#recipientList').hide()
 $('#agentList').hide()
 
@@ -11,7 +12,7 @@ function selectEmail(elem, type){
         $('#customerList').show().slideDown(1000);
         $('#recipientList').hide()
         $('#agentList').hide()
-        $('#sendEmail').show()
+        $('#sendEmail').show().slideDown(1000)
     }   
     else if (type == 'agent'){
         $('#sendEmail').hide()
@@ -56,7 +57,6 @@ if (this.checked) {
     selects.disabled = false;
 }
 });
-
 
 const checkboxss = document.getElementById('allRecipient');
 const selectss = document.getElementById('recipient');
