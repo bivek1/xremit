@@ -159,7 +159,12 @@ def addSMSSetting(request, id):
 # BANNED USER
 
 def bannedSetting(request):
-    return render(request, "owner/banned.html")
+    banned = Customer.objects.filter(banned = True)
+
+    dist = {
+        'banned':banned
+    }
+    return render(request, "owner/banned.html", dist)
 
 
 
@@ -381,46 +386,44 @@ def customerProfile(request, id):
    
 
 # Add Agent
-class AgentView(View):
+def AgentView(request):
     template_name = 'owner/agent.html'
     dist = {
             'agent_form':AgentForm(),
             'form_head': "Add new agent",
             'button':"Add new agent",
-            'user': CustomUser.objects.filter(user_type = "agent").order_by('-id')
+            'agent': CustomUser.objects.filter(user_type = "agent").order_by('-id')
         }
-    def get(self, request, *args, **kwargs):
-      
-        return render(request, self.template_name, self.dist)
-    
-    def post(self, request, *args, **kwars):
+  
+    if request.method == 'POST':
         form = AgentForm(request.POST)
         # try:
         # custom_user = 
         if form.is_valid():
-            try:
-                admin = CustomUser.objects.create_user(first_name = request.POST['first_name'], last_name = request.POST['last_name'], email = request.POST['email'], username = request.POST['email'], password = request.POST['password'], user_type = 'agent')
-                obj = admin.agent
-                obj.number = request.POST['number']
-                obj.mail_address = request.POST['mail_address']
-                obj.state = request.POST['state']
-                obj.zip_code = request.POST['zip_code']
-                obj.city = request.POST['city']
-                obj.country = request.POST['country']
-                obj.address = request.POST['address']
-                obj.added_by = request.user
-                obj.save()
-                 # admin.save()
-                messages.success(request, "Successfully Added Agent")
-                return HttpResponseRedirect(reverse('owner:agent'))
-            except:      
-                messages.error(request, "Email already exist")
-                return render(request, self.template_name, self.dist)
+            # try:
+            admin = CustomUser.objects.create_user(first_name = request.POST['first_name'], last_name = request.POST['last_name'], email = request.POST['email'], username = request.POST['email'], password = request.POST['password'], user_type = 'agent')
+            obj = admin.agent
+            obj.number = request.POST['number']
+            obj.mail_address = request.POST['mail_address']
+            obj.state = request.POST['state']
+            obj.zip_code = request.POST['zip_code']
+            obj.city = request.POST['city']
+            obj.country = Country.objects.get(id = request.POST['country']) 
+            obj.address = request.POST['address']
+            obj.added_by = request.user
+            obj.save()
+                # admin.save()
+            messages.success(request, "Successfully Added Agent")
+            return HttpResponseRedirect(reverse('owner:agent'))
+            # except:      
+            #     messages.error(request, "Email already exist")
+            #     return render(request, template_name, dist)
         else:
             error = form.errors()
             print(error)
             messages.error(request, str(error))
-            return render(request, self.template_name, self.dist)
+            return render(request, template_name,dist)
+    return render(request, template_name,dist)
 
 def deleteAgent(request, id):
     cust = CustomUser.objects.get(id = id)

@@ -16,19 +16,7 @@
 
 {% block content %}
 
-
-{% if user.customer.banned %}
-  <div class="row m-0 mt-3">
-    <div class="text-center mt-5">
-      <img src="{%static 'resources/ban.webp'%}" alt="">
-      <h4>
-        WE ARE SORRY TO INFORM YOU THAT YOUR ACCOUNT HAS BEEN BANNED.
-      </h4>
-    </div>
-  </div>
-
-  {%else%}
-  <div class="p-0 m-0 ">
+<div class="p-0 m-0 ">
     <!-- Side Bar -->
     <div class="p-3 side-bar pb-5 hidePhone" >
         <div class="d-flex justify-content-between">
@@ -42,7 +30,7 @@
         </div>
        
         <hr>
-        {%url 'customer:dashboard' as dashboardaa%}
+        {%url 'agent:dashboard' as dashboardaa%}
         <a href="{{dashboardaa}}">
             <div class="mt-3 p-2 
             {% if request.path == dashboardaa %}
@@ -59,22 +47,9 @@
               
             </div>
           </a>
-          {%url 'customer:recipient' as recipientaa%}
-          <a href="{{recipientaa}}">
-            <div class="mt-2 p-2 {% if request.path == recipientaa %}
-            activedb
-{% endif %} side-item" onclick="showLoader()">
-                <div class="text-center">
-                  <i class="fa fa-users mt-2"></i>   
-                </div>
-                <span class="ms-3 my-auto text-primary text-bold sidebar-link">
-                  Recipients
-                </span> 
-              </div>
-          </a>
         
 
-          {%url 'customer:currency' as currencyaa%}
+          {%url 'agent:currency' as currencyaa%}
           <a href="{{currencyaa}}">
             <div class="mt-2 p-2  {% if request.path == currencyaa %}
             activedb
@@ -88,75 +63,8 @@
               </div>
           </a>
 
-          {%url 'customer:bank' as bankaa%}
-          <a href="{{bankaa}}">
-            <div class="mt-2 p-2 {% if request.path == bankaa %}
-            activedb
-{% endif %} side-item" onclick="showLoader()">
-                <div class="text-center">
-                  <i class="fa fa-building mt-2"></i>   
-                </div>
-                <span class="ms-3 my-auto text-primary text-bold sidebar-link">
-                  Bank
-                </span> 
-              </div>
-          </a>
-          
-          {%url 'customer:transaction' as transactionaa%}
-          <a href="{{transactionaa}}">
-              <div class="mt-2 p-2 {% if request.path == transactionaa %}
-              activedb
-{% endif %} side-item" onclick="showLoader()">
-                <div class="text-center">
-                  <i class="fa-solid fa-money-bill-transfer mt-2"></i>
-                </div>
-                <span class="ms-3 my-auto text-primary text-bold sidebar-link">
-                  Transaction
-                </span>
-              </div>
-          </a>
-         
-          {%url 'customer:sendMoney' as sendMoneyaa%}
-          <a href="{{sendMoneyaa}}">
-            <div class="mt-2 p-2 side-item {% if request.path == sendMoneyaa %}
-            activedb
-{% endif %}" onclick="showLoader()">
-                <div class="text-center">
-                  <i class="fa-solid fa-money-bill-wave  mt-2"></i>  
-                </div>
-                <span class="ms-3 my-auto text-primary text-bold sidebar-link">
-                  Send Money
-                </span>
-            </div>
-          </a>
-         
-          {%url 'customer:defaultCurrency' as defaultCurrencyaa%}
-          <a href="{{defaultCurrencyaa}}">
-            <div class="mt-2 p-2 side-item {% if request.path == defaultCurrencyaa %}
-            activedb
-{% endif %}" onclick="showLoader()">
-                <div class="text-center">
-                  <i class="fa fa-coins mt-2"></i>   
-                </div>
-                <span class="ms-3 my-auto text-primary text-bold sidebar-link">
-                  Default Currency
-                </span> 
-              </div>
-          </a>
-          {%url 'customer:twoFactor' as twoFactoraa%}
-          <a href="{{twoFactoraa}}">
-            <div class="mt-2 p-2 side-item {% if request.path == twoFactoraa %}
-            activedb
-{% endif %}" onclick="showLoader()">
-              <div class="text-center">
-                <i class="fa-solid fa-lock  mt-2"></i>  
-              </div>
-              <span class="ms-3 my-auto text-primary text-bold sidebar-link">
-                2FA Security
-              </span>
-            </div>
-          </a>
-          {%url 'customer:profile' as profileaa%}
+      
+          {%url 'agent:profile' as profileaa%}
           <a href="{{profileaa}}">
               <div class="mt-2 p-2 side-item {% if request.path == profileaa %}
               activedb
@@ -309,260 +217,7 @@
             </span>
           </div>
           
-          <div class="container mt-2">
-            {% if not user.customer.kyc_verified %}
-            <div class="alert alert-light">
-                <img src="{%static 'resources/not-verified.png'%}" alt="" height="30px;" width="30px;">
-                <span class="text-danger">
-                    Your KYC is not verified yet.
-                </span>
-                 Please follow the link to verify.
-                <a href="{%url 'customer:verify'%}" class="text-success">
-                    Verify now
-                </a>
-            </div>
-          {% endif %}
-          </div>
-         
-            
-          <div class="row">
-            <div class="mt-3 col-12 ">
-              <div>
-                <div class="d-flex justify-content-between">
-                  <h5 class="m-0 p-2 text-primary">Your Recent Transactions</h5>
-                  <a href="{%url 'customer:transaction'%}">
-                    <button class="btn btn-primary">
-                      See All
-                    </button>
-                  </a>
-                
-                </div>
-                 
-                {% for i in transaction %}
-                    <div class="transaction-div p-2" id="login-card" data-bs-toggle="modal" data-bs-target="#exampleModalEdit{{i.id}}">
-                        <div class="d-flex">
-                        
-                            <i class="trans-icon fa fa-arrow-alt-circle-up"></i>
-                            <span class="ps-2 my-auto" >
-                                <h6 class="text-primary">
-                                Transfer Money to {{i.recipient.first_name}} {%if i.recipient.middle_name%} {{i.recipient.middle_name}} {%endif%} {{i.recipient.last_name}}
-                                </h6>
-                                
-                                {% if i.status == 'Pending' %}
-                                    <p class="text-warning p-0 m-0">
-                                        <i class="fa fa-circle-dot"></i>
-                                        Pending
-                                    </p>
-                                {% endif %}
-
-                                {% if i.status == 'Cancelled' %}
-                                    <p class="text-danger p-0 m-0">
-                                        <i class="fa fa-circle-dot"></i>
-                                        Cancelled
-                                    </p>
-                                {% endif %}
-
-                                {% if i.status == 'Completed' %}
-                                    <p class="text-success p-0 m-0">
-                                        <i class="fa fa-circle-dot"></i>
-                                        Completed
-                                    </p>
-                                {% endif %}
-                                    
-                                
-                                <small class="text-secondary" style="font-size: 12px;">
-                                    Click to view report
-                                </small>
-                            </span>
-                            
-                        
-                        </div>
-                        
-                        <div>
-                        <h6 class="text-danger">
-                            - {{i.sent}} {{i.sending_currency.currecy_sign}}
-                        </h6>
-                        <p class="text-success">
-                        
-                            <b>
-                                {{i.received}} {{i.receiving_currency.currecy_sign}}
-                            </b>
-                        </p>
-                        </div>
-                    </div>
-
-                    <!-- Transaction Model -->
-                    <div class="modal fade" id="exampleModalEdit{{i.id}}" tabindex="-1" aria-labelledby="exampleModalEditLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered model-lg">
-                            <div class="modal-content">
-                            
-                                <div class="modal-body">
-                                    <div class="text-center">
-                                        {% if i.status == 'Pending' %}
-                                        <p class="text-warning p-0 m-0">
-                                            <i class="fa fa-circle-dot"></i>
-                                            Pending
-                                        </p>
-                                        {% endif %}
-
-                                        {% if i.status == 'Cancelled' %}
-                                            <p class="text-danger p-0 m-0">
-                                                <i class="fa fa-circle-dot"></i>
-                                                Cancelled
-                                            </p>
-                                        {% endif %}
-
-                                        {% if i.status == 'Completed' %}
-                                            <p class="text-success p-0 m-0">
-                                                <i class="fa fa-circle-dot"></i>
-                                                Completed
-                                            </p>
-                                        {% endif %}
-                                    </div>
-                                
-                                    <div class="text-center">
-                                        <h6 class="text-primary">
-                                            Transfer Money to {{i.recipient.first_name}} {%if i.recipient.middle_name%} {{i.recipient.middle_name}} {%endif%} {{i.recipient.last_name}}
-                                        </h6>
-                                    </div>
-                                    <hr>
-                                    <div class="row" id="complete">
-                                        <div class="col-12 col-lg-10  m-auto p-2 text-center">
-                                        
-                                            
-                                            <div>
-                                                <div class="d-flex justify-content-between">
-                                                    <h5>
-                                                        Transfer Details
-                                                    </h5>
-                                                
-                                                </div>
-                                                
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="text-secondary">
-                                                        You Send
-                                                    </p>
-
-                                                    <b>
-                                                        {{i.sent}} {{i.sending_currency.currecy_sign}}
-                                                    </b>
-
-                                                </div>
-
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="text-secondary">
-                                                        Total Fee
-                                                    </p>
-
-                                                    <p class="text-secondary">
-                                                        {{i.fee}} {{i.sending_currency.currecy_sign}}
-                                                    </p>
-                                                    
-                                                </div>
-
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="text-secondary">
-                                                        Amount after converting
-                                                    </p>
-
-                                                    <p class="text-secondary">
-                                                        {{i.received}} {{i.receiving_currency.currecy_sign}}
-                                                    </p>
-                                                    
-                                                </div>
-
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="text-secondary">
-                                                        Conversion Rate
-                                                    </p>
-
-                                                    <p class="text-secondary">
-                                                    {{i.converting_rate}}
-                                                    </p>
-                                                    
-                                                </div>
-
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="text-secondary">
-                                                        Other get
-                                                    </p>
-
-                                                    <b>
-                                                        {{i.received}} {{i.receiving_currency.currecy_sign}}
-                                                    </b>
-                                                    
-                                                </div>
-                                                <h6 class="mt-2">
-                                                    <i class="fa fa-bank"></i>
-                                                    Bank Details
-                                                </h6>
-                                                <hr>
-
-                            
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="text-secondary">
-                                                        Name
-                                                    </p>
-
-                                                    <b>
-                                                        Ram Prasad Yadav
-                                                    </b>
-                                                    
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="text-secondary">
-                                                        Bank Name
-                                                    </p>
-
-                                                    <p class="text-secondary">
-                                                        Citizen Bank Limited
-                                                    </p>
-                                                    
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="text-secondary">
-                                                        Account Number
-                                                    </p>
-
-                                                    <p class="text-secondary">
-                                                        0021255622111
-                                                    </p>
-                                                    
-                                                </div>
-                                                <div class="d-flex justify-content-between">
-                                                    <p class="text-secondary">
-                                                        Account Name
-                                                    </p>
-
-                                                    <p class="text-secondary">
-                                                        Ram Prasad Yadav
-                                                    </p>
-                                                    
-                                                </div>
-                                            </div>
-                                            
-                                            
-                                        </div>
-                                    </div>
-                                                                                                    
-                                    <div class="text-end mt-2">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    </div>
-                                
-                                </div>
-                            
-                        </div>
-                        </div>
-                    </div>
-                    <!-- Transaction Model -->
-                {% endfor %}
-                  
-              </div>
-             
-             
-            </div>
-          </div>
-
+        
           <div class="row mt-3">
             <h5>Currency....</h5>
             {% for i in currency  %}
@@ -600,7 +255,7 @@
     
       
 </div>
-{% endif %}
+
   
 
 

@@ -13,7 +13,7 @@ urlpatterns = [
     path('delete-customer/<int:id>', views.deleteCustomer, name = "deleteCustomer"),
 
     # Agent Part
-    path('agent-data', views.AgentView.as_view(), name = "agent"),
+    path('agent-data', views.AgentView, name = "agent"),
     path('agent-profile/<int:id>', views.agentProfile, name="agentProfile"),
     path('delete-agent/<int:id>', views.deleteAgent, name = "deleteAgent"),
     #Site Settings

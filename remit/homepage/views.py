@@ -155,6 +155,8 @@ def LoginV(request):
                 return HttpResponseRedirect(reverse('owner:dashboard'))
             elif use.user_type == "customer":
                 return HttpResponseRedirect(reverse('customer:dashboard'))
+            else:
+                return HttpResponseRedirect(reverse('agent:dashboard'))
         else:
             messages.error(request, "Incorrect Username and Password")
             return render(request, tempate_name)

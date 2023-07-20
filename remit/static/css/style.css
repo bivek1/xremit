@@ -89,6 +89,7 @@
 }
 
 
+
 .btn-danger {
   align-items: center;
   background-image: linear-gradient(135deg, #f34079 40%, #fc894d);
@@ -246,9 +247,20 @@
     border: none!important;
 }
 .features-box{
-    background-color: rgb(226, 226, 226);
+    background-color: #ff5a31;
     border-radius: 10px;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    /* animation-name: ; */
 }
+.features-box:hover{
+    background-color: #f0f0f0;
+    animation: backwards;
+    color: #ff5a31;
+    transition-duration: 200ms;
+}
+
 #signIn-banner{
     background-color: #1e1780;
 }
@@ -308,9 +320,13 @@ a{
 /* Styling Basic component*/
 .navbar{
     padding: 14px;
+    
 }
 .nav-link{
-    color: white
+    color:rgb(12, 6, 95);
+    display: none;
+    font-size: 15px;
+    font-family: 'Alegreya Sans SC' sans-serif;
 }
 
 .nav-link:hover{
@@ -871,3 +887,62 @@ a{
     border-radius: 5px;
 
 }
+
+.maintain{
+    height: 85px;
+  }
+
+.back-to-top {
+position: relative;
+z-index: 2; }
+.back-to-top .btn-dark {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    padding: 0;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #2e2e2e;
+    border-color: #2e2e2e;
+    display: none;
+    z-index: 999;
+    -webkit-transition: all 0.3s linear;
+    -o-transition: all 0.3s linear;
+    transition: all 0.3s linear; }
+.back-to-top .btn-dark:hover {
+    cursor: pointer;
+    background: #FA6742;
+    border-color: #FA6742; 
+}
+
+.sidebarofxremit{
+    position: fixed;
+    right: 0;
+    top: 300px;
+    height: auto;
+    width: 45px;
+    background-color: rgb(241, 241, 241);
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+    transition: 0.8s;
+}
+
+.showbar{
+    transition: opacity 1s ease-out;
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    display: none;
+    
+  }
+.sidebarofxremit:hover{ 
+    width: auto;
+    transition-duration: 1s;
+    
+  }
+.sidebarofxremit:hover .showbar{ 
+    opacity: 1;
+    height: auto;
+    /* opacity: 1; */
+    display: inline;
+  }

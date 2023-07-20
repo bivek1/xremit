@@ -43,17 +43,17 @@ class Country(models.Model):
 
 
 class Agent(models.Model):
-    id = models.AutoField(primary_key = True)
+
     admin = models.OneToOneField(CustomUser, related_name ="agent", on_delete=models.CASCADE, null = True, blank = True)
-    number = models.BigIntegerField(null = True)
-    mail_address = models.CharField(max_length=100, null = True, blank = True),
-    state = models.CharField(max_length=100, null = True, blank = True),
-    zip_code = models.IntegerField(null = True, blank = True),
-    city = models.CharField(max_length=100, null = True, blank = True),
-    country = models.ForeignKey(Country, related_name='agent_country', on_delete=models.CASCADE, null = True, blank= True),
+    mail_address = models.CharField(max_length=100, null = True, blank = True)
+    state = models.CharField(max_length=100, null = True, blank = True)
+    zip_code = models.IntegerField(null = True, blank = True)
+    city = models.CharField(max_length=100, null = True, blank = True)
+    country = models.ForeignKey(Country, related_name='agent_country', on_delete=models.CASCADE, null = True, blank= True)
     address = models.CharField(max_length = 200, null = True, blank = True)
     created_at = models.DateTimeField(auto_now_add= True)
     profil_pic = models.ImageField(upload_to ="profile_pic/agent/", null = True, blank = True)
+    number = models.BigIntegerField(null = True, blank = True)
     updated_at = models.DateTimeField(auto_now=True)
     added_by = models.ForeignKey(CustomUser, null=True, blank = True, related_name = 'agent_adder', on_delete = models.CASCADE)
     objects = models.Manager()
@@ -67,7 +67,7 @@ class Agent(models.Model):
 
     
 class Customer(models.Model):
-    id = models.AutoField(primary_key = True)
+ 
     admin = models.OneToOneField(CustomUser, related_name ="customer", on_delete=models.CASCADE, null = True, blank = True)
     number = models.BigIntegerField(null = True)
     mail_address = models.CharField(max_length=100, null = True, blank = True)
