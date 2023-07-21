@@ -322,15 +322,22 @@ a{
     padding: 14px;
     
 }
+
 .nav-link{
-    color:rgb(12, 6, 95);
-    display: none;
-    font-size: 15px;
+    color:rgb(255, 255, 255);
+    font-size: 13px;
     font-family: 'Alegreya Sans SC' sans-serif;
+}
+.navbar-collapse{
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
 .nav-link:hover{
     color: #aaaaaa;
+}
+.curnBx{
+    width: 80%;
 }
 
 
@@ -339,8 +346,8 @@ a{
 
 /* Homepage Design */
 .background{
-    background-image: url('../resources/aus.jpg');
-    background-size: cover;
+    background-image: url('../resources/ausbg.png');
+    background-size: 100% 100%;
     height: 100vh;
     width: 100%;
 }
@@ -354,11 +361,11 @@ a{
     width: 75%;
 }
 .head-home {
-    font-size: 50px;
+    font-size: 40px;
     font-weight: bold;
 }
 .head-para{
-    font-size: 25px;
+    font-size: 18px;
     font-weight: 500;
     /* background-color: #3f37aa; */
     color: white;
@@ -372,8 +379,8 @@ a{
     font-size: 20px;
 }
 .right-currency img{
-    height: 100%;
-    width: 55%;
+    height: auto;
+    width: 40%;
 }
 
 .receipt-card{
@@ -794,9 +801,18 @@ a{
     background-color: rgba(44, 44, 44, 0.6);
 }
 .footer{
-    background-color:#110c5e;
+    background-color:#060135;
 }
 
+.footer-first img{
+    height: auto;
+    width:20%;
+}
+
+.footor-app img{
+    height: auto;
+    width: 200px;
+}
 
 
 .custom-input {
@@ -918,7 +934,7 @@ z-index: 2; }
 
 .sidebarofxremit{
     position: fixed;
-    right: 0;
+    left: 0;
     top: 300px;
     height: auto;
     width: 45px;
