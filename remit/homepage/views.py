@@ -208,3 +208,99 @@ def serviceView(request):
         'third_fo':Footor.objects.filter(row='Third'),
     }
     return render(request, "homepage/other/service.html", dist)
+
+
+def aboutView(request):
+    # About Us
+    about = AboutUs.objects.all()
+    
+    if about:
+        for i in about:
+            about = i
+            break
+
+    dist = {
+        'service_man':Service.objects.all(),
+        'social':SocialLink.objects.all(),
+        'about':about,
+        'feature_b':Feature.objects.all(),
+        'first_fo':Footor.objects.filter(row='First'),
+        'second_fo':Footor.objects.filter(row='Second'),
+        'third_fo':Footor.objects.filter(row='Third'),
+    }
+    return render(request, "homepage/other/about.html", dist)
+
+def blogView(request):
+    dist = {
+        'service_man':Service.objects.all(),
+        'social':SocialLink.objects.all(),
+        'blog':Blog.objects.all().order_by('-id'),
+        'first_fo':Footor.objects.filter(row='First'),
+        'second_fo':Footor.objects.filter(row='Second'),
+        'third_fo':Footor.objects.filter(row='Third'),
+    }
+    return render(request, "homepage/other/blog.html", dist)
+
+def countryView(request):
+    dist = {
+        'service_man':Service.objects.all(),
+        'social':SocialLink.objects.all(),
+        'country':Country.objects.all().order_by('-id'),
+        'first_fo':Footor.objects.filter(row='First'),
+        'second_fo':Footor.objects.filter(row='Second'),
+        'third_fo':Footor.objects.filter(row='Third'),
+    }
+    return render(request, "homepage/other/country.html", dist)
+
+def currencyView(request):
+    dist = {
+        'service_man':Service.objects.all(),
+        'social':SocialLink.objects.all(),
+        'default' : Currency.objects.last(),
+        'currency':Currency.objects.all().order_by('-id'),
+        'first_fo':Footor.objects.filter(row='First'),
+        'second_fo':Footor.objects.filter(row='Second'),
+        'third_fo':Footor.objects.filter(row='Third'),
+    }
+    return render(request, "homepage/other/currency.html", dist)
+
+def featureView(request):
+    dist = {
+        'service_man':Service.objects.all(),
+        'feature_b':Feature.objects.all(),
+        'social':SocialLink.objects.all(),
+        'first_fo':Footor.objects.filter(row='First'),
+        'second_fo':Footor.objects.filter(row='Second'),
+        'third_fo':Footor.objects.filter(row='Third'),
+    }
+    return render(request, "homepage/other/feature.html", dist)
+
+def sitemapView(request):
+    dist = {
+        'service_man':Service.objects.all(),
+        'social':SocialLink.objects.all(),
+        'first_fo':Footor.objects.filter(row='First'),
+        'second_fo':Footor.objects.filter(row='Second'),
+        'third_fo':Footor.objects.filter(row='Third'),
+    }
+    return render(request, "homepage/other/sitemap.html", dist)
+
+def privacyView(request):
+    dist = {
+        'service_man':Service.objects.all(),
+        'social':SocialLink.objects.all(),
+        'first_fo':Footor.objects.filter(row='First'),
+        'second_fo':Footor.objects.filter(row='Second'),
+        'third_fo':Footor.objects.filter(row='Third'),
+    }
+    return render(request, "homepage/other/privacy.html", dist)
+
+def termsView(request):
+    dist = {
+        'service_man':Service.objects.all(),
+        'social':SocialLink.objects.all(),
+        'first_fo':Footor.objects.filter(row='First'),
+        'second_fo':Footor.objects.filter(row='Second'),
+        'third_fo':Footor.objects.filter(row='Third'),
+    }
+    return render(request, "homepage/other/terms.html", dist)

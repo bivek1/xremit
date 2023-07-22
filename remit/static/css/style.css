@@ -569,6 +569,13 @@ a{
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 
 }
+.breadcum-front{
+    padding: 5px;
+    font-weight:300;
+    background-color: rgb(9, 13, 63);
+    border-radius: 5px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
 
 .sendMoneyText{
     font-size: 11px;
@@ -1018,9 +1025,15 @@ z-index: 2; }
     background-color: rgb(245, 245, 245);
     box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
     cursor: pointer;
-    height: 380px;
+    height: 300px;
     border-radius: 5px;
     overflow: hidden;
+    position: relative;
+}
+
+.top-stick{
+    position: absolute;
+    left: 10px;
 }
 
 .blog-box:hover{
@@ -1034,4 +1047,17 @@ z-index: 2; }
 .countryBox img{
     height: 50px;
     width: auto;
+}
+
+.about-now{
+    background-image: url('../resources/about.png');
+    background-size: 100% 100%;
+    height: auto;
+    background-attachment: scroll;
+    padding: 20px;
+}
+
+.more-info{
+    padding: 20px;
+    background-color: #110c5e;
 }

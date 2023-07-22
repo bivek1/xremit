@@ -1,0 +1,90 @@
+{% extends 'homepage/index.html' %}
+
+
+{% block title %}
+    About XRemit
+{% endblock title %}
+    
+{% block inside %}
+<div class="row bg-white m-0 pt-5 pb-5">
+    <div class="mt-3 mb-3 text-center">
+        <span class="breadcum-front text-light">
+            <i class="fa fa-arrow-alt-circle-right"></i>
+            <a href="{%url 'homepage:homepage'%}">
+                Homepage
+            </a>/
+            About XRemit
+        </span>
+    </div>
+    
+    <div class="about-now mt-2 row m-0">
+        <div class="col-12 p-4">
+            <h2 class="head-home text-center">
+                ABOUT XREMIT
+            </h2>
+            <p class="text-primary text-center">
+                {{about.about_us|truncatewords:50|striptags}}
+            </p>
+            <button class="btn btn-warning mt-2 btn-lg m-auto">
+                View More
+            </button>
+        </div>
+    </div>
+    <div class="row more-info m-0">
+        <div class="col-6 col-lg-4 info-more-border">
+            <h1 class="text-center text-light">
+                200+
+            </h1>
+            <p class="text-light text-center ">
+                CUSTOMER
+            </p>
+        </div>
+
+        <div class="col-6 col-lg-4 info-more-border">
+            <h1 class="text-center text-light">
+                100+
+            </h1>
+            <p class="text-light text-center ">
+                COUNTRIES
+            </p>
+        </div>
+
+
+        <div class="col-6 col-lg-4 info-more-border">
+            <h1 class="text-center text-light">
+                700+
+            </h1>
+            <p class="text-light text-center ">
+                TRANSACTION
+            </p>
+        </div>
+
+        
+    </div>
+
+    <div  class="row p-0 m-0 mt-3">
+        <h3 class="head-home text-center mt-3">
+            Get Served with our features
+        </h3>
+        {% for j in feature_b %}       
+            <div class="col-12 col-lg-3">
+                <div class="features-box mt-3 text-center">
+                    <img src="{{j.image.url}}" alt="" style="height: 80px; width: auto;">
+                    <h5 class="my-auto text-dark mt-2">
+                        {{j.name}}
+                    </h5>
+                    <small class="text-dark mt-2">
+                        {{j.feature|truncatewords:10|safe}}
+                    </small>
+                    
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+   
+  
+        
+</div>
+{% endblock inside %}
+    
