@@ -27,4 +27,6 @@ urlpatterns = [
     path('customer-find-bank', views.findBank, name ="findBank"),
     path('editBank/<int:id>', views.editBank, name ="editBank"),
     path('deleteBank/<int:id>', views.deleteBank, name ="deleteBank"),
+    path('create-a-ticket-support-xremit', views.ticketView, name ="ticketView"),
+    path('customer-ticket-list', views.ticketList, name ="ticketList")
 ]   

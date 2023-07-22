@@ -1025,7 +1025,7 @@ z-index: 2; }
     background-color: rgb(245, 245, 245);
     box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
     cursor: pointer;
-    height: 300px;
+    height: 330px;
     border-radius: 5px;
     overflow: hidden;
     position: relative;
@@ -1060,4 +1060,26 @@ z-index: 2; }
 .more-info{
     padding: 20px;
     background-color: #110c5e;
+}
+
+.contactBox{
+    background-color: white;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 10px;
+}
+
+.contact-side{
+    background-color: #060135;
+}
+
+#supportTop{
+    padding: 20px;
+    background-color: #dfdfdf;
+    border-radius: 10px;
+}
+
+#supportSecond{
+    padding: 20px;
+    background-color: #dfdfdf;
+    border-radius: 10px;
 }

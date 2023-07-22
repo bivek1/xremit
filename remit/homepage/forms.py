@@ -2,13 +2,28 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from homepage.models import Product, Service,Client, Testomonial, Blog, SubCategory, Category, Customer, Agent, Transaction
-from homepage.models import CompanyInformation, BankAccount
+from homepage.models import CompanyInformation, BankAccount, Contact, Ticket
 from django import forms
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import password_validation
 
 
+
+# Support Ticket
+class TicketForm(forms.ModelForm):
+    class Meta:
+        model = Ticket
+        fields = ('__all__')
+        exclude = ('customer',)
+
+        widgets= {
+        
+            'subject': forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Subject of your ticket'}),
+            'piority': forms.Select(attrs={'class':'form-control mt-2', 'placeholder':'Australian High Com Bank'}),
+            'department': forms.Select(attrs={'class':'form-control mt-2','placeholder':'Australia'}),
+            'description': CKEditorUploadingWidget()
+        }
 
 
 # Transaction Form
@@ -302,6 +317,25 @@ class BlogForm(forms.ModelForm):
             'description':CKEditorUploadingWidget()
         }
 
+
+# Contact Form
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = ('name', 'email', 'number','message')
+
+        labels = {
+            'name':'Full name*',
+            'email':'Your valid email address*',
+            'number':'Your valid number*',
+            'message':'Your your message here*',
+        }
+        widgets = {
+            'name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Your Full Name'}),
+            'email':forms.EmailInput(attrs={'class':'form-control mt-2', 'placeholder':'robertthopson23@hotmail.com'}),
+            'number':forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'+61 717 7118 171'}),
+            'message':forms.Textarea(attrs={'class':'form-control mt-2' ,'placeholder':'Write your message here..'})
+        }
 
 # Category Form
 

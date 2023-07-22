@@ -1,17 +1,40 @@
 from django.shortcuts import render
 from owner.forms import RecipientForm, Recipient, KYC, KYCForm
-from homepage.models import Currency, Country, Transaction, BankAccount, DefaultCurrency
+from homepage.models import Currency, Country, Transaction, BankAccount, DefaultCurrency, SupportFile
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import View
-from homepage.forms import PasswordChangeFormUpdate, CustomerForm, Customer
+from homepage.forms import PasswordChangeFormUpdate, CustomerForm, TicketForm
 from django.http import JsonResponse
 from homepage.forms import TransactionForm, BankForm
 from django.core import serializers
 
 
 
+def ticketView(request):
+
+    dist = {
+        'form':TicketForm()
+    }
+
+    if request.method == 'POST':
+        form = TicketForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            images = request.FILES.getlist("file[]")
+            for img in images:
+                image = SupportFile(file=img, customer = request.user.customer)
+                image.save()
+            messages.success(request, "Successfully created ticket")
+            return HttpResponseRedirect(reverse('customer:ticketList'))
+        else:
+            messages.success(request, "Something went wrong")
+
+    return render(request, "customer/ticket.html", dist)
+
+def ticketList(request):
+    return render(request, "customer/ticketList.html")
 def defaultCurrencyView(request):
     dist = {
         'currency':Currency.objects.all()

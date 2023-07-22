@@ -503,6 +503,42 @@ class Blog(models.Model):
         return self.title
     
 
+class Contact(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.EmailField(null = True, blank=True)
+    number = models.BigIntegerField()
+    message = models.TextField()
+   
+    def __str__(self):
+        return self.name
+
+class Ticket(models.Model):
+    customer = models.ForeignKey(Customer, related_name='customer_support', on_delete=models.CASCADE)
+    department = models.CharField(max_length=200, choices=(
+        ('technical','Technical'),
+        ('payment', 'Payment'),
+    ))
+    piority = models.CharField(max_length=200, choices=(
+        ('high','High'),
+        ('medium', 'Medium'),
+        ('low', 'Low'),
+    ))
+    status = models.CharField(max_length=200, choices=(
+        ('pending','Pending'),
+        ('answered', 'Answered'),
+        ('closed', 'Closed')
+    ))
+    subject = models.CharField(max_length=300)
+    description = RichTextUploadingField()
+
+
+    def __str__(self):
+        return self.subject
+    
+class SupportFile(models.Model):
+    file = models.FileField(upload_to='support_file/')
+    support = models.ForeignKey(Ticket, related_name='customer_support', on_delete=models.CASCADE)
+
 
     
 

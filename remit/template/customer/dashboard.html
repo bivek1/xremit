@@ -156,6 +156,19 @@
               </span>
             </div>
           </a>
+          {%url 'customer:ticketView' as ticketaa%}
+          <a href="{{ticketaa}}">
+            <div class="mt-2 p-2 side-item {% if request.path == ticketaa %}
+            activedb
+{% endif %}" onclick="showLoader()">
+              <div class="text-center">
+                <i class="fa-solid fa-headphones-simple  mt-2"></i>  
+              </div>
+              <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                Ticket
+              </span>
+            </div>
+          </a>
           {%url 'customer:profile' as profileaa%}
           <a href="{{profileaa}}">
               <div class="mt-2 p-2 side-item {% if request.path == profileaa %}

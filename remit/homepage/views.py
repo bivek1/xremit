@@ -20,6 +20,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
+from .forms import ContactForm
 from homepage.models import Currency,SocialLink, Country
 # Create your views here.
 
@@ -209,6 +210,18 @@ def serviceView(request):
     }
     return render(request, "homepage/other/service.html", dist)
 
+def serviceDetail(request, id, name):
+    service = Service.objects.get(id = id)
+    dist = {
+        'service_man':Service.objects.all(),
+        'service':service,
+        'social':SocialLink.objects.all(),
+        'first_fo':Footor.objects.filter(row='First'),
+        'second_fo':Footor.objects.filter(row='Second'),
+        'third_fo':Footor.objects.filter(row='Third'),
+    }
+    return render(request, "homepage/other/serviceDetail.html", dist)
+
 
 def aboutView(request):
     # About Us
@@ -240,6 +253,18 @@ def blogView(request):
         'third_fo':Footor.objects.filter(row='Third'),
     }
     return render(request, "homepage/other/blog.html", dist)
+
+def blogDetail(request, id, name):
+    blog = Blog.objects.get(id = id)
+    dist = {
+        'blog_man':Blog.objects.all(),
+        'blog':blog,
+        'social':SocialLink.objects.all(),
+        'first_fo':Footor.objects.filter(row='First'),
+        'second_fo':Footor.objects.filter(row='Second'),
+        'third_fo':Footor.objects.filter(row='Third'),
+    }
+    return render(request, "homepage/other/blogDetail.html", dist)
 
 def countryView(request):
     dist = {
@@ -275,6 +300,18 @@ def featureView(request):
     }
     return render(request, "homepage/other/feature.html", dist)
 
+def featureDetail(request, id, name):
+    feature = Feature.objects.get(id = id)
+    dist = {
+        'feature_man':Feature.objects.all(),
+        'feature':feature,
+        'social':SocialLink.objects.all(),
+        'first_fo':Footor.objects.filter(row='First'),
+        'second_fo':Footor.objects.filter(row='Second'),
+        'third_fo':Footor.objects.filter(row='Third'),
+    }
+    return render(request, "homepage/other/featureDetail.html", dist)
+
 def sitemapView(request):
     dist = {
         'service_man':Service.objects.all(),
@@ -304,3 +341,20 @@ def termsView(request):
         'third_fo':Footor.objects.filter(row='Third'),
     }
     return render(request, "homepage/other/terms.html", dist)
+
+def contactView(request):
+    form = ContactForm()
+    dist = {
+        'form':form,
+        'social':SocialLink.objects.all(),
+        'first_fo':Footor.objects.filter(row='First'),
+        'second_fo':Footor.objects.filter(row='Second'),
+        'third_fo':Footor.objects.filter(row='Third'),
+    }
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Successfully sent messages")
+    return render(request, "homepage/other/contact.html", dist)
