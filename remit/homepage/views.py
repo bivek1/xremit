@@ -20,7 +20,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
-from homepage.models import Currency,SocialLink
+from homepage.models import Currency,SocialLink, Country
 # Create your views here.
 
 
@@ -124,6 +124,8 @@ def Homepage(request):
         'feature_b':Feature.objects.all(),
         'brand':brand,
         'currency':Currency.objects.all(),
+        'country': Country.objects.all(),
+        'blog':Blog.objects.all()[:6],
         'default':default,
         'first_fo':Footor.objects.filter(row='First'),
         'second_fo':Footor.objects.filter(row='Second'),
@@ -132,7 +134,6 @@ def Homepage(request):
 
     return render(request, template_name, dist)
     
-
 
 class BlogV(DetailView):
     model = Blog
@@ -196,3 +197,14 @@ def Register(request):
 def LogoutV(request):
     logout(request)
     return HttpResponseRedirect(reverse('homepage:login'))
+
+
+def serviceView(request):
+    dist = {
+        'service_man':Service.objects.all(),
+        'social':SocialLink.objects.all(),
+        'first_fo':Footor.objects.filter(row='First'),
+        'second_fo':Footor.objects.filter(row='Second'),
+        'third_fo':Footor.objects.filter(row='Third'),
+    }
+    return render(request, "homepage/other/service.html", dist)

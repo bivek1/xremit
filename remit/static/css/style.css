@@ -786,21 +786,13 @@ a{
   }
 
 
-/* Homepage design */
 .choose-bg{
-    background-image: url('../resources/login.png');
-    background-size: contain;
-    overflow: hidden;
-    background-attachment: fixed;
-    /* background-attachment: scroll; */
-    height: 400px;
+    background-color: white;
     border-radius: 10px;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
 }
-.back-bg{
-    height: 400px;
-    width: 100%;
-    background-color: rgba(44, 44, 44, 0.6);
-}
+
 .footer{
     background-color:#060135;
 }
@@ -1009,3 +1001,37 @@ z-index: 2; }
     background-color: rgb(255, 255, 255);
     border-radius: 20px;
   }
+
+  .about-us{
+    background-image: url('../resources/aboutbg.png');
+    background-size: 100% 100%;
+    background-attachment: fixed;
+  }
+
+.countryBox{
+    background-color: rgb(245, 245, 245);
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    cursor: pointer;
+}
+
+.blog-box{
+    background-color: rgb(245, 245, 245);
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    cursor: pointer;
+    height: 380px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.blog-box:hover{
+    background-color: rgb(235, 235, 235);
+    transition-duration: 200ms;
+}
+.countryBox:hover{
+    background-color: white;
+    transition-duration: 200ms;
+}
+.countryBox img{
+    height: 50px;
+    width: auto;
+}

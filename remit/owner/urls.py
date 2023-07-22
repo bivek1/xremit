@@ -106,6 +106,15 @@ urlpatterns = [
     path('banCustomer/<int:id>', views.banCustomer, name= "banCustomer"),
     path('banCustomerDisable/<int:id>', views.banCustomerDisable, name = "banCustomerDisable"),
 
+    # Blog
+    path(
+        'blogs-news-event', views.blogView, name ="blog"
+    ),
+    path(
+        'edit-blog/<int:id>', views.editBlog, name ="editblog"
+    ),
+    path('delete-blog/<int:id>', views.deleteBlog, name ="deleteBlog")
+
 
 
 ]   

@@ -289,19 +289,17 @@ class CompanyInformationForm(forms.ModelForm):
 class BlogForm(forms.ModelForm):
     class Meta:
         model = Blog
-        fields = ('title','category','sub_category','description')
+        fields = ('title', 'types', 'image','description')
 
         labels = {
             'title':'Title of Blog*',
-            'category':'Select Category*',
-            'sub_category':'Select Sub Category',
             'description':'Description'
         }
         widgets = {
-            'title':forms.TextInput(attrs={'class':'form-control', 'placeholder':'Add Your Title'}),
-            'category':forms.Select(attrs={'class':'form-control'}),
-            'sub_category':forms.Select(attrs={'class':'form-control mb-2'}),
-            'description':CKEditorUploadingWidget
+            'image':forms.FileInput(attrs={'class':'form-control mt-2'}),
+            'title':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Add Your Title'}),
+            'types':forms.Select(attrs={'class':'form-control mt-2'}),
+            'description':CKEditorUploadingWidget()
         }
 
 

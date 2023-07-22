@@ -141,6 +141,20 @@
                 </span>
           </div>
         </a>
+
+        {%url 'owner:blog' as blogaa%}
+        <a href="{{blogaa}}">
+          <div class="mt-2 p-2 side-item {% if request.path == blogaa %}
+          activedb
+        {% endif %}">
+            <div class="text-center">
+              <i class="fa-solid fa-blog mt-2"></i>
+            </div>
+            <span class="ms-3 my-auto text-primary text-bold">
+              Blog
+            </span>
+          </div>
+        </a>
        
 
         {%url 'owner:smsSetting' as smsaa%}

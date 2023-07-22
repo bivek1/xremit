@@ -251,6 +251,7 @@ class FeatureForm(forms.ModelForm):
         fields = ('__all__')
 
         widgets= {
+            'image':forms.FileInput(attrs={'class':'form-control mt-2'}),
             'name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Features or Name....'}),
             'feature':CKEditorUploadingWidget(attrs={'class':'form-control mt-2', 'placeholder':'Features of the company'}),
             

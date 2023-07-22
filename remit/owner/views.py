@@ -247,6 +247,61 @@ def deleteBank(request, id):
     return HttpResponseRedirect(reverse('owner:bank'))
 
 
+# Blog Information
+def blogView(request):
+    bank = Blog.objects.all().order_by('-id')
+    total_bank = bank.count()
+    form = BlogForm()
+    
+    dist = {
+        'blog':bank,
+        'form':form,
+        'total_blog':total_bank,
+       
+    }
+
+    if request.method == 'POST':
+        form = BlogForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            
+            form.save()
+            messages.success(request, "Successfully Added New Blog")
+            return HttpResponseRedirect(reverse('owner:blog'))
+        else:
+            messages.error(request, "Something went wrong")
+    return render(request, "owner/blog.html", dist)
+
+def editBlog(request, id):
+    
+    rec = Blog.objects.get(id = id)
+    form = BlogForm(instance=rec)
+   
+    dist = {
+        'form':form,
+        'blog':rec,
+        'total_blog':Blog.objects.all().count()
+    }
+
+    if request.method == 'POST':
+        form = BlogForm(request.POST, request.FILES, instance=rec)
+        if form.is_valid():
+            form.save()
+           
+            messages.success(request, "Successfully updated blog details")
+            return HttpResponseRedirect(reverse('owner:blog'))
+        else:
+            messages.error(request,"Something went wrong")
+        
+    return render(request, "owner/editBlog.html", dist)
+
+def deleteBlog(request, id):
+    bank = Blog.objects.get(id = id)
+    bank.delete()
+    messages.success(request, "Successfully Deleted Blog")
+    return HttpResponseRedirect(reverse('owner:blog'))
+
+
 def changeStatus(request, id):
     status = request.POST['status']
     trans = Transaction.objects.get(id = id)

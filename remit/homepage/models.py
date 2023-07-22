@@ -380,6 +380,7 @@ class Policy(models.Model):
 
 # Features
 class Feature(models.Model):
+    image = models.ImageField(upload_to ="features_image/", blank = True, null = True)
     name = models.CharField(max_length=200)
     feature = RichTextUploadingField()
     
@@ -486,8 +487,12 @@ class SubCategory(models.Model):
 
 class Blog(models.Model):
     title = models.CharField(max_length=300)
-    category = models.ForeignKey(Category, related_name  = "blog_category", on_delete = models.PROTECT, null = True, blank = True)
-    sub_category = models.ForeignKey(SubCategory, related_name = "blog_sub_category", on_delete= models.PROTECT, null = True, blank = True)
+    image = models.ImageField(upload_to = "blogs/", null = True, blank = True)
+    types = models.CharField(max_length=200, choices=(
+        ('News', 'News'),
+        ('Blog', 'Blog')
+    ))
+  
     description = RichTextUploadingField()
     visit = models.IntegerField(null = True, blank = True)
     date_added = models.DateTimeField(auto_now_add=True)

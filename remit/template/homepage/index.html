@@ -2,8 +2,19 @@
 {% load static %}
 
 {% block content %}
-
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+/>
 <style>
+    .swiper {
+        width: 80%;
+        height: 200px;
+    }
+    .brand-i img{
+        height: 100px;
+        width: auto;
+    }
     .activeHome{
         color: rgb(192, 192, 192);
     }
@@ -38,7 +49,11 @@
           </button>
           <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNav">
             <ul class="navbar-nav">
+            <a href="{%url 'homepage:homepage'%}">
+                <img src="{%static 'resources/logo.png'%}" alt="" height="70px">
+            </a>
               <li class="nav-item my-auto">
+               
                 <a class="nav-link activeHome" aria-current="page" href="#">
                     <!-- <i class="fa fa-home"></i>     -->
                     Home
@@ -46,7 +61,7 @@
                 </a>
               </li>
               <li class="nav-item my-auto">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{%url 'homepage:services'%}">
                     <!-- <i class="fa fa-server"></i> -->
                     Services
                 
@@ -68,8 +83,8 @@
           
             <div class="nav-item dropdown">
                 <a href="{%url 'homepage:login'%}">
-                    <button class="btn btn-light">
-                        <i class="fa fa-sign-in-alt"></i> LOGIN 
+                    <button class="btn btn-primary">
+                         LOGIN 
                     </button>
                 </a>
                
@@ -86,6 +101,9 @@
     <div class="maintain">
 
     </div>
+    
+    {% block inside %}
+             
     <div class="row m-0 mt-4 ps-5 pe-5">
         <div class="col-12 m-auto">
             <div class="row m-0 p-0">
@@ -227,134 +245,239 @@
        
        
     </div>  
-
-   
-</div>
-
-<div class="container-fluid m-0 p-0">
-    <div class="row m-0 mt-5 ps-5 pe-5">
-        <h5 class="text-center mb-3">Our Service</h5>
-        
-        {% for i in service_man  %}
-             <div class="mt-2 col-6 col-lg-3">
-                <div class="course-box ps-2 pe-2">
-                    <img src="{{i.image.url}}" alt="" height="60px" width="auto">
-                    <h4 class="mt-3">{{i.name}}</h4>
-                    <small class="text-light">
-                        {{i.description|truncatewords:15|safe}}
-                    </small>
-                </div>
-                
-             </div>
-             
-        {% endfor %}
-         
-    </div> 
+    <div class="container-fluid m-0 p-0">
+        <div class="row m-0 mt-5 ps-5 pe-5">
+            <h5 class="text-center mb-3 head-home">Our 
+                <span class="text-primary text-light">service can serve you the best</span>
+            </h5>
+            <p class="m-0"></p>
     
-    
-    <div class="row m-0 mt-5 p-3">
-
-        <div class="col-12 mt-2 col-lg-4 choose-bg">
-            <div class="back-bg d-flex">
-                <div class="my-auto">
-                    <h1 class="text-light mb-3 p-2">WHY CHOOSE US?</h1>
-                    <div class="text-light p-2">
-                        {{choose|truncatewords:30|safe}}
+            
+            {% for i in service_man  %}
+                 <div class="mt-2 col-6 col-lg-3">
+                    <div class="course-box ps-2 pe-2">
+                        <img src="{{i.image.url}}" alt="" height="60px" width="auto">
+                        <h4 class="mt-3">{{i.name}}</h4>
+                        <small class="text-light">
+                            {{i.description|truncatewords:15|safe}}
+                        </small>
                     </div>
-                </div>
-               
-            </div>
+                    
+                 </div>
+                 
+            {% endfor %}
+             
+        </div> 
+        
+        
+        <div class="row m-0 mt-5 p-3">
+    
            
-        </div>
-        <div class="col-12 mt-2 col-lg-8">
-            <h3 class="head-home text-dark">
-                We're ready to give you delited service
-            </h3>
-            <h3 class="head-para mt-2">
-                <span class="text-dark">
-                    OUR
-                </span>
-                     
-                <span class="bg-warning p-2">
-                    FEATURES
-                </span>
-            </h3>
-            <div class="row p-0 m-0">
-                {% for j in feature_b %}       
-                    <div class="col-12 col-lg-4">
-                        <div class="features-box mt-3 text-center">
-                            <i class="fa fa-info-circle text-dark my-auto"></i>
-                            <h5 class="my-auto text-dark mt-2">
-                                {{j.name}}
-                            </h5>
-                            <small class="text-dark mt-2">
-                                {{j.feature|truncatewords:10|safe}}
-                            </small>
-                            
+            <div class="col-12 mt-2 col-lg-12">
+                <h3 class="head-home text-dark text-center">
+                    We're ready to give you delited service
+                </h3>
+                <h3 class="head-para mt-2 text-center">
+                    <span class="text-dark">
+                        OUR
+                    </span>
+                         
+                    <span class="bg-warning p-2">
+                        FEATURES
+                    </span>
+                </h3>
+                <div class="row p-0 m-0">
+                    {% for j in feature_b %}       
+                        <div class="col-12 col-lg-3">
+                            <div class="features-box mt-3 text-center">
+                                <img src="{{j.image.url}}" alt="" style="height: 80px; width: auto;">
+                                <h5 class="my-auto text-dark mt-2">
+                                    {{j.name}}
+                                </h5>
+                                <small class="text-dark mt-2">
+                                    {{j.feature|truncatewords:10|safe}}
+                                </small>
+                                
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
+              
             </div>
-          
-        </div>
+            
+        </div> 
         
-    </div> 
-    
-    <div class="row m-0 mt-5">
-        <div class="col-lg-6 col-12 mt-3 text-center">
-            <img src="{%static 'resources/money.png'%}" alt="" height="auto" width="90%">
-        </div>
-        <div class="col-lg-6 col-12 mt-3 d-flex">
-            <div class="my-auto">
-                <h2 class="text-warning">
-                    <B>
-                        ABOUT XRemit
-                    </B>
-                </h2>
-                <p>
-                    <small>
-                        {{about}}
-                    </small>
-                </p>
+        <div class="row m-0 mt-5 bg-light pb-5 about-us">
+            <div class="col-lg-6 col-12 mt-3 d-flex">
+                <div class="my-auto text-center">
+                    
+                    <h2 class="head-home text-light mt-2">
+                        
+                            ABOUT XREMIT
+                        
+                    </h2>
+                    <p class="text-light">
+                        <small>
+                            {{about|safe|truncatewords:50|striptags}}
+                        </small>
+                    </p>
+                    
+                    <button class="btn btn-warning mt-3 btn-lg m-auto">
+                        Visit About Us
+                    </button>
+                </div>
                
-                <button class="btn btn-warning mt-3 btn-lg">
-                    Visit About Us
-                </button>
+            </div>
+            <div class="col-lg-6 col-12 mt-3 text-center">
+                <img src="{%static 'resources/money.png'%}" alt="" height="auto" width="90%">
             </div>
            
-        </div>
-    </div> 
-    
-    <div class="row mt-5 p-0 m-0 mb-3">
-        <h3 class="text-center">
-            OUR BRANDS
-        </h3>
+        </div> 
         
-        {% for i in  brand%}            
-            <div class="mt-3 col-lg-3 col-6 text-center">
-                <img src="{{i.image.url}}" alt="" height="90px" width="auto">
+        <div class="row bg-white p-0 m-0 pb-5">
+            <div class="col-12 mt-5 col-lg-12 ">
+                <div class="d-flex mt-3">
+                    <div class="my-auto pb-3 text-center">
+                        <img src="{%static 'resources/logodark.png'%}" alt="" width="10%" height="auto">
+                        <h1 class="mb-3 p-2 mt-3 text-center head-home">WHY 
+                            
+                                CHOOSE US?
+                            
+                        </h1>
+                        <div class="p-2 text-secondary">
+                            {{choose|truncatewords:70|safe|striptags}}
+                        </div>
+                        <button class="btn btn-warning mt-2 btn-lg m-auto">
+                           View More
+                        </button>
+                    </div>
+                   
+                </div>
+               
             </div>
-        {% endfor %}
-       
     
-    </div>
+            <h3 class="text-center head-home mt-5">
+               What our customer says about us
+            </h3>
+            <!-- Slider main container -->
+            <div class="swiper row">
+                <!-- Additional required wrapper -->
+                <div class="swiper-wrapper">
+                    <!-- Slides --> 
+                    {% for i in  testomonial%}            
+                        <div class="swiper-slide mt-3 col-lg-3 col-6 text-center">
+                            <figure class="text-center mt-5">
+                                <blockquote class="blockquote">
+                                  <p>{{i.description}}</p>
+                                </blockquote>
+                                <figcaption class="blockquote-footer">
+                                   
+                                        {{i.name}}
+                                    
+                                </figcaption>
+                            </figure>
+                            
     
-    <div class="row p-0 m-0 bg-white">
-       
-        <div class="col-lg-7 col-12 mt-4 ">
-            <div class="p-4 mt-3">
+                        </div>
+                    {% endfor %}
+           
+            
+                </div>
+                <!-- If we need pagination -->
+                <div class="swiper-pagination"></div>
+            
+                <!-- If we need navigation buttons -->
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            
+                <!-- If we need scrollbar
+                <div class="swiper-scrollbar"></div> -->
+            </div>
+           
+           
+        </div>
+        
+        <div class="row p-0 m-0 bg-white">
+            <div class="col-12 col-lg-10 mt-4 m-auto mt-3 pb-5">
+                <h5 class="head-home text-center">
+                    Send money across the country
+                </h5>
+                <div class="row m-0 pb-4">
+                    {% for i in country  %}
+                        <div class="col-6 col-lg-3 mt-2">
+                            <div class="countryBox d-flex justify-content-between">
+                                <img src="{{i.flag_img.url}}" alt="">
+                                <p class="my-auto pe-2">
+                                    {{i.name}}
+                                </p>
+                            </div>
+                           
+                        </div>
+                    {% endfor %}
+                </div>
+    
+    
+                <h3 class="text-center head-home mt-5">
+                    Our Latest News and Blog
+                </h3>
+                <div class="row m-0 mt-3">
+                    {% for i in blog%}            
+                       <div class="col-lg-4 col-12 mt-2">
+                            <div class="blog-box p-2">
+                                
+                                {% if i.image %}
+                                    <img src="{{i.image.url}}" alt="{{i.tittle}}" style="width: 100%; height: 200px;">
+                                {% endif %}
+                                <h6>
+                                    {{i.title}}
+                                </h6>
+                                <small class="text-secondary">
+                                    {{i.description|truncatewords:10|striptags}}
+                                </small>
+                                <hr>
+                                <small class="p-2">
+                                    {{i.date_added}}
+                                </small>
+                                
+                                {% if i.types == 'blog' %}
+                                    <span class="badge bg-warning">
+                                        Blog
+                                    </span>
+                                    {%else%}
+                                    <span class="badge bg-success">
+                                        News 
+                                    </span>
+                                {% endif %}
+                                    
+                               
+                                    
+                               
+                            </div>
+                       </div>
+                    {% endfor %}
+                </div>
+              
                 
-             
+    
+                <h3 class="text-center head-home mt-5">
+                    We feel proud to serve you
+                 </h3>
+                <div class="row m-0 mt-3">
+                    {% for i in brand%}            
+                        <div class="brand-i mt-3 col-lg-3 col-6 text-center">
+                            <img src="{{i.image.url}}" alt="">
+                        </div>
+                    {% endfor %}
+                </div>
+              
             
             </div>
-          
-                
-        </div>
-        <div class="col-lg-5 col-12 text-center my-auto mt-4">
-            <img class="" src="{%static 'resources/feature.gif'%}" alt="" height="auto" width="80%">
-        </div>
-    </div>
     
+        </div>
+        
+       
+    </div>
+    {% endblock inside %}
     <div class="footer row p-0 m-0">
         <div class="col-12 col-lg-10  mt-5 m-auto mb-5">
             <div class="row p-0 m-0 ps-2 pe-2">
@@ -451,7 +574,10 @@
             <i class="fa fa-angle-up"></i>
         </button>
     </div>
+   
 </div>
+
+
 <div class="sidebarofxremit pt-2 pl-1 pb-2">
     {% for i in social%}
         <a class="mr-3 p-2 d-block" href="{{i.link}}" target="_blank"> <i class="m-2 {{i.icon}}"></i> <span class="mb-2 showbar">{{i.name}} </span> </a>
@@ -528,6 +654,63 @@
       });
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+
+<script>
+    const swiper = new Swiper('.swiper', {
+        speed: 400,
+        spaceBetween: 100,
+        // Optional parameters
+        direction: 'horizontal',
+        loop: true,
+    
+        // If we need pagination
+        pagination: {
+            el: '.swiper-pagination',
+        },
+    
+        // Navigation arrows
+        navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+        },
+    
+        // // And if we need scrollbar
+        // scrollbar: {
+        // el: '.swiper-scrollbar',
+        // },
+    });
+
+</script>
+
+<script>
+    const swiperbrand = new Swiper('.swiper-brand', {
+        speed: 400,
+        spaceBetween: 100,
+        // Optional parameters
+        direction: 'horizontal',
+        loop: true,
+    
+        // If we need pagination
+        pagination: {
+            el: '.swiper-pagination-brand',
+        },
+    
+        // Navigation arrows
+        navigation: {
+        nextEl: '.swiper-button-next-brand',
+        prevEl: '.swiper-button-prev-brand',
+        },
+    
+        // // And if we need scrollbar
+        // scrollbar: {
+        // el: '.swiper-scrollbar',
+        // },
+    });
+
+</script>
+
 
 {% endblock content %}
     
