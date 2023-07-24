@@ -19,9 +19,18 @@
     </div>
 
     <div class="row p-0 m-0 mt-3">
-       <h5>
-           Create a new ticket for your suport
-       </h5>
+        <div class="d-flex justify-content-between">
+            <h5>
+                Create a new ticket for your suport
+            </h5>
+            <a href="{%url 'customer:ticketList'%}" class="mb-2">
+                 <button class="btn btn-danger">
+                     Ticket List
+                 </button>
+            </a>
+        </div>
+      
+       
        <hr>
        <div class="col-12 col-lg-6 m-auto">
             <div class="text-center">
@@ -31,63 +40,71 @@
        </div>
        <h5 class="mt-3 text-center">You are open to ask for a support</h5>
        <small class="text-center">By opening a ticket, you will be able to express the issue you bear within this platform</small>
-       <div class="row m-0 p-2 mt-3" id="supportTop">
-            <div class="col-6">
-                <label for="">
-                    Full Name*
-                </label>
-                <input class="form-control" type="text" name="" id="" value="{{user.get_full_name}}" disabled>
-            </div>
+       <div class="p-2 mt-3">
+            <div class="row m-0" id="supportTop">
+                <h2 class="head-para text-dark">
+                    <i class="fa fa-contact-book"></i> Contact Information
+                </h2>
+                <div class="col-6">
+                    <h6 class="mt-2">
+                        Your Full Name*
+                    </h6>
+                    <input class="form-control" type="text" name="" id="" value="{{user.get_full_name}}" disabled>
+                </div>
 
-            <div class="col-6">
-                <label for="">
-                    Email*
-                </label>
-                <input class="form-control" type="text" name="" id="" value="{{user.email}}" disabled>
+                <div class="col-6">
+                    <h6 class="mt-2">
+                        Your Email Address*
+                    </h6>
+                    <input class="form-control" type="text" name="" id="" value="{{user.email}}" disabled>
+                </div>
+                <div class="col-6">
+                    <h6 class="mt-2">
+                        Your Phone Number*
+                    </h6>
+                    <input class="form-control" type="text" name="" id="" value="{{user.customer.number}}" disabled>
+                </div>
+                <div class="col-6">
+                    <h6 class="mt-2">
+                        Your Email Address*
+                    </h6>
+                    <input class="form-control" type="text" name="" id="" value="{{user.customer.address}}" disabled>
+                </div>
+                <small class="text-secondary mt-2">
+                If the information given is incorrect please visit profile and update your information.
+                <a href="{%url 'customer:profile'%}">Click here</a>   
+                </small>
             </div>
-            <div class="col-6">
-                <label for="">
-                    Number*
-                </label>
-                <input class="form-control" type="text" name="" id="" value="{{user.customer.number}}" disabled>
-            </div>
-            <div class="col-6">
-                <label for="">
-                    Address*
-                </label>
-                <input class="form-control" type="text" name="" id="" value="{{user.customer.address}}" disabled>
-            </div>
-            <small class="text-secondary mt-2">
-              If the information given is incorrect please visit profile and update your information.
-              <a href="{%url 'customer:profile'%}">Click here</a>   
-            </small>
        </div>
 
-       <div class="row m-0 p-2 mt-3" id="supportSecond">
-            <form action="" method="post">
+       <div class="p-2 mt-3">
+            <form class="row m-0" action="" method="post" enctype="multipart/form-data"  id="supportSecond">
+                <h2 class="head-para text-dark">
+                    <i class="fa fa-ticket"></i> Ticket Information
+                </h2>
                 <div class="col-6">
-                    <label for="">
-                        Department*
-                    </label>
+                    <h6 class="mt-2">
+                        Select Department*
+                    </h6>
                     {{form.department}}
                 </div>
     
                 <div class="col-6">
-                    <label for="">
-                        Piority*
-                    </label>
+                    <h6 class="mt-2">
+                        Select Ticket Piority*
+                    </h6>
                     {{form.piority}}
                 </div>
                 <div class="col-12">
-                    <label for="">
-                        subject*
-                    </label>
+                    <h6 class="mt-2">
+                        Ticket Subject*
+                    </h6>
                     {{form.subject}}
                 </div>
                 <div class="col-12">
-                    <label for="">
-                        Description*
-                    </label>
+                    <h6 class="mt-2">
+                        Ticket Description*
+                    </h6>
                     {{form.description}}
                     {{form.media}}
                 </div>

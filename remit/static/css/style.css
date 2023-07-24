@@ -233,12 +233,11 @@
 
 
 .form-control{
-    border: 1px solid grey;
-    color: black;
-    font-size: 13px;
+    color: rgb(73, 73, 73);
+    font-size: 14px;
     height: 38px;
     padding: 10px;
-    border-radius: 8px;
+    border-radius: 10px;
     
     /* box-shadow: rgb(rgb(1rgb(169, 169, 169)84, 184), rgb(141rgb(92, 92, 92)1, 141), #1e1780); */
 }
@@ -300,7 +299,7 @@ h1, h2, h3, h4, h5, h6{
 }
 
 body{
-    background-color: #ebebeb;
+    background-color: #f1f1f1;
 }
 a{
     text-decoration: none;
@@ -563,7 +562,7 @@ a{
 .breadcum{
     padding: 5px;
     font-weight:300;
-    background-color: white;
+    background-color: rgb(241, 241, 241);
     color: #110c5e;
     border-radius: 5px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
@@ -1074,12 +1073,41 @@ z-index: 2; }
 
 #supportTop{
     padding: 20px;
-    background-color: #dfdfdf;
+    background-color: #fbfbfb;
     border-radius: 10px;
 }
 
 #supportSecond{
     padding: 20px;
-    background-color: #dfdfdf;
+    background-color: #f9f9f9;
     border-radius: 10px;
 }
+#ticket-box{
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    padding: 10px;
+    max-height: 600px;
+
+}
+
+#ticketDescription{
+    background-color: rgb(248, 248, 248);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+#sidesupport{
+    border-left: 1px solid grey;
+}
+
+
+.left-ticket-box{
+    width: 26%; background-color: rgb(248, 248, 248);
+    min-height: 400px;
+}
+
+#des-holder{
+    height: 400px;
+    overflow: scroll;
+    
+}
+

@@ -2,7 +2,7 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from homepage.models import Product, Service,Client, Testomonial, Blog, SubCategory, Category, Customer, Agent, Transaction
-from homepage.models import CompanyInformation, BankAccount, Contact, Ticket
+from homepage.models import CompanyInformation, BankAccount, Contact, Ticket, TicketReply
 from django import forms
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django.contrib.auth.forms import PasswordChangeForm
@@ -25,6 +25,18 @@ class TicketForm(forms.ModelForm):
             'description': CKEditorUploadingWidget()
         }
 
+
+class ReplyForm(forms.ModelForm):
+    class Meta:
+        model = TicketReply
+        fields = ('__all__')
+        exclude = ('replied_by',)
+
+        widgets= {
+    
+            'description': CKEditorUploadingWidget(),
+            'ticket':forms.Select(attrs={'hidden':True})
+        }
 
 # Transaction Form
 class TransactionForm(forms.ModelForm):

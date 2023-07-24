@@ -12,14 +12,15 @@ from homepage.models import Blog, Customer, Agent, Owner, LoginInterface, signup
 from homepage.models import Country, Currency, Recipient, PickupPoint, KYC, Transaction, BankAccount
 from .models import SiteSetting, SEO
 from .forms import SiteForm, SEOForm, FeatureForm, AboutForm, HomeServiceForm, ChooseForm, CountryForm, CurrencyForm, RecipientForm, PickupPointForm, KYCForm
-from homepage.forms import CustomerForm, AgentForm, PasswordChangeFormUpdate
+from homepage.forms import CustomerForm, AgentForm, PasswordChangeFormUpdate, ReplyForm, TicketForm
 
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse, reverse_lazy
-from homepage.models import EmailSetting, SMSSetting, EmailList, SMSList, DefaultNumber
+from homepage.models import EmailSetting, SMSSetting, EmailList, SMSList, DefaultNumber, Ticket, SupportFile
 from homepage.forms import BankForm, UserCreateForm, UserUpdateForm, ServiceForm, ClientForm, TestomonialForm, CompanyInformationForm, BlogForm, CategoryForm, SubCategoryForm
 
 from .forms import DefaultForm, EmailSettingForm, SMSSettingForm, LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, BrandForm, FootorForm, SocialForm, PolicyForm, TermForm, EmailListForm, SMSListForm
+
 
 # Create your views here.
 
@@ -301,6 +302,50 @@ def deleteBlog(request, id):
     messages.success(request, "Successfully Deleted Blog")
     return HttpResponseRedirect(reverse('owner:blog'))
 
+
+def ticketList(request):
+    ticket = Ticket.objects.all()
+    check = None
+    for i in ticket:
+        check = i.id
+        break
+
+    dist = {
+        'ticket':ticket,
+        'check':check,
+        'form':ReplyForm()
+    }
+
+    if request.method == 'POST':
+        form = ReplyForm(request.POST, request.FILES)
+        if form.is_valid():
+
+            aa= form.save(commit=False)
+            aa.replied_by = request.user
+           
+            aa.save()
+            tick = Ticket.objects.get(id = request.POST['ticket'])
+            tick.status = "answered"
+            tick.save()
+
+            images = request.FILES.getlist("file[]")
+            for img in images:
+                image = SupportFile(file=img, customer = request.user.customer)
+                image.save()
+            messages.success(request, "Successfully replied ticket")
+            return HttpResponseRedirect(reverse('owner:ticketView'))
+        else:
+            print(form.errors)
+            messages.success(request, "Something went wrong")
+    return render(request, "owner/ticket.html", dist)
+
+
+def closeTicket(request, id):
+    tock = Ticket.objects.get(id = id)
+    tock.status = 'closed'
+    tock.save()
+    messages.success(request, "Successfully closed ticket")
+    return HttpResponseRedirect(reverse('owner:ticketView'))
 
 def changeStatus(request, id):
     status = request.POST['status']

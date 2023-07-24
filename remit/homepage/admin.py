@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Country, CustomUser, Customer, Agent, SocialLink, KYC, Recipient, Transaction, BankAccount, DefaultCurrency
 
-from .models import EmailList, EmailSetting, SMSList, SMSSetting
+from .models import EmailList, EmailSetting, SMSList, SMSSetting, Ticket, TicketReply
 # Register your models here.
 admin.site.register(CustomUser)
 admin.site.register(Customer)
@@ -17,3 +17,5 @@ admin.site.register(EmailList)
 admin.site.register(EmailSetting)
 admin.site.register(SMSList)
 admin.site.register(SMSSetting)
+admin.site.register(Ticket)
+admin.site.register(TicketReply)

@@ -113,8 +113,8 @@ urlpatterns = [
     path(
         'edit-blog/<int:id>', views.editBlog, name ="editblog"
     ),
-    path('delete-blog/<int:id>', views.deleteBlog, name ="deleteBlog")
-
-
+    path('delete-blog/<int:id>', views.deleteBlog, name ="deleteBlog"),
+    path('ticket-list', views.ticketList, name ="ticketView"),
+    path('closeTicket/<int:id>', views.closeTicket, name ="closeTicket")
 
 ]   

@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from owner.forms import RecipientForm, Recipient, KYC, KYCForm
-from homepage.models import Currency, Country, Transaction, BankAccount, DefaultCurrency, SupportFile
+from homepage.models import Currency, Country, Transaction, BankAccount, DefaultCurrency, SupportFile, Ticket
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import View
 from homepage.forms import PasswordChangeFormUpdate, CustomerForm, TicketForm
 from django.http import JsonResponse
-from homepage.forms import TransactionForm, BankForm
+from homepage.forms import TransactionForm, BankForm, ReplyForm
 from django.core import serializers
 
 
@@ -21,7 +21,10 @@ def ticketView(request):
     if request.method == 'POST':
         form = TicketForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            aa= form.save(commit=False)
+            aa.customer = request.user.customer
+            aa.status = 'pending'
+            aa.save()
             images = request.FILES.getlist("file[]")
             for img in images:
                 image = SupportFile(file=img, customer = request.user.customer)
@@ -29,12 +32,42 @@ def ticketView(request):
             messages.success(request, "Successfully created ticket")
             return HttpResponseRedirect(reverse('customer:ticketList'))
         else:
+            print(form.errors)
             messages.success(request, "Something went wrong")
 
     return render(request, "customer/ticket.html", dist)
 
 def ticketList(request):
-    return render(request, "customer/ticketList.html")
+    ticket = Ticket.objects.filter(customer = request.user.customer)
+    check = None
+    for i in ticket:
+        check = i.id
+        break
+
+    dist = {
+        'ticket':ticket,
+        'check':check,
+        'form':ReplyForm()
+    }
+
+    if request.method == 'POST':
+        form = ReplyForm(request.POST, request.FILES)
+        if form.is_valid():
+            aa= form.save(commit=False)
+            aa.replied_by = request.user
+            aa.save()
+            images = request.FILES.getlist("file[]")
+            for img in images:
+                image = SupportFile(file=img, customer = request.user.customer)
+                image.save()
+            messages.success(request, "Successfully replied ticket")
+            return HttpResponseRedirect(reverse('customer:ticketList'))
+        else:
+            print(form.errors)
+            messages.success(request, "Something went wrong")
+    return render(request, "customer/ticketList.html", dist)
+
+
 def defaultCurrencyView(request):
     dist = {
         'currency':Currency.objects.all()

@@ -155,6 +155,19 @@
             </span>
           </div>
         </a>
+        {%url 'owner:ticketView' as ticketaa%}
+        <a href="{{ticketaa}}">
+          <div class="mt-2 p-2 side-item {% if request.path == ticketaa %}
+          activedb
+{% endif %}" onclick="showLoader()">
+            <div class="text-center">
+              <i class="fa-solid fa-headphones-simple  mt-2"></i>  
+            </div>
+            <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+              Ticket
+            </span>
+          </div>
+        </a>
        
 
         {%url 'owner:smsSetting' as smsaa%}

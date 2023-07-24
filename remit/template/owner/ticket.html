@@ -1,4 +1,4 @@
-{% extends 'customer/dashboard.html' %}
+{% extends 'owner/dashboard.html' %}
 {% load static %}
 
 {% block title %}
@@ -40,24 +40,14 @@
             <div class="d-flex align-items-start mt-2">
             
                 <div class="left-ticket-box p-2 nav flex-column nav-pills me-3 " id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <a href="{%url 'customer:ticketView'%}">
-                        <button class="btn btn-danger ">
-                            <i class="fa fa-plus"></i> Create New Ticket
-                        </button>
-                    </a>
-                    <hr>
-                    <h5 class="">My Tickets</h5>
+                
+                    <h5 class="">Tickets List</h5>
                     <hr>
                     <div class="pb-5">
                         {% for i in ticket %}
                             <button style="text-align: left; width: 100%;" class=" mt-2 nav-link text-dark{%if i.id == check%} active{%endif%}" id="v-pills-{{i.id}}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-{{i.id}}" type="button" role="tab" aria-controls="v-pills-{{i.id}}" aria-selected="true"> <b>#{{i.id}}</b> {{i.subject}}</button>
                         {% endfor %}
                     </div>
-                   
-
-                    
-
-                    
                 </div>
                 <div class="tab-content flex-shrink-1" id="v-pills-tabContent" style="width: 70%;">
                     {{form.media}}
@@ -73,7 +63,7 @@
                             <div class="col-12 col-lg-9 mt-2" id="des-holder">
                                 <div class="text-dark ticket-des">
                                     <div class="d-flex p-2">
-                                        <img src="{%if request.user.customer.profil_pic%}{{request.user.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                                        <img src="{%if i.customer.profil_pic%}{{i.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
                                         <div class="p-2" id="ticketDescription">
                                             {{i.description|safe}}
                                         </div>
@@ -88,31 +78,32 @@
 
                                 
                                 {% for j in i.ticket_reply.all   %}
-                                    <div class="text-dark ticket-des">
+                                    <div class="text-dark ticket-des" style="width: 100%;">
                                         <div class="d-flex p-2">
                                             <div>
-                                                {% if j.replied_by.customer.id == user.customer.id %}
-                                                    <img src="{%if request.user.customer.profil_pic%}{{request.user.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                                                {% if j.replied_by.customer %}
+                                                <img src="{%if j.ticket.customer.profil_pic%}{{j.ticket.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
                                                 {%else%}
                                                     <img src="{%static 'resources/logo.png'%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
                                                     <p>Admin</p>
                                                 {% endif %}
                                             </div>
-                                            
-                                                
-                                            
+
                                             <div class="p-2" id="ticketDescription">
                                                 {{j.description|safe}}
                                             </div>
                                           
                                         </div>
-                                    
                                     </div>
                                 {% endfor %}
                                     
                             </div>
                             <div class="col-12 col-lg-3 mt-2" id="sidesupport">
+                                <h4 class="head-para text-dark">
+                                    Customer: {{i.customer.admin.get_full_name}}
+                                </h4>
                                 <div class="d-flex text-dark">
+                                  
                                     <p class="my-auto text-warning">
                                         <i class="fa fa-sign"></i>
                                     </p>
@@ -169,7 +160,7 @@
                                     </div>
                                 </div>
 
-                             
+                                   
                                 {% if i.status == 'closed' %}
                                     <button class="btn btn-danger mt-2 btn-reply-ticket" >
                                         <i class="fa fa-ban"></i> Closed
@@ -177,11 +168,19 @@
                                     <h6>
                                         Closed Date: {{i.updated_date}}
                                     </h6>
-                                {%else%}       
-                                    <button class="btn btn-primary mt-2 btn-reply-ticket" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}" onclick="ticketid('{{i.id}}')">
-                                        <i class="fa fa-reply"></i> Reply Ticket
-                                    </button>
-                                {%endif%}
+                                    {%else%}
+                                        <button class="btn btn-primary mt-2 btn-reply-ticket" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}" onclick="ticketid('{{i.id}}')">
+                                            <i class="fa fa-reply"></i> Reply Ticket
+                                        </button>
+                                        <a href="{%url 'owner:closeTicket' i.id%}">
+                                            <button class="btn btn-danger mt-2 btn-reply-ticket" >
+                                                <i class="fa fa-ban"></i> Close Ticket
+                                            </button>
+                                        </a>
+                                      
+                                {% endif %} 
+
+                               
 
                                 <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered  modal-lg">

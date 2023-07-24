@@ -508,6 +508,8 @@ class Contact(models.Model):
     email = models.EmailField(null = True, blank=True)
     number = models.BigIntegerField()
     message = models.TextField()
+    date_added = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now = True)
    
     def __str__(self):
         return self.name
@@ -527,13 +529,25 @@ class Ticket(models.Model):
         ('pending','Pending'),
         ('answered', 'Answered'),
         ('closed', 'Closed')
-    ))
+    ), null = True, blank = True)
     subject = models.CharField(max_length=300)
     description = RichTextUploadingField()
+    date_added = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now = True)
 
 
     def __str__(self):
         return self.subject
+    
+class TicketReply(models.Model):
+    ticket = models.ForeignKey(Ticket, related_name='ticket_reply', on_delete=models.CASCADE)
+    description = RichTextUploadingField()
+    date_added = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now = True)
+    replied_by = models.ForeignKey(CustomUser, related_name='user_reply', on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.ticket.subject
     
 class SupportFile(models.Model):
     file = models.FileField(upload_to='support_file/')
