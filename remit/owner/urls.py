@@ -125,5 +125,6 @@ urlpatterns = [
     path('transaction-owner-alllist', views.transactionView, name = "transaction"),
     path('transaction-details/8178171-iamg22a>/<int:id>', views.transactionDetail, name = "transactionDetail"),
     path('KYC-VERIFICATION-DETAILS/KYCVERIFIEDMETHOD-121/<int:id>', views.kycVerification, name="kycVerification"),
-
+    path('search-owner-data/', views.search, name='search'),
+    path('default-currency/', views.defaultCurrency, name='default'),
 ]   

@@ -31,4 +31,5 @@ urlpatterns = [
     path('customer-ticket-list', views.ticketList, name ="ticketList"),
     path('csutomer-seen-notification', views.seenNotification, name="seenNotification"),
     path('customer-all-notification', views.allNotification, name="allNotification"),
+    path('search-customer-data/', views.search, name='search'),
 ]   

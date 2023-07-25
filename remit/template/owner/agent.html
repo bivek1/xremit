@@ -127,86 +127,85 @@
                         {% endif %}
                             
                         {% for i in agent  %}
-                        <tr>
-                            <td>
-                                <div class="item-list-div mt-2 p-1">
-                                    <div class="d-flex justify-content-between">
-                                        {% if i.agent.profil_pic %}
-                                            <img class="my-auto" src="{{i.agent.profil_pic.url}}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
-                                        {%else%}
-                                            <i class="fa fa-user-circle my-auto" style="font-size: 30px;">
-                                            </i> 
-                                        {% endif %}
-                                        <p class="m-0 p-2">
-                                            {{i.get_full_name}}
-                                        </p>
+                            <tr>
+                                <td>
+                                    <div class="item-list-div mt-2 p-1">
+                                        <div class="d-flex justify-content-between">
+                                            {% if i.agent.profil_pic %}
+                                                <img class="my-auto" src="{{i.agent.profil_pic.url}}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                                            {%else%}
+                                                <i class="fa fa-user-circle my-auto" style="font-size: 30px;">
+                                                </i> 
+                                            {% endif %}
+                                            <p class="m-0 p-2">
+                                                {{i.get_full_name}}
+                                            </p>
 
-                                        <div class="my-auto">
-                                            <a href="{%url 'owner:agentProfile' i.id%}">
-                                                <button class="btn btn-sm btn-info text-white">
-                                                    
-                                                    <span class="text-light">
-                                                        <i class="fa fa-eye-dropper"></i>
-                                                        View and Edit
-                                                    </span>
+                                            <div class="my-auto">
+                                                <a href="{%url 'owner:agentProfile' i.id%}">
+                                                    <button class="btn btn-sm btn-info text-white">
+                                                        
+                                                        <span class="text-light">
+                                                            <i class="fa fa-eye-dropper"></i>
+                                                            View and Edit
+                                                        </span>
+                                                    </button>
+                                                </a>
+                                            
+                                                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}"> 
+                                                    <i class="fa fa-trash-alt"></i>
+                                                    Delete
                                                 </button>
-                                            </a>
-                                         
-                                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}"> 
-                                                <i class="fa fa-trash-alt"></i>
-                                                Delete
-                                            </button>
-    
-                                            <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                    
-                                                        <div class="modal-body">
-                                                            <div class="text-center">
-                                                                <img src="{%static 'resources/delete.gif'%}" alt="" style="width: 30%;">
-                                                            </div>
-                                                    
-                                                            <h5>Are you sure want to delete {{i.get_full_name}}</h5>
-                                                            <small>Deleting agent will delete agent transaction history as well</small>
-                                                            <div class="text-end mt-2">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change my mind</button>
-                                                                <!-- Delete URL -->
-                                                                <a href="{%url 'owner:deleteAgent' i.id%}">
-                                                                    <button type="button" class="btn btn-danger">
-                                                                        <i class="fa fa-trash"></i> Delete
-                                                                    </button>
-                                                                </a>
-                                                                
+        
+                                                <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                        
+                                                            <div class="modal-body">
+                                                                <div class="text-center">
+                                                                    <img src="{%static 'resources/delete.gif'%}" alt="" style="width: 30%;">
+                                                                </div>
+                                                        
+                                                                <h5>Are you sure want to delete {{i.get_full_name}}</h5>
+                                                                <small>Deleting agent will delete agent transaction history as well</small>
+                                                                <div class="text-end mt-2">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change my mind</button>
+                                                                    <!-- Delete URL -->
+                                                                    <a href="{%url 'owner:deleteAgent' i.id%}">
+                                                                        <button type="button" class="btn btn-danger">
+                                                                            <i class="fa fa-trash"></i> Delete
+                                                                        </button>
+                                                                    </a>
+                                                                    
+                                                                </div>
+                                                            
                                                             </div>
                                                         
-                                                        </div>
-                                                    
-                                                  </div>
+                                                    </div>
+                                                    </div>
                                                 </div>
+        
                                             </div>
-    
                                         </div>
-                                    </div>
-                                  
-                                   
-                                    <div class="mt-2">
-                                       
-                                        <small class="p-1">
-                                            <i class="fa fa-mobile p-2"></i>
-                                            {{i.agent.number}}
-                                        </small>
-                                        <small class="p-1">
-                                            <i class="fa fa-envelope-circle-check p-2"></i>
-                                            {{i.email}}
-                                        </small>
-                                    </div>
-                                  
+                                    
+                                    
+                                        <div class="mt-2">
                                         
-                                </div>
-                            </td>
-                          
-                        </tr>
-                         
+                                            <small class="p-1">
+                                                <i class="fa fa-mobile p-2"></i>
+                                                {{i.agent.number}}
+                                            </small>
+                                            <small class="p-1">
+                                                <i class="fa fa-envelope-circle-check p-2"></i>
+                                                {{i.email}}
+                                            </small>
+                                        </div>
+                                    
+                                            
+                                    </div>
+                                </td>
+                            
+                            </tr>
                         {% endfor %}
                         <!-- <div id="items-container"></div> -->
                      

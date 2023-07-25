@@ -13,6 +13,21 @@ from homepage.models import CustomerNotification, Ticket, AdminNotification
     
 
 
+
+def search(request):
+    query = request.GET.get('search')
+    reciepient = Recipient.objects.filter(first_name__icontains=query).filter(customer = request.user.customer)
+    bank = BankAccount.objects.filter(account_name__icontains=query).filter(customer = request.user.customer)
+    currency = Currency.objects.filter(country__name__icontains=query)
+    dist = {
+        'reciepient':reciepient,
+        'bank':bank,
+        'currency':currency,
+        'noti': CustomerNotification.objects.filter(seen= False),
+        'noti_count' : CustomerNotification.objects.filter(seen= False).count(),
+    }
+    return render(request, 'customer/search.html', dist)
+
 def seenNotification(request):
     if request.method == 'POST':
         id = request.POST.get('id')
@@ -44,6 +59,8 @@ def allNotification(request):
         'noti':noti,
         'noti_count':count
     }
+    noti = notification()
+    dist.update(noti)
     return render(request, "customer/notification.html", dist)
 
 def ticketView(request):
@@ -51,7 +68,8 @@ def ticketView(request):
     dist = {
         'form':TicketForm()
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         form = TicketForm(request.POST, request.FILES)
         if form.is_valid():
@@ -60,7 +78,7 @@ def ticketView(request):
             aa.status = 'pending'
             aa.save()
             
-            AdminNotification.objects.create(name ="Created a ticket: "+ aa.subject, types ="ticket", ids=aa.id)
+            AdminNotification.objects.create(customer = request.user.customer, name ="Created a ticket: "+ aa.subject, types ="ticket", ids=aa.id)
             images = request.FILES.getlist("file[]")
             for img in images:
                 image = SupportFile(file=img, support = aa)
@@ -85,7 +103,8 @@ def ticketList(request):
         'check':check,
         'form':ReplyForm()
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         form = ReplyForm(request.POST, request.FILES)
         if form.is_valid():
@@ -109,6 +128,8 @@ def defaultCurrencyView(request):
     dist = {
         'currency':Currency.objects.all()
     }
+    noti = notification()
+    dist.update(noti)
     if request.method == "POST":
         currency = Currency.objects.get(id = request.POST['currency']) 
         try:
@@ -134,7 +155,8 @@ def bankView(request):
         'form':form,
         'recipient':recipient
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         form = BankForm(request.POST)
 
@@ -162,7 +184,8 @@ def editBank(request, id):
         'form':form,
         'bank':rec
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         form = BankForm(request.POST, instance=rec)
         if form.is_valid():
@@ -219,7 +242,6 @@ def customerDashboard(request):
         'transaction': Transaction.objects.filter(customer = request.user.customer)[:4]
     }
     noti = notification()
-    print(noti)
     dist.update(noti)
     return render(request, "customer/dashboard.html", dist)
 
@@ -229,7 +251,8 @@ def recipient(request):
     dist = {
         'recipient':recipient
     }
-
+    noti = notification()
+    dist.update(noti)
     return render(request, "customer/recipient.html", dist)
 
 
@@ -241,7 +264,8 @@ def addRecipient(request):
         'recipient':recipient,
         'form':form
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         form = RecipientForm(request.POST)
         if form.is_valid():
@@ -268,7 +292,8 @@ def editRecipient(request, id):
         'recipient':recipient,
         'form':form
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         form = RecipientForm(request.POST, instance=rec)
         if form.is_valid():
@@ -303,7 +328,8 @@ def sendMoney(request):
         'form':TransactionForm(),
         'customer':request.user.customer
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         form = TransactionForm(request.POST)
         if form.is_valid():
@@ -324,6 +350,8 @@ def transactionView(request):
     dist = {
         'transaction':transaction
     }
+    noti = notification()
+    dist.update(noti)
     return render(request, "customer/transaction.html", dist)
 
 def currency(request):
@@ -332,6 +360,8 @@ def currency(request):
     dist ={
         'currency':currency
     }
+    noti = notification()
+    dist.update(noti)
     return render(request, "customer/currency.html", dist)
 
 def kycVerify(request):
@@ -370,7 +400,8 @@ def kycVerify(request):
         'form':form,
         'cm':cm
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         if cm:
             form = KYCForm(request.POST, request.FILES, instance=cm)
@@ -407,7 +438,8 @@ class Profile(View):
             'real_customer':request.user.customer
               
         }
-
+        noti = notification()
+        dist.update(noti)
         return render(request, self.template_name, dist)
 
     def post(self, request, *args, **kwargs):
@@ -442,9 +474,10 @@ class Profile(View):
             'form':form,
             'transaction':Transaction.objects.filter(customer = request.user.customer).order_by('-id')[:5],
             'recipient': Recipient.objects.filter(customer = request.user.customer).order_by('-id')[:5],
-            'real_customer':request.user.customer
-              
+            'real_customer':request.user.customer            
             }
+            noti = notification()
+            dist.update(noti)
             messages.error(request, "Something went wrong")
             return render(request, self.template_name, dist)
         

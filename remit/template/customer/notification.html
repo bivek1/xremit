@@ -57,7 +57,7 @@
 
                   {% if i.types == 'kyc' %}
                     <li>
-                        <a class="dropdown-item" href="{%url 'customer:verify' i.ids%}">
+                        <a class="dropdown-item" href="{%url 'customer:verify'%}">
                           <div class="d-flex ">
                               <img class="my-auto" src="{%if i.customer.profil_pic%}{{i.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
                               <div class="p-2">

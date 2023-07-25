@@ -237,30 +237,31 @@ KYC Details {% endblock title %} {% block inside %}
                     aria-labelledby="exampleModalLabel"
                     aria-hidden="true"
                     >
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <div class="text-center">
-    
-                                <div class="text-end mt-2">
-                                <a href="{%url 'owner:reject' kycs.customer.id%}">
-                                    <button
-                                    type="button"
-                                    class="btn btn-secondary"
-                                    data-bs-dismiss="modal"
-                                    >
-                                    Reject Document
-                                    </button>
-                                </a>
-                                
-                                <!-- Delete URL -->
-                                <a href="{%url 'owner:verify' kycs.customer.id%}">
-                                    <button type="button" class="btn btn-danger">
-                                    <i class="fa fa-check-circle"></i> Verify
-                                    </button>
-                                </a>
-                            </div>
-                            </div>
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="text-center">
+        
+                                    <div class="text-end mt-2">
+                                    <a href="{%url 'owner:reject' kycs.customer.id%}">
+                                        <button
+                                        type="button"
+                                        class="btn btn-secondary"
+                                        data-bs-dismiss="modal"
+                                        >
+                                        Reject Document
+                                        </button>
+                                    </a>
+                                    
+                                    <!-- Delete URL -->
+                                    <a href="{%url 'owner:verify' kycs.customer.id%}">
+                                        <button type="button" class="btn btn-danger">
+                                        <i class="fa fa-check-circle"></i> Verify
+                                        </button>
+                                    </a>
+                                </div>
+                                </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -204,7 +204,10 @@
 
         <div class="login-flex d-flex my-auto" style="width: 50%;">
          <i class="fa fa-magnifying-glass my-auto p-2"></i>
-         <input type="text" name="email" class="form-control" id="searchBtn"  placeholder="Ex: Transaction, Customer, Agent, Currency and regions" required id="">
+          <form action="{%url 'customer:search'%}" method="get" style="width: 100%;">
+            <input type="text" name="search" class="form-control" id="searchBtn"  placeholder="Ex: Receptionist, Bank, Currency and Country" required>
+          </form>
+        
         </div>
         <div class="my-auto">
           <div class="dropdown d-inline" >
@@ -314,88 +317,157 @@
               <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-              <a href="{%url 'customer:dashboard'%}">
-                <div class="mt-3 p-2  activedb side-item">
+              {%url 'customer:dashboard' as dashboardaa%}
+              <a href="{{dashboardaa}}">
+                  <div class="mt-3 p-2 
+                  {% if request.path == dashboardaa %}
+                    activedb
+                  {% endif %}
+                  side-item" onclick="showLoader()">
                   <div class="text-center activedbs">
                     <i class="fa fa-dashboard mt-2"></i>  
                   </div>
-                  
-                  <span class="ms-3 my-auto text-primary text-bold">
+                    
+                  <span class="ms-3 my-auto text-primary text-bold sidebar-link sidebar-link">
                     Dashboard
                   </span>
-                  
-                </div>
-              </a>
-              <div class="mt-2 p-2 side-item">
-                <div class="text-center">
-                  <i class="fa fa-users mt-2"></i>   
-                </div>
-                <span class="ms-3 my-auto text-primary text-bold">
-                  Recipients
-                </span> 
-              </div>
-
-              <div class="mt-2 p-2 side-item">
-                <div class="text-center">
-                  <i class="fa fa-money-bills mt-2"></i>   
-                </div>
-                <span class="ms-3 my-auto text-primary text-bold">
-                  Currency
-                </span> 
-              </div>
-            
-              <a href="{%url 'customer:transaction'%}">
-                  <div class="mt-2 p-2 side-item">
-                    <div class="text-center">
-                      <i class="fa-solid fa-money-bill-transfer mt-2"></i>
-                    </div>
-                    <span class="ms-3 my-auto text-primary text-bold">
-                      Transaction
-                    </span>
+                    
                   </div>
-              </a>
-             
-
-      
-              <div class="mt-2 p-2 side-item">
-                <div class="text-center">
-                  <i class="fa-solid fa-money-bill-wave  mt-2"></i>  
-                </div>
-                <span class="ms-3 my-auto text-primary text-bold">
-                  Send Money
-                </span>
-              </div>
-    
-              <div class="mt-2 p-2 side-item">
-                <div class="text-center">
-                  <i class="fa-solid fa-lock  mt-2"></i>  
-                </div>
-                <span class="ms-3 my-auto text-primary text-bold">
-                  2FA Security
-                </span>
-              </div>
+                </a>
+                {%url 'customer:recipient' as recipientaa%}
+                <a href="{{recipientaa}}">
+                  <div class="mt-2 p-2 {% if request.path == recipientaa %}
+                  activedb
+      {% endif %} side-item" onclick="showLoader()">
+                      <div class="text-center">
+                        <i class="fa fa-users mt-2"></i>   
+                      </div>
+                      <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                        Recipients
+                      </span> 
+                    </div>
+                </a>
               
-              <a href="{%url 'customer:profile'%}">
-                  <div class="mt-2 p-2 side-item">
-                    <div class="text-center">
-                      <i class="fa fa-user mt-2"></i>  
+      
+                {%url 'customer:currency' as currencyaa%}
+                <a href="{{currencyaa}}">
+                  <div class="mt-2 p-2  {% if request.path == currencyaa %}
+                  activedb
+      {% endif %} side-item" onclick="showLoader()">
+                      <div class="text-center">
+                        <i class="fa fa-money-bills mt-2"></i>   
+                      </div>
+                      <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                        Currency
+                      </span> 
                     </div>
-                    <span class="ms-3 my-auto text-primary text-bold">
-                      Profile
+                </a>
+      
+                {%url 'customer:bank' as bankaa%}
+                <a href="{{bankaa}}">
+                  <div class="mt-2 p-2 {% if request.path == bankaa %}
+                  activedb
+      {% endif %} side-item" onclick="showLoader()">
+                      <div class="text-center">
+                        <i class="fa fa-building mt-2"></i>   
+                      </div>
+                      <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                        Bank
+                      </span> 
+                    </div>
+                </a>
+                
+                {%url 'customer:transaction' as transactionaa%}
+                <a href="{{transactionaa}}">
+                    <div class="mt-2 p-2 {% if request.path == transactionaa %}
+                    activedb
+      {% endif %} side-item" onclick="showLoader()">
+                      <div class="text-center">
+                        <i class="fa-solid fa-money-bill-transfer mt-2"></i>
+                      </div>
+                      <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                        Transaction
+                      </span>
+                    </div>
+                </a>
+               
+                {%url 'customer:sendMoney' as sendMoneyaa%}
+                <a href="{{sendMoneyaa}}">
+                  <div class="mt-2 p-2 side-item {% if request.path == sendMoneyaa %}
+                  activedb
+      {% endif %}" onclick="showLoader()">
+                      <div class="text-center">
+                        <i class="fa-solid fa-money-bill-wave  mt-2"></i>  
+                      </div>
+                      <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                        Send Money
+                      </span>
+                  </div>
+                </a>
+               
+                {%url 'customer:defaultCurrency' as defaultCurrencyaa%}
+                <a href="{{defaultCurrencyaa}}">
+                  <div class="mt-2 p-2 side-item {% if request.path == defaultCurrencyaa %}
+                  activedb
+      {% endif %}" onclick="showLoader()">
+                      <div class="text-center">
+                        <i class="fa fa-coins mt-2"></i>   
+                      </div>
+                      <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                        Default Currency
+                      </span> 
+                    </div>
+                </a>
+                {%url 'customer:twoFactor' as twoFactoraa%}
+                <a href="{{twoFactoraa}}">
+                  <div class="mt-2 p-2 side-item {% if request.path == twoFactoraa %}
+                  activedb
+      {% endif %}" onclick="showLoader()">
+                    <div class="text-center">
+                      <i class="fa-solid fa-lock  mt-2"></i>  
+                    </div>
+                    <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                      2FA Security
                     </span>
                   </div>
-              </a>
-
-              <a href="{%url 'homepage:logout'%}">
-                <div class="mt-2 p-2 side-item">
-                  <div class="text-center">
-                    <i class="fa fa-sign-out-alt mt-2"></i>
+                </a>
+                {%url 'customer:ticketView' as ticketaa%}
+                <a href="{{ticketaa}}">
+                  <div class="mt-2 p-2 side-item {% if request.path == ticketaa %}
+                  activedb
+      {% endif %}" onclick="showLoader()">
+                    <div class="text-center">
+                      <i class="fa-solid fa-headphones-simple  mt-2"></i>  
+                    </div>
+                    <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                      Ticket
+                    </span>
                   </div>
-                  <span class="ms-3 my-auto text-primary text-bold">
-                    Logout
-                  </span>
-                </div>
-              </a>
+                </a>
+                {%url 'customer:profile' as profileaa%}
+                <a href="{{profileaa}}">
+                    <div class="mt-2 p-2 side-item {% if request.path == profileaa %}
+                    activedb
+      {% endif %}" onclick="showLoader()">
+                      <div class="text-center">
+                        <i class="fa fa-user mt-2"></i>  
+                      </div>
+                      <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                        Profile
+                      </span>
+                    </div>
+                </a>
+                
+                <a href="{%url 'homepage:logout'%}">
+                  <div class="mt-2 p-2 side-item" onclick="showLoader()">
+                    <div class="text-center">
+                      <i class="fa fa-sign-out-alt mt-2"></i>
+                    </div>
+                    <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                      Logout
+                    </span>
+                  </div>
+                </a>
             </div>
           </div>
            

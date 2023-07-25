@@ -16,7 +16,7 @@ from homepage.forms import CustomerForm, AgentForm, PasswordChangeFormUpdate, Re
 
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse, reverse_lazy
-from homepage.models import EmailSetting, SMSSetting, EmailList, SMSList, DefaultNumber, Ticket, SupportFile, AdminNotification, CustomerNotification
+from homepage.models import  DefaultCurrencyAdmin, EmailSetting, SMSSetting, EmailList, SMSList, DefaultNumber, Ticket, SupportFile, AdminNotification, CustomerNotification
 from homepage.forms import BankForm, UserCreateForm, UserUpdateForm, ServiceForm, ClientForm, TestomonialForm, CompanyInformationForm, BlogForm, CategoryForm, SubCategoryForm
 
 from .forms import DefaultForm, EmailSettingForm, SMSSettingForm, LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, BrandForm, FootorForm, SocialForm, PolicyForm, TermForm, EmailListForm, SMSListForm
@@ -25,20 +25,55 @@ from django.http import JsonResponse
 # Create your views here.
 
 
-def transactionView(request):
-    trans = Transaction.objects.all().order_by('-id')
-    total_t = trans.count()
-    return render(request, "owner/transaction.html", {'transaction':trans, 'total_t':total_t})
+def defaultCurrency(request):
+   
+    asa = DefaultCurrencyAdmin.objects.all()
+    if asa:
+        for i in asa:
+            asa = i
+            break
 
-def transactionDetail(request, id):
-    trans = Transaction.objects.get(id = id)
-    alltrans = Transaction.objects.filter(customer = trans.customer)
     dist = {
-        'trans':trans,
-        'alltrans':alltrans
+        'currency':Currency.objects.all(),
+        'default_currency':asa
     }
+    noti = notification()
+    dist.update(noti)
+    if request.method == "POST":
+        currency_s = Currency.objects.get(id = request.POST['send_currency']) 
+        currency_r = Currency.objects.get(id = request.POST['receive_currency']) 
+        try:
+            asa.sending_currency = currency_s
+            asa.receiving_currency = currency_r
+            asa.save()
 
-    return render(request, 'owner/transactionDetail.html', dist)
+            messages.success(request, "Successfully updated Default Currency")
+        except:
+           DefaultCurrencyAdmin.objects.create(sending_currency = currency_s, receiving_currency= currency_r )
+           messages.success(request, "Successfully Added Default Currency") 
+           return HttpResponseRedirect(reverse('owner:default'))
+    # return render(request, "customer/default_currency.html", dist)
+    return render(request, "owner/default.html", dist)
+
+def search(request):
+    query = request.GET.get('search')
+
+    bank = BankAccount.objects.filter(account_name__icontains=query)
+    currency = Currency.objects.filter(country__name__icontains=query)
+    country = Country.objects.filter(name__icontains=query)
+    agent = CustomUser.objects.filter(first_name__icontains=query).filter(user_type = "customer")
+    customer = CustomUser.objects.filter(first_name__icontains=query).filter(user_type = "agent")
+    dist = {
+        'country':country,
+        'bank':bank,
+        'customer':customer,
+        'agent':agent,
+        'currency':currency,
+        'noti': AdminNotification.objects.filter(seen= False),
+        'noti_count' : AdminNotification.objects.filter(seen= False).count(),
+    }
+    return render(request, 'owner/search.html', dist)
+
 
 def seenNotification(request):
     if request.method == 'POST':
@@ -71,7 +106,32 @@ def allNotification(request):
         'noti':noti,
         'noti_count':count
     }
+
     return render(request, "owner/notification.html", dist)
+
+
+def transactionView(request):
+    trans = Transaction.objects.all().order_by('-id')
+    total_t = trans.count()
+    dist = {
+        'transaction':trans, 'total_t':total_t
+    }
+    noti = notification()
+    dist.update(noti)
+
+    return render(request, "owner/transaction.html", dist)
+
+def transactionDetail(request, id):
+    trans = Transaction.objects.get(id = id)
+    alltrans = Transaction.objects.filter(customer = trans.customer)
+    dist = {
+        'trans':trans,
+        'alltrans':alltrans
+    }
+    noti = notification()
+    dist.update(noti)
+
+    return render(request, 'owner/transactionDetail.html', dist)
 
 
 def banCustomer(request, id):
@@ -118,6 +178,8 @@ def emailSetting(request):
             dist.update({'sendform':sendform})
             messages.error(request, "something went wrong")
 
+    noti = notification()
+    dist.update(noti)
    
     return render(request, "owner/email.html", dist)
 
@@ -136,6 +198,10 @@ def addEmailSetting(request, id):
         dist = {
             'form': form
         }
+
+        noti = notification()
+        dist.update(noti)
+
         messages.error(request, "Something went wrong")
         return render(request, "owner/email.html", dist)    
 
@@ -158,6 +224,8 @@ def smsSetting(request):
         'sendform':SMSListForm(),
         'defautForm':defautForm
     }
+    noti = notification()
+    dist.update(noti)
 
     if request.method == 'POST':
         sendform = SMSListForm(request.POST)
@@ -199,6 +267,10 @@ def addSMSSetting(request, id):
         dist = {
             'form': form
         }
+
+        noti = notification()
+        dist.update(noti)
+
         messages.error(request, "Something went wrong")
         return render(request, "owner/sms.html", dist) 
 
@@ -211,6 +283,9 @@ def bannedSetting(request):
     dist = {
         'banned':banned
     }
+
+    noti = notification()
+    dist.update(noti)
     return render(request, "owner/banned.html", dist)
 
 
@@ -228,7 +303,8 @@ def bankView(request):
         'total_bank':total_bank,
         'recipient':Recipient.objects.all()
     }
-
+    noti = notification()
+    dist.update(noti)
     # if request.method == 'POST':
     #     form = BankForm(request.POST)
 
@@ -259,7 +335,8 @@ def filterBank(request):
         'total_bank':total_bank,
         'recipient':Recipient.objects.all()
     }
-
+    noti = notification()
+    dist.update(noti)
     return render(request, "owner/bank.html", dist)
 
 
@@ -273,7 +350,8 @@ def editBank(request, id):
         'form':form,
         'bank':rec
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         form = BankForm(request.POST, instance=rec)
         if form.is_valid():
@@ -306,7 +384,8 @@ def blogView(request):
         'total_blog':total_bank,
        
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         form = BlogForm(request.POST, request.FILES)
 
@@ -329,7 +408,8 @@ def editBlog(request, id):
         'blog':rec,
         'total_blog':Blog.objects.all().count()
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         form = BlogForm(request.POST, request.FILES, instance=rec)
         if form.is_valid():
@@ -361,7 +441,8 @@ def ticketList(request):
         'check':check,
         'form':ReplyForm()
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         form = ReplyForm(request.POST, request.FILES)
         if form.is_valid():
@@ -431,7 +512,6 @@ class Dashboard(View):
 
         dist.update(public)
         noti = notification()
-        print(noti)
         dist.update(noti)
         
         return render(request, self.template_name, dist)
@@ -446,9 +526,10 @@ class CustomerView(View):
             'button':"Add new customer",
             'user': CustomUser.objects.filter(user_type = "customer").order_by('-id')
         }
+   
     def get(self, request, *args, **kwargs):
-      
-
+        noti = notification()
+        self.dist.update(noti)
         return render(request, self.template_name, self.dist)
     def post(self, request, *args, **kwars):
         form = CustomerForm(request.POST)
@@ -505,7 +586,8 @@ def customerProfile(request, id):
         'cm':cm
     
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         try: 
             real_customer.first_name = request.POST['first_name']
@@ -544,30 +626,30 @@ def AgentView(request):
             'button':"Add new agent",
             'agent': CustomUser.objects.filter(user_type = "agent").order_by('-id')
         }
-  
+    noti = notification()
+    dist.update(noti) 
     if request.method == 'POST':
         form = AgentForm(request.POST)
-        # try:
-        # custom_user = 
-        if form.is_valid():
-            # try:
-            admin = CustomUser.objects.create_user(first_name = request.POST['first_name'], last_name = request.POST['last_name'], email = request.POST['email'], username = request.POST['email'], password = request.POST['password'], user_type = 'agent')
-            obj = admin.agent
-            obj.number = request.POST['number']
-            obj.mail_address = request.POST['mail_address']
-            obj.state = request.POST['state']
-            obj.zip_code = request.POST['zip_code']
-            obj.city = request.POST['city']
-            obj.country = Country.objects.get(id = request.POST['country']) 
-            obj.address = request.POST['address']
-            obj.added_by = request.user
-            obj.save()
-                # admin.save()
-            messages.success(request, "Successfully Added Agent")
-            return HttpResponseRedirect(reverse('owner:agent'))
-            # except:      
-            #     messages.error(request, "Email already exist")
-            #     return render(request, template_name, dist)
+        try:
+            if form.is_valid():
+                # try:
+                admin = CustomUser.objects.create_user(first_name = request.POST['first_name'], last_name = request.POST['last_name'], email = request.POST['email'], username = request.POST['email'], password = request.POST['password'], user_type = 'agent')
+                obj = admin.agent
+                obj.number = request.POST['number']
+                obj.mail_address = request.POST['mail_address']
+                obj.state = request.POST['state']
+                obj.zip_code = request.POST['zip_code']
+                obj.city = request.POST['city']
+                obj.country = Country.objects.get(id = request.POST['country']) 
+                obj.address = request.POST['address']
+                obj.added_by = request.user
+                obj.save()
+                    # admin.save()
+                messages.success(request, "Successfully Added Agent")
+                return HttpResponseRedirect(reverse('owner:agent'))
+        except:      
+                messages.error(request, "Email already exist")
+                return render(request, template_name, dist)
         else:
             error = form.errors()
             print(error)
@@ -591,9 +673,9 @@ def agentProfile(request, id):
         'form':form,
         'form_head':"Update Agent",
         'button':"Update Agent",
-    
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         try: 
             real_customer.first_name = request.POST['first_name']
@@ -638,7 +720,8 @@ class AddFeature(View):
             'button':'Add Features',
         }
      
-
+        noti = notification()
+        dist.update(noti)
         return render(request, self.template_name, dist)
     def post(self, request, *args, **kwargs):
         form = FeatureForm(request.POST, request.FILES)
@@ -684,7 +767,8 @@ class AddBrand(View):
             'button':'Add Brands',
         }
      
-
+        noti = notification()
+        dist.update(noti)
         return render(request, self.template_name, dist)
     def post(self, request, *args, **kwargs):
         form = BrandForm(request.POST, request.FILES)
@@ -728,6 +812,8 @@ class AddService(View):
             'button':'Add Service',
         }
       
+        noti = notification()
+        dist.update(noti)
 
         return render(request, self.template_name, dist)
     def post(self, request, *args, **kwargs):
@@ -779,7 +865,8 @@ class AddClient(View):
             'button':'Add Client',
         }
        
-
+        noti = notification()
+        dist.update(noti)
         return render(request, self.template_name, dist)
     def post(self, request, *args, **kwargs):
         form = ClientForm(request.POST, request.FILES)
@@ -827,7 +914,9 @@ class AddTestomonial(View):
             'blog':blog,
             'button':'Add Testomonial',
         }
-       
+        noti = notification()
+        dist.update(noti)
+
         return render(request, self.template_name, dist)
     def post(self, request, *args, **kwargs):
         form = TestomonialForm(request.POST)
@@ -873,7 +962,8 @@ class AddBlog(View):
             'button':'Add Blog',
         }
 
-
+        noti = notification()
+        dist.update(noti)
         return render(request, self.template_name, dist)
     def post(self, request, *args, **kwargs):
         form = BlogForm(request.POST)
@@ -913,6 +1003,8 @@ class Profile(View):
         dist = {
             'form':form
         }
+        noti = notification()
+        dist.update(noti)
         return render(request, self.template_name, dist)
 
     def post(self, request, *args, **kwargs):
@@ -986,7 +1078,8 @@ def site(request):
         'login':login,
         'signup':signup
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         if site:
             form = SiteForm(request.POST, request.FILES, instance=site)
@@ -1057,7 +1150,8 @@ def footerView(request):
         'footer':footer,
         'form': form
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         form = FootorForm(request.POST)
         if form.is_valid():
@@ -1119,7 +1213,8 @@ def SiteInformationView(request):
         'home':homes,
         'homeform':homeform
     }
-
+    noti = notification()
+    dist.update(noti)
     return render(request, "owner/siteSetting/siteInfo.html", dist)
 
 # Add About Us Information
@@ -1226,7 +1321,8 @@ def PolicyView(request):
         'policy_form':policy_form,
         'terms_form':terms_form
     }
-
+    noti = notification()
+    dist.update(noti)
     return render(request, "owner/siteSetting/policy.html", dist)
 
 
@@ -1284,7 +1380,8 @@ def SocialLinkView(request):
         'social':social_link,
         'form':form
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         form = SocialForm(request.POST)
         if form.is_valid():
@@ -1313,7 +1410,8 @@ def SEOView(request):
         'form':form,
         'site':site,
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         if site:
             form = SEOForm(request.POST, request.FILES, instance=site)
@@ -1379,7 +1477,8 @@ def countryView(request):
         'country':country,
         'form': form
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         form = CountryForm(request.POST, request.FILES)
         if form.is_valid():
@@ -1421,7 +1520,8 @@ def currencyView(request):
         'form': form,
         'country':Country.objects.all()
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         form = CurrencyForm(request.POST)
         if form.is_valid():
@@ -1465,7 +1565,8 @@ def pickupView(request):
         'form': form,
         'country':Country.objects.all()
     }
-
+    noti = notification()
+    dist.update(noti)
     if request.method == 'POST':
         form = PickupPointForm(request.POST, request.FILES)
         if form.is_valid():
@@ -1503,6 +1604,8 @@ def kycView(request):
     dist = {
         'kyc':kyc
     }
+    noti = notification()
+    dist.update(noti)
     return render(request, "owner/kyc.html", dist)
 
 
@@ -1512,7 +1615,8 @@ def kycVerification(request, id):
     dist  ={
         'kycs':kyc
     }
-
+    noti = notification()
+    dist.update(noti)
     return render(request, "owner/kycDetail.html", dist)
 
 def verifyView(request, id):

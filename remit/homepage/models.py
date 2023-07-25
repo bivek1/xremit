@@ -237,6 +237,15 @@ class DefaultCurrency(models.Model):
     def __str__(self):
         return self.customer.admin.get_full_name()
     
+
+class DefaultCurrencyAdmin(models.Model):
+    sending_currency = models.ForeignKey(Currency, related_name='default_sending_currency', on_delete=models.CASCADE)
+    receiving_currency = models.ForeignKey(Currency, related_name='default_receiving_currency', on_delete=models.CASCADE)
+    
+
+    def __str__(self):
+        return self.sending_currency.currecy_sign
+    
 class BankAccount(models.Model):
     customer = models.ForeignKey(Customer, related_name='customer_bank', on_delete=models.CASCADE)
     recipient = models.ForeignKey(Recipient, related_name='recipient_bank', on_delete=models.CASCADE)

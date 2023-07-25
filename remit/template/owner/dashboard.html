@@ -189,6 +189,20 @@
             </div>
         </a>
 
+        {%url 'owner:default' as defaultCurrencyaa%}
+          <a href="{{defaultCurrencyaa}}">
+            <div class="mt-2 p-2 side-item {% if request.path == defaultCurrencyaa %}
+            activedb
+{% endif %}" onclick="showLoader()">
+                <div class="text-center">
+                  <i class="fa fa-coins mt-2"></i>   
+                </div>
+                <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                  Default Currency
+                </span> 
+              </div>
+          </a>
+
         {%url 'owner:bannedSetting' as banaa%}
         <a href="{{banaa}}">
             <div class="mt-2 p-2 side-item  {% if request.path == banaa %}
@@ -225,8 +239,11 @@
       <div class=" d-flex justify-content-between mt-3 p-2">
 
         <div class="login-flex d-flex my-auto" style="width: 50%;">
-         <i class="fa fa-magnifying-glass my-auto p-2"></i>
-         <input type="text" name="email" class="form-control" id="searchBtn"  placeholder="Ex: Transaction, Customer, Agent, Currency and regions" required id="">
+          <i class="fa fa-magnifying-glass my-auto p-2"></i>
+          <form action="{%url 'owner:search'%}" method="get" style="width: 100%;">
+            <input type="text" name="search" class="form-control" id="searchBtn"  placeholder="Ex: Customer, Agent, Currency and Country" required>
+          </form>
+         
         </div>
         <div class="my-auto navbar-icon">
           <div class="dropdown d-inline" >
@@ -371,6 +388,7 @@
                     </span>
                   </div>
               </a>
+             
               <a href="{%url 'owner:currency'%}">
                 <div class="mt-2 p-2 side-item">
                   <div class="text-center">
@@ -381,6 +399,8 @@
                   </span> 
                 </div>
               </a>
+             
+              
       
               <a href="{%url 'owner:site'%}">
                 <div class="mt-2 p-2 side-item">
@@ -392,25 +412,33 @@
                   </span>
                 </div>
               </a>
-      
-              <div class="mt-2 p-2 side-item">
-                <div class="text-center">
-                  <i class="fa fa-user mt-2"></i>  
-                </div>
-                <span class="ms-3 my-auto text-primary text-bold">
-                  Profile
-                </span>
-              </div>
+              {%url 'owner:profile' as profileaa%}
+              <a href="{{profileaa}}">
+                  <div class="mt-2 p-2 side-item {% if request.path == profileaa %}
+                  activedb
+      {% endif %}">
+                    <div class="text-center">
+                      <i class="fa fa-user mt-2"></i>  
+                    </div>
+                    <span class="ms-3 my-auto text-primary text-bold">
+                      Profile
+                    </span>
+                  </div>
+              </a>
+              {%url 'owner:transaction' as transactionaa%}
+              <a href="{{transactionaa}}">
+                  <div class="mt-2 p-2 side-item {% if request.path == transactionaa %}
+                  activedb
+      {% endif %}">
+                    <div class="text-center">
+                      <i class="fa-solid fa-money-bill-transfer mt-2"></i>
+                    </div>
+                    <span class="ms-3 my-auto text-primary text-bold">
+                      Transaction
+                    </span>
+                  </div>
+              </a>
              
-        
-              <div class="mt-2 p-2 side-item">
-                <div class="text-center">
-                  <i class="fa-solid fa-money-bill-transfer mt-2"></i>
-                </div>
-                <span class="ms-3 my-auto text-primary text-bold">
-                  Transaction
-                </span>
-              </div>
               <a href="{%url 'owner:country'%}">
                 <div class="mt-2 p-2 side-item">
                   <div class="text-center">
@@ -421,44 +449,104 @@
                   </span>
                 </div>
               </a>
-      
-              <div class="mt-2 p-2 side-item">
-                <div class="text-center">
-                  <i class="fa-solid fa-building-columns  mt-2"></i>  
+              {%url 'owner:bank' as bankaa%}
+              <a href="{{bankaa}}">
+                <div class="mt-2 p-2 side-item {% if request.path == bankaa %}
+                activedb
+      {% endif %}">
+                  <div class="text-center">
+                    <i class="fa-solid fa-building-columns  mt-2"></i>  
+                  </div>
+                  <span class="ms-3 my-auto text-primary text-bold">
+                    Bank
+                  </span>
                 </div>
-                <span class="ms-3 my-auto text-primary text-bold">
-                  Bank
-                </span>
-              </div>
-      
-              <div class="mt-2 p-2 side-item">
-                <div class="text-center">
-                  <i class="fa-solid fa-inbox mt-2"></i>
+              </a>
+            
+              {%url 'owner:emailSetting' as emailaa%}
+              <a href="{{emailaa}}">
+                <div class="mt-2 p-2 side-item  {% if request.path == emailaa %}
+                          activedb
+                        {% endif %}">
+                      <div class="text-center">
+                        <i class="fa-solid fa-inbox mt-2"></i>
+                      </div>
+                      <span class="ms-3 my-auto text-primary text-bold">
+                        Email Setting
+                      </span>
                 </div>
-                <span class="ms-3 my-auto text-primary text-bold">
-                  Email Setting
-                </span>
-              </div>
+              </a>
       
-      
-              <div class="mt-2 p-2 side-item">
-                <div class="text-center">
-                  <i class="fa-solid fa-comments mt-2"></i>  
+              {%url 'owner:blog' as blogaa%}
+              <a href="{{blogaa}}">
+                <div class="mt-2 p-2 side-item {% if request.path == blogaa %}
+                activedb
+              {% endif %}">
+                  <div class="text-center">
+                    <i class="fa-solid fa-blog mt-2"></i>
+                  </div>
+                  <span class="ms-3 my-auto text-primary text-bold">
+                    Blog
+                  </span>
                 </div>
-                <span class="ms-3 my-auto text-primary text-bold">
-                  SMS Setting
-                </span>
-              </div>
-      
-              <div class="mt-2 p-2 side-item">
-                <div class="text-center">
-                  <i class="fa-solid fa-ban mt-2"></i>
+              </a>
+              {%url 'owner:ticketView' as ticketaa%}
+              <a href="{{ticketaa}}">
+                <div class="mt-2 p-2 side-item {% if request.path == ticketaa %}
+                activedb
+      {% endif %}" onclick="showLoader()">
+                  <div class="text-center">
+                    <i class="fa-solid fa-headphones-simple  mt-2"></i>  
+                  </div>
+                  <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                    Ticket
+                  </span>
                 </div>
-                <span class="ms-3 my-auto text-primary text-bold">
-                  Banned User
-                </span>
-              </div>
+              </a>
+             
       
+              {%url 'owner:smsSetting' as smsaa%}
+              <a href="{{smsaa}}">
+                  <div class="mt-2 p-2 side-item  {% if request.path == smsaa %}
+                        activedb
+                        {% endif %}">
+                    <div class="text-center">
+                      <i class="fa-solid fa-comments mt-2"></i>  
+                    </div>
+                    <span class="ms-3 my-auto text-primary text-bold">
+                      SMS Setting
+                    </span>
+                  </div>
+              </a>
+      
+              {%url 'owner:default' as defaultCurrencyaa%}
+                <a href="{{defaultCurrencyaa}}">
+                  <div class="mt-2 p-2 side-item {% if request.path == defaultCurrencyaa %}
+                  activedb
+      {% endif %}" onclick="showLoader()">
+                      <div class="text-center">
+                        <i class="fa fa-coins mt-2"></i>   
+                      </div>
+                      <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                        Default Currency
+                      </span> 
+                    </div>
+                </a>
+      
+              {%url 'owner:bannedSetting' as banaa%}
+              <a href="{{banaa}}">
+                  <div class="mt-2 p-2 side-item  {% if request.path == banaa %}
+                        activedb
+                        {% endif %}">
+                    <div class="text-center">
+                      <i class="fa-solid fa-ban mt-2"></i>
+                    </div>
+                    <span class="ms-3 my-auto text-primary text-bold">
+                      Banned User
+                    </span>
+                  </div>
+              </a>
+            
           
       
               <a href="{%url 'homepage:logout'%}">
