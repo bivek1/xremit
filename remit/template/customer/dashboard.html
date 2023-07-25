@@ -207,7 +207,96 @@
          <input type="text" name="email" class="form-control" id="searchBtn"  placeholder="Ex: Transaction, Customer, Agent, Currency and regions" required id="">
         </div>
         <div class="my-auto">
-          <i class="far fa-bell p-2 menu-icon"></i>
+          <div class="dropdown d-inline" >
+            <span class="" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="far fa-bell p-2 menu-icon" style="position: relative;">
+                <span class="badge bg-danger" style="position: absolute; right: 3px;
+                top: 25px;" >{{noti_count}}</span>
+            
+              </i>
+            
+            </span>
+            <ul class="dropdown-menu mt-3" aria-labelledby="dropdownMenuButton1">
+              <h5 class="head-para text-light text-dark">
+                Notification List
+              </h5>
+              <hr>
+              
+              {% if not noti %}
+                <p class="text-secondary p-2" style="width: 250px;">
+                  No Unseen notification left at the box <i class="fa fa-box"></i>
+                </p>
+              {% endif %}
+                
+              {% for i in noti %}
+                <!-- {{i}} -->
+                {% if i.types == 'ticket' %}
+                  <li onclick="addSeen('{{i.id}}')">
+                    <a class="dropdown-item" href="{%url 'customer:ticketList'%}">
+                      <div class="d-flex ">
+                          <img class="my-auto" src="{%if i.customer.profil_pic%}{{i.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                          <div class="p-2">
+                            <p class="m-0">
+                               {{i.name}}
+                            </p>
+                            <b>
+                              {{i.created_at}}
+                            </b>
+                              
+                          </div>
+                      </div>
+                    </a>          
+                  </li>
+                {% endif %}
+
+                {% if i.types == 'kyc' %}
+                  <li onclick="addSeen('{{i.id}}')">
+                      <a class="dropdown-item" href="{%url 'customer:verify'%}">
+                        <div class="d-flex ">
+                            <img class="my-auto" src="{%if i.customer.profil_pic%}{{i.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                            <div class="p-2">
+                              <p class="m-0">
+                                 {{i.name}}
+                              </p>
+                              <b>
+                                {{i.created_at}}
+                              </b>
+                                
+                            </div>
+                        </div>
+                      </a>          
+                  </li>
+                {% endif %}
+
+                {% if i.types == 'transaction' %}
+                <li onclick="addSeen('{{i.id}}')">
+                    <a class="dropdown-item" href="{%url 'customer:transaction'%}">
+                      <div class="d-flex" >
+                          <img class="my-auto" src="{%if i.customer.profil_pic%}{{i.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                          <div class="p-2">
+                              <p class="m-0">
+                                Transaction {{i.name}}
+                              </p>
+                              <b>
+                                {{i.created_at}}
+                              </b>
+                
+                          </div>
+                      </div>
+                    </a>          
+                </li>
+              {% endif %}
+               
+              {% endfor %}
+              <hr>
+              <a href="{%url 'customer:allNotification'%}">
+                  <p class="text-center" id="notiall">
+                    <i class="fa fa-inbox"></i>  View All Notification
+                  </p>
+              </a>
+             
+            </ul>
+          </div>
 
            <i class="fa fa-cog p-2 menu-icon"></i>
            
@@ -324,16 +413,27 @@
           
           <div class="container mt-2">
             {% if not user.customer.kyc_verified %}
-            <div class="alert alert-light">
-                <img src="{%static 'resources/not-verified.png'%}" alt="" height="30px;" width="30px;">
-                <span class="text-danger">
-                    Your KYC is not verified yet.
-                </span>
-                 Please follow the link to verify.
-                <a href="{%url 'customer:verify'%}" class="text-success">
-                    Verify now
-                </a>
-            </div>
+              <div class="alert alert-light">
+                  
+                  {% if  user.customer.rejected%}
+                  <img src="{%static 'resources/not-verified.png'%}" alt="" height="30px;" width="30px;">
+                  <span class="text-danger">
+                      Your KYC is <span class="text-danger">
+                        <b>Rejected</b>
+                      </span>
+                  </span>
+                   {%else%}
+                    <img src="{%static 'resources/not-verified.png'%}" alt="" height="30px;" width="30px;">
+                    <span class="text-danger">
+                        Your KYC is not verified yet.
+                    </span>
+                  {% endif %}
+
+                  Please follow the link to verify.
+                  <a href="{%url 'customer:verify'%}" class="text-success">
+                      Verify now
+                  </a>
+              </div>
           {% endif %}
           </div>
          
@@ -614,7 +714,24 @@
       
 </div>
 {% endif %}
-  
+
+<script>
+
+  function addSeen(id){
+    $.ajax({
+            type: 'POST',
+            url: '{%url "customer:seenNotification"%}', // Replace with the actual URL of your view
+            data: {
+                'id': id, // Send the data as a key-value pair
+                'csrfmiddlewaretoken': '{{ csrf_token }}' // Include the CSRF token for security
+            },
+            success: function(response) {
+              console.log(response.status)
+            }
+    })
+  }
+</script>
+    
 
 
 {% endblock content %}

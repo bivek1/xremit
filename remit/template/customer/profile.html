@@ -72,17 +72,27 @@
                                     <div class="col-lg-8 col-12 pt-3 pb-3">
                                         {% if not user.customer.kyc_verified %}
                                         <div class="alert alert-light">
+                                            {% if  user.customer.rejected%}
                                             <img src="{%static 'resources/not-verified.png'%}" alt="" height="30px;" width="30px;">
                                             <span class="text-danger">
-                                                Your KYC is not verified yet.
+                                                Your KYC is <span class="text-danger">
+                                                  <b>Rejected</b>
+                                                </span>
                                             </span>
+                                             {%else%}
+                                              <img src="{%static 'resources/not-verified.png'%}" alt="" height="30px;" width="30px;">
+                                              <span class="text-danger">
+                                                  Your KYC is not verified yet.
+                                              </span>
+                                            {% endif %}
+                          
                                             Please follow the link to verify.
                                             <a href="{%url 'customer:verify'%}" class="text-success">
                                                 Verify now
                                             </a>
                                           
                                         </div>
-                                      {%else%}
+                                        {%else%}
                                         <div class="alert alert-light">
                                           <img src="{%static 'resources/verified.png'%}" alt="" height="30px;" width="30px;">
                                           <span class="text-danger">

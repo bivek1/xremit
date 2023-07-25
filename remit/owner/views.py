@@ -16,13 +16,41 @@ from homepage.forms import CustomerForm, AgentForm, PasswordChangeFormUpdate, Re
 
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse, reverse_lazy
-from homepage.models import EmailSetting, SMSSetting, EmailList, SMSList, DefaultNumber, Ticket, SupportFile, AdminNotification
+from homepage.models import EmailSetting, SMSSetting, EmailList, SMSList, DefaultNumber, Ticket, SupportFile, AdminNotification, CustomerNotification
 from homepage.forms import BankForm, UserCreateForm, UserUpdateForm, ServiceForm, ClientForm, TestomonialForm, CompanyInformationForm, BlogForm, CategoryForm, SubCategoryForm
 
 from .forms import DefaultForm, EmailSettingForm, SMSSettingForm, LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, BrandForm, FootorForm, SocialForm, PolicyForm, TermForm, EmailListForm, SMSListForm
-
+from django.http import JsonResponse
 
 # Create your views here.
+
+
+def transactionView(request):
+    trans = Transaction.objects.all().order_by('-id')
+    total_t = trans.count()
+    return render(request, "owner/transaction.html", {'transaction':trans, 'total_t':total_t})
+
+def transactionDetail(request, id):
+    trans = Transaction.objects.get(id = id)
+    alltrans = Transaction.objects.filter(customer = trans.customer)
+    dist = {
+        'trans':trans,
+        'alltrans':alltrans
+    }
+
+    return render(request, 'owner/transactionDetail.html', dist)
+
+def seenNotification(request):
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        print(id)  
+        tic = AdminNotification.objects.get(id = int(id))
+
+        tic.seen = True
+        tic.save()
+        return JsonResponse({'staus':'ok'})
+
+   
 
 def notification():
    noti = AdminNotification.objects.filter(seen= False)
@@ -34,6 +62,16 @@ def notification():
    }
    return li
 
+
+def allNotification(request):
+    noti = AdminNotification.objects.all().order_by('-id')
+    count = noti.count()
+
+    dist = {
+        'noti':noti,
+        'noti_count':count
+    }
+    return render(request, "owner/notification.html", dist)
 
 
 def banCustomer(request, id):
@@ -335,7 +373,7 @@ def ticketList(request):
             tick = Ticket.objects.get(id = request.POST['ticket'])
             tick.status = "answered"
             tick.save()
-
+            CustomerNotification.objects.create(customer =tick.customer, name ='Replied to ticket: ' +tick.subject, types ="ticket", ids=tick.id)
             images = request.FILES.getlist("file[]")
             for img in images:
                 image = SupportFile(file=img, customer = request.user.customer)
@@ -360,9 +398,10 @@ def changeStatus(request, id):
     trans = Transaction.objects.get(id = id)
     trans.status = status
     trans.save()
+    CustomerNotification.objects.create(customer = trans.customer, name =str(trans.status), types ="transaction", ids=trans.id)
 
     messages.success(request, "successfully changed status")
-    return HttpResponseRedirect(reverse('owner:dashboard'))
+    return HttpResponseRedirect(reverse('owner:transactionDetail', args=[trans.id]))
 
 class Dashboard(View):
     template_name = "owner/dashboard.html"
@@ -1466,6 +1505,16 @@ def kycView(request):
     }
     return render(request, "owner/kyc.html", dist)
 
+
+def kycVerification(request, id):
+    kyc = KYC.objects.get(id = id)
+    print(kyc)
+    dist  ={
+        'kycs':kyc
+    }
+
+    return render(request, "owner/kycDetail.html", dist)
+
 def verifyView(request, id):
     user = Customer.objects.get(id = id)
     
@@ -1474,11 +1523,29 @@ def verifyView(request, id):
     for i in cm:
         cm=i
         break
-   
+
     cust = user
     cust.kyc_verified = True
     cust.save()
-
+    CustomerNotification.objects.create(customer = cust, name ="Congratulation Your KYC Has Been Verified.", types ="kyc", ids=cust.id)
     messages.success(request, "Successfully Verified Account")
     
     return HttpResponseRedirect(reverse('owner:kyc'))
+
+def rejectView(request, id):
+    user = Customer.objects.get(id = id)
+    
+    cm = KYC.objects.filter(customer = user)
+  
+    for i in cm:
+        cm=i
+        break
+
+    cust = user
+    cust.rejected = True
+    cust.save()
+    CustomerNotification.objects.create(customer = cust, name ="Sorry Your KYC Has Been Rejected.", types ="kyc", ids=cust.id)
+    messages.success(request, "Successfully Rejected KYC")
+    
+    return HttpResponseRedirect(reverse('owner:kyc'))
+

@@ -12,6 +12,40 @@ from django.core import serializers
 from homepage.models import CustomerNotification, Ticket, AdminNotification
     
 
+
+def seenNotification(request):
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        print(id)  
+        tic = CustomerNotification.objects.get(id = int(id))
+
+        tic.seen = True
+        tic.save()
+        return JsonResponse({'staus':'ok'})
+
+   
+
+def notification():
+   noti = CustomerNotification.objects.filter(seen= False)
+   count = noti.count()
+
+   li = {
+       'noti':noti,
+       'noti_count':count
+   }
+   return li
+
+
+def allNotification(request):
+    noti = CustomerNotification.objects.all().order_by('-id')
+    count = noti.count()
+
+    dist = {
+        'noti':noti,
+        'noti_count':count
+    }
+    return render(request, "customer/notification.html", dist)
+
 def ticketView(request):
 
     dist = {
@@ -25,7 +59,7 @@ def ticketView(request):
             aa.customer = request.user.customer
             aa.status = 'pending'
             aa.save()
-            # CustomerNotification.objects.create(customer = request.user.customer, name =aa.subject, types ="ticket", ids=aa.id)
+            
             AdminNotification.objects.create(name ="Created a ticket: "+ aa.subject, types ="ticket", ids=aa.id)
             images = request.FILES.getlist("file[]")
             for img in images:
@@ -184,6 +218,9 @@ def customerDashboard(request):
         'currency' : Currency.objects.all().order_by('-id')[:3],
         'transaction': Transaction.objects.filter(customer = request.user.customer)[:4]
     }
+    noti = notification()
+    print(noti)
+    dist.update(noti)
     return render(request, "customer/dashboard.html", dist)
 
 def recipient(request):
@@ -400,8 +437,16 @@ class Profile(View):
         else:
             err = form.errors
             print(err)
+            dist = {
+            'pcform':PasswordChangeFormUpdate(request.user),
+            'form':form,
+            'transaction':Transaction.objects.filter(customer = request.user.customer).order_by('-id')[:5],
+            'recipient': Recipient.objects.filter(customer = request.user.customer).order_by('-id')[:5],
+            'real_customer':request.user.customer
+              
+            }
             messages.error(request, "Something went wrong")
-            return render(request, self.template_name, self.get.dist)
+            return render(request, self.template_name, dist)
         
         # return HttpResponseRedirect(reverse('customer:profile'))
     

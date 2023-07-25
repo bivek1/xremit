@@ -86,6 +86,9 @@ urlpatterns = [
         'verify-kyc-now/<int:id>', views.verifyView, name = "verify"
     ),
     path(
+        'reject-kyc-now/<int:id>', views.rejectView, name = "reject"
+    ),
+    path(
         'changeststus/<int:id>', views.changeStatus, name = "changeStatus"
     ),
 
@@ -115,6 +118,12 @@ urlpatterns = [
     ),
     path('delete-blog/<int:id>', views.deleteBlog, name ="deleteBlog"),
     path('ticket-list', views.ticketList, name ="ticketView"),
-    path('closeTicket/<int:id>', views.closeTicket, name ="closeTicket")
+    path('closeTicket/<int:id>', views.closeTicket, name ="closeTicket"),
+    path('closeTicket/<int:id>', views.closeTicket, name ="closeTicket"),
+    path('seen-notification', views.seenNotification, name="seenNotification"),
+    path('all-notification', views.allNotification, name="allNotification"),
+    path('transaction-owner-alllist', views.transactionView, name = "transaction"),
+    path('transaction-details/8178171-iamg22a>/<int:id>', views.transactionDetail, name = "transactionDetail"),
+    path('KYC-VERIFICATION-DETAILS/KYCVERIFIEDMETHOD-121/<int:id>', views.kycVerification, name="kycVerification"),
 
 ]   

@@ -88,6 +88,7 @@ class Customer(models.Model):
         ('none','none')
     ), default='none', null= True, blank = True)
     kyc_verified = models.BooleanField(default=False)
+    rejected = models.BooleanField(default=False)
     
     objects = models.Manager()
     
@@ -98,6 +99,18 @@ class Customer(models.Model):
         except:
             return str(self.id)
 
+
+class SendingPurpose(models.Model):
+    name = models.CharField(max_length=300)
+
+    def __str__(self):
+        return self.name
+    
+class SourceFund(models.Model):
+    name = models.CharField(max_length=300)
+
+    def __str__(self):
+        return self.name
 
 class EmailSetting(models.Model):
     email_host = models.CharField(max_length=200)
@@ -254,10 +267,18 @@ class Transaction(models.Model):
         ('Cancelled', 'Cancelled')
     ), default='Pending')
     bank = models.ForeignKey(BankAccount, related_name='transaction_bank', null = True, blank= True, on_delete=models.DO_NOTHING)
-
+    created_at = models.DateTimeField(auto_now_add= True)
+    updated_at = models.DateTimeField(auto_now=True)
+    sending_purpose = models.ForeignKey(SendingPurpose, related_name = "transaction_purpose", on_delete=models.DO_NOTHING, null = True, blank= True)
+    source_of_fund = models.ForeignKey(SourceFund, related_name = "transaction_source", on_delete=models.DO_NOTHING, null = True, blank= True)
+    
     def __str__(self):
         return self.customer.admin.get_full_name()
 
+
+    def count_total(self):
+        ss = Transaction.objects.filter(customer = self.customer).count()
+        return ss
 
 
 
