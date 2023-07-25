@@ -16,7 +16,7 @@ from homepage.forms import CustomerForm, AgentForm, PasswordChangeFormUpdate, Re
 
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse, reverse_lazy
-from homepage.models import EmailSetting, SMSSetting, EmailList, SMSList, DefaultNumber, Ticket, SupportFile
+from homepage.models import EmailSetting, SMSSetting, EmailList, SMSList, DefaultNumber, Ticket, SupportFile, AdminNotification
 from homepage.forms import BankForm, UserCreateForm, UserUpdateForm, ServiceForm, ClientForm, TestomonialForm, CompanyInformationForm, BlogForm, CategoryForm, SubCategoryForm
 
 from .forms import DefaultForm, EmailSettingForm, SMSSettingForm, LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, BrandForm, FootorForm, SocialForm, PolicyForm, TermForm, EmailListForm, SMSListForm
@@ -24,7 +24,15 @@ from .forms import DefaultForm, EmailSettingForm, SMSSettingForm, LoginInterface
 
 # Create your views here.
 
+def notification():
+   noti = AdminNotification.objects.filter(seen= False)
+   count = noti.count()
 
+   li = {
+       'noti':noti,
+       'noti_count':count
+   }
+   return li
 
 
 
@@ -304,7 +312,7 @@ def deleteBlog(request, id):
 
 
 def ticketList(request):
-    ticket = Ticket.objects.all()
+    ticket = Ticket.objects.all().order_by('-id')
     check = None
     for i in ticket:
         check = i.id
@@ -383,6 +391,9 @@ class Dashboard(View):
         }
 
         dist.update(public)
+        noti = notification()
+        print(noti)
+        dist.update(noti)
         
         return render(request, self.template_name, dist)
     

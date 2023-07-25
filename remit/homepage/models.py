@@ -549,11 +549,42 @@ class TicketReply(models.Model):
     def __str__(self):
         return self.ticket.subject
     
+class AdminNotification(models.Model):
+    name = models.CharField(max_length=300)
+    customer = models.ForeignKey(Customer, related_name='customer_admin_notification', on_delete=models.CASCADE) 
+    types = models.CharField(max_length=200, choices=(
+        ('transaction','transaction'),
+        ('kyc', 'kyc'),
+        ('user', 'user'),
+        ('ticket', 'ticket'),
+    ), null = True, blank = True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    ids = models.IntegerField(null = True, blank=True)
+    seen = models.BooleanField(default=False)
+    def __str__(self):
+        return self.name
+
+class CustomerNotification(models.Model):
+    customer = models.ForeignKey(Customer, related_name='customer_notification', on_delete=models.CASCADE)
+    name = models.CharField(max_length=300)
+    types = models.CharField(max_length=200, choices=(
+        ('transaction','transaction'),
+        ('kyc', 'kyc'),
+        ('ticket', 'ticket'),
+    ), null = True, blank = True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    ids = models.IntegerField(null = True, blank=True)
+    seen = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+    
 class SupportFile(models.Model):
     file = models.FileField(upload_to='support_file/')
     support = models.ForeignKey(Ticket, related_name='customer_support', on_delete=models.CASCADE)
 
-
+    def __str__(self):
+        return self.support.subject
     
 
 @receiver(post_save, sender=CustomUser)

@@ -9,8 +9,8 @@ from homepage.forms import PasswordChangeFormUpdate, CustomerForm, TicketForm
 from django.http import JsonResponse
 from homepage.forms import TransactionForm, BankForm, ReplyForm
 from django.core import serializers
-
-
+from homepage.models import CustomerNotification, Ticket, AdminNotification
+    
 
 def ticketView(request):
 
@@ -25,9 +25,11 @@ def ticketView(request):
             aa.customer = request.user.customer
             aa.status = 'pending'
             aa.save()
+            # CustomerNotification.objects.create(customer = request.user.customer, name =aa.subject, types ="ticket", ids=aa.id)
+            AdminNotification.objects.create(name ="Created a ticket: "+ aa.subject, types ="ticket", ids=aa.id)
             images = request.FILES.getlist("file[]")
             for img in images:
-                image = SupportFile(file=img, customer = request.user.customer)
+                image = SupportFile(file=img, support = aa)
                 image.save()
             messages.success(request, "Successfully created ticket")
             return HttpResponseRedirect(reverse('customer:ticketList'))
@@ -38,7 +40,7 @@ def ticketView(request):
     return render(request, "customer/ticket.html", dist)
 
 def ticketList(request):
-    ticket = Ticket.objects.filter(customer = request.user.customer)
+    ticket = Ticket.objects.filter(customer = request.user.customer).order_by('-id')
     check = None
     for i in ticket:
         check = i.id
@@ -57,6 +59,7 @@ def ticketList(request):
             aa.replied_by = request.user
             aa.save()
             images = request.FILES.getlist("file[]")
+            AdminNotification.objects.create(customer =request.user.customer, name ='Replied to ticket: ' +aa.ticket.subject, types ="ticket", ids=aa.ticket.id)
             for img in images:
                 image = SupportFile(file=img, customer = request.user.customer)
                 image.save()
@@ -270,7 +273,8 @@ def sendMoney(request):
             aa = form.save(commit= False)
             aa.customer = request.user.customer
             aa.save()
-            messages.success(request, "Successfully added Transaction.")
+            AdminNotification.objects.create(customer =request.user.customer, name ="Transanction Made" , types ="transaction", ids=aa.id)
+            messages.success(request, "Your transaction is added and is in pending. You will get notified afer your payment is made")
             return HttpResponseRedirect(reverse('customer:completePayment'))
     return render(request, "customer/sendMoney.html", dist)
 
@@ -341,6 +345,7 @@ def kycVerify(request):
             aa = form.save(commit=False)
             aa.customer = request.user.customer
             aa.save()
+            AdminNotification.objects.create(customer =request.user.customer, name ="Applied for kyc verification" , types ="kyc", ids=aa.id)
             messages.success(request, "Successfully sent for verification")
             return HttpResponseRedirect(reverse('customer:verify'))
         else:

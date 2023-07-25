@@ -161,6 +161,7 @@
 
 
 .text-primary{
+    /* color: #f34079, imp !important; ; */
     color: #263159!important;
    
 }
@@ -694,8 +695,14 @@ a{
 
 .side-item i{
     color:#110c5e;    
+    /* color: #f34079;     */
 } 
-
+.notiall{
+    cursor: pointer;
+}
+.navbar-icon i{
+     cursor: pointer;
+}
 .side-item:hover{
     transition-duration: 400ms;
 }
@@ -1016,15 +1023,12 @@ z-index: 2; }
 
 .countryBox{
     background-color: rgb(245, 245, 245);
-    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
     cursor: pointer;
 }
 
 .blog-box{
     background-color: rgb(245, 245, 245);
-    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
     cursor: pointer;
-    height: 330px;
     border-radius: 5px;
     overflow: hidden;
     position: relative;

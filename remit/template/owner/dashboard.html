@@ -223,9 +223,89 @@
          <i class="fa fa-magnifying-glass my-auto p-2"></i>
          <input type="text" name="email" class="form-control" id="searchBtn"  placeholder="Ex: Transaction, Customer, Agent, Currency and regions" required id="">
         </div>
-        <div class="my-auto">
-          <i class="far fa-bell p-2 menu-icon"></i>
+        <div class="my-auto navbar-icon">
+            <div class="dropdown d-inline">
+              <span class="" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="far fa-bell p-2 menu-icon" style="position: relative;">
+                  <span class="badge bg-danger" style="position: absolute; right: 3px;
+                  top: 25px;" >{{noti_count}}</span>
+              
+                </i>
+              
+              </span>
+              <ul class="dropdown-menu mt-3" aria-labelledby="dropdownMenuButton1">
+                <h5 class="head-para text-light text-dark">
+                  Notification List
+                </h5>
+                <hr>
+                
+                {% for i in noti %}
+                  <!-- {{i}} -->
+                  {% if i.types == 'ticket' %}
+                    <li>
+                      <a class="dropdown-item" href="{%url 'owner:ticketView'%}">
+                        <div class="d-flex ">
+                            <img class="my-auto" src="{%if i.customer.profil_pic%}{{i.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                            <div class="p-2">
+                              <p class="m-0">
+                                {{i.customer.admin.get_full_name}} {{i.name}}
+                              </p>
+                              <b>
+                                {{i.created_at}}
+                              </b>
+                                
+                            </div>
+                        </div>
+                      </a>          
+                    </li>
+                  {% endif %}
 
+                  {% if i.types == 'kyc' %}
+                    <li>
+                        <a class="dropdown-item" href="{%url 'owner:customerProfile' i.customer.admin.id%}">
+                          <div class="d-flex ">
+                              <img class="my-auto" src="{%if i.customer.profil_pic%}{{i.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                              <div class="p-2">
+                                <p class="m-0">
+                                  {{i.customer.admin.get_full_name}} {{i.name}}
+                                </p>
+                                <b>
+                                  {{i.created_at}}
+                                </b>
+                                  
+                              </div>
+                          </div>
+                        </a>          
+                    </li>
+                  {% endif %}
+
+                  {% if i.types == 'transaction' %}
+                  <li>
+                      <a class="dropdown-item" href="{%url 'owner:customerProfile' i.customer.admin.id%}">
+                        <div class="d-flex ">
+                            <img class="my-auto" src="{%if i.customer.profil_pic%}{{i.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                            <div class="p-2">
+                              <p class="m-0">
+                                {{i.customer.admin.get_full_name}} {{i.name}}
+                              </p>
+                              <b>
+                                {{i.created_at}}
+                              </b>
+                                
+                            </div>
+                        </div>
+                      </a>          
+                  </li>
+                {% endif %}
+                 
+                {% endfor %}
+                <hr>
+                <p class="text-center" id="notiall">
+                  <i class="fa fa-inbox"></i>  View All Notification
+                </p>
+              </ul>
+            </div>
+           
            <i class="fa fa-cog p-2 menu-icon"></i>
            
            <a href="{%url 'homepage:logout'%}">
