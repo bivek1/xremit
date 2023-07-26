@@ -29,4 +29,6 @@ class SEO(models.Model):
         return str(self.title)
     
 
+    
+
 

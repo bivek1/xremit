@@ -219,53 +219,44 @@ KYC Details {% endblock title %} {% block inside %}
                     </button> 
                 {%else%}
                 
-                        
-                    
-                    <button
-                    class="btn btn-sm btn-danger"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
-                    >
-                    <i class="fa fa-question"></i>
-                    Verify?
+                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Verify Account
+                </button>
 
-                    
-                    <div
-                    class="modal fade"
-                    id="exampleModal"
-                    tabindex="-1"
-                    aria-labelledby="exampleModalLabel"
-                    aria-hidden="true"
-                    >
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-body">
-                                    <div class="text-center">
-        
-                                    <div class="text-end mt-2">
-                                    <a href="{%url 'owner:reject' kycs.customer.id%}">
-                                        <button
-                                        type="button"
-                                        class="btn btn-secondary"
-                                        data-bs-dismiss="modal"
-                                        >
-                                        Reject Document
-                                        </button>
-                                    </a>
-                                    
-                                    <!-- Delete URL -->
-                                    <a href="{%url 'owner:verify' kycs.customer.id%}">
-                                        <button type="button" class="btn btn-danger">
-                                        <i class="fa fa-check-circle"></i> Verify
-                                        </button>
-                                    </a>
-                                </div>
-                                </div>
-                                </div>
+                <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                        
+                            <div class="modal-body">
+                                <h5>
+                                    Are you sure want to verify the account
+                                </h5>
+                                <p class="text-secondary">
+                                    Make sure the documents and the inforamtion are legit. 
+                                </p>
+                                <a href="{%url 'owner:reject' kycs.customer.id%}">
+                                    <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    data-bs-dismiss="modal"
+                                    >
+                                    <i class="fa fa-times-circle"></i> 
+                                    Reject Document
+                                    </button>
+                                </a>
+                                
+                                <!-- Delete URL -->
+                                <a href="{%url 'owner:verify' kycs.customer.id%}">
+                                    <button type="button" class="btn btn-danger">
+                                    <i class="fa fa-check-circle"></i> Verify Account
+                                    </button>
+                                </a>
                             </div>
                         </div>
                     </div>
-                    
+                </div>
+
+               
                 {% endif %}
             </div>
          

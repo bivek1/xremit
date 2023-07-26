@@ -2,7 +2,7 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from homepage.models import Product, Service,Client, Testomonial, Blog, SubCategory, Category, Customer, Agent, Transaction
-from homepage.models import CompanyInformation, BankAccount, Contact, Ticket, TicketReply
+from homepage.models import CompanyInformation, BankAccount, Contact, Ticket, TicketReply, Restriction
 from django import forms
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django.contrib.auth.forms import PasswordChangeForm
@@ -11,6 +11,19 @@ from django.contrib.auth import password_validation
 
 
 # Support Ticket
+
+class RestrictionForm(forms.ModelForm):
+    class Meta:
+        model = Restriction
+        fields = ('__all__')
+    
+        widgets= {
+            'minimum_amount': forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'Minumum Transfer Limit'}),
+            'maximum_amount': forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'Maximum Transfer Limit'}),
+            'daily_transfer_remit': forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'Daily Transfer Limit'}),
+            'maximum_cap_charge': forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'Maximum Cap Charge'}),
+        }
+
 class TicketForm(forms.ModelForm):
     class Meta:
         model = Ticket

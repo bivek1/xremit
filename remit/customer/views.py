@@ -320,7 +320,11 @@ def sendMoney(request):
         default = request.user.customer.customer_currency.currency
     except:
         default = Currency.objects.last()
-
+    asa = DefaultCurrencyAdmin.objects.all()
+    if asa:
+        for i in asa:
+            asa = i
+            break
     dist = {
         'recp':Recipient.objects.filter(customer__admin = request.user),
         'currency':Currency.objects.all().exclude(id = default.id),

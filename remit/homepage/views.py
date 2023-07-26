@@ -21,7 +21,7 @@ from django.core.mail import send_mail
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
 from .forms import ContactForm
-from homepage.models import Currency,SocialLink, Country
+from homepage.models import Currency,SocialLink, Country, DefaultCurrencyAdmin
 # Create your views here.
 
 
@@ -112,7 +112,13 @@ def Homepage(request):
     client = Client.objects.all().order_by('-id')[:5]
 
     brand = Brand.objects.all().order_by('-id')[:4]
-    
+    asa = DefaultCurrencyAdmin.objects.all()
+    if asa:
+        for i in asa:
+            asa = i
+            break
+
+   
     dist = {
         'choose':choose,
         'about':about,
@@ -131,6 +137,7 @@ def Homepage(request):
         'first_fo':Footor.objects.filter(row='First'),
         'second_fo':Footor.objects.filter(row='Second'),
         'third_fo':Footor.objects.filter(row='Third'),
+        'default_currency':asa
     }
 
     return render(request, template_name, dist)

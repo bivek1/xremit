@@ -34,6 +34,14 @@ urlpatterns = [
     path('updateTerms', views.updateTerms, name ="updateTerms"),
     path('updatePolicy', views.updatePolicy, name ="updatePolicy"),
 
+
+    # Sending Purpose and Souce Fund
+    path('sending-purpose-setting', views.purposeView, name = "purpose"),
+    path('source-fund-setting', views.fundView, name = "fund"),
+    path('editPurpose/<int:id>', views.editPurpose, name ="editPurpose"),
+    path('delete-purpose/<int:id>', views.deletePurpose, name = "deletePurpose"),
+    path('editSourceFund/<int:id>', views.editFund, name ="editFund"),
+    path('delete-source-fund/<int:id>', views.deleteFund, name = "deleteFund"),
     # Futher Site Settings
 
     path('owner-brand', views.AddBrand.as_view(), name="addBrand"),
@@ -97,8 +105,12 @@ urlpatterns = [
     path(
         'owner-bank-information', views.bankView, name ="bank"
     ),
+    path(
+        'owner-edit-bank-information/<int:id>', views.editBank, name ="editBank"
+    ),
+    path('owner-deleteBank/<int:id>', views.deleteBank, name ="deleteBank"),
     path('filter-bank-account', views.filterBank, name ="filterBank"),
-
+    path('addRestriction/<int:id>', views.addRestriction, name = "addRestriction"),
     # Email and SMS Settings
     path('email-setting', views.emailSetting, name = "emailSetting"),
     path('addEmailSetting/<int:id>', views.addEmailSetting, name = "addEmailSetting"),
@@ -119,7 +131,7 @@ urlpatterns = [
     path('delete-blog/<int:id>', views.deleteBlog, name ="deleteBlog"),
     path('ticket-list', views.ticketList, name ="ticketView"),
     path('closeTicket/<int:id>', views.closeTicket, name ="closeTicket"),
-    path('closeTicket/<int:id>', views.closeTicket, name ="closeTicket"),
+    # path('closeTicket/<int:id>', views.closeTicket, name ="closeTicket"),
     path('seen-notification', views.seenNotification, name="seenNotification"),
     path('all-notification', views.allNotification, name="allNotification"),
     path('transaction-owner-alllist', views.transactionView, name = "transaction"),

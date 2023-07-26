@@ -2,12 +2,12 @@
 from django.shortcuts import render
 from django.views.generic import View, UpdateView
 from homepage.models import Feature, Service, Client, Testomonial, Footor, Brand, AboutUs, ChooseUs, HomeService
-from homepage.models import CompanyInformation, CustomUser
+from homepage.models import CompanyInformation, CustomUser, SendingPurpose, SourceFund
 from django.urls import reverse
 from django.http.response import HttpResponseRedirect
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
-from homepage.models import Blog, Customer, Agent, Owner, LoginInterface, signupInterface, Policy, Terms, SocialLink
+from homepage.models import Blog, Customer, Restriction, Agent, Owner, LoginInterface, signupInterface, Policy, Terms, SocialLink
 
 from homepage.models import Country, Currency, Recipient, PickupPoint, KYC, Transaction, BankAccount
 from .models import SiteSetting, SEO
@@ -17,9 +17,9 @@ from homepage.forms import CustomerForm, AgentForm, PasswordChangeFormUpdate, Re
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse, reverse_lazy
 from homepage.models import  DefaultCurrencyAdmin, EmailSetting, SMSSetting, EmailList, SMSList, DefaultNumber, Ticket, SupportFile, AdminNotification, CustomerNotification
-from homepage.forms import BankForm, UserCreateForm, UserUpdateForm, ServiceForm, ClientForm, TestomonialForm, CompanyInformationForm, BlogForm, CategoryForm, SubCategoryForm
+from homepage.forms import BankForm, RestrictionForm, UserCreateForm, UserUpdateForm, ServiceForm, ClientForm, TestomonialForm, CompanyInformationForm, BlogForm, CategoryForm, SubCategoryForm
 
-from .forms import DefaultForm, EmailSettingForm, SMSSettingForm, LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, BrandForm, FootorForm, SocialForm, PolicyForm, TermForm, EmailListForm, SMSListForm
+from .forms import PurposeForm, FundForm, DefaultForm, EmailSettingForm, SMSSettingForm, LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, BrandForm, FootorForm, SocialForm, PolicyForm, TermForm, EmailListForm, SMSListForm
 from django.http import JsonResponse
 
 # Create your views here.
@@ -159,7 +159,7 @@ def emailSetting(request):
     dist = {
         'form': form,
         'email':email,
-        'all_email':EmailList.objects.all(),
+        'all_email':EmailList.objects.all().order_by('-id'),
         'customer':Customer.objects.all().order_by('-id'),
         'agent':Agent.objects.all().order_by('-id'),
         'recipient': Recipient.objects.all().order_by('-id'),
@@ -217,7 +217,7 @@ def smsSetting(request):
     dist = {
         'form': form,
         'email':email,
-        'all_email':SMSList.objects.all(),
+        'all_email':SMSList.objects.all().order_by('-id'),
         'customer':Customer.objects.all().order_by('-id'),
         'agent':Agent.objects.all().order_by('-id'),
         'recipient': Recipient.objects.all().order_by('-id'),
@@ -320,6 +320,39 @@ def bankView(request):
     return render(request, "owner/bank.html", dist)
 
 
+
+def editBank(request, id):
+    
+    rec = BankAccount.objects.get(id = id)
+    form = BankForm(instance=rec)
+    recipient = Recipient.objects.filter(customer = rec.customer)
+    dist = {
+        'recipient':recipient,
+        'form':form,
+        'bank':rec
+    }
+    noti = notification()
+    dist.update(noti)
+    if request.method == 'POST':
+        form = BankForm(request.POST, instance=rec)
+        if form.is_valid():
+            sav = form.save(commit=False)
+            sav.customer = rec.customer
+            sav.save()
+            messages.success(request, "Successfully updated bank details")
+            return HttpResponseRedirect(reverse('owner:bank'))
+        else:
+            messages.error(request,"Something went wrong")
+        
+    return render(request, "owner/editBank.html", dist)
+
+
+def deleteBank(request, id):
+    bank = BankAccount.objects.get(id = id)
+    bank.delete()
+    messages.success(request, "Successfully Deleted Bank")
+    return HttpResponseRedirect(reverse('owner:bank'))
+
 def filterBank(request):
     idS = request.GET['customer']
     print(idS)
@@ -340,30 +373,6 @@ def filterBank(request):
     return render(request, "owner/bank.html", dist)
 
 
-def editBank(request, id):
-    
-    rec = BankAccount.objects.get(id = id)
-    form = BankForm(instance=rec)
-    recipient = Recipient.objects.filter(customer = request.user.customer)
-    dist = {
-        'recipient':recipient,
-        'form':form,
-        'bank':rec
-    }
-    noti = notification()
-    dist.update(noti)
-    if request.method == 'POST':
-        form = BankForm(request.POST, instance=rec)
-        if form.is_valid():
-            sav = form.save(commit=False)
-            sav.customer = request.user.customer
-            sav.save()
-            messages.success(request, "Successfully updated bank details")
-            return HttpResponseRedirect(reverse('owner:bank'))
-        else:
-            messages.error(request,"Something went wrong")
-        
-    return render(request, "owner/editBank.html", dist)
 
 def deleteBank(request, id):
     bank = BankAccount.objects.get(id = id)
@@ -487,10 +496,19 @@ def changeStatus(request, id):
 class Dashboard(View):
     template_name = "owner/dashboard.html"
     def get(self, request, *args, **kwargs, ):
+        restrict = Restriction.objects.all()
+        restrictForm = RestrictionForm()
+        if restrict:
+            for i in restrict:
+                restrict = i
+                restrictForm = RestrictionForm(instance=i)
+                break
         blog = Blog.objects.all()[:4]
 
         dist = {
+            'restrict':restrict,
             'blog':blog,
+            'form':restrictForm,
             'transaction': Transaction.objects.all().order_by('-id')[:5]
         }
         blog_count = Blog.objects.all().count()
@@ -516,6 +534,28 @@ class Dashboard(View):
         
         return render(request, self.template_name, dist)
     
+
+def addRestriction(request, id):
+    if id == 0:
+        form = RestrictionForm(request.POST)
+    else:
+        instance = Restriction.objects.get(id = id)
+        form = RestrictionForm(request.POST, instance=instance)
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Successfully updated restriction settings")
+        return HttpResponseRedirect(reverse('owner:dashboard'))
+    else:
+        
+        dist = {
+            'form': form
+        }
+
+        noti = notification()
+        dist.update(noti)
+
+        messages.error(request, "Something went wrong")
+        return HttpResponseRedirect(reverse('owner:dashboard'))    
 
 # Add Customer
 class CustomerView(View):
@@ -694,7 +734,7 @@ def agentProfile(request, id):
             real_customer.agent.state = request.POST['state']
             real_customer.agent.zip_code = request.POST['zip_code']
             real_customer.agent.city = request.POST['city']
-            real_customer.agent.country= request.POST['country']
+            real_customer.agent.country= Country.objects.get(id = request.POST['country']) 
             real_customer.agent.address = request.POST['address']
             real_customer.agent.save()
             form.save()
@@ -1653,3 +1693,82 @@ def rejectView(request, id):
     
     return HttpResponseRedirect(reverse('owner:kyc'))
 
+
+
+# Sending Purpose and Source Fund Setting
+
+def purposeView(request):
+    purpose = SendingPurpose.objects.all().order_by('-id')
+    form = PurposeForm()
+    dist = {
+        'purpose':purpose,
+        'form': form
+    }
+    noti = notification()
+    dist.update(noti)
+    if request.method == 'POST':
+        form = PurposeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Successfully Added new sending purpose")
+            return HttpResponseRedirect(reverse('owner:purpose'))
+        else:
+            dist.update({'form':form})
+            messages.error(request,"something went wrong")
+
+    return render(request, "owner/payment/sendingPurpose.html", dist)
+
+
+def editPurpose(request, id):
+    footer = SendingPurpose.objects.get(id = id)
+    footer.name = request.POST['footer_name']
+
+    footer.save()
+    messages.success(request, "Successfully Edit Footer")
+    return HttpResponseRedirect(reverse('owner:purpose'))
+
+
+def deletePurpose(request, id):
+    footer = SendingPurpose.objects.get(id = id)
+    footer.delete()
+    messages.success(request, "Successfully deleted Sending Purpose")
+    return HttpResponseRedirect(reverse('owner:purpose'))
+
+
+
+def fundView(request):
+    footer = SourceFund.objects.all().order_by('-id')
+    form = FundForm()
+    dist = {
+        'fund':footer,
+        'form': form
+    }
+    noti = notification()
+    dist.update(noti)
+    if request.method == 'POST':
+        form = FundForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Successfully Added new source fund")
+            return HttpResponseRedirect(reverse('owner:fund'))
+        else:
+            dist.update({'form':form})
+            messages.error(request,"something went wrong")
+    return render(request, "owner/payment/fund.html", dist)
+
+
+
+def editFund(request, id):
+    footer = Footor.objects.get(id = id)
+    footer.name = request.POST['fund_name']
+   
+    footer.save()
+    messages.success(request, "Successfully Edit Source Fund")
+    return HttpResponseRedirect(reverse('owner:fund'))
+
+
+def deleteFund(request, id):
+    footer = SourceFund.objects.get(id = id)
+    footer.delete()
+    messages.success(request, "Successfully deleted Fund")
+    return HttpResponseRedirect(reverse('owner:fund'))

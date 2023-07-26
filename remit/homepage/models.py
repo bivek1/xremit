@@ -112,6 +112,15 @@ class SourceFund(models.Model):
     def __str__(self):
         return self.name
 
+class Restriction(models.Model):
+    minimum_amount = models.IntegerField()
+    maximum_amount = models.IntegerField()
+    daily_transfer_remit = models.IntegerField()
+    maximum_cap_charge = models.IntegerField()
+
+    def __str__(self):
+        return str(self.maximum_amount)
+    
 class EmailSetting(models.Model):
     email_host = models.CharField(max_length=200)
     email_port = models.IntegerField()
@@ -257,6 +266,16 @@ class BankAccount(models.Model):
 
     def __str__(self):
         return self.recipient.first_name
+    
+class AdminBankAccount(models.Model):
+    account_name = models.CharField(max_length=300)
+    account_number = models.CharField(max_length=500)
+    bank_name = models.CharField(max_length=200)
+    country = models.ForeignKey(Country, related_name='admin_country_bank', on_delete=models.CASCADE)
+    swift_code = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.recipient.first_name
 
 class Transaction(models.Model):
     customer = models.ForeignKey(Customer, related_name='customer_transaction', on_delete=models.CASCADE)
@@ -273,7 +292,8 @@ class Transaction(models.Model):
     status = models.CharField(max_length= 200, choices=(
         ('Pending', 'Pending'),
         ('Completed', 'Completed'),
-        ('Cancelled', 'Cancelled')
+        ('Cancelled', 'Cancelled'),
+        ('Rejected', 'Rejected')
     ), default='Pending')
     bank = models.ForeignKey(BankAccount, related_name='transaction_bank', null = True, blank= True, on_delete=models.DO_NOTHING)
     created_at = models.DateTimeField(auto_now_add= True)

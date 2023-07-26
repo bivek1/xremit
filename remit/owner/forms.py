@@ -4,7 +4,30 @@ from .models import SiteSetting, SEO
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 from homepage.models import Currency, Country, Recipient, PickupPoint, KYC, EmailSetting, SMSSetting, EmailList, SMSList, DefaultNumber
+from homepage.models import SendingPurpose, SourceFund
 
+
+
+
+# Sending purpose and fund setting
+class PurposeForm(forms.ModelForm):
+    class Meta:
+        model = SendingPurpose
+        fields = ('__all__')
+
+        widgets={
+            'name': forms.TextInput(attrs = {'class':'form-control mt-2', 'placeholder':'Name of the sending purpose..'})
+        }
+
+
+class FundForm(forms.ModelForm):
+    class Meta:
+        model = SourceFund
+        fields = ('__all__')
+
+        widgets={
+            'name': forms.TextInput(attrs = {'class':'form-control mt-2', 'placeholder':'Name of the source fund..'})
+        }
 
 
 # EMAIL AND SMS SETTINGS

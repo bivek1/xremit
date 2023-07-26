@@ -23,8 +23,11 @@
           xRemit
         </h3>
         <hr>
-        <a href="{%url 'owner:dashboard'%}">
-          <div class="mt-3 p-2  activedb side-item">
+        {%url 'owner:dashboard' as dashboardaa%}
+        <a href="{{dashboardaa}}">
+          <div class="mt-3 p-2  {% if request.path == dashboardaa %}
+          activedb
+{% endif %} side-item">
             <div class="text-center activedbs">
               <i class="fa fa-dashboard mt-2"></i>  
             </div>
@@ -36,8 +39,11 @@
           </div>
         </a>
        
-        <a href="{%url 'owner:agent'%}">
-          <div class="mt-2 p-2 side-item">
+        {%url 'owner:agent' as agentaa%}
+        <a href="{{agentaa}}">
+          <div class="mt-2 p-2 side-item {% if request.path == agentaa %}
+          activedb
+        {% endif %}">
             <div class="text-center">
               <i class="fa fa-users mt-2"></i>  
             </div>
@@ -46,9 +52,12 @@
             </span> 
           </div>
         </a>
-  
-        <a href="{%url 'owner:customer'%}">
-            <div class="mt-2 p-2 side-item">
+
+        {%url 'owner:customer' as customeraa%}
+        <a href="{{customeraa}}">
+            <div class="mt-2 p-2 side-item {% if request.path == customeraa %}
+            activedb
+        {% endif %}">
               <div class="text-center">
                 <i class="fa-solid fa-users-line mt-2"></i>  
               </div>
@@ -58,9 +67,11 @@
               </span>
             </div>
         </a>
-       
-        <a href="{%url 'owner:currency'%}">
-          <div class="mt-2 p-2 side-item">
+        {%url 'owner:currency' as currencyaa%}
+        <a href="{{currencyaa}}">
+          <div class="mt-2 p-2 side-item {% if request.path == currencyaa %}
+          activedb
+      {% endif %}">
             <div class="text-center">
               <i class="fa fa-money-bills mt-2"></i>   
             </div>
@@ -71,17 +82,19 @@
         </a>
        
         
-
-        <a href="{%url 'owner:site'%}">
-          <div class="mt-2 p-2 side-item">
-            <div class="text-center">
-              <i class="fa fa-cog mt-2"></i>  
-            </div>
-            <span class="ms-3 my-auto text-primary text-bold">
-              Site Settings
-            </span>
+      {%url 'owner:site' as siteaa%}
+      <a href="{{siteaa}}">
+        <div class="mt-2 p-2 side-item {% if request.path == siteaa %}
+          activedb
+        {% endif %}">
+          <div class="text-center">
+            <i class="fa fa-cog mt-2"></i>  
           </div>
-        </a>
+          <span class="ms-3 my-auto text-primary text-bold">
+            Site Settings
+          </span>
+        </div>
+      </a>
         {%url 'owner:profile' as profileaa%}
         <a href="{{profileaa}}">
             <div class="mt-2 p-2 side-item {% if request.path == profileaa %}
@@ -108,9 +121,11 @@
               </span>
             </div>
         </a>
-       
-        <a href="{%url 'owner:country'%}">
-          <div class="mt-2 p-2 side-item">
+        {%url 'owner:country' as countryaa%}
+        <a href="{{countryaa}}">
+          <div class="mt-2 p-2 side-item  {% if request.path == countryaa %}
+              activedb
+            {% endif %}">
             <div class="text-center">
               <i class="fa-solid fa-globe mt-2"></i>
             </div>
@@ -400,8 +415,6 @@
                 </div>
               </a>
              
-              
-      
               <a href="{%url 'owner:site'%}">
                 <div class="mt-2 p-2 side-item">
                   <div class="text-center">
@@ -568,12 +581,6 @@
 
         <div class="row m-0 mt-3">
          
-<!--    
-          <div class="topBox mt-3 p-2">
-            <h4 class="text-primary">Dashboard</h4>
-            <small>This is admin dashboard. You can mainpulate everything from this dashboard</small>
-          </div> -->
-     
           
           <div class="mt-3 m-0">
             <span class="breadcum">
@@ -583,7 +590,7 @@
           <div class="row">
             <div class="mt-3 col-12 ">
               <div>
-                  <div class="p-2">
+                  <div>
                     <a href="{%url 'owner:kyc'%}">
                       <div class="alert alert-light" id="kyc_rec">
                         <img src="{%static 'resources/verified.png'%}" alt="" height="30px;" width="30px;">
@@ -594,8 +601,131 @@
                     </a>
                      
                   </div>
+                  <div class="mt-2">
+                    <a class="p-2" href="{%url 'owner:purpose'%}">
+                        <button class="btn btn-primary">
+                          Sending Purpose
+                        </button>
+                    </a>
+                    <a class="p-2" href="{%url 'owner:fund'%}">
+                      <button class="btn btn-danger">
+                        Source Fund
+                      </button>
+                    </a>
+                    <a class="p-2" href="{%url 'owner:socialLink'%}">
+                      <button class="btn btn-secondary">
+                        Social Link
+                      </button>
+                    </a>
 
-                  <div class="d-flex justify-content-between">
+                    <a class="p-2" href="{%url 'owner:footer'%}">
+                      <button class="btn btn-info text-light">
+                        Footer
+                      </button>
+                    </a>
+
+                    <a class="p-2" href="{%url 'owner:blog'%}">
+                      <button class="btn btn-primary">
+                        Blog
+                      </button>
+                    </a>
+                    
+                    <a class="p-2" href="{%url 'owner:emailSetting'%}">
+                      <button class="btn btn-danger">
+                        Email
+                      </button>
+                    </a>
+
+                    <a class="p-2" href="{%url 'owner:smsSetting'%}">
+                      <button class="btn btn-info text-light">
+                        SMS
+                      </button>
+                    </a>
+                    <a class="p-2" href="{%url 'owner:ticketView'%}">
+                      <button class="btn btn-secondary text-light">
+                        Support
+                      </button>
+                    </a>
+                    <a class="p-2" href="{%url 'owner:siteInfo'%}">
+                      <button class="btn btn-danger text-light">
+                        Site Information
+                      </button>
+                    </a>
+                  </div>
+
+
+                  <div class="p-2 d-flex mt-3 justify-content-between" id="login-card">
+                    <div class="text-center">
+                        <button class="btn btn-success" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                            <i class="fa fa-uniregistry"></i>
+                            Restriction
+                        </button>
+                    </div>
+                    <div class="my-auto">
+                      Manage your transaction restriction
+                    </div>
+
+
+                    <!-- EMalil setting Model -->
+                    <div
+                      class="modal fade"
+                      id="exampleModal"
+                      tabindex="-1"
+                      aria-labelledby="exampleModalLabel"
+                      aria-hidden="true"
+                      >
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                  
+                                      <h5 class="text-center">
+                                          Update Restriction Setting
+                                      </h5>
+                                     
+                                      <hr>
+                                      <form action="{%if restrict%} {%url 'owner:addRestriction' restrict.id%} {%else%} {%url 'owner:addRestriction' 0%} {%endif%}" method="post">
+                                      
+                                        <p class="m-0 p-0 mt-2">
+                                              Minimum Amount To Transfer*
+                                          </p> 
+                                          {{form.minimum_amount}}
+                                          {{form.minimum_amount.errors}}
+                                      
+                                          <p class="m-0 p-0 mt-2">
+                                            Maximum Amount To Transfer*
+                                          </p> 
+                                          {{form.maximum_amount }}
+                                          {{form.maximum_amount.errors}}
+
+                                          <p class="m-0 p-0 mt-2">
+                                              Daily Transfer Limit*
+                                          </p> 
+                                          {{form.daily_transfer_remit}}
+                                          {{form.daily_transfer_remit.errors}}
+
+                                          <p class="m-0 p-0 mt-2">
+                                            Maximum Cap Charge*
+                                          </p> 
+                                          {{form.maximum_cap_charge}}
+                                          {{form.maximum_cap_charge.errors}}
+
+
+                                        
+                                          <br>
+                                          {% csrf_token %}
+                                          <button class="btn btn-primary mt-2" type="submit">
+                                              Update Settings
+                                          </button>
+                                      </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                  </div>
+                  <div class="d-flex justify-content-between mt-3">
                     <h5 class="m-0 p-2 text-primary">Recent Transactions</h5>
                     <button class="btn btn-primary">
                       See All

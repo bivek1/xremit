@@ -39,12 +39,7 @@
                         <li class="nav-item" role="presentation">
                           <p class="nav-link text-primary" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Edit</p>
                         </li>
-                        <li class="nav-item" role="presentation">
-                          <p class="nav-link text-primary" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab" aria-controls="messages" aria-selected="false">KYC</p>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                          <p class="nav-link text-primary" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Recipient</p>
-                        </li>
+                      
                         <li class="nav-item" role="presentation">
                             <p class="nav-link text-primary" id="transaction-tab" data-bs-toggle="tab" data-bs-target="#transaction" type="button" role="tab" aria-controls="transaction" aria-selected="false">Transaction</p>
                         </li>
@@ -175,102 +170,8 @@
                             </div>
                         
                         </div>
-                        <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
-                            <div class="m-0 p-0">
-                                <div class="p-2" id="login-card">
-                                    <div class="d-flex justify-content-between">
-                                        <h5>KYC DATA</h5>
-                                        {% if real_customer.agent.kyc_verified %}
-                                            <button class="btn btn-success">
-                                                <i class="fa fa-check-circle"></i>
-                                                Verified
-                                            </button> 
-                                        {%else%}
-                                            <a href="{%url 'owner:verify' real_customer.id%}">
-                                                <button class="btn btn-danger">
-                                                    <i class="fa fa-question"></i>
-                                                   Verify?
-                                                </button>
-                                            </a>
-                                        {% endif %}
-                                    </div>
-                                    <div>
-                                        <table class="table table-success table-striped mt-3">
-                                            <thead>
-                                              <tr>
-                                                <th scope="col">First Name</th>
-                                                <th scope="col">Last Name</th>
-                                                <th scope="col">Middle Name</th>
-                                                <th scope="col">Gender</th>
-                                                <th scope="col">Country</th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                              <tr>
-                                                <th scope="row"> {{real_customer.first_name}}</th>
-                                                <td>{{real_customer.last_name}}</td>
-                                                <td>{{real_customer.middle_name}}</td>
-                                                <td> {{cm.gender}}</td>
-                                                <td> {{cm.country}}</td>
-                                              </tr>
-                                            </tbody>
-                                        </table>
-
-                                        <table class="table table-info table-striped mt-3">
-                                            <thead>
-                                              <tr>
-                                                <th scope="col">Number</th>
-                                                <th scope="col">Address</th>
-                                                <th scope="col">State</th>
-                                                <th scope="col">Zip code</th>
-                                                <th scope="col">City</th>
-                                              </tr>
-                                            </thead>
-                                            <tbody>
-                                              <tr>
-                                                <th scope="row"> {{cm.number}}</th>
-                                                <td>{{cm.address }}</td>
-                                                <td>{{cm.state}}</td>
-                                                <td> {{cm.zip_code}}</td>
-                                                <td> {{cm.city}}</td>
-                                              </tr>
-                                            </tbody>
-                                        </table>
-                                        <div class="alert alert-danger">
-                                            <i class="fa fa-info-circle"></i> 
-                                            Has Uploaded:
-                                            {{cm.document_type}}
-                                        </div>
-                                        <div class="d-flex">
-                                            <div>
-                                                <h5>
-                                                    Document Front Image
-                                                </h5>
-                                                <img src="{{cm.document_front_image.url}}" alt="" style="width: 100%; height: auto;">
-                                            </div>
-                                            <div>
-                                                <h5>
-                                                    Document Back Image
-                                                </h5>
-                                                
-                                                {% if cm.document_back_image %}
-                                                    <img src="{{cm.document_back_image.url}}" alt="" style="width: 100%; height: auto;">
-                                                {%else%}
-                                                    <small>Not Available</small>
-                                                {% endif %}
-                                                    
-                                                
-                                            </div>
-                                        </div>
-                                      
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-                                Settings
-                         
-                        </div>
+                      
+                       
                         <div  class="tab-pane" id="transaction" role="tabpanel" aria-labelledby="transaction-tab">
                         
                             Transaction
