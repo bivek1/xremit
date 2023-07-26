@@ -51,6 +51,12 @@ Transaction Details {% endblock title %} {% block inside %}
                             Completed
                         </p>
                     {% endif %}
+                    {% if trans.status == 'Rejected' %}
+                    <p class="text-danger p-0 m-0">
+                        <i class="fa fa-circle-dot"></i>
+                        Rejected
+                    </p>
+                    {% endif %}
                 </div>
 
                 <form class="mt-3" action="{%url 'owner:changeStatus' trans.id%}" method="post">
@@ -60,6 +66,7 @@ Transaction Details {% endblock title %} {% block inside %}
                     <option value="Completed"> Completed </option>
                     <option value="Pending"> Pending </option>
                     <option value="Cancelled"> Cancelled </option>
+                    <option value="Rejected"> Rejected </option>
                     </select>
                     {% csrf_token %}
                     <button class="btn btn-primary mt-3 w-100">
@@ -236,6 +243,12 @@ Transaction Details {% endblock title %} {% block inside %}
                                         <i class="fa fa-circle-dot"></i>
                                         Completed
                                     </p>
+                                {% endif %}
+                                {% if trans.status == 'Rejected' %}
+                                <p class="text-danger p-0 m-0">
+                                    <i class="fa fa-circle-dot"></i>
+                                    Rejected
+                                </p>
                                 {% endif %}
         
                                 <small class="text-secondary" style="font-size: 12px;">

@@ -51,6 +51,12 @@
                                     Completed
                                 </p>
                             {% endif %}
+                            {% if i.status == 'Rejected' %}
+                            <p class="text-danger p-0 m-0">
+                                <i class="fa fa-circle-dot"></i>
+                                Rejected
+                            </p>
+                            {% endif %}
                                 
                             
                             <small class="text-secondary" style="font-size: 12px;">

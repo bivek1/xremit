@@ -275,7 +275,7 @@ class AdminBankAccount(models.Model):
     swift_code = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.recipient.first_name
+        return self.account_name
 
 class Transaction(models.Model):
     customer = models.ForeignKey(Customer, related_name='customer_transaction', on_delete=models.CASCADE)

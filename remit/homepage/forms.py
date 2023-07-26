@@ -1,7 +1,7 @@
 
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
-from homepage.models import Product, Service,Client, Testomonial, Blog, SubCategory, Category, Customer, Agent, Transaction
+from homepage.models import AdminBankAccount, Product, Service,Client, Testomonial, Blog, SubCategory, Category, Customer, Agent, Transaction
 from homepage.models import CompanyInformation, BankAccount, Contact, Ticket, TicketReply, Restriction
 from django import forms
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
@@ -10,7 +10,23 @@ from django.contrib.auth import password_validation
 
 
 
+# Admin Bank Account Form
+class AdminBankForm(forms.ModelForm):
+    
+    class Meta:
+        model = AdminBankAccount
+        fields = ('__all__')
+
+        widgets= {
+            'account_name': forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Adam Smith'}),
+            'account_number': forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'02264871564112121BA'}),
+            'bank_name': forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Australian High Com Bank'}),
+            'country': forms.Select(attrs={'class':'form-control mt-2','placeholder':'Australia'}),
+            'swift_code': forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'AHCB21S'}),
+        }
+
 # Support Ticket
+
 
 class RestrictionForm(forms.ModelForm):
     class Meta:

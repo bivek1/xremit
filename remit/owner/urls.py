@@ -139,4 +139,7 @@ urlpatterns = [
     path('KYC-VERIFICATION-DETAILS/KYCVERIFIEDMETHOD-121/<int:id>', views.kycVerification, name="kycVerification"),
     path('search-owner-data/', views.search, name='search'),
     path('default-currency/', views.defaultCurrency, name='default'),
+
+    path('edit-admin-bank-account/<int:id>', views.editAdminBank, name="editAdminBank"),
+    path('delete-admin-bank-account/<int:id>', views.deleteAdminBank, name="deleteAdminBank"),
 ]   

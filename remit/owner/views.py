@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.http.response import HttpResponseRedirect
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
-from homepage.models import Blog, Customer, Restriction, Agent, Owner, LoginInterface, signupInterface, Policy, Terms, SocialLink
+from homepage.models import Blog, AdminBankAccount, Customer, Restriction, Agent, Owner, LoginInterface, signupInterface, Policy, Terms, SocialLink
 
 from homepage.models import Country, Currency, Recipient, PickupPoint, KYC, Transaction, BankAccount
 from .models import SiteSetting, SEO
@@ -17,13 +17,42 @@ from homepage.forms import CustomerForm, AgentForm, PasswordChangeFormUpdate, Re
 from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse, reverse_lazy
 from homepage.models import  DefaultCurrencyAdmin, EmailSetting, SMSSetting, EmailList, SMSList, DefaultNumber, Ticket, SupportFile, AdminNotification, CustomerNotification
-from homepage.forms import BankForm, RestrictionForm, UserCreateForm, UserUpdateForm, ServiceForm, ClientForm, TestomonialForm, CompanyInformationForm, BlogForm, CategoryForm, SubCategoryForm
+from homepage.forms import AdminBankForm, BankForm, RestrictionForm, UserCreateForm, UserUpdateForm, ServiceForm, ClientForm, TestomonialForm, CompanyInformationForm, BlogForm, CategoryForm, SubCategoryForm
 
 from .forms import PurposeForm, FundForm, DefaultForm, EmailSettingForm, SMSSettingForm, LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, BrandForm, FootorForm, SocialForm, PolicyForm, TermForm, EmailListForm, SMSListForm
 from django.http import JsonResponse
 
 # Create your views here.
 
+
+def deleteAdminBank(request, id):
+    bank = AdminBankAccount.objects.get(id = id)
+    bank.delete()
+    messages.success(request, "Successfully Deleted Bank")
+    return HttpResponseRedirect(reverse('owner:bank'))
+
+
+def editAdminBank(request, id):
+    
+    rec = AdminBankAccount.objects.get(id = id)
+    form = AdminBankForm(instance=rec)
+   
+    dist = {
+        'form':form,
+        'bank':rec
+    }
+    noti = notification()
+    dist.update(noti)
+    if request.method == 'POST':
+        form = AdminBankForm(request.POST, instance=rec)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Successfully updated bank details")
+            return HttpResponseRedirect(reverse('owner:bank'))
+        else:
+            messages.error(request,"Something went wrong")
+        
+    return render(request, "owner/editAdminBank.html", dist)
 
 def defaultCurrency(request):
    
@@ -294,29 +323,28 @@ def bannedSetting(request):
 def bankView(request):
     bank = BankAccount.objects.all().order_by('-id')
     total_bank = bank.count()
-    form = BankForm()
+    form = AdminBankForm()
     customer = Customer.objects.all().order_by('-id')
+    Adminbank = AdminBankAccount.objects.all().order_by('-id')
     dist = {
         'bank':bank,
         'form':form,
         'customer':customer,
         'total_bank':total_bank,
-        'recipient':Recipient.objects.all()
+        'Adminbank':Adminbank,
     }
     noti = notification()
     dist.update(noti)
-    # if request.method == 'POST':
-    #     form = BankForm(request.POST)
-
-    #     if form.is_valid():
-    #         recp = request.POST['recipient']
-    #         aa = form.save(commit= False)
-    #         aa.recipient = Recipient.objects.get(id = recp)
-    #         aa.save()
-    #         messages.success(request, "Successfully Added Bank Account")
-    #         return HttpResponseRedirect(reverse('owner:bank'))
-    #     else:
-    #         messages.error(request, "Something went wrong")
+    if request.method == 'POST':
+        form = AdminBankForm(request.POST)
+        if form.is_valid():
+            sav = form.save(commit=False)
+            sav.save()
+            messages.success(request, "Successfully add bank details")
+            return HttpResponseRedirect(reverse('owner:bank'))
+        else:
+            messages.error(request,"Something went wrong")
+  
     return render(request, "owner/bank.html", dist)
 
 
@@ -336,9 +364,9 @@ def editBank(request, id):
     if request.method == 'POST':
         form = BankForm(request.POST, instance=rec)
         if form.is_valid():
-            sav = form.save(commit=False)
-            sav.customer = rec.customer
-            sav.save()
+            form.save()
+          
+            # sav.save()
             messages.success(request, "Successfully updated bank details")
             return HttpResponseRedirect(reverse('owner:bank'))
         else:
@@ -358,12 +386,14 @@ def filterBank(request):
     print(idS)
     bank = BankAccount.objects.filter(customer_id = idS ).order_by('-id')
     total_bank = bank.count()
-    form = BankForm()
+    form = AdminBankForm()
     customer = Customer.objects.all().order_by('-id')
+    Adminbank = AdminBankAccount.objects.all().order_by('-id')
     dist = {
         'cust_id':idS,
         'bank':bank,
         'form':form,
+        'Adminbank':Adminbank,
         'customer':customer,
         'total_bank':total_bank,
         'recipient':Recipient.objects.all()

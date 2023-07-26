@@ -763,6 +763,12 @@
                                           Completed
                                       </p>
                                   {% endif %}
+                                  {% if i.status == 'Rejected' %}
+                                      <p class="text-danger p-0 m-0">
+                                          <i class="fa fa-circle-dot"></i>
+                                          Rejected
+                                      </p>
+                                  {% endif %}
                                       
                                   
                                   <small class="text-secondary" style="font-size: 12px;">
@@ -823,6 +829,7 @@
                                           <option value="Completed"> Completed </option>
                                           <option value="Pending"> Pending </option>
                                           <option value="Cancelled"> Cancelled </option>
+                                          <option value="Rejected"> Rejected </option>
                                         </select>
                                         {% csrf_token %}
                                         <button class="btn btn-primary mt-3 w-100">
