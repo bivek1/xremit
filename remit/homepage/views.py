@@ -23,7 +23,8 @@ from django.http import HttpResponse
 from .forms import ContactForm
 from homepage.models import Currency,SocialLink, Country, DefaultCurrencyAdmin
 # Create your views here.
-
+from .location import get_user_country
+from owner.models import BlockPlace
 
 
 # Password Reset form
@@ -170,6 +171,13 @@ def LoginV(request):
             messages.error(request, "Incorrect Username and Password")
             return render(request, tempate_name)
     else:
+        blok = get_user_country()
+    
+        blockPlac = BlockPlace.objects.filter(block_status = True)
+        for i in blockPlac:
+            if i.block == "Country":
+                if blok['country'] == i.name or blok['region'] == i.name or blok['city'] == i.name :
+                    return render(request, 'homepage/blocked.html')
         return render(request, tempate_name)
     
 
@@ -200,6 +208,13 @@ def Register(request):
             messages.error(request, "Incorrect Username and Password")
             return render(request, tempate_name, dist)
     else:
+        blok = get_user_country()
+    
+        blockPlac = BlockPlace.objects.filter(block_status = True)
+        for i in blockPlac:
+            if i.block == "Country":
+                if blok['country'] == i.name or blok['region'] == i.name or blok['city'] == i.name :
+                    return render(request, 'homepage/blocked.html')
         return render(request, tempate_name, dist)
     
 def LogoutV(request):

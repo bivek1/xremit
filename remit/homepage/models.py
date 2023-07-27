@@ -34,7 +34,6 @@ class Owner(models.Model):
 class Country(models.Model):
     name = models.CharField(max_length=200)
     flag_img = models.ImageField(upload_to ="flag/", null = True, blank = True)
-    allowed = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add= True)
     updated_at = models.DateTimeField(auto_now=True)
 

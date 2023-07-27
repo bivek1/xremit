@@ -5,7 +5,18 @@ from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
 from homepage.models import Currency, Country, Recipient, PickupPoint, KYC, EmailSetting, SMSSetting, EmailList, SMSList, DefaultNumber
 from homepage.models import SendingPurpose, SourceFund
+from .models import BlockPlace
 
+# Block Place Form
+class BlockForm(forms.ModelForm):
+    class Meta:
+        model = BlockPlace
+        fields = ('__all__')
+
+        widgets={
+            'name': forms.TextInput(attrs = {'class':'form-control mt-2', 'placeholder':'Name of the place..'}),
+            'block':forms.Select(attrs = {'class':'form-control mt-2'})
+        }
 
 
 

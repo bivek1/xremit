@@ -10,7 +10,7 @@ from django.contrib import messages
 from homepage.models import Blog, AdminBankAccount, Customer, Restriction, Agent, Owner, LoginInterface, signupInterface, Policy, Terms, SocialLink
 
 from homepage.models import Country, Currency, Recipient, PickupPoint, KYC, Transaction, BankAccount
-from .models import SiteSetting, SEO
+from .models import SiteSetting, SEO, BlockPlace
 from .forms import SiteForm, SEOForm, FeatureForm, AboutForm, HomeServiceForm, ChooseForm, CountryForm, CurrencyForm, RecipientForm, PickupPointForm, KYCForm
 from homepage.forms import CustomerForm, AgentForm, PasswordChangeFormUpdate, ReplyForm, TicketForm
 
@@ -19,7 +19,7 @@ from django.urls import reverse, reverse_lazy
 from homepage.models import  DefaultCurrencyAdmin, EmailSetting, SMSSetting, EmailList, SMSList, DefaultNumber, Ticket, SupportFile, AdminNotification, CustomerNotification
 from homepage.forms import AdminBankForm, BankForm, RestrictionForm, UserCreateForm, UserUpdateForm, ServiceForm, ClientForm, TestomonialForm, CompanyInformationForm, BlogForm, CategoryForm, SubCategoryForm
 
-from .forms import PurposeForm, FundForm, DefaultForm, EmailSettingForm, SMSSettingForm, LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, BrandForm, FootorForm, SocialForm, PolicyForm, TermForm, EmailListForm, SMSListForm
+from .forms import BlockForm, PurposeForm, FundForm, DefaultForm, EmailSettingForm, SMSSettingForm, LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, BrandForm, FootorForm, SocialForm, PolicyForm, TermForm, EmailListForm, SMSListForm
 from django.http import JsonResponse
 
 # Create your views here.
@@ -1802,3 +1802,51 @@ def deleteFund(request, id):
     footer.delete()
     messages.success(request, "Successfully deleted Fund")
     return HttpResponseRedirect(reverse('owner:fund'))
+
+
+def blockPlaceView(request):
+    footer = BlockPlace.objects.all().order_by('-id')
+    print(footer)
+    form = BlockForm()
+    dist = {
+        'blocksw':footer,
+        'form': form
+    }
+    noti = notification()
+    dist.update(noti)
+    if request.method == 'POST':
+        form = BlockForm(request.POST)
+        if form.is_valid():
+            aa = form.save(commit=False)
+            aa.block_status = True
+            aa.save()
+            messages.success(request, "Successfully Blocked " + str(aa.block) )
+            return HttpResponseRedirect(reverse('owner:blockPlace'))
+        else:
+            dist.update({'form':form})
+            messages.error(request, "something went wrong")
+    return render(request, "owner/payment/restrict.html", dist)
+
+
+
+def editBlockPlace(request, id):
+    footer = BlockPlace.objects.get(id = id)
+    footer.block_status = False
+    footer.save()
+    messages.success(request, "Successfully Allowed " + str(footer.block))
+    return HttpResponseRedirect(reverse('owner:blockPlace'))
+
+
+def deleteBlockPlace(request, id):
+    footer = BlockPlace.objects.get(id = id)
+    aa = str(footer.block)
+    footer.delete()
+    messages.success(request, "Successfully deleted " +  aa)
+    return HttpResponseRedirect(reverse('owner:blockPlace'))
+
+def editBlockPlaceBlock(request, id):
+    footer = BlockPlace.objects.get(id = id)
+    footer.block_status = True
+    footer.save()
+    messages.success(request, "Successfully Blocked " +  str(footer.block))
+    return HttpResponseRedirect(reverse('owner:blockPlace'))

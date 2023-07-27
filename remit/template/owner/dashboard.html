@@ -725,12 +725,27 @@
 
 
                   </div>
-                  <div class="d-flex justify-content-between mt-3">
-                    <h5 class="m-0 p-2 text-primary">Recent Transactions</h5>
-                    <button class="btn btn-primary">
-                      See All
-                    </button>
+
+                  <div class="p-2 d-flex mt-3 justify-content-between" id="login-card">
+                      <a href="{%url 'owner:blockPlace'%}">
+                          <div class="text-center">
+                              <button class="btn btn-danger">
+                                  <i class="fa fa-ban"></i> Block Places
+                              </button>
+                          </div>
+                      </a>  
+                    
+                      <div class="my-auto">
+                        Disallow Country, Region and City
+                      </div>
                   </div>
+                  <div class="d-flex justify-content-between mt-3">
+                      <h5 class="m-0 p-2 text-primary">Recent Transactions</h5>
+                      <button class="btn btn-primary">
+                        See All
+                      </button>
+                  </div>
+                 
                  
 
                   {% for i in transaction %}

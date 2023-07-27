@@ -1,5 +1,22 @@
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
+
+
+class BlockPlace(models.Model):
+    name = models.CharField(max_length=200)
+    block = models.CharField(max_length=200, choices=(
+        ('Country','Country'),
+        ('Region', 'Region'),
+        ('City', 'City')
+    ))
+    block_status = models.BooleanField(default=False)
+
+
+    def __str__(self):
+        return self.name
+
+
+
 # Create your models here.
 class SiteSetting(models.Model):
     title = models.CharField(max_length=200)

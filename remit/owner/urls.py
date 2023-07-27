@@ -42,7 +42,18 @@ urlpatterns = [
     path('delete-purpose/<int:id>', views.deletePurpose, name = "deletePurpose"),
     path('editSourceFund/<int:id>', views.editFund, name ="editFund"),
     path('delete-source-fund/<int:id>', views.deleteFund, name = "deleteFund"),
+
+
+    # Block Country and Region
+    path('allow-block-place-setting', views.blockPlaceView, name = "blockPlace"),
+    path('blockPlace/<int:id>', views.editBlockPlace, name ="editBlockPlace"),
+    path('deleteblockPlace/<int:id>', views.deleteBlockPlace, name = "deleteBlockPlace"),
+    path('editBlockPlaceBlock/<int:id>', views.editBlockPlaceBlock, name = "editBlockPlaceBlock"),
+    
+
     # Futher Site Settings
+
+
 
     path('owner-brand', views.AddBrand.as_view(), name="addBrand"),
     path('<int:id>/deletebrand', views.deleteBrand, name="deleteBrand"),
