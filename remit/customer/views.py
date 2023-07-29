@@ -9,8 +9,8 @@ from homepage.forms import PasswordChangeFormUpdate, CustomerForm, TicketForm
 from django.http import JsonResponse
 from homepage.forms import TransactionForm, BankForm, ReplyForm
 from django.core import serializers
-from homepage.models import CustomerNotification, Ticket, AdminNotification
-    
+from homepage.models import CustomerNotification, Ticket, AdminNotification, SendingPurpose, SourceFund
+from homepage.location import get_user_country, get_country_name
 
 
 
@@ -40,26 +40,30 @@ def seenNotification(request):
 
    
 
-def notification():
-   noti = CustomerNotification.objects.filter(seen= False)
-   count = noti.count()
-
-   li = {
+def notification(request):
+    noti = CustomerNotification.objects.filter(customer = request.user.customer).filter(seen = False).order_by('-id')
+    count = noti.count()
+    try:
+       navbarstatus= request.session['navbar']
+    except:
+        navbarstatus= 'big'
+    li = {
        'noti':noti,
-       'noti_count':count
-   }
-   return li
+       'noti_count':count,
+       'navbarstatus':navbarstatus
+    }
+    return li
 
 
 def allNotification(request):
-    noti = CustomerNotification.objects.all().order_by('-id')
-    count = noti.count()
+    noti = CustomerNotification.objects.filter(customer = request.user.customer).order_by('-id')
+    count = noti.filter(seen=False).count()
 
     dist = {
-        'noti':noti,
+        'notis':noti,
         'noti_count':count
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     return render(request, "customer/notification.html", dist)
 
@@ -68,7 +72,7 @@ def ticketView(request):
     dist = {
         'form':TicketForm()
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = TicketForm(request.POST, request.FILES)
@@ -103,7 +107,7 @@ def ticketList(request):
         'check':check,
         'form':ReplyForm()
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = ReplyForm(request.POST, request.FILES)
@@ -128,7 +132,7 @@ def defaultCurrencyView(request):
     dist = {
         'currency':Currency.objects.all()
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == "POST":
         currency = Currency.objects.get(id = request.POST['currency']) 
@@ -155,7 +159,7 @@ def bankView(request):
         'form':form,
         'recipient':recipient
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = BankForm(request.POST)
@@ -184,7 +188,7 @@ def editBank(request, id):
         'form':form,
         'bank':rec
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = BankForm(request.POST, instance=rec)
@@ -235,13 +239,31 @@ def findBank(request):
         return JsonResponse(res, safe=False)  # Return the response as JSON
 
 
+def getBank(request):
+    # from django.forms.models import model_to_dict
+    if request.method == 'POST':
+        my_data = request.POST.get('id')  # Get the sent data
+        bank = BankAccount.objects.get(id = int(my_data))
+        rep = bank.recipient.first_name +" "+ bank.recipient.last_name
+        print(rep)
+        dist = {
+            'repName':str(rep),
+            'account_name':bank.account_name,
+            'account_number':bank.account_number,
+            'bank_name':bank.bank_name,
+            
+        }
+       
+    
+        return JsonResponse(dist)  # Return the response as JSON
+
 # Create your views here.
 def customerDashboard(request):
     dist = {
         'currency' : Currency.objects.all().order_by('-id')[:3],
         'transaction': Transaction.objects.filter(customer = request.user.customer)[:4]
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     return render(request, "customer/dashboard.html", dist)
 
@@ -251,7 +273,7 @@ def recipient(request):
     dist = {
         'recipient':recipient
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     return render(request, "customer/recipient.html", dist)
 
@@ -264,7 +286,7 @@ def addRecipient(request):
         'recipient':recipient,
         'form':form
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = RecipientForm(request.POST)
@@ -277,8 +299,8 @@ def addRecipient(request):
             return HttpResponseRedirect(reverse('customer:recipient'))
         else:
               
-            print(form.errors)
-            messages.error(request,"Something went wrong")
+            print(form.errors.as_text())
+            messages.error(request,"Something went wrong" + form.errors.as_text())
             
 
     return render(request, "customer/addRecipient.html", dist)
@@ -292,7 +314,7 @@ def editRecipient(request, id):
         'recipient':recipient,
         'form':form
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = RecipientForm(request.POST, instance=rec)
@@ -303,7 +325,7 @@ def editRecipient(request, id):
             messages.success(request, "Successfully updated recipient")
             return HttpResponseRedirect(reverse('customer:recipient'))
         else:
-            messages.error(request,"Something went wrong")
+            messages.error(request,"Something went wrong" + form.errors.as_text())
         
     return render(request, "customer/editRecipient.html", dist)
 
@@ -320,19 +342,17 @@ def sendMoney(request):
         default = request.user.customer.customer_currency.currency
     except:
         default = Currency.objects.last()
-    asa = DefaultCurrencyAdmin.objects.all()
-    if asa:
-        for i in asa:
-            asa = i
-            break
     dist = {
         'recp':Recipient.objects.filter(customer__admin = request.user),
-        'currency':Currency.objects.all().exclude(id = default.id),
+        'currency':Currency.objects.all(),
         'default':default,
         'form':TransactionForm(),
+        'bankform': BankForm(),
+        'purpose':SendingPurpose.objects.all(),
+        'fund':SourceFund.objects.all(),
         'customer':request.user.customer
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = TransactionForm(request.POST)
@@ -345,6 +365,8 @@ def sendMoney(request):
             return HttpResponseRedirect(reverse('customer:completePayment'))
     return render(request, "customer/sendMoney.html", dist)
 
+
+
 def completePayment(request):
     return render(request, "customer/complete.html")
 
@@ -354,7 +376,7 @@ def transactionView(request):
     dist = {
         'transaction':transaction
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     return render(request, "customer/transaction.html", dist)
 
@@ -364,7 +386,7 @@ def currency(request):
     dist ={
         'currency':currency
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     return render(request, "customer/currency.html", dist)
 
@@ -381,30 +403,38 @@ def kycVerify(request):
         form = KYCForm(instance=cm)
     else:
         form = KYCForm()
-
+    location = get_user_country()
+    country = get_country_name(location['country'])
     if request.user.customer.state:
         form.fields['state'].initial = request.user.customer.state
-
-    if request.user.customer.state:
+    else:
+        form.fields['state'].initial = location['region']
+    
+    if request.user.customer.city:
         form.fields['city'].initial = request.user.customer.city
+    else:
+        form.fields['city'].initial = location['city']
+    
+    # if request.user.customer.zip_code:
+    #     form.fields['zip_code'].initial = request.user.customer.zip_code
 
-    if request.user.customer.state:
-        form.fields['zip_code'].initial = request.user.customer.zip_code
-
-    if request.user.customer.state:
+    if request.user.customer.number:
         form.fields['number'].initial = request.user.customer.number
 
-    if request.user.customer.state:
+    if request.user.customer.address:
         form.fields['address'].initial = request.user.customer.address
-    
-    if request.user.customer.state:
-        form.fields['country'].initial = request.user.customer.country 
+    # else:
+    #     form.fields['address'].initial = location['region']
 
+    if request.user.customer.country:
+        form.fields['country'].initial = request.user.customer.country 
+    else:
+        form.fields['country'].initial = country
     dist = {
         'form':form,
         'cm':cm
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         if cm:
@@ -417,6 +447,15 @@ def kycVerify(request):
             aa = form.save(commit=False)
             aa.customer = request.user.customer
             aa.save()
+            uses = request.user.customer
+            if not uses.state:uses.state= aa.state
+            if not uses.city:uses.city= aa.city
+            if not uses.country:uses.country= aa.country
+            if not uses.number:uses.number= aa.number
+            # try:
+            uses.save()
+            # except:
+            #     pass
             AdminNotification.objects.create(customer =request.user.customer, name ="Applied for kyc verification" , types ="kyc", ids=aa.id)
             messages.success(request, "Successfully sent for verification")
             return HttpResponseRedirect(reverse('customer:verify'))
@@ -442,7 +481,7 @@ class Profile(View):
             'real_customer':request.user.customer
               
         }
-        noti = notification()
+        noti = notification(request)
         dist.update(noti)
         return render(request, self.template_name, dist)
 
@@ -480,7 +519,7 @@ class Profile(View):
             'recipient': Recipient.objects.filter(customer = request.user.customer).order_by('-id')[:5],
             'real_customer':request.user.customer            
             }
-            noti = notification()
+            noti = notification(request)
             dist.update(noti)
             messages.error(request, "Something went wrong")
             return render(request, self.template_name, dist)

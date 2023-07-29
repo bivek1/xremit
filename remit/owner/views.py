@@ -21,7 +21,7 @@ from homepage.forms import AdminBankForm, BankForm, RestrictionForm, UserCreateF
 
 from .forms import BlockForm, PurposeForm, FundForm, DefaultForm, EmailSettingForm, SMSSettingForm, LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, BrandForm, FootorForm, SocialForm, PolicyForm, TermForm, EmailListForm, SMSListForm
 from django.http import JsonResponse
-
+from homepage.models import LoginLogs
 # Create your views here.
 
 
@@ -117,7 +117,7 @@ def seenNotification(request):
    
 
 def notification():
-   noti = AdminNotification.objects.filter(seen= False)
+   noti = AdminNotification.objects.filter(seen= False).order_by('-id')
    count = noti.count()
 
    li = {
@@ -400,6 +400,15 @@ def filterBank(request):
     }
     noti = notification()
     dist.update(noti)
+    if request.method == 'POST':
+        form = AdminBankForm(request.POST)
+        if form.is_valid():
+            sav = form.save(commit=False)
+            sav.save()
+            messages.success(request, "Successfully add bank details")
+            return HttpResponseRedirect(reverse('owner:bank'))
+        else:
+            messages.error(request,"Something went wrong")
     return render(request, "owner/bank.html", dist)
 
 
@@ -648,12 +657,17 @@ def customerProfile(request, id):
         break
 
     form = CustomerForm(instance=real_customer.customer)
+    print(BankAccount.objects.filter(customer = real_customer.customer).order_by('-id'))
     dist = {
         'real_customer':real_customer,
         'form':form,
         'form_head':"Update Customer",
         'button':"Update customer",
-        'cm':cm
+        'cm':cm,
+        'reciepient': Recipient.objects.filter(customer = real_customer.customer).order_by('-id'),
+        'transaction': Transaction.objects.filter(customer = real_customer.customer).order_by('-id'),
+        'bankA': BankAccount.objects.filter(customer = real_customer.customer).order_by('-id'),
+        'login_log' : LoginLogs.objects.filter(customer =real_customer.customer)
     
     }
     noti = notification()
@@ -1040,26 +1054,12 @@ class AddBlog(View):
         if form.is_valid():
             form.save()
             messages.success(request, "Successfully Added Blog")
-            return HttpResponseRedirect(reverse('staff:addBlog'))
+            return HttpResponseRedirect(reverse('owner:addBlog'))
         else:
             messages.success(request, "Something went Wrong")
-            return HttpResponseRedirect(reverse('staff:addBlog'))
+            return HttpResponseRedirect(reverse('owner:addBlog'))
 
 
-class UpdateBlog(SuccessMessageMixin,UpdateView):
-    template_name = "staff/editBlog.html"
-    model = Blog
-    form_class = BlogForm
-    success_message = "Successfully Updated Blog"
-    
-    def get_success_url(self, *args, **kwargs):
-        id = self.kwargs['pk']
-        return reverse('staff:updateBlog', args=[id])
-def deleteBlog(request, id):
-    blog = Blog.objects.get(id = id)
-    blog.delete()
-    messages.success(request, "Succesfully Deleted Blog")
-    return HttpResponseRedirect(reverse('staff:addBlog')) 
 
 
 
@@ -1681,9 +1681,15 @@ def kycView(request):
 
 def kycVerification(request, id):
     kyc = KYC.objects.get(id = id)
-    print(kyc)
+    # print(kyc)
+    try:
+        con = Country.objects.get(name = kyc.country)
+    except:
+        con = None
+        
     dist  ={
-        'kycs':kyc
+        'kycs':kyc,
+        'country':con
     }
     noti = notification()
     dist.update(noti)
@@ -1789,7 +1795,7 @@ def fundView(request):
 
 
 def editFund(request, id):
-    footer = Footor.objects.get(id = id)
+    footer = SourceFund.objects.get(id = id)
     footer.name = request.POST['fund_name']
    
     footer.save()

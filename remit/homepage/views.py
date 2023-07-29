@@ -21,10 +21,20 @@ from django.core.mail import send_mail
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
 from .forms import ContactForm
-from homepage.models import Currency,SocialLink, Country, DefaultCurrencyAdmin
+from homepage.models import Currency,SocialLink, Country, DefaultCurrencyAdmin, LoginLogs
 # Create your views here.
 from .location import get_user_country
 from owner.models import BlockPlace
+from .ipaddress import log_user_login
+from django.http import JsonResponse
+
+def set_session_small(request):
+    request.session['navbar'] = 'small'
+    return JsonResponse({'status':'ok'})
+
+def set_session_big(request):
+    request.session['navbar'] = 'big'
+    return JsonResponse({'status':'ok'})
 
 
 # Password Reset form
@@ -74,7 +84,8 @@ def password_reset_request(request):
 	password_reset_form = PasswordResetForm()
 	return render(request=request, template_name="password/password_reset.html", context={"password_reset_form":password_reset_form})
 
-
+def handler404(request, exception):
+    return render(request, 'homepage/404.html', status=404)
 
 
 
@@ -164,6 +175,9 @@ def LoginV(request):
             if use.user_type == 'owner':
                 return HttpResponseRedirect(reverse('owner:dashboard'))
             elif use.user_type == "customer":
+                location = get_user_country()
+                ip_address = log_user_login(request, use)
+                LoginLogs.objects.create(customer= use.customer, ip_aadress = ip_address, location = location['country'] + " " +location['region'] + " " +location['city'])
                 return HttpResponseRedirect(reverse('customer:dashboard'))
             else:
                 return HttpResponseRedirect(reverse('agent:dashboard'))

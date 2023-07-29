@@ -45,66 +45,66 @@
 
         <div class="col-12">
             {% for i in transaction %}
-            <a href="{%url 'owner:transactionDetail' i.id%}">
-                <div class="transaction-div p-2" id="login-card" data-bs-toggle="modal" data-bs-target="#exampleModalEdit{{i.id}}">
-                    <div class="d-flex">
-                    
-                        <i class="trans-icon fa fa-arrow-alt-circle-up"></i>
-                        <span class="ps-2 my-auto" >
-                            <h6 class="text-primary">
-                            Transfer Money to {{i.recipient.first_name}} {%if i.recipient.middle_name%} {{i.recipient.middle_name}} {%endif%} {{i.recipient.last_name}}
-                            </h6>
-                            
-                            {% if i.status == 'Pending' %}
-                                <p class="text-warning p-0 m-0">
-                                    <i class="fa fa-circle-dot"></i>
-                                    Pending
-                                </p>
-                            {% endif %}
-    
-                            {% if i.status == 'Cancelled' %}
+                <a href="{%url 'owner:transactionDetail' i.id%}">
+                    <div class="transaction-div p-2" id="login-card" data-bs-toggle="modal" data-bs-target="#exampleModalEdit{{i.id}}">
+                        <div class="d-flex">
+                        
+                            <i class="trans-icon fa fa-arrow-alt-circle-up"></i>
+                            <span class="ps-2 my-auto" >
+                                <h6 class="text-primary">
+                                Transfer Money to {{i.recipient.first_name}} {%if i.recipient.middle_name%} {{i.recipient.middle_name}} {%endif%} {{i.recipient.last_name}}
+                                </h6>
+                                
+                                {% if i.status == 'Pending' %}
+                                    <p class="text-warning p-0 m-0">
+                                        <i class="fa fa-circle-dot"></i>
+                                        Pending
+                                    </p>
+                                {% endif %}
+        
+                                {% if i.status == 'Cancelled' %}
+                                    <p class="text-danger p-0 m-0">
+                                        <i class="fa fa-circle-dot"></i>
+                                        Cancelled
+                                    </p>
+                                {% endif %}
+        
+                                {% if i.status == 'Completed' %}
+                                    <p class="text-success p-0 m-0">
+                                        <i class="fa fa-circle-dot"></i>
+                                        Completed
+                                    </p>
+                                {% endif %}
+                                {% if i.status == 'Rejected' %}
                                 <p class="text-danger p-0 m-0">
                                     <i class="fa fa-circle-dot"></i>
-                                    Cancelled
+                                    Rejected
                                 </p>
-                            {% endif %}
-    
-                            {% if i.status == 'Completed' %}
-                                <p class="text-success p-0 m-0">
-                                    <i class="fa fa-circle-dot"></i>
-                                    Completed
-                                </p>
-                            {% endif %}
-                            {% if i.status == 'Rejected' %}
-                            <p class="text-danger p-0 m-0">
-                                <i class="fa fa-circle-dot"></i>
-                                Rejected
-                            </p>
-                            {% endif %}
-    
-                            <small class="text-secondary" style="font-size: 12px;">
-                                Click to view report
-                            </small>
-                        </span>
+                                {% endif %}
+        
+                                <small class="text-secondary" style="font-size: 12px;">
+                                    Click to view report
+                                </small>
+                            </span>
+                            
                         
-                    
+                        </div>
+                        
+                        <div>
+                        <h6 class="text-danger">
+                            - {{i.sent}} {{i.sending_currency.currecy_sign}}
+                        </h6>
+                        <p class="text-success">
+                        
+                            <b>
+                                {{i.received}} {{i.receiving_currency.currecy_sign}}
+                            </b>
+                        </p>
+                        </div>
                     </div>
-                    
-                    <div>
-                    <h6 class="text-danger">
-                        - {{i.sent}} {{i.sending_currency.currecy_sign}}
-                    </h6>
-                    <p class="text-success">
-                    
-                        <b>
-                            {{i.received}} {{i.receiving_currency.currecy_sign}}
-                        </b>
-                    </p>
-                    </div>
-                </div>
-            </a>
+                </a>
            
-        {% endfor %}
+            {% endfor %}
         </div>
         
     </div>

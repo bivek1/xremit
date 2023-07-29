@@ -2,7 +2,7 @@ from django.urls import path
 from .import views
 
 app_name = "homepage"
-
+handler404 = views.handler404
 urlpatterns = [
     path('', views.Homepage, name = 'homepage'),
     path('login', views.LoginV, name = 'login'),
@@ -23,4 +23,7 @@ urlpatterns = [
     path('sitemap', views.sitemapView, name = "sitemap"),
     path('privacy-and-policy-xremit', views.privacyView, name = "privacy"),
     path('terms-and-condition', views.termsView, name = "terms"),
+    path('set_session_small', views.set_session_small, name = "set_session_small"),
+    path('set_session_big', views.set_session_big, name = "set_session_big"),
+    path("password_reset", views.password_reset_request, name="password_reset"),
 ]

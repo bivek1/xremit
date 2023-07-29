@@ -235,7 +235,7 @@
 
 .form-control{
     color: rgb(73, 73, 73);
-    font-size: 14px;
+    font-size: 13px;
     height: 38px;
     padding: 10px;
     border-radius: 10px;
@@ -713,6 +713,9 @@ a{
     animation-iteration-count: infinite;
 }
 
+.modal{
+    cursor: pointer;
+}
 .back{
     background-color: rgb(247, 247, 247);
     padding: 10px;
@@ -1115,3 +1118,20 @@ z-index: 2; }
     
 }
 
+
+
+
+
+/* DARK MODE STUDIO */
+.dark-mode {
+    background-color: #333; /* Dark mode background color */
+    color: #f1f1f1; /* Dark mode text color */
+}
+
+.bankselected{
+    background-color: rgb(206, 206, 206);
+    transition-duration: 200ms;
+}
+
+
+/* DARK MODE STUDIO END */

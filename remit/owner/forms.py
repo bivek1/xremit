@@ -111,26 +111,38 @@ class KYCForm(forms.ModelForm):
 
 
         widgets= {
-            'image':forms.FileInput(attrs={'class':'form-control  custom-input mt-2', 'id':'image-upload' ,'onchange':"showImage(this)"}),
-            'country':forms.Select(attrs={'class':'form-control mt-2', 'placeholder':'Australia' }),
+            'image':forms.FileInput(attrs={'accept':"image/*", 'class':'form-control  custom-input mt-2', 'id':'image-upload' ,'onchange':"showImage(this)", 'required':False}),
+            'country':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Australia' }),
             'address':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'123 Smith Street, Richmond, Victoria'}),
             'state':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Victoria'}),
             'city':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Melbourne'}),
-            'zip_code':forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'30001'}),
             'postal_address':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'14428. Melbourne, VIC 8001'}),
-            'number':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'+61 4 91 575 789'}),
+            'number':forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'+61 4 91 575 789'}),
             'gender':forms.Select(attrs={'class':'form-control mt-2'}),
-            'document_front_image':forms.FileInput(attrs={'class':'form-control mt-2','onchange':"showFrontImage(this);"}),
-            'document_back_image':forms.FileInput(attrs={'class':'form-control mt-2','onchange':"showBackImage(this);"}),
-            'passport_image':forms.FileInput(attrs={'class':'form-control mt-2','onchange':"showBackImage(this);"}),
-            'business_image':forms.FileInput(attrs={'class':'form-control mt-2','onchange':"showBackImage(this);"}),
-            'date_of_birth':forms.DateInput(attrs={'type':'date','class':'form-control mt-2',}),
             'document_type':forms.Select(attrs={'class':'form-control mt-2', 'hidden':True}),
+            'date_of_birth':forms.DateInput(attrs={'type':'date','class':'form-control mt-2'}),
+            
+            # Licence
+            'licence_number':forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'01245422354','value':'{{cm.licence_number}}'}),
+            'document_front_image':forms.FileInput(attrs={'accept':"image/*", 'class':'form-control mt-2','onchange':"showFrontImage(this);"}),
+            'document_back_image':forms.FileInput(attrs={'accept':"image/*", 'class':'form-control mt-2','onchange':"showBackImage(this);"}),
             'issue_date' : forms.DateInput(attrs={'type':'date','class':'form-control mt-2','value':'{{cm.issue_date}}'}),
-            'expiry_date' : forms.DateInput(attrs={'type':'date','class':'form-control mt-2','value':'{{cm.expiry_date}}'}),
-            'passport_issued_country': forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Australia'}),
+            'expiry_date' : forms.DateInput(attrs={'type':'date','class':'form-control mt-2','value':'{{cm.expiry_date}}'}),   
+            
+            # Passport
+           
+            'passport_number':forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'01245422354','value':'{{cm.passport_number}}'}),
+            'passport_image':forms.FileInput(attrs={'accept':"image/*", 'class':'form-control mt-2','onchange':"showPassportImage(this);"}),
+            'passport_issue_date' : forms.DateInput(attrs={'type':'date','class':'form-control mt-2','value':'{{cm.issue_date}}'}),
+            'passport_expiry_date' : forms.DateInput(attrs={'type':'date','class':'form-control mt-2','value':'{{cm.expiry_date}}'}),   
+            'passport_issued_country': forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Australia', 'value:':'{%if cm.passport_issued_country%}{{cm.passport_issued_country}}{%endif%}'}),
+            
+        
+           
+            # Registration
+            'business_image':forms.FileInput(attrs={'accept':"image/*", 'class':'form-control mt-2','onchange':"showBusinessImage(this);"}),
             'business_registration_date' : forms.DateInput(attrs={'type':'date', 'class':'form-control mt-2','value':'{{cm.business_registration_date}}'}),
-                
+            'registraion_number': forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'01245422354','value':'{{cm.registraion_number}}'}),
         }
 
 
@@ -163,7 +175,7 @@ class RecipientForm(forms.ModelForm):
             'last_name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Last Name'}),
             'city':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Melbourne'}),
             'zip_code':forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'30001'}),
-            'number':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'+61 4 91 575 789'}),
+            'number':forms.NumberInput(attrs={'class':'form-control mt-2', 'placeholder':'+61 4 91 575 789'}),
             'country':forms.Select(attrs={'class':'form-control mt-2', 'placeholder':'Australia'}), 
             'address':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'123 Smith Street, Richmond, Victoria'}),
             'state':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Victoria'}),  
@@ -180,7 +192,7 @@ class CountryForm(forms.ModelForm):
 
         widgets= {
             'name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Nepal'}),
-            'flag_img':forms.FileInput(attrs={'class':'form-control mt-2'}),
+            'flag_img':forms.FileInput(attrs={'accept':"image/*", 'class':'form-control mt-2'}),
             'allowed':forms.Select(attrs={'class':'form-control mt-2'}),
         }
 
@@ -213,9 +225,9 @@ class SiteForm(forms.ModelForm):
         widgets= {
             'title':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Title of the site'}),
             'subtitle':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Sub title of the site'}),
-            'light_logo':forms.FileInput(attrs={'class':'form-control mt-2', 'placeholder':'Title of the site'}),
-            'dark_logo ':forms.FileInput(attrs={'class':'form-control mt-2', 'placeholder':'Title of the site'}),
-            'favicon ':forms.FileInput(attrs={'class':'form-control mt-2', 'placeholder':'Title of the site'}),
+            'light_logo':forms.FileInput(attrs={'accept':"image/*",'class':'form-control mt-2', 'placeholder':'Title of the site'}),
+            'dark_logo ':forms.FileInput(attrs={'accept':"image/*", 'class':'form-control mt-2', 'placeholder':'Title of the site'}),
+            'favicon ':forms.FileInput(attrs={'accept':"image/*", 'class':'form-control mt-2', 'placeholder':'Title of the site'}),
             'email':forms.EmailInput(attrs={'class':'form-control mt-2', 'placeholder':'Company Email..'}),
             'number_one':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Number of the site'}),
             'number_two':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Number 2 of the site'}),
@@ -285,7 +297,7 @@ class FeatureForm(forms.ModelForm):
         fields = ('__all__')
 
         widgets= {
-            'image':forms.FileInput(attrs={'class':'form-control mt-2'}),
+            'image':forms.FileInput(attrs={'accept':"image/*", 'class':'form-control mt-2'}),
             'name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Features or Name....'}),
             'feature':CKEditorUploadingWidget(attrs={'class':'form-control mt-2', 'placeholder':'Features of the company'}),
             
@@ -355,7 +367,7 @@ class BrandForm(forms.ModelForm):
         widgets= {
             'name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Brand Name'}),
             'link':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'https://yoursite.com'}),
-            'image':forms.FileInput(attrs={'class':'form-control mt-2', 'placeholder':'Image of Brand'}),
+            'image':forms.FileInput(attrs={'accept':"image/*", 'class':'form-control mt-2', 'placeholder':'Image of Brand'}),
         }
 
 
@@ -367,7 +379,7 @@ class LoginInterfaceForm(forms.ModelForm):
         widgets= {
             'name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Head of Login Page'}),
             'information':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Description Information of Login Page'}),
-            'image':forms.FileInput(attrs={'class':'form-control mt-2', 'placeholder':'Description Information'}),
+            'image':forms.FileInput(attrs={'accept':"image/*", 'class':'form-control mt-2', 'placeholder':'Description Information'}),
           
         }
 
@@ -379,8 +391,8 @@ class signupInterfaceForm(forms.ModelForm):
         widgets= {
             'name':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Head of Login Page'}),
             'information':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Description Information'}),
-            'image':forms.FileInput(attrs={'class':'form-control mt-2', 'placeholder':'Description Information'}),
-            'video':forms.FileInput(attrs={'class':'form-control mt-2'}),
+            'image':forms.FileInput(attrs={'accept':"image/*", 'class':'form-control mt-2', 'placeholder':'Description Information'}),
+            'video':forms.FileInput(attrs={'accept':"image/*", 'class':'form-control mt-2'}),
           
         }
 
@@ -398,6 +410,6 @@ class SEOForm(forms.ModelForm):
             'robot':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'index,follow'}),
             'og_title':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'My Web Page Title'}),
             'og_description':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'This is a description of my web page.'}),
-            'og_image':forms.FileInput(attrs={'class':'form-control mt-2'}),
+            'og_image':forms.FileInput(attrs={'accept':"image/*", 'class':'form-control mt-2'}),
           
         }

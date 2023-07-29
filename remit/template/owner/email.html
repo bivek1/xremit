@@ -207,11 +207,11 @@ Email Settings
                             <hr>
                             <select name="agent" id="agent"  class="form-control mb-2" onchange="getAgentValue(this)">
                                 {% for i in agent %}
-                                    <option value="{{i.id}}">{{i.first_name}}
-                                        {% if i.middle_name %}
-                                            {{i.middle_name}}
+                                    <option value="{{i.id}}">{{i.admin.first_name}}
+                                        {% if i.admin.middle_name %}
+                                            {{i.admin.middle_name}}
                                         {% endif %}
-                                        {{i.last_name}}
+                                        {{i.admin.last_name}}
                                             
                                     </option>
                                 {% endfor %}

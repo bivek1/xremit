@@ -154,11 +154,11 @@ class CustomerForm(forms.ModelForm):
             'number': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'+61 4 91 575 789'}),
             'mail_address': forms.TextInput(attrs={'class':'form-control', 'placeholder':'14428. Melbourne, VIC 8001'}),
             'state': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Victoria'}),
-            'zip_code' : forms.NumberInput(attrs={'class':'form-control', 'placeholder':'30001'}),
+            # 'zip_code' : forms.NumberInput(attrs={'class':'form-control', 'placeholder':'30001'}),
             'city' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Melbourne'}),
-            'country' : forms.Select(attrs={'class':'form-control', 'placeholder':'Australia'}),
+            'country' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Australia'}),
             'address' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'123 Smith Street, Richmond, Victoria'}),
-            'profil_pic' : forms.FileInput(attrs={'class':'form-control', 'placeholder':'Profile Picture'}),
+            'profil_pic' : forms.FileInput(attrs={'accept':"image/*", 'class':'form-control', 'placeholder':'Profile Picture'}),
         }
 
 
@@ -178,7 +178,7 @@ class AgentForm(forms.ModelForm):
             'city' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'Melbourne'}),
             'country' : forms.Select(attrs={'class':'form-control', 'placeholder':'Australia'}),
             'address' : forms.TextInput(attrs={'class':'form-control', 'placeholder':'123 Smith Street, Richmond, Victoria'}),
-            'profil_pic' : forms.FileInput(attrs={'class':'form-control', 'placeholder':'Profile Picture'}),
+            'profil_pic' : forms.FileInput(attrs={'accept':"image/*", 'class':'form-control', 'placeholder':'Profile Picture'}),
         }
 
 
@@ -339,7 +339,7 @@ class CompanyInformationForm(forms.ModelForm):
             'aims':'Aims',
         }
         widgets = {
-            'logo':forms.FileInput(attrs={'required':False})
+            'logo':forms.FileInput(attrs={'accept':"image/*", 'required':False})
         }
 
 class BlogForm(forms.ModelForm):
@@ -352,7 +352,7 @@ class BlogForm(forms.ModelForm):
             'description':'Description'
         }
         widgets = {
-            'image':forms.FileInput(attrs={'class':'form-control mt-2'}),
+            'image':forms.FileInput(attrs={'accept':"image/*", 'class':'form-control mt-2'}),
             'title':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Add Your Title'}),
             'types':forms.Select(attrs={'class':'form-control mt-2'}),
             'description':CKEditorUploadingWidget()

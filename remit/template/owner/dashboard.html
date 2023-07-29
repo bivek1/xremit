@@ -19,9 +19,14 @@
     <!-- Side Bar -->
     <div class="p-3 side-bar pb-5 hidePhone" >
     
-        <h3 class="text-primary mt-3 text-center text-capitalize">
-          xRemit
-        </h3>
+        <div class="d-flex justify-content-between">
+            <h3 class="text-primary text-center text-capitalize" id="text-head">
+              xRemit
+            </h3>
+            <p class="my-auto shortcut text-center" onclick="makesmall();">
+              <i class=" ps-3 fa-solid fa-arrows-turn-to-dots"></i>
+            </p>
+        </div>
         <hr>
         {%url 'owner:dashboard' as dashboardaa%}
         <a href="{{dashboardaa}}">

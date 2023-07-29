@@ -236,15 +236,15 @@ SMS Settings
                           <h5>Select Agent to send SMS</h5>
                           <hr>
                           <select name="agent" id="agent"  class="form-control mb-2" onchange="getAgentValue(this, '{{i.number}}')">
-                              {% for i in agent %}
-                                  <option value="{{i.id}}">{{i.first_name}}
-                                      {% if i.middle_name %}
-                                          {{i.middle_name}}
-                                      {% endif %}
-                                      {{i.last_name}}
-                                          
-                                  </option>
-                              {% endfor %}
+                            {% for i in agent %}
+                                <option value="{{i.id}}">{{i.admin.first_name}}
+                                    {% if i.admin.middle_name %}
+                                        {{i.admin.middle_name}}
+                                    {% endif %}
+                                    {{i.admin.last_name}}
+                                        
+                                </option>
+                            {% endfor %}
                           </select>
                           <span class="text-secondary mt-2">
                               You can select all agent

@@ -151,15 +151,15 @@ Verification {% endblock title %} {% block inside %}
               {{form.state}} {{form.state.erros}}
             </div>
 
-            <div class="col-12 col-lg-6 mt-2">
+            <div class="col-12 col-lg-12 mt-2">
               <h6>Enter your city*</h6>
               {{form.city}} {{form.city.erros}}
             </div>
 
-            <div class="col-12 col-lg-6 mt-2">
+            <!-- <div class="col-12 col-lg-6 mt-2">
               <h6>Enter your zip code*</h6>
               {{form.zip_code}} {{form.zip_code.erros}}
-            </div>
+            </div> -->
 
             <div class="col-12 col-lg-6 mt-2">
               <h6>Enter your postal code*</h6>
@@ -186,6 +186,15 @@ Verification {% endblock title %} {% block inside %}
             <h4 class="mt-2 mb-2 text-primary">
               Please select your document
             </h4>
+            <small>
+              You should upload any one of these document
+              <span class="text-danger">
+                making sure the document is image file.
+              </span> 
+            </small>
+
+
+
             <div class="col-lg-4 col-4 text-center" id="licence" >
               <div class="docFile box" onclick="selectDocument(this, 'licence')">
                 <img src="{%static 'resources/licence.png'%}" alt="" >
@@ -195,6 +204,7 @@ Verification {% endblock title %} {% block inside %}
               </div>
             
             </div>
+            
             <div class="col-lg-4 col-4  text-center" id="registration">
               <div class="docFile box" onclick="selectDocument(this, 'registration')">
                 <img src="{%static 'resources/registration.png'%}" alt="">
@@ -258,48 +268,51 @@ Verification {% endblock title %} {% block inside %}
               </div>
   
               <div class="m-0 mt-2 row document-image-box">
-               
-                <div class="col-6 my-auto">
-                  <h6>Upload back image of your licence</h6>
-                  {{form.document_back_image}} {{form.document_back_image.erros}}
-                </div>
-                <div class="col-6 my-auto text-center">
-                  {% if cm.document_back_image %}
-                  <img
-                    src="{{cm.document_back_image.url}}"
-                    alt=""
-                    id="back_image"
-                    height="100px;"
-                    width="auto;"
-                  />
-                  {%else%}
-                  <img
-                    src="{%static 'resources/not-available.png'%}"
-                    alt=""
-                    height="100px;"
-                    id="back_image"
-                    width="auto;"
-                  />
-                  {% endif %}
-                </div>
-              
+                  <div class="col-6 my-auto">
+                    <h6>Upload back image of your licence</h6>
+                    {{form.document_back_image}} {{form.document_back_image.erros}}
+                  </div>
+                  <div class="col-6 my-auto text-center">
+                    {% if cm.document_back_image %}
+                    <img
+                      src="{{cm.document_back_image.url}}"
+                      alt=""
+                      id="back_image"
+                      height="100px;"
+                      width="auto;"
+                    />
+                    {%else%}
+                    <img
+                      src="{%static 'resources/not-available.png'%}"
+                      alt=""
+                      height="100px;"
+                      id="back_image"
+                      width="auto;"
+                    />
+                    {% endif %}
+                  </div>
+                 
               </div>
-
               <div class="row m-0 mt-2">
                 <div class="col-6">
                   <label for="Pass">
-                    Issued Date:
+                    Licence Issued Date:
                   </label>
                   {{form.issue_date}}
                 </div>
                 <div class="col-6">
                   <label for="Pass">
-                    Expiry Date:
+                    Licence Expiry Date:
                   </label>
                   {{form.expiry_date}}
                 </div>
+                <div class="col-12">
+                  <label for="Pass">
+                    Licence Number:
+                  </label>
+                  {{form.licence_number}}
+                </div>
               </div>
-
             </div>
 
 
@@ -343,15 +356,15 @@ Verification {% endblock title %} {% block inside %}
                   <div class="row m-0 mt-2">
                       <div class="col-6">
                         <label for="Pass">
-                          Issued Date:
+                          Passport Issued Date:
                         </label>
-                        {{form.issue_date}}
+                        {{form.passport_issue_date}}
                       </div>
                       <div class="col-6">
                         <label for="Pass">
-                          Expiry Date:
+                          Passport Expiry Date:
                         </label>
-                        {{form.expiry_date}}
+                        {{form.passport_expiry_date}}
                       </div>
                   </div>
                   <div class="row m-0 mt-2">
@@ -410,16 +423,32 @@ Verification {% endblock title %} {% block inside %}
                         {{form.business_registration_date}}
                       
                   </div>
+
+                  <div class="col-12 mt-2">
+                     
+                    <label for="Pass">
+                      Business Registration Number:
+                    </label>
+                      {{form.registraion_number}}
+                    
+                </div>
               </div>
             </div>
+
             {{form.document_type}}
            
           </div>
           {% csrf_token %}
-
-          <button type="submit" class="btn btn-primary w-100 mt-3">
-            {% if cm %} Update {%else%} Verify {%endif%}
-          </button>
+          
+          {% if user.customer.kyc_verified %}
+            
+          {%else%}
+            <button type="submit" class="btn btn-primary w-100 mt-3">
+              {% if cm %} Update {%else%} Verify {%endif%}
+            </button>
+          {% endif %}
+            
+          
         </form>
       </div>
     </div>
@@ -477,6 +506,34 @@ Verification {% endblock title %} {% block inside %}
         var imageElement = document.getElementById("passport_image");
       }
       
+      imageElement.src = e.target.result;
+    
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function showPassportImage(input){
+    var file = input.files[0];
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+
+      var imageElement = document.getElementById("passport_image");
+   
+      imageElement.src = e.target.result;
+    
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function showBusinessImage(input){
+    var file = input.files[0];
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+
+      var imageElement = document.getElementById("registration_image");
+   
       imageElement.src = e.target.result;
     
     };

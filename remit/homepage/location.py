@@ -1,5 +1,13 @@
 import requests
+import pycountry
 
+def get_country_name(country_code):
+    try:
+        country = pycountry.countries.get(alpha_2=country_code.upper())
+        return country.name
+    except AttributeError:
+        return "Invalid Country Code"
+    
 def get_user_country():
     try:
         response = requests.get('https://ipinfo.io/json')
@@ -12,6 +20,7 @@ def get_user_country():
             'region':region,
             'city':city
         }
+        
         return dust
     except Exception as e:
         print(f"Error occurred: {e}")

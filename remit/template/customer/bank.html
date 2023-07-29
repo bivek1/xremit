@@ -37,47 +37,47 @@
 
            
             
-            <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                    
-                        <div class="modal-body">
-                            <div class="text-center">
-                                <img src="{%static 'resources/bank.png'%}" alt="" style="width: 30%;">
-                            </div>
-                    
-                            <h5 class="text-center">
-                                Add New Bank
-                            </h5>
-                            <form action="" method="post">
-                                <h6>Select your Recipients</h6>
-                                <select class="form-control mb-3 mt-3" name = "recipient">
-                                    <option value="0">
-                                        Select Recipients....
+        <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <img src="{%static 'resources/bank.png'%}" alt="" style="width: 30%;">
+                        </div>
+                
+                        <h5 class="text-center">
+                            Add New Bank
+                        </h5>
+                        <form action="" method="post">
+                            <h6>Select your Recipients</h6>
+                            <select class="form-control mb-3 mt-3" name = "recipient">
+                                <option value="0">
+                                    Select Recipients....
+                                </option>
+                                {% for i in recipient %}
+                                    <option value="{{i.id}}" onchange ="addOther('{{i.first_name}} {%if i.middle_name%} {{i.middle_name}} {%endif%} {{i.last_name}}', '{{i.country.id}}')">
+                                        {{i.first_name}} {%if i.middle_name%} {{i.middle_name}} {%endif%} {{i.last_name}}
                                     </option>
-                                    {% for i in recipient %}
-                                        <option value="{{i.id}}" onchange ="addOther('{{i.first_name}} {%if i.middle_name%} {{i.middle_name}} {%endif%} {{i.last_name}}', '{{i.country.id}}')">
-                                            {{i.first_name}} {%if i.middle_name%} {{i.middle_name}} {%endif%} {{i.last_name}}
-                                        </option>
-                                    {% endfor %}
-                                        
-                                </select>
-                                {{form}}
-                                {% csrf_token %}
-                                <button class="btn btn-success mt-3" type="submit">
-                                    Add Bank
-                                </button>
-                            </form>
-                           
-                            <div class="text-end mt-2">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
+                                {% endfor %}
+                                    
+                            </select>
+                            {{form}}
+                            {% csrf_token %}
+                            <button class="btn btn-success mt-3" type="submit">
+                                Add Bank
+                            </button>
+                        </form>
                         
+                        <div class="text-end mt-2">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
                     
-                </div>
-                </div>
+                    </div>
+                
             </div>
+            </div>
+        </div>
           
         </div>
         <hr>

@@ -85,7 +85,7 @@ KYC Details {% endblock title %} {% block inside %}
                         
                     </small>
                     <p class="text-secondary">
-                        {{kycs.customer.number}}
+                        {{kycs.number}}
                     </p>
                 </div>
                 
@@ -97,7 +97,7 @@ KYC Details {% endblock title %} {% block inside %}
                             <img src="{{kycs.image.url}}" alt="" style="height: auto; width: 100%;"> 
                         </div>
                         <div class="col-12 col-lg-6">
-                            <h5>Additional Informationr</h5>
+                            <h5>Additional Information</h5>
                             <hr>
                             <div class="d-flex justify-content-between">
                                 <small class="text-dark">
@@ -124,18 +124,7 @@ KYC Details {% endblock title %} {% block inside %}
                                     {{kycs.state}}
                                 </p>
                             </div>
-                            <div class="d-flex justify-content-between">
-                                <small class="text-dark">
-                                    <b>
-                                        <i class="fa fa-code"></i>
-                                        Zip Code
-                                    </b>
-                                    
-                                </small>
-                                <p class="text-secondary">
-                                    {{kycs.zip_code}}
-                                </p>
-                            </div>
+                           
                             <div class="d-flex justify-content-between">
                                 <small class="text-dark">
                                     <b>
@@ -150,9 +139,9 @@ KYC Details {% endblock title %} {% block inside %}
                             </div>
                             <div class="d-flex justify-content-between alert alert-light">
                                 
-                                {% if kycs.country.flag_img %}
-                                <img src="{{kycs.country.flag_img.url}}" alt="" style="height: auto; width: 20%;">
-                                {% endif %}
+                               <small>
+                                Country
+                               </small>
                                 
                                 <h5 class="text-dark my-auto">
                                     {{kycs.country}}
@@ -219,7 +208,7 @@ KYC Details {% endblock title %} {% block inside %}
                     </button> 
                 {%else%}
                 
-                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button class="btn btn-danger mt-2 w-100" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     Verify Account
                 </button>
 

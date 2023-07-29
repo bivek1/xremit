@@ -25,6 +25,7 @@ urlpatterns = [
     path('two-factor-authentication-disablegmail', views.disablegmail, name ="disablegmail"),
     path('customer-profile-pic', views.updatePic, name ="updatePic"),
     path('customer-find-bank', views.findBank, name ="findBank"),
+    path('customer-get-bank', views.getBank, name ="getBank"),
     path('editBank/<int:id>', views.editBank, name ="editBank"),
     path('deleteBank/<int:id>', views.deleteBank, name ="deleteBank"),
     path('create-a-ticket-support-xremit', views.ticketView, name ="ticketView"),

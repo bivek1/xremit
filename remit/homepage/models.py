@@ -73,7 +73,7 @@ class Customer(models.Model):
     state = models.CharField(max_length=100, null = True, blank = True)
     zip_code = models.IntegerField(null = True, blank = True)
     city = models.CharField(max_length=100, null = True, blank = True)
-    country = models.ForeignKey(Country, related_name='customer_country', on_delete=models.CASCADE, null = True, blank= True)
+    country = models.CharField(max_length=100, null = True, blank = True)
     address = models.CharField(max_length = 200, null = True, blank = True)
     profil_pic = models.ImageField(upload_to ="profile_pic/customer/", null = True, blank = True)
     created_at = models.DateTimeField(auto_now_add= True)
@@ -314,12 +314,13 @@ class Transaction(models.Model):
 class KYC(models.Model):
     image = models.ImageField(upload_to='kyc_image')
     customer = models.ForeignKey(Customer, related_name='kyc_customer', on_delete=models.CASCADE, null = True, blank=True)
-    country = models.ForeignKey(Country, related_name='kyc_country', on_delete=models.CASCADE)
+    country = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
     state = models.CharField(max_length=200, null = True, blank= True)
     city = models.CharField(max_length=200)
-    zip_code = models.CharField(max_length=200)
     number = models.BigIntegerField()
+    postal_address = models.CharField(max_length=200)
+    date_of_birth = models.DateField()
     gender = models.CharField(max_length=200, choices=(
         ('Male','Male'),
         ('Female', 'Female'),
@@ -330,26 +331,64 @@ class KYC(models.Model):
         ('Driver licence', 'Driver licence'),
         ('Passport', 'Passport'),
     ))
-    document_front_image = models.ImageField(upload_to="document/")
-    document_back_image = models.ImageField(upload_to="document/", null =True, blank = True)
-    passport_image = models.ImageField(upload_to="document/", null =True, blank = True)
-    business_image = models.ImageField(upload_to='document/', null =True, blank = True)
-    postal_address = models.CharField(max_length=200)
-    date_of_birth = models.DateField()
-    created_at = models.DateTimeField(auto_now_add= True)
-    updated_at = models.DateTimeField(auto_now=True)
+    
+
+
+    # Licence
+    licence_number = models.IntegerField(null = True, blank=True)
     issue_date = models.DateField(null=True, blank=True)
     expiry_date = models.DateField(null=True, blank=True)
-    passport_issued_country = models.CharField(max_length=200, null=True, blank=True)
+    document_front_image = models.ImageField(upload_to="document/", null =True, blank = True)
+    document_back_image = models.ImageField(upload_to="document/", null =True, blank = True)
+    
+
+    # Passport
+    passport_number = models.IntegerField(null = True, blank=True)
+    passport_issue_date = models.DateField(null=True, blank=True)
+    passport_expiry_date = models.DateField(null=True, blank=True)
+    passport_image = models.ImageField(upload_to="document/", null =True, blank = True)
+    passport_issued_country = models.CharField(max_length=200, null =True, blank = True)
+    # passport_image = models.ImageField(upload_to="document/", null =True, blank = True)
+
+    # Business Registration 
+    business_image = models.ImageField(upload_to='document/', null =True, blank = True)
     business_registration_date = models.DateField(null = True, blank=True)
+    registraion_number = models.IntegerField(null = True, blank=True)
+    
+    
+
+    
+   
+    
+    
+    created_at = models.DateTimeField(auto_now_add= True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
     def __str__(self):
         return self.customer.admin.username
 
+# class LicenceDetail(models.Model):
+#     kyc = models.OneToOneField(KYC, related_name='kyc_document', on_delete=models.CASCADE)
+#     document_front_image = models.ImageField(upload_to="document/")
+#     document_back_image = models.ImageField(upload_to="document/", null =True, blank = True)
+#     issue_date = models.DateField(null=True, blank=True)
+#     expiry_date = models.DateField(null=True, blank=True)
 
+    
+#     def __str__(self):
+#         return str(self.kyc.customer.number)
+    
+# class RegistrationDetail(models.Model):
+#     kyc = models.OneToOneField(KYC, related_name='kyc_document', on_delete=models.CASCADE)
+#     document_front_image = models.ImageField(upload_to="document/")
+#     document_back_image = models.ImageField(upload_to="document/", null =True, blank = True)
+#     issue_date = models.DateField(null=True, blank=True)
+#     expiry_date = models.DateField(null=True, blank=True)
 
-
+    
+    def __str__(self):
+        return str(self.kyc.customer.number)
 
 
 class TopHeader(models.Model):
@@ -634,6 +673,15 @@ class SupportFile(models.Model):
 
     def __str__(self):
         return self.support.subject
+
+class LoginLogs(models.Model):
+    customer = models.ForeignKey(Customer, related_name='customer_logs', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    ip_aadress = models.CharField(max_length=200)
+    location = models.CharField(max_length=200)
+    
+    def __str__(self):
+        return self.customer.admin.username
     
 
 @receiver(post_save, sender=CustomUser)
