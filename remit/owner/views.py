@@ -491,29 +491,30 @@ def ticketList(request):
     }
     noti = notification()
     dist.update(noti)
+   
+    return render(request, "owner/ticket.html", dist)
+
+def replyTicket(request, id):
     if request.method == 'POST':
         form = ReplyForm(request.POST, request.FILES)
         if form.is_valid():
 
             aa= form.save(commit=False)
             aa.replied_by = request.user
-           
+            aa.ticket = Ticket.objects.get(id = id)
             aa.save()
-            tick = Ticket.objects.get(id = request.POST['ticket'])
+            tick = Ticket.objects.get(id = id)
+            tick.ticket = tick
             tick.status = "answered"
             tick.save()
             CustomerNotification.objects.create(customer =tick.customer, name ='Replied to ticket: ' +tick.subject, types ="ticket", ids=tick.id)
-            images = request.FILES.getlist("file[]")
-            for img in images:
-                image = SupportFile(file=img, customer = request.user.customer)
-                image.save()
+            
             messages.success(request, "Successfully replied ticket")
             return HttpResponseRedirect(reverse('owner:ticketView'))
         else:
             print(form.errors)
             messages.success(request, "Something went wrong")
-    return render(request, "owner/ticket.html", dist)
-
+    return HttpResponseRedirect(reverse('owner:ticketView'))
 
 def closeTicket(request, id):
     tock = Ticket.objects.get(id = id)
@@ -622,7 +623,6 @@ class CustomerView(View):
                 obj.number = request.POST['number']
                 obj.mail_address = request.POST['mail_address']
                 obj.state = request.POST['state']
-                obj.zip_code = request.POST['zip_code']
                 obj.city = request.POST['city']
                 obj.country = request.POST['country']
                 obj.address = request.POST['address']
@@ -688,7 +688,7 @@ def customerProfile(request, id):
             real_customer.customer.number = request.POST['number']
             real_customer.customer.mail_address = request.POST['mail_address']
             real_customer.customer.state = request.POST['state']
-            real_customer.customer.zip_code = request.POST['zip_code']
+           
             real_customer.customer.city = request.POST['city']
             real_customer.customer.country= request.POST['country']
             real_customer.customer.address = request.POST['address']
@@ -724,7 +724,7 @@ def AgentView(request):
                 obj.state = request.POST['state']
                 obj.zip_code = request.POST['zip_code']
                 obj.city = request.POST['city']
-                obj.country = Country.objects.get(id = request.POST['country']) 
+                obj.country = request.POST['country']
                 obj.address = request.POST['address']
                 obj.added_by = request.user
                 obj.save()

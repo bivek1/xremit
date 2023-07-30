@@ -176,25 +176,40 @@ KYC Details {% endblock title %} {% block inside %}
                 <div class="row p-0 m-0">
                     <div class="col-12 col-lg-6 mt-2">
                         <h5>
-                            Document Front Image
+                            Document Image
                         </h5>
-                        <a href="{{kycs.document_front_image.url}}" target="_blank">
-                            <img src="{{kycs.document_front_image.url}}" alt="" style="width: 100%; height: auto;">
-                        </a>
+                        {% if kycs.document_front_image %}
+                            <a href="{{kycs.document_front_image.url}}" target="_blank">
+                                <img src="{{kycs.document_front_image.url}}" alt="" style="width: 100%; height: auto;">
+                            </a>
+                        
+            
+                        {% endif %}
+                        {% if kycs.passport_image %}
+                            <a href="col-12 col-lg-6 mt-2" target="_blank">
+                                <img src="{{kycs.passport_image.url}}" alt="" style="width: 100%; height: auto;">
+                            </a>
+                
+                        {% endif %}
+
+                        {% if kycs.business_image %}
+                            <a href="col-12 col-lg-6 mt-2" target="_blank">
+                                <img src="{{kycs.business_image.url}}" alt="" style="width: 100%; height: auto;">
+                            </a>
+                
+                        {% endif %}
+                       
                         
                     </div>
                     <div class="col-12 col-lg-6 mt-2">
-                        <h5>
-                            Document Back Image
-                        </h5>
-                        
                         {% if kycs.document_back_image %}
+                            <h5>
+                                Document Back Image
+                            </h5>
                             <a href="col-12 col-lg-6 mt-2" target="_blank">
                                 <img src="{{kycs.document_back_image.url}}" alt="" style="width: 100%; height: auto;">
                             </a>
-                            
-                        {%else%}
-                            <small>Not Available</small>
+                    
                         {% endif %}
                             
                         

@@ -9,8 +9,10 @@ from homepage.forms import PasswordChangeFormUpdate, CustomerForm, TicketForm
 from django.http import JsonResponse
 from homepage.forms import TransactionForm, BankForm, ReplyForm
 from django.core import serializers
-from homepage.models import CustomerNotification, Ticket, AdminNotification, SendingPurpose, SourceFund
+from homepage.models import CustomerNotification,  AdminBankAccount, Ticket, AdminNotification, SendingPurpose, SourceFund, ScreenShot
 from homepage.location import get_user_country, get_country_name
+
+
 
 
 
@@ -23,9 +25,9 @@ def search(request):
         'reciepient':reciepient,
         'bank':bank,
         'currency':currency,
-        'noti': CustomerNotification.objects.filter(seen= False),
-        'noti_count' : CustomerNotification.objects.filter(seen= False).count(),
     }
+    noti = notification(request)
+    dist.update(noti)
     return render(request, 'customer/search.html', dist)
 
 def seenNotification(request):
@@ -128,6 +130,28 @@ def ticketList(request):
     return render(request, "customer/ticketList.html", dist)
 
 
+def replyTicket(request, id):
+    if request.method == 'POST':
+        form = ReplyForm(request.POST, request.FILES)
+        if form.is_valid():
+
+            aa= form.save(commit=False)
+            aa.replied_by = request.user
+            aa.ticket = Ticket.objects.get(id = id)
+            aa.save()
+            tick = Ticket.objects.get(id = id)
+            tick.ticket = tick
+            tick.status = "answered"
+            tick.save()
+            AdminNotification.objects.create(customer =request.user.customer, name ='Replied to ticket: ' +tick.ticket.subject, types ="ticket", ids=aa.ticket.id)
+            
+            messages.success(request, "Successfully replied ticket")
+            return HttpResponseRedirect(reverse('customer:ticketList'))
+        else:
+            print(form.errors)
+            messages.success(request, "Something went wrong")
+    return HttpResponseRedirect(reverse('customer:ticketList'))
+
 def defaultCurrencyView(request):
     dist = {
         'currency':Currency.objects.all()
@@ -145,6 +169,8 @@ def defaultCurrencyView(request):
            DefaultCurrency.objects.create(customer = request.user.customer, currency = currency)
            messages.success(request, "Successfully Added Default Currency") 
     return render(request, "customer/default_currency.html", dist)
+
+
 
 
 def TwoFactorView(request):
@@ -251,7 +277,11 @@ def getBank(request):
             'account_name':bank.account_name,
             'account_number':bank.account_number,
             'bank_name':bank.bank_name,
-            
+            'currency_rate':bank.country.currency_country.currecy_rate,
+            'conversion_rate':bank.country.currency_country.conversion_rate,
+            'currecy_sign':bank.country.currency_country.currecy_sign,
+            'img':bank.country.flag_img.url,
+            'id':bank.country.currency_country.id
         }
        
     
@@ -261,17 +291,18 @@ def getBank(request):
 def customerDashboard(request):
     dist = {
         'currency' : Currency.objects.all().order_by('-id')[:3],
-        'transaction': Transaction.objects.filter(customer = request.user.customer)[:4]
+        'transaction': Transaction.objects.filter(customer = request.user.customer).order_by('-id')[:4]
     }
     noti = notification(request)
     dist.update(noti)
     return render(request, "customer/dashboard.html", dist)
 
 def recipient(request):
-    
+    form = BankForm()
     recipient = Recipient.objects.filter(customer = request.user.customer).order_by('-id')
     dist = {
-        'recipient':recipient
+        'recipient':recipient,
+        'form':form
     }
     noti = notification(request)
     dist.update(noti)
@@ -362,16 +393,29 @@ def sendMoney(request):
             aa.save()
             AdminNotification.objects.create(customer =request.user.customer, name ="Transanction Made" , types ="transaction", ids=aa.id)
             messages.success(request, "Your transaction is added and is in pending. You will get notified afer your payment is made")
-            return HttpResponseRedirect(reverse('customer:completePayment'))
+            return HttpResponseRedirect(reverse('customer:completePayment' ,args=[aa.id]))
+        else:
+            messages.success(request, form.errors.as_text)
     return render(request, "customer/sendMoney.html", dist)
 
 
 
-def completePayment(request):
-    return render(request, "customer/complete.html")
+def completePayment(request, id):
+    dist = {
+        'adminBank':AdminBankAccount.objects.all()
+    }
+    trans = Transaction.objects.get(id = id)
+    if request.method == 'POST':
+        screen_shot = request.FILES['screenshot']
+        ScreenShot.objects.create(transaction = trans, image = screen_shot)
+        messages.success(request, "Successfully added payment receipt")
+        return HttpResponseRedirect(reverse('customer:transaction'))
+    else:
+        messages.success(request, "Something went wrong. Please add image file")
+    return render(request, "customer/complete.html", dist)
 
 def transactionView(request):
-    transaction = Transaction.objects.filter(customer = request.user.customer)
+    transaction = Transaction.objects.filter(customer = request.user.customer).order_by('-id')
 
     dist = {
         'transaction':transaction
@@ -501,12 +545,10 @@ class Profile(View):
             real_customer.number = request.POST['number']
             real_customer.mail_address = request.POST['mail_address']
             real_customer.state = request.POST['state']
-            real_customer.zip_code = request.POST['zip_code']
             real_customer.city = request.POST['city']
-            real_customer.country= Country.objects.get(id = request.POST['country'])
+            real_customer.country= id = request.POST['country']
             real_customer.address = request.POST['address']
             real_customer.save()
-            
             messages.success(request, "Sucessfully Updated Profile")
             return HttpResponseRedirect(reverse('customer:profile'))
         else:

@@ -300,8 +300,10 @@
              
             </ul>
           </div>
-
-           <i class="fa fa-cog p-2 menu-icon"></i>
+          <a href="{%url 'customer:profile'%}">
+              <i class="fa fa-cog p-2 menu-icon"></i>
+          </a>
+           
            
            <a href="{%url 'homepage:logout'%}">
               <i class="fa fa-sign-out p-2 menu-icon"></i>
@@ -482,7 +484,16 @@
               Dashboard 
             </span>
           </div>
-          
+          <a href="{%url 'customer:sendMoney'%}" class="mt-3">
+              <div  class="d-flex justify-content-between p-2 text-success border-lighting" id ="login-card">
+                <p class="my-auto">
+                  Send money now
+                </p>
+                <i class="fa fa-money-bill my-auto" style="font-size: 20px;"></i>
+              </div>
+          </a>
+         
+
           <div class="container mt-2">
             {% if not user.customer.kyc_verified %}
               <div class="alert alert-light">
@@ -514,7 +525,7 @@
             <div class="mt-3 col-12 ">
               <div>
                 <div class="d-flex justify-content-between">
-                  <h5 class="m-0 p-2 text-primary">Your Recent Transactions</h5>
+                  <h5 class="m-0  text-primary">Your Recent Transactions</h5>
                   <a href="{%url 'customer:transaction'%}">
                     <button class="btn btn-primary">
                       See All
@@ -522,7 +533,14 @@
                   </a>
                 
                 </div>
-                 
+                
+                {% if not transaction %}
+                  <hr>
+                    <p class="text-secondary">
+                        You haven't added any transaction
+                    </p>
+                {% endif %}
+                  
                 {% for i in transaction %}
                     <div class="transaction-div p-2" id="login-card" data-bs-toggle="modal" data-bs-target="#exampleModalEdit{{i.id}}">
                         <div class="d-flex">
@@ -688,25 +706,23 @@
                                                     Bank Details
                                                 </h6>
                                                 <hr>
-
-                            
                                                 <div class="d-flex justify-content-between">
-                                                    <p class="text-secondary">
-                                                        Name
-                                                    </p>
-
-                                                    <b>
-                                                        Ram Prasad Yadav
-                                                    </b>
-                                                    
+                                                  <p class="text-secondary">
+                                                      Name
+                                                  </p>
+  
+                                                  <b>
+                                                      {{i.recipient.first_name}} {{i.recipient.last_name}}
+                                                  </b>
+                                                  
                                                 </div>
                                                 <div class="d-flex justify-content-between">
                                                     <p class="text-secondary">
                                                         Bank Name
                                                     </p>
-
+    
                                                     <p class="text-secondary">
-                                                        Citizen Bank Limited
+                                                        {{i.bank.bank_name}}
                                                     </p>
                                                     
                                                 </div>
@@ -714,9 +730,9 @@
                                                     <p class="text-secondary">
                                                         Account Number
                                                     </p>
-
+    
                                                     <p class="text-secondary">
-                                                        0021255622111
+                                                        {{i.bank.account_number}}
                                                     </p>
                                                     
                                                 </div>
@@ -724,13 +740,20 @@
                                                     <p class="text-secondary">
                                                         Account Name
                                                     </p>
-
+    
                                                     <p class="text-secondary">
-                                                        Ram Prasad Yadav
+                                                        {{i.bank.account_name}}
                                                     </p>
                                                     
                                                 </div>
                                             </div>
+                                            {% if i.transaction_screenshot %}
+                                              <h5>
+                                                  Payment Receipt 
+                                              </h5>
+                                              <hr>
+                                              <img src="{{i.transaction_screenshot.image.url}}" alt="" style="height: auto; width: 100%;">
+                                            {% endif %}
                                             
                                             
                                         </div>
@@ -759,7 +782,7 @@
             {% for i in currency  %}
             <div class="col-lg-4 col-12 mt-3">
     
-                <div class="currency-box my-auto text-center">
+                <div class="currency-box my-auto text-center" data-bs-toggle="modal" data-bs-target="#exampleModalC{{i.id}}">
                   <div class="p-2">
                     {% if i.country.flag_img %}
                     <img src="{{i.country.flag_img.url}}" alt="" height="30px;" width="auto">
@@ -778,6 +801,86 @@
                   </div>
                  
                 </div>
+
+                 <!-- Transaction Model -->
+                <div class="modal fade" id="exampleModalC{{i.id}}" tabindex="-1" aria-labelledby="exampleModalEditLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered model-lg">
+                    <div class="modal-content">
+                    
+                        <div class="modal-body">
+                          
+                            <div class="row" id="complete">
+                                <div class="col-12 col-lg-10  m-auto p-2 text-center">
+                                   <img src="{{i.country.flag_img}}" alt="" width="40%" height="auto">
+                                    
+                                    <div>
+                                        <div class="d-flex justify-content-between">
+                                            <h5>
+                                                Currency Details
+                                            </h5>
+                                           
+                                        </div>
+                                        
+                                        <div class="d-flex justify-content-between">
+                                            <p class="text-secondary">
+                                                Currency Rate
+                                            </p>
+  
+                                            <b>
+                                                {{i.currecy_rate}}
+                                            </b>
+  
+                                        </div>
+  
+                                        <div class="d-flex justify-content-between">
+                                            <p class="text-secondary">
+                                                Conversion Rate
+                                            </p>
+  
+                                            <p class="text-secondary">
+                                              {{i.conversion_rate}}
+                                            </p>
+                                            
+                                        </div>
+  
+                                        <div class="d-flex justify-content-between">
+                                            <p class="text-secondary">
+                                                Commision Rate
+                                            </p>
+  
+                                            <p class="text-secondary">
+                                                {{i.commision_rate}}
+                                            </p>
+                                            
+                                        </div>
+                                        <hr>
+                                        <div class="d-flex justify-content-between">
+                                          {% if i.country.flag_img %}
+                                              <img src="{{i.country.flag_img.url}}" alt="" height="40px;" width="auto">
+                                          {% endif %}
+                                          <div class="text-center">
+                                              <h1 class="text-warning">
+                                                  {{i.currecy_sign}}
+                                              </h1>
+                                          </div>
+                                        </div>
+                                       
+                                    </div>
+                                    
+                                    
+                                </div>
+                            </div>
+                                                                                            
+                            <div class="text-end mt-2">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        
+                        </div>
+                    
+                </div>
+                </div>
+                </div>
+                  <!-- Transaction Model -->
             </div>
                
             {% endfor %}

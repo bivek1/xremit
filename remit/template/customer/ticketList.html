@@ -37,17 +37,17 @@
        <div class="col-12 col-lg-12 m-auto" id="ticket-box">
             <h5>Ticket List</h5>
             <hr>
+            <a href="{%url 'customer:ticketView'%}">
+                <button class="btn btn-danger ">
+                    <i class="fa fa-plus"></i> Create New Ticket
+                </button>
+            </a>
+     
             <div class="d-flex align-items-start mt-2">
             
                 <div class="left-ticket-box p-2 nav flex-column nav-pills me-3 " id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <a href="{%url 'customer:ticketView'%}">
-                        <button class="btn btn-danger ">
-                            <i class="fa fa-plus"></i> Create New Ticket
-                        </button>
-                    </a>
-                    <hr>
-                    <h5 class="">My Tickets</h5>
-                    <hr>
+                    
+                   
                     <div class="pb-5">
                         {% for i in ticket %}
                             <button style="text-align: left; width: 100%;" class=" mt-2 nav-link text-dark{%if i.id == check%} active{%endif%}" id="v-pills-{{i.id}}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-{{i.id}}" type="button" role="tab" aria-controls="v-pills-{{i.id}}" aria-selected="true"> <b>#{{i.id}}</b> {{i.subject}}</button>
@@ -188,14 +188,15 @@
                                         <div class="modal-content ">
                                         
                                             <div class="modal-body">
-                                                <form action="" method="post" enctype="multipart/form-data">
+                                                <form action="{%url 'customer:ticketReply' i.id%}" method="post" enctype="multipart/form-data">
                                                     <h5>
                                                         Reply in details
                                                     </h5>
                                                     <small> You can paste the image directly to the box</small>
                                                     <hr>
                                                     {{form.description}}
-                                                    {{form.ticket}}
+                                              
+                                                    {{form.media}}
                                                     {% csrf_token %}
                                                     <button type="submit" class="btn btn-danger">
                                                         <i class="fa fa-reply"></i> Reply

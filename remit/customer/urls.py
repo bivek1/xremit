@@ -14,7 +14,7 @@ urlpatterns = [
     path('send-money', views.sendMoney, name ="sendMoney"),
     path('profile-customer', views.Profile.as_view(), name = "profile"),
     path('changeCurone', views.changeCurone, name ="changeCurone"),
-    path('complete-transaction', views.completePayment, name ="completePayment"),
+    path('complete-transaction/<int:id>', views.completePayment, name ="completePayment"),
     path('customer-transaction', views.transactionView, name ="transaction"),
     path('customer-bank-account', views.bankView, name ="bank"),
     path('customer-default-currency', views.defaultCurrencyView, name ="defaultCurrency"),
@@ -33,4 +33,7 @@ urlpatterns = [
     path('csutomer-seen-notification', views.seenNotification, name="seenNotification"),
     path('customer-all-notification', views.allNotification, name="allNotification"),
     path('search-customer-data/', views.search, name='search'),
+    path('customer-ticket-reply/<int:id>', views.replyTicket, name ="ticketReply"),
+
+
 ]   

@@ -21,12 +21,13 @@ from django.core.mail import send_mail
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
 from .forms import ContactForm
-from homepage.models import Currency,SocialLink, Country, DefaultCurrencyAdmin, LoginLogs
+from homepage.models import Currency,SocialLink, Country, DefaultCurrencyAdmin, LoginLogs, OTPcode, DefaultCurrencyAdmin
 # Create your views here.
 from .location import get_user_country
 from owner.models import BlockPlace
 from .ipaddress import log_user_login
 from django.http import JsonResponse
+from .otp import generate_random_code
 
 def set_session_small(request):
     request.session['navbar'] = 'small'
@@ -129,23 +130,32 @@ def Homepage(request):
         for i in asa:
             asa = i
             break
+    try:
+        default = asa.sending_currency
+    except:
+        default = Currency.objects.last()   
 
+    try:
+        re_default = asa.receiving_currency
+    except:
+        re_default = Currency.objects.first()     
    
     dist = {
         'choose':choose,
         'about':about,
         'homes':homes,
-        'service_man':Service.objects.all(),
+        'service_man':Service.objects.all()[:4],
         'last_test':test_last,
         'testomonial':testomonial,
         'social':SocialLink.objects.all(),
         'client':client,
-        'feature_b':Feature.objects.all(),
+        'feature_b':Feature.objects.all()[:4],
         'brand':brand,
-        'currency':Currency.objects.all(),
+        'currency':Currency.objects.all()[:4],
         'country': Country.objects.all(),
         'blog':Blog.objects.all()[:6],
         'default':default,
+        're_default':re_default,
         'first_fo':Footor.objects.filter(row='First'),
         'second_fo':Footor.objects.filter(row='Second'),
         'third_fo':Footor.objects.filter(row='Third'),
@@ -163,8 +173,41 @@ class BlogV(DetailView):
         return super().get_context_data(**kwargs)
 
 
-def LoginV(request):
+import random
+def OPTV(request):
+    
+   
+    if request.method == 'POST':
 
+        get_code = request.POST['otp']
+        print(code)
+        print(request.user.customer.customer_otp.code , get_code)
+        if get_code == request.user.customer.customer_otp.code:
+            return HttpResponseRedirect(reverse('customer:dashboard'))
+        else:
+            messages.error(request, "Invalid OPT. Try again")
+    else:
+        code = int(random.randint(1000, 9999))
+        print(code)
+        try:
+            op = request.user.customer.customer_otp
+            op.code = code
+            op.save()
+        except:
+            op = OTPcode.objects.create(customer = request.user.customer, code = code)
+            op.save()
+        
+        
+    return render(request, "homepage/otp.html")
+
+def LoginV(request):
+    social=SocialLink.objects.all()
+    dist = {
+        'social':social,
+        'first_fo':Footor.objects.filter(row='First'),
+        'second_fo':Footor.objects.filter(row='Second'),
+        'third_fo':Footor.objects.filter(row='Third'),
+    }
     tempate_name = 'homepage/login.html'
     if request.method == 'POST':
         username = request.POST['email']
@@ -175,29 +218,33 @@ def LoginV(request):
             if use.user_type == 'owner':
                 return HttpResponseRedirect(reverse('owner:dashboard'))
             elif use.user_type == "customer":
-                location = get_user_country()
-                ip_address = log_user_login(request, use)
-                LoginLogs.objects.create(customer= use.customer, ip_aadress = ip_address, location = location['country'] + " " +location['region'] + " " +location['city'])
-                return HttpResponseRedirect(reverse('customer:dashboard'))
+                if use.customer.security == 'sms':
+                    # return HttpResponseRedirect(reverse('homepage:OTPV'))
+                    return HttpResponseRedirect(reverse('customer:dashboard'))
+                else:
+                    return HttpResponseRedirect(reverse('customer:dashboard'))
             else:
                 return HttpResponseRedirect(reverse('agent:dashboard'))
         else:
             messages.error(request, "Incorrect Username and Password")
             return render(request, tempate_name)
     else:
-        blok = get_user_country()
+        # blok = get_user_country()
     
-        blockPlac = BlockPlace.objects.filter(block_status = True)
-        for i in blockPlac:
-            if i.block == "Country":
-                if blok['country'] == i.name or blok['region'] == i.name or blok['city'] == i.name :
-                    return render(request, 'homepage/blocked.html')
-        return render(request, tempate_name)
+        # blockPlac = BlockPlace.objects.filter(block_status = True)
+        # for i in blockPlac:
+        #     if i.block == "Country":
+        #         if blok['country'] == i.name or blok['region'] == i.name or blok['city'] == i.name :
+        #             return render(request, 'homepage/blocked.html')
+        return render(request, tempate_name, dist)
     
 
 def Register(request):
     dist = {
-        'social':SocialLink.objects.all()
+        'social':SocialLink.objects.all(),
+        'first_fo':Footor.objects.filter(row='First'),
+        'second_fo':Footor.objects.filter(row='Second'),
+        'third_fo':Footor.objects.filter(row='Third'),
     }
     tempate_name = 'homepage/register.html'
     if request.method == 'POST':

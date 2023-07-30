@@ -36,63 +36,83 @@
   </style>
 
 
-<div class="background p-0 m-0">
-    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top" id="navbar">
+<div class="p-0 m-0">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top bg-light" id="navbar">
         <div class="container-fluid">
-          <!-- <a class="navbar-brand" href="{%url 'homepage:homepage'%}">
-            <h4>
-                X<span class="bg-primary p-2">Remit</span>
-            </h4>
-          </a> -->
+        
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNav">
-            <ul class="navbar-nav">
-            <a href="{%url 'homepage:homepage'%}">
-                <img src="{%static 'resources/logo.png'%}" alt="" height="70px">
+            <a href="{%url 'homepage:homepage'%}" class="d-flex">
+                <img src="{%static 'resources/logodark.png'%}" alt="" height="50px">
+                <h2 class="my-auto p-2" id="headlogo">
+                    Xremit
+                </h2>
             </a>
+            <ul class="navbar-nav m-auto">
+            
               <li class="nav-item my-auto">
                
-                <a class="nav-link activeHome" aria-current="page" href="{%url 'homepage:homepage'%}">
+                <a class="nav-link " aria-current="page" href="{%url 'homepage:homepage'%}">
                     <!-- <i class="fa fa-home"></i>     -->
-                    Home
+                    HOME
                 
                 </a>
               </li>
               <li class="nav-item my-auto">
                 <a class="nav-link" href="{%url 'homepage:services'%}">
                     <!-- <i class="fa fa-server"></i> -->
-                    Services
+                    SERVICES
                 
                 </a>
               </li>
               <li class="nav-item my-auto">
                 <a class="nav-link" href="{%url 'homepage:feature'%}">
                     <!-- <i class="fa fa-info-circle"></i> -->
-                    Features
+                    FEATURES
                 </a>
               </li>
               <li class="nav-item my-auto">
                 <a class="nav-link" href="{%url 'homepage:currency'%}">
                     <!-- <i class="fa fa-info-circle"></i> -->
-                    Currency
+                    CURRENCY
                 </a>
               </li>
               <li class="nav-item my-auto">
                 <a class="nav-link" href="{%url 'homepage:country'%}">
                     <!-- <i class="fa fa-info-circle"></i> -->
-                    Countries
+                    COUNTRIES
                 </a>
               </li>
               <li class="nav-item my-auto">
                 <a class="nav-link" href="{%url 'homepage:blog'%}">
                     <!-- <i class="fa fa-blog"></i> -->
-                    Blog</a>
+                    BLOG</a>
               </li>
             </ul>
           
             <div class="nav-item dropdown">
+                <a href="{%url 'homepage:login'%}" id="loginHome">
+                    LOGIN 
+                </a>
+               
+                <a href="{%url 'homepage:register'%}">
+                    <button class="btn btn-primary">
+                        SIGN UP
+                    </button>
+                </a>
+             
+            </div>
+          </div>
+        </div>
+    </nav>
+    <div class="row m-0 show-in-phone">
+        <div class="mt-3 p-2">
+            <div class="float-start" style="font-size: 30px;">
+                <i class="fa fa-bars"></i>
+            </div>
+            <div class="float-end">
                 <a href="{%url 'homepage:login'%}">
                     <button class="btn btn-primary">
                          LOGIN 
@@ -104,397 +124,434 @@
                         SIGN UP
                     </button>
                 </a>
-             
             </div>
-          </div>
+          
+         
         </div>
-    </nav>
+    </div>
+   
     <div class="maintain">
 
     </div>
     
     {% block inside %}
-             
-    <div class="row m-0 mt-4 ps-5 pe-5">
-        <div class="col-12 col-lg-11 m-auto">
-            <div class="row m-0 p-0">
-                <div class="col-12 col-lg-7 my-auto ">
-                    <div class="mt-3">
-                        <h3 class="text-light">
-                            XRemit
-                        </h3>
-                        <h1 class="head-home text-light">
-                            Transfer Money At Your Fingertips
-                        </h1>
-                        <p class="head-para text-light p-0">
-                            Send & Receive money in seconds with great rates and cheaper transaction fee. Trusted by millions of people.
-                        </p>
+        <div class="contain-back">
+            <div class="row m-0 background" id="main-elemen">
+            </div>  
+            <div class="row m-0">
+                <div class="col-12 col-lg-11 m-auto">
+                    <div class="row m-0 p-0">
+                        <div class="col-12 col-lg-6 my-auto ">
+                            <div class="mt-5">
+                               
+                                <h1 class="head-home text-light">
+                                    Transfer Money At Your Fingertips
+                                </h1>
+                                <p class="head-para text-light p-0 mt-2">
+                                    Send & Receive money in seconds with great rates and cheaper transaction fee. Trusted by millions of people.
+                                </p>
+                                <a href="{%url 'homepage:login'%}">
+                                    <button class="btn btn-outline-light mt-2">
+                                        <i class="fa fa-arrow-alt-circle-right fa-pulse"></i> GET STARTED
+                                    </button>
+                                </a>
+                               
+                            </div>
+                        </div>
+    
+                        <div class="col-12 col-lg-6 mt-2">
+                            <div  class="p-3 curnbox ms-auto mt-5 box" id="login-card" >
+                                <h6 class="text-center mt-3">
+                                    SEND MONEY
+                                </h6>
+                                <hr>
+                                <p class="text-danger" id="infoerror">
+                                    
+                                </p>
+                                <div class="currecyBox mt-2">
+                                    <div class="left-currency">
+                                        <span class="text-secondary sendMoneyText p-2">You Send</span>
+                                        <input class="ps-2" type="text" name="sendingMoney" id="sendingMoney" placeholder="1000" onkeyup="checkCurrency();">
+                                    </div>
+
+                                    <div class="dropdown">
+                                        <a class="right-currency my-auto" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" >
+                                            <img id="sending_currency_img" class="my-auto" src="{{default.country.flag_img.url}}">
+                                            <small id="sending_currency_sign"   class="my-auto">{{default.currecy_sign}}</small>
+                                            <i class="fa fa-caret-down p-1 my-auto"></i>
+                                        </a>
+                                        
+                                        
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            {% for i in currency %}
+                                                <div class="right-currency-drop mb-1 p-1" onclick="changeState('{{i.id}}', '{{i.country.flag_img}}' , '{{i.currecy_sign}}');">
+                                                    <img class="my-auto" src="{{i.country.flag_img.url}}">
+                                                    <small class="my-auto">{{i.currecy_sign}}</small>
+                                                </div>
+
+                                            {% endfor %}
+                                        </ul>
+                                        
+                                        
+                                    
+                                    </div>
+                                        
+                                </div>
+                
+                                <div class="ps-3 pe-3 mt-2 mb-2">
+                                    <p class="m-0 d-flex justify-content-between">
+                                        <span id ="fee" class="small">
+                                           
+                                                {{default.conversion_rate}} {{default.currecy_sign}} 
+                                            
+                                        </span>
+                                        <span class="small">
+                                            Total Fees
+                                        </span>
+                                    </p>
+                
+                                    <p class="m-0 d-flex justify-content-between">
+                                        <span id ="converting_amt" class="small">
+                                      
+                                                0 {{default.currecy_sign}} 
+                                            
+                                        </span>
+                                        <span class="small">
+                                            Amout we'll convert
+                                        </span>
+                                    </p>
+                                    <p class="m-0 d-flex justify-content-between">
+                                        <span id="rate" class="small">
+                                           
+                                            {{default.conversion_rate}} 
+                                            
+                                        </span>
+                                        <span class="small">
+                                            Conversion rate 1 USD
+                                        </span>
+                                    </p>
+                                </div>
+                
+                                <div class="currecyBox">
+                                    <div class="left-currency">
+                                        <span class="sendMoneyText p-2">Receiptions gets</span>
+                                        <input class="ps-2" type="text" name="gets" id="gets" placeholder="84000" disabled>
+                                    </div>
+                                    
+                                    <div class="dropdown">
+                                        <a class="right-currency my-auto" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <img id="recv_currency_img" class="my-auto" src="{{re_default.country.flag_img.url}}">
+                                            <small id="recv_currency_sign" class="my-auto">{{re_default.currecy_sign}}</small>
+                                            <i class="fa fa-caret-down p-1 my-auto"></i>
+                                        </a>
+                                        
+                                        
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            {% for i in currency %}
+                                                <div class="right-currency-drop mb-2 p-1" onclick="changeStateTwo('{{i.id}}', '{{i.country.flag_img}}' , '{{i.currecy_sign}}');">
+                                                    <img class="my-auto" src="{{i.country.flag_img.url}}">
+                                                    <small class="my-auto">{{i.currecy_sign}}</small>
+                                                </div>
+
+                                            {% endfor %}
+                                        </ul>
+                                        
+                                        
+                                    
+                                    </div>
+                
+                                </div>
+                
+                                <small class="text-secondary">
+                                    By sending money you accept our 
+                                    <a href="http://">
+                                        terms and condition
+                                    </a>
+                                </small>
+                                <button type="button" class="btn btn-primary p-2 mt-3 w-100" id="procees_two">
+                                    Procced
+                                </button>
+                            </div>
+                        </div>
                     </div>
+                </div>
+            
+            </div>
+            <div class="row m-0 whychooseus mt-5 pb-5 pt-4">
+                <div class="col-12 mt-2 col-lg-4 p-2 text-center">
+                    <i class="fa fa-clock text-light"></i>
+                    <h4 class="text-light">
+                        It's easy with us
+                    </h4>
+                    <small class="text-light">
+                        Sending money to Ghana is so easy and fast with us. Plus, you can get regular updates and track your money every step of the way.
+                    </small>
                 </div>
 
-                <div class="col-12 col-lg-5 mt-5">
-                    <div  class="p-3 curnBx ms-auto" id="login-card">
-                       
-                        <h6 class="text-center">
-                            HOW MUCH YOU WANT TO TRANSFER?
-                        </h6>
-                        <p class="text-danger" id="infoerror">
-                            
-                        </p>
-                        <div class="currecyBox mt-3">
-                            <div class="left-currency">
-                                <span class="text-secondary sendMoneyText p-2">You Send</span>
-                                <input class="ps-2" type="text" name="sendingMoney" id="sendingMoney" placeholder="1000" onkeyup="checkCurrency();">
-                            </div>
-        
-                            <div class="dropdown">
-                                <a class="right-currency my-auto p-1" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" >
-                                    <img id="sending_currency_img" class="my-auto" src="{{default.country.flag_img.url}}">
-                                    <small id="sending_currency_sign"   class="my-auto">{{default.currecy_sign}}</small>
-                                    <i class="fa fa-caret-down p-1 my-auto"></i>
-                                </a>
-                                
-                                
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    {% for i in currency %}
-                                        <div class="right-currency-drop mb-2 p-1" onclick="changeState('{{i.id}}', '{{i.country.flag_img}}' , '{{i.currecy_sign}}');">
-                                            <img class="my-auto" src="{{i.country.flag_img.url}}">
-                                            <small class="my-auto">{{i.currecy_sign}}</small>
-                                        </div>
-        
-                                    {% endfor %}
-                                </ul>
-                                
-                                
-                            
-                            </div>
-                                
-                        </div>
-        
-                        <div class="ps-3 pe-3 mt-2 mb-2">
-                            <p class="d-flex justify-content-between">
-                                <span id ="fee">
-                                    <b>
-                                        {{default.conversion_rate}} {{default.currecy_sign}} 
-                                    </b>
-                                </span>
-                                <span>
-                                    Total Fees
-                                </span>
-                            </p>
-        
-                            <p class="d-flex justify-content-between">
-                                <span id ="converting_amt">
-                                    <b>
-                                        0 {{default.currecy_sign}} 
-                                    </b>
-                                </span>
-                                <span>
-                                    Amout we'll convert
-                                </span>
-                            </p>
-                            <p class="d-flex justify-content-between">
-                                <span id="rate">
-                                    <b>
-                                        {{default.conversion_rate}} 
-                                    </b>
-                                </span>
-                                <span>
-                                    Conversion rate
-                                </span>
-                            </p>
-                        </div>
-        
-                        <div class="currecyBox">
-                            <div class="left-currency">
-                                <span class="text-success sendMoneyText p-2">Receiptions gets</span>
-                                <input class="ps-2" type="text" name="gets" id="gets" placeholder="84000" disabled>
-                            </div>
-                            
-                            <div class="dropdown">
-                                <a class="right-currency my-auto" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img id="recv_currency_img" class="my-auto" src="{{default.country.flag_img.url}}">
-                                    <small id="recv_currency_sign" class="my-auto">{{default.currecy_sign}}</small>
-                                    <i class="fa fa-caret-down p-1 my-auto"></i>
-                                </a>
-                                
-                                
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    {% for i in currency %}
-                                        <div class="right-currency-drop mb-2 p-1" onclick="changeStateTwo('{{i.id}}', '{{i.country.flag_img}}' , '{{i.currecy_sign}}');">
-                                            <img class="my-auto" src="{{i.country.flag_img.url}}">
-                                            <small class="my-auto">{{i.currecy_sign}}</small>
-                                        </div>
-        
-                                    {% endfor %}
-                                </ul>
-                                
-                                
-                            
-                            </div>
-        
-                        </div>
-        
-                        <p class="text-success p-0 m-0 mt-3">
-                            Your money will arived by <b>Jan 10</b>
-                        </p>
-                        <small>
-                            By sending money you accept our 
-                            <a href="http://">
-                                terms and condition
-                            </a>
-                        </small>
-                        <button type="button" class="btn btn-primary p-2 mt-3 w-100" id="procees_two">
-                            Procced
-                        </button>
-                       
-                        
-                    </div>
+                <div class="col-12 mt-2 col-lg-4 p-2 text-center">
+                    <i class="fa fa-user-friends text-light"></i>
+                    <h4 class="text-light">
+                        Trusted by millions
+                    </h4>
+                    <small class="text-light">
+                        Over 5 million customers trust us to transfer money to their friends and family worldwide. It's your money. We get it to your loved ones, quickly and safely.
+                    </small>
+                </div>
+
+                <div class="col-12 mt-2 col-lg-4 p-2 text-center">
+                    <i class="fa fa-helmet-safety text-light"></i>
+                    <h4 class="text-light">
+                        Always safe
+                    </h4>
+                    <small class="text-light">
+                        xRemit is an authorised and regulated money transfer service. Our security checks protect your money and personal information at all times.
+                    </small>
                 </div>
             </div>
-        </div>
+        </div>     
        
-       
-    </div>  
-    <div class="container-fluid m-0 p-0">
-        <div class="row m-0 mt-5 ps-5 pe-5">
-            <h5 class="text-center mb-3 head-home">Our 
-                <span class="text-primary text-light">service can serve you the best</span>
-            </h5>
-            <p class="m-0"></p>
-    
-            
-            {% for i in service_man  %}
-                 <div class="mt-2 col-6 col-lg-3 m-auto">
-                    <a href="{%url 'homepage:serviceDetail' i.id i.name%}">
-                        <div class="course-box ps-2 pe-2">
-                            <img src="{%if i.image%}{{i.image.url}}{%endif%}" alt="" height="60px" width="auto">
-                            <h4 class="mt-3">{{i.name}}</h4>
-                            <small class="text-light">
-                                {{i.description|truncatewords:15|safe}}
-                            </small>
-                        </div>
-                    </a>
-                
-                 </div>
-                 
-            {% endfor %}
-             
-        </div> 
-        
-        
-        <div class="row m-0 mt-5 p-3">
-    
-           
-            <div class="col-12 mt-2 col-lg-12">
-                <h3 class="head-home text-dark text-center">
-                    We're ready to give you delited service
-                </h3>
-                <h3 class="head-para mt-2 text-center">
-                    <span class="text-dark">
-                        OUR
-                    </span>
-                         
-                    <span class="bg-warning p-2">
-                        FEATURES
-                    </span>
-                </h3>
-                <div class="row p-0 m-0">
-                    {% for j in feature_b %}       
-                        <div class="col-12 col-lg-3">
-                            <a href="{%url 'homepage:featureDetail' j.id j.name %}">
-                                <div class="features-box mt-3 text-center">
-                                    <img src="{{j.image.url}}" alt="" style="height: 80px; width: auto;">
-                                    <h5 class="my-auto text-dark mt-2">
-                                        {{j.name}}
-                                    </h5>
-                                    <small class="text-dark mt-2">
-                                        {{j.feature|truncatewords:10|safe}}
-                                    </small>
-                                    
-                                </div>
-                            </a>
-                           
-                        </div>
-                    {% endfor %}
-                </div>
-              
-            </div>
-            
-        </div> 
-        
-        <div class="row m-0 mt-5 bg-light pb-5 about-us">
-            <div class="col-lg-6 col-12 mt-3 d-flex">
-                <div class="my-auto text-center">
-                    
-                    <h2 class="head-home text-light mt-2">
-                        
-                            ABOUT XREMIT
-                        
-                    </h2>
-                    <p class="text-light">
-                        <small>
-                            {{about|safe|truncatewords:50|striptags}}
-                        </small>
-                    </p>
-                    
-                    <a href="{%url 'homepage:about'%}">
-                        <button class="btn btn-warning mt-3 btn-lg m-auto">
-                            Visit About Us
-                        </button>
-                    </a>
-                  
-                </div>
-               
-            </div>
-            <div class="col-lg-6 col-12 mt-3 text-center">
-                <img src="{%static 'resources/money.png'%}" alt="" height="auto" width="90%">
-            </div>
-           
-        </div> 
-        
-        <div class="row bg-white p-0 m-0 pb-5">
-            <div class="col-12 mt-5 col-lg-12 ">
-                <div class="d-flex mt-3">
-                    <div class="my-auto pb-3 text-center">
-                        <img src="{%static 'resources/logodark.png'%}" alt="" width="10%" height="auto">
-                        <h1 class="mb-3 p-2 mt-3 text-center head-home">WHY 
-                            
-                                CHOOSE US?
-                            
-                        </h1>
-                        <div class="p-2 text-secondary">
-                            {{choose|truncatewords:70|safe|striptags}}
-                        </div>
-                        <button class="btn btn-warning mt-2 btn-lg m-auto">
-                           View More
-                        </button>
-                    </div>
-                   
-                </div>
-               
-            </div>
-    
-            <h3 class="text-center head-home mt-5">
-               What our customer says about us
-            </h3>
-            <!-- Slider main container -->
-            <div class="swiper row">
-                <!-- Additional required wrapper -->
-                <div class="swiper-wrapper">
-                    <!-- Slides --> 
-                    {% for i in  testomonial%}            
-                        <div class="swiper-slide mt-3 col-lg-3 col-6 text-center">
-                            <figure class="text-center mt-5">
-                                <blockquote class="blockquote">
-                                  <p>{{i.description}}</p>
-                                </blockquote>
-                                <figcaption class="blockquote-footer">
-                                    {{i.name}}
-                                </figcaption>
-                            </figure>
-                            
-    
-                        </div>
-                    {% endfor %}
-           
-            
-                </div>
-                <!-- If we need pagination -->
-                <div class="swiper-pagination"></div>
-            
-                <!-- If we need navigation buttons -->
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-            
-                <!-- If we need scrollbar
-                <div class="swiper-scrollbar"></div> -->
-            </div>
-           
-           
-        </div>
-        
-        <div class="row p-0 m-0 bg-white">
-            <div class="col-12 col-lg-10 mt-4 m-auto mt-3 pb-5">
-                <h5 class="head-home text-center">
-                    Send money across the country
+        <div class="container-fluid m-0 p-0">
+            <div class="row m-0 mt-5 ps-5 pe-5">
+                <h5 class="text-center mb-3 head-home">
+                    Our 
+                   service can serve you the best</span>
                 </h5>
-                <div class="row m-0 pb-4">
-                    {% for i in country  %}
-                        <div class="col-6 col-lg-3 mt-2">
-                            <div class="countryBox d-flex justify-content-between">
-                                <img src="{{i.flag_img.url}}" alt="">
-                                <p class="my-auto pe-2">
-                                    {{i.name}}
-                                </p>
+            
+                
+                {% for i in service_man  %}
+                    <div class="mt-2 col-12 col-lg-3 m-auto">
+                        <a href="{%url 'homepage:serviceDetail' i.id i.name%}">
+                            <div class="course-box ps-2 pe-2 text-center">
+                                <img src="{%if i.image%}{{i.image.url}}{%endif%}" alt="" height="100px" width="auto">
+                                <h4 class="mt-3">{{i.name}}</h4>
+                               
                             </div>
-                           
-                        </div>
-                    {% endfor %}
+                        </a>
+                    
+                    </div>
+                    
+                {% endfor %}
+                
+            </div> 
+            
+            
+            <div class="row m-0 mt-5 p-3 pb-5">
+        
+            
+                <div class="col-12 mt-2 col-lg-12">
+                  
+                    <h3 class="head-para mt-2 text-center">
+                        <span class="text-dark">
+                            OUR
+                        </span>
+                            
+                        <span class="bg-warning p-2">
+                            FEATURES
+                        </span>
+                    </h3>
+                    <div class="row p-0 m-0">
+                        {% for j in feature_b %}       
+                            <div class="col-12 col-lg-3">
+                                <a href="{%url 'homepage:featureDetail' j.id j.name %}">
+                                    <div class="features-box mt-3 text-center">
+                                        <img src="{{j.image.url}}" alt="" style="height: 80px; width: auto;">
+                                        <h5 class="my-auto text-dark mt-2">
+                                            {{j.name}}
+                                        </h5>
+                                       
+                                        
+                                    </div>
+                                </a>
+                            
+                            </div>
+                        {% endfor %}
+                    </div>
+                
                 </div>
-    
-    
-                <h3 class="text-center head-home mt-5">
-                    Our Latest News and Blog
-                </h3>
-                <div class="row m-0 mt-3">
-                    {% for i in blog%}            
-                       <div class="col-lg-3 col-12 mt-2">
-                            <a href="{%url 'homepage:blogDetail' i.id i.title%}">
-                                <div class="blog-box">
-                                    <div class="top-stick">
-                                        {% if i.types == 'Blog' %}
-                                            <span class="badge bg-warning">
-                                                Blog
-                                            </span>
-                                        {%else%}
-                                            <span class="badge bg-success">
-                                                News 
-                                            </span>
-                                        {% endif %}
-                                    </div>
-                                    {% if i.image %}
-                                        <img src="{{i.image.url}}" alt="{{i.tittle}}" style="width: 100%; height: 150px;">
-                                    {% endif %}
-                                    <div class="p-2">
-                                        <h6>
-                                            {{i.title}}
-                                        </h6>
-                                      
-                                        <small>
-                                            {{i.date_added}}
-                                        </small>
-                                    </div>
-                                
-                                </div>
+                
+            </div> 
+            
+            <!-- <div class="row m-0 mt-5 bg-light pb-5 about-us">
+                <div class="col-lg-6 col-12 mt-3 d-flex">
+                    <div class="my-auto text-center">
+                        
+                        <h2 class="head-home text-light mt-2">
+                            
+                                ABOUT XREMIT
+                            
+                        </h2>
+                        <p class="text-light">
+                            <small>
+                                {{about|safe|truncatewords:50|striptags}}
+                            </small>
+                        </p>
+                        
+                        <a href="{%url 'homepage:about'%}">
+                            <button class="btn btn-warning mt-3 btn-lg m-auto">
+                                Visit About Us
+                            </button>
+                        </a>
+                    
+                    </div>
+                
+                </div>
+                <div class="col-lg-6 col-12 mt-3 text-center">
+                    <img src="{%static 'resources/money.png'%}" alt="" height="auto" width="90%">
+                </div>
+            
+            </div>  -->
+            
+            <div class="row bg-white p-0 m-0 pb-5">
+                <div class="col-12 col-lg-12 p-0 m-0">
+                    <div class="d-flex " id="chppse">
+                        <div class="my-auto p-3">
+                           
+                            <h1 class="mb-3 p-2 mt-3 head-home text-white">WHY 
+                                CHOOSE US?  
+                            </h1>
+                            <div class="p-2 text-white">
+                                {{choose|truncatewords:30|safe|striptags}}
+                            </div>
+                            <a href="{%url 'homepage:about'%}">
+                                <button class="btn btn-light mt-3">
+                                    Know More
+                                </button>
                             </a>
                            
-                       </div>
-                    {% endfor %}
-                </div>
-              
-                
-    
-                <h3 class="text-center head-home mt-5">
-                    We feel proud to serve you
-                 </h3>
-                <div class="row m-0 mt-3">
-                    {% for i in brand%}            
-                        <div class="brand-i mt-3 col-lg-3 col-6 text-center">
-                            <img src="{{i.image.url}}" alt="">
+                           
                         </div>
-                    {% endfor %}
+                        <img class="hidePhone" src="{%static 'resources/choose.webp'%}" alt="" height="auto">
+                    </div>
+                
                 </div>
-              
+        
+                <h3 class="text-center head-home mt-5">
+                What our customer says about us
+                </h3>
+                <!-- Slider main container -->
+                <div class="swiper row">
+                    <!-- Additional required wrapper -->
+                    <div class="swiper-wrapper">
+                        <!-- Slides --> 
+                        {% for i in  testomonial%}            
+                            <div class="swiper-slide mt-3 col-lg-3 col-6 text-center">
+                                <figure class="text-center mt-5">
+                                    <blockquote class="blockquote">
+                                    <p>{{i.description}}</p>
+                                    </blockquote>
+                                    <figcaption class="blockquote-footer">
+                                        {{i.name}}
+                                    </figcaption>
+                                </figure>
+                                
+        
+                            </div>
+                        {% endfor %}
+            
+                
+                    </div>
+                    <!-- If we need pagination -->
+                    <div class="swiper-pagination"></div>
+                
+                    <!-- If we need navigation buttons -->
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                
+                    <!-- If we need scrollbar
+                    <div class="swiper-scrollbar"></div> -->
+                </div>
+            
             
             </div>
-    
-        </div>
+            
+            <div class="row p-0 m-0 bg-white">
+                <div class="col-12 col-lg-10 mt-4 m-auto mt-3 pb-5">
+                    <h5 class="head-home text-center">
+                        Send money across the country
+                    </h5>
+                    <div class="row m-0 pb-4">
+                        {% for i in country  %}
+                            <div class="col-12 col-lg-6 mt-3">
+                                <div class="countryBox d-flex justify-content-between">
+                                    <img src="{{i.flag_img.url}}" alt="">
+                                    <p class="my-auto pe-2">
+                                        {{i.name}}
+                                    </p>
+                                </div>
+                            
+                            </div>
+                        {% endfor %}
+                    </div>
         
-       
-    </div>
+        
+                    <h3 class="text-center head-home mt-5">
+                        Our Latest News and Blog
+                    </h3>
+                    <div class="row m-0 mt-3">
+                        {% for i in blog%}            
+                            <div class="col-lg-4 blog-box col-12 mt-2">
+                                <a href="{%url 'homepage:blogDetail' i.id i.title%}">
+                                    <div>
+                                        <div class="top-stick">
+                                            {% if i.types == 'Blog' %}
+                                                <span class="badge bg-warning">
+                                                    Blog
+                                                </span>
+                                            {%else%}
+                                                <span class="badge bg-success">
+                                                    News 
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                        {% if i.image %}
+                                            <img src="{{i.image.url}}" alt="{{i.tittle}}" style="width: 100%; height: 180px;">
+                                        {% endif %}
+                                        <div class="p-2">
+                                            <h6>
+                                                {{i.title}}
+                                            </h6>
+                                        
+                                            <small class="text-secondary">
+                                                <i class="fa fa-calendar"></i>
+                                                {{i.date_added}}
+                                            </small>
+                                            <hr>
+                                            <button class="btn btn-primary">
+                                                Read more
+                                            </button>
+                                        </div>
+                                    
+                                    </div>
+                                </a>
+                                
+                            </div>
+                        {% endfor %}
+                    </div>
+                
+                    
+        
+                    <h3 class="text-center head-home mt-5">
+                        We feel proud to serve you
+                    </h3>
+                    <div class="row m-0 mt-3">
+                        {% for i in brand%}            
+                            <div class="brand-i mt-3 col-lg-3 col-12 text-center">
+                                <img src="{{i.image.url}}" alt="">
+                            </div>
+                        {% endfor %}
+                    </div>
+                
+                
+                </div>
+        
+            </div>
+            
+        
+        </div>
+
     {% endblock inside %}
-    <div class="footer row p-0 m-0">
+
+    <div class="footer row p-0 m-0 mt-5">
         <div class="col-12 col-lg-10  mt-5 m-auto mb-5">
             <div class="row p-0 m-0 ps-2 pe-2">
                 <div class="col-12 col-lg-3 mt-3 text-light">
@@ -601,14 +658,15 @@
 
 </div>
 
+<script src="{%static 'js/sendMoney.js'%}"></script>
 
 
 <script>
     //Get the button
       var mybutton = document.getElementById("myBtn");
-      var navbar = document.getElementById("navbar")
-      var navlink = document.getElementsByClassName('nav-link')
-      // When the user scrolls down 20px from the top of the document, show the button
+    //   var navbar = document.getElementById("navbar")
+    //   var navlink = document.getElementsByClassName('nav-link')
+    //   // When the user scrolls down 20px from the top of the document, show the button
       window.onscroll = function() {scrollFunction()};
       
       function scrollFunction() {
@@ -619,29 +677,29 @@
                 navlink[i].style.color = "black"; 
             }
  
-          navbar.style.backgroundColor = "white"
-          navbar.style.boxShadow = "box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;"
-          navbar.style.top = "0px";
+        //   navbar.style.backgroundColor = "white"
+        //   navbar.style.boxShadow = "box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;"
+        //   navbar.style.top = "0px";
         //   $('.nav-item').style('color','#110c5e')
           
-          navbar.style.boxShadow = "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)";
+        //   navbar.style.boxShadow = "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)";
         } else {
             if ($(window).width() < 600) {
                 mybutton.style.display = "none";
-                navbar.style.top = "0px";
-                navbar.style.boxShadow = "";
-                navbar.style.transition = "0.3s top"
+                // navbar.style.top = "0px";
+                // navbar.style.boxShadow = "";
+                // navbar.style.transition = "0.3s top"
             }
             else {
                 mybutton.style.display = "none";
-                for(var i = 0; i < navlink.length; i++){
+                // for(var i = 0; i < navlink.length; i++){
          
-                        navlink[i].style.color = "white"; 
-                    }
-                navbar.style.top = " 0px";
-                navbar.style.backgroundColor = ""
-                navbar.style.boxShadow = "";
-                navbar.style.transition = "0.3s top"
+                //         navlink[i].style.color = "white"; 
+                //     }
+                // navbar.style.top = " 0px";
+                // navbar.style.backgroundColor = ""
+                // navbar.style.boxShadow = "";
+                // navbar.style.transition = "0.3s top"
             }
            
         }

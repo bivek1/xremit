@@ -5,38 +5,70 @@
 {% endblock title %}
     
 {% block inside %}
-<div class="row bg-white m-0 pt-5 pb-5">
-    <div class="mt-3 mb-3 text-center">
-        <span class="breadcum-front text-light">
-            <i class="fa fa-arrow-alt-circle-right"></i>
+<div class="row m-0" id="topbarpage">
+    <div class="d-flex my-auto">
+        
+        <h2 class="head-para">
             <a href="{%url 'homepage:homepage'%}">
                 Homepage
-            </a>/
+            </a>
+             
+        </h2>
+       
+        <p class="head-para">
+            <i class="fa fa-arrow-alt-circle-right"></i>
+        </p>
+        <h2 class="head-para">
             <a href="{%url 'homepage:blog'%}">
                 Blog
-            </a>/
+            </a>
+            
+        </h2>
+        <p class="head-para">
+            <i class="fa fa-arrow-alt-circle-right"></i>
+        </p>
+        <h2 class="head-para">
             {{blog.title}}
-        </span>
+        </h2>
+       
     </div>
-    
+   
+</div>
+<div class="row bg-white m-0 pt-5 pb-5">
+
     <div class="row p-0 m-0 mt-3">
        
-        <div class="col-12 mt-2 text-center">
+        <div class="col-12 col-lg-6 mt-2 text-center">
             
             {% if blog.image %}
-                <img src="{{blog.image.url}}" alt="" srcset="" width="50%" height="auto">
+                <img src="{{blog.image.url}}" alt="" srcset="" width="90%" height="auto">
                 {%else%}
-                <img src="{%static 'resources/logodark.png'%}" alt="" srcset="" width="30%" height="auto">
+                <img src="{%static 'resources/logodark.png'%}" alt="" srcset="" width="50%" height="auto">
             {% endif %}
                 
         </div>
-        <div class="col-12  mt-2 my-auto r">
-            <h3 class="head-home text-center mt-3">
+        <div class="col-12 col-lg-6  mt-2 my-auto r">
+            <h3 class="text-dark mt-3">
                 {{blog.title}}
             </h3>
+            <small>
+                {{blog.description|safe|truncatewords:80|striptags}}
+            </small>
+            <hr>
+            <small class="text-secondary">
+                <i class="fa fa-calendar"></i>
+                {{blog.date_added}}
+            </small>
+            <br>
+            <a href="#descblog" >
+                <button class="btn btn-primary mt-3">
+                    Read more
+                </button>
+            </a>
+           
         </div>
         <div class="row p-0 m-0 mt-3 m-auto">
-            <div class="col-lg-10 col-12 m-auto">
+            <div class="col-lg-10 col-12 m-auto" id="descblog">
                 {{blog.description|safe}}
             </div>
             <h4 class="head-para text-dark text-center">
@@ -44,36 +76,41 @@
             </h4>
            
             {% for i in blog_man%}            
-                <div class="col-lg-3 col-12 mt-2">
-                    <div class="blog-box">
-                        <div class="top-stick">
-                            {% if i.types == 'Blog' %}
-                                <span class="badge bg-warning">
-                                    Blog
-                                </span>
-                            {%else%}
-                                <span class="badge bg-success">
-                                    News 
-                                </span>
+                <div class="col-lg-4 col-12 mt-2">
+                    <a href="{%url 'homepage:blogDetail' i.id i.title%}">
+                        <div class="blog-box">
+                            <div class="top-stick">
+                                {% if i.types == 'Blog' %}
+                                    <span class="badge bg-warning">
+                                        Blog
+                                    </span>
+                                {%else%}
+                                    <span class="badge bg-success">
+                                        News 
+                                    </span>
+                                {% endif %}
+                            </div>
+                            {% if i.image %}
+                                <img src="{{i.image.url}}" alt="{{i.tittle}}" style="width: 100%; height: 150px;">
                             {% endif %}
+                            <div class="p-2">
+                                <h6>
+                                    {{i.title}}
+                                </h6>
+                               
+                                <small class="text-secondary">
+                                    <i class="fa fa-calendar"></i>
+                                    {{i.date_added}}
+                                </small>
+                                <hr>
+                                <button class="btn btn-primary">
+                                    Read more
+                                </button>
+                            </div>
+                        
                         </div>
-                        {% if i.image %}
-                            <img src="{{i.image.url}}" alt="{{i.tittle}}" style="width: 100%; height: 150px;">
-                        {% endif %}
-                        <div class="p-2">
-                            <h6>
-                                {{i.title}}
-                            </h6>
-                            <small class="text-secondary">
-                                {{i.description|truncatewords:10|striptags}}
-                            </small>
-                            <hr>
-                            <small class="p-2">
-                                {{i.date_added}}
-                            </small>
-                        </div>
-                    
-                    </div>
+                    </a>
+                   
                 </div>
             {% endfor %}
           

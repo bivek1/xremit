@@ -93,7 +93,9 @@
           activedb
         {% endif %}">
           <div class="text-center">
-            <i class="fa fa-cog mt-2"></i>  
+            
+              <i class="fa fa-cog mt-2"></i>  
+            
           </div>
           <span class="ms-3 my-auto text-primary text-bold">
             Site Settings
@@ -354,9 +356,9 @@
               
             </ul>
           </div>
-           
-           <i class="fa fa-cog p-2 menu-icon"></i>
-           
+          <a href="{%url 'owner:profile'%}">
+            <i class="fa fa-cog p-2 menu-icon"></i>
+          </a>
            <a href="{%url 'homepage:logout'%}">
               <i class="fa fa-sign-out p-2 menu-icon"></i>
            </a>
@@ -606,59 +608,7 @@
                     </a>
                      
                   </div>
-                  <div class="mt-2">
-                    <a class="p-2" href="{%url 'owner:purpose'%}">
-                        <button class="btn btn-primary">
-                          Sending Purpose
-                        </button>
-                    </a>
-                    <a class="p-2" href="{%url 'owner:fund'%}">
-                      <button class="btn btn-danger">
-                        Source Fund
-                      </button>
-                    </a>
-                    <a class="p-2" href="{%url 'owner:socialLink'%}">
-                      <button class="btn btn-secondary">
-                        Social Link
-                      </button>
-                    </a>
-
-                    <a class="p-2" href="{%url 'owner:footer'%}">
-                      <button class="btn btn-info text-light">
-                        Footer
-                      </button>
-                    </a>
-
-                    <a class="p-2" href="{%url 'owner:blog'%}">
-                      <button class="btn btn-primary">
-                        Blog
-                      </button>
-                    </a>
-                    
-                    <a class="p-2" href="{%url 'owner:emailSetting'%}">
-                      <button class="btn btn-danger">
-                        Email
-                      </button>
-                    </a>
-
-                    <a class="p-2" href="{%url 'owner:smsSetting'%}">
-                      <button class="btn btn-info text-light">
-                        SMS
-                      </button>
-                    </a>
-                    <a class="p-2" href="{%url 'owner:ticketView'%}">
-                      <button class="btn btn-secondary text-light">
-                        Support
-                      </button>
-                    </a>
-                    <a class="p-2" href="{%url 'owner:siteInfo'%}">
-                      <button class="btn btn-danger text-light">
-                        Site Information
-                      </button>
-                    </a>
-                  </div>
-
-
+                
                   <div class="p-2 d-flex mt-3 justify-content-between" id="login-card">
                     <div class="text-center">
                         <button class="btn btn-success" data-bs-toggle="modal"
@@ -746,9 +696,12 @@
                   </div>
                   <div class="d-flex justify-content-between mt-3">
                       <h5 class="m-0 p-2 text-primary">Recent Transactions</h5>
-                      <button class="btn btn-primary">
-                        See All
-                      </button>
+                      <a href="{%url 'owner:transaction'%}">
+                        <button class="btn btn-primary">
+                          See All
+                        </button>
+                      </a>
+                      
                   </div>
                  
                  
@@ -801,12 +754,12 @@
                           
                           <div>
                           <h6 class="text-danger">
-                              - {{i.sent}} {{i.sending_currency.currecy_sign}}
+                              - {{i.sent|floatformat:2}} {{i.sending_currency.currecy_sign}}
                           </h6>
                           <p class="text-success">
                           
                               <b>
-                                  {{i.received}} {{i.receiving_currency.currecy_sign}}
+                                  {{i.received|floatformat:2}} {{i.receiving_currency.currecy_sign}}
                               </b>
                           </p>
                           </div>
@@ -881,7 +834,7 @@
                                                       </p>
       
                                                       <b>
-                                                          {{i.sent}} {{i.sending_currency.currecy_sign}}
+                                                          {{i.sent|floatformat:2}} {{i.sending_currency.currecy_sign}}
                                                       </b>
       
                                                   </div>
@@ -892,7 +845,7 @@
                                                       </p>
       
                                                       <p class="text-secondary">
-                                                          {{i.fee}} {{i.sending_currency.currecy_sign}}
+                                                          {{i.fee|floatformat:2}} {{i.sending_currency.currecy_sign}}
                                                       </p>
                                                       
                                                   </div>
@@ -903,7 +856,7 @@
                                                       </p>
       
                                                       <p class="text-secondary">
-                                                          {{i.received}} {{i.receiving_currency.currecy_sign}}
+                                                          {{i.received|floatformat:2}} {{i.receiving_currency.currecy_sign}}
                                                       </p>
                                                       
                                                   </div>
@@ -914,7 +867,7 @@
                                                       </p>
       
                                                       <p class="text-secondary">
-                                                      {{i.converting_rate}}
+                                                      {{i.converting_rate|floatformat:2}}
                                                       </p>
                                                       
                                                   </div>
@@ -925,7 +878,7 @@
                                                       </p>
       
                                                       <b>
-                                                          {{i.received}} {{i.receiving_currency.currecy_sign}}
+                                                          {{i.received|floatformat:2}} {{i.receiving_currency.currecy_sign}}
                                                       </b>
                                                       
                                                   </div>
@@ -937,50 +890,57 @@
       
                               
                                                   <div class="d-flex justify-content-between">
-                                                      <p class="text-secondary">
-                                                          Name
-                                                      </p>
-      
-                                                      <b>
-                                                          Ram Prasad Yadav
-                                                      </b>
-                                                      
-                                                  </div>
-                                                  <div class="d-flex justify-content-between">
-                                                      <p class="text-secondary">
-                                                          Bank Name
-                                                      </p>
-      
-                                                      <p class="text-secondary">
-                                                          Citizen Bank Limited
-                                                      </p>
-                                                      
-                                                  </div>
-                                                  <div class="d-flex justify-content-between">
-                                                      <p class="text-secondary">
-                                                          Account Number
-                                                      </p>
-      
-                                                      <p class="text-secondary">
-                                                          0021255622111
-                                                      </p>
-                                                      
-                                                  </div>
-                                                  <div class="d-flex justify-content-between">
-                                                      <p class="text-secondary">
-                                                          Account Name
-                                                      </p>
-      
-                                                      <p class="text-secondary">
-                                                          Ram Prasad Yadav
-                                                      </p>
-                                                      
-                                                  </div>
+                                                    <p class="text-secondary">
+                                                        Name
+                                                    </p>
+    
+                                                    <b>
+                                                        {{i.recipient.first_name}} {{i.recipient.last_name}}
+                                                    </b>
+                                                    
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="text-secondary">
+                                                        Bank Name
+                                                    </p>
+    
+                                                    <p class="text-secondary">
+                                                        {{i.bank.bank_name}}
+                                                    </p>
+                                                    
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="text-secondary">
+                                                        Account Number
+                                                    </p>
+    
+                                                    <p class="text-secondary">
+                                                        {{i.bank.account_number}}
+                                                    </p>
+                                                    
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="text-secondary">
+                                                        Account Name
+                                                    </p>
+    
+                                                    <p class="text-secondary">
+                                                        {{i.bank.account_name}}
+                                                    </p>
+                                                    
+                                                </div>
                                               </div>
                                               
                                               
                                           </div>
                                       </div>
+                                      {% if i.transaction_screenshot %}
+                                        <h5>
+                                            Payment Receipt 
+                                        </h5>
+                                        <hr>
+                                        <img src="{{i.transaction_screenshot.image.url}}" alt="" style="height: auto; width: 100%;">
+                                      {% endif %}
                                                                                                       
                                       <div class="text-end mt-2">
                                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -1046,7 +1006,7 @@
                       </div>
                       <div class="my-auto">
                           <div class="text-center das-img">
-                              <img src="{%static 'resources/transacton.jpg'%}" alt="" srcset="">
+                              <img src="{%static 'resources/transacton.png'%}" alt="" srcset="">
                           </div>
                          
                       </div>
@@ -1056,10 +1016,10 @@
             </div>
 
             <div class="col-12 col-lg-3 mt-2 ">
-              <a href="">
+              <a href="{%url 'owner:ticketView'%}">
                   <div class="dashboard-box">
                       <div class="my-auto">
-                          <h6>Customers</h6>
+                          <h6>Support</h6>
                          
                       </div>
                       <div class="my-auto">
@@ -1073,28 +1033,68 @@
               
             </div>
           </div>
-          <div class="row mt-3">
-              <div class="col-lg-3 col-6 mt-3 text-center below-tag">
-                  <img src="{%static 'resources/bank.png'%}" alt="">
-                  <h6>Bank</h6>
-              </div>
 
-              <div class="col-lg-3 col-6 mt-3 text-center below-tag">
-                <img src="{%static 'resources/region.png'%}" alt="">
-                <h6>Regions</h6>
-              </div>
 
-            <div class="col-lg-3 col-6 mt-3 text-center below-tag">
-              <img src="{%static 'resources/country.jpg'%}" alt="">
-              <h6>Country</h6>
-            </div>
+          <div class="mt-2">
+            <a class="p-2 d-flex justify-content-between w-100 box mt-3" href="{%url 'owner:purpose'%}">
+                <button class="btn btn-primary">
+                  Sending Purpose
+                </button>
+                <i class="my-auto fa-solid fa-question"></i>
+            </a>
+            <a class="p-2 d-flex justify-content-between w-100 box mt-3" href="{%url 'owner:fund'%}">
+              <button class="btn btn-danger">
+                Source Fund
+              </button>
+              <i class="my-auto fa-solid fa-money-bill-1-wave"></i>
+            </a>
+            <a class="p-2 d-flex justify-content-between w-100 box mt-3" href="{%url 'owner:socialLink'%}">
+              <button class="btn btn-secondary">
+                Social Link
+              </button>
+              <i class="my-auto fa-brands fa-facebook"></i>
+            </a>
 
-            <div class="col-lg-3 col-6 mt-3 text-center below-tag">
-              <img src="{%static 'resources/support.svg'%}" alt="">
-              <h6>Support</h6>
-            </div>
+            <a class="p-2 d-flex justify-content-between w-100 box mt-3" href="{%url 'owner:footer'%}">
+              <button class="btn btn-info text-light">
+                Footer
+              </button>
+              <i class="my-auto fa-solid fa-box-tissue"></i>
+            </a>
+
+            <a class="p-2 d-flex justify-content-between w-100 box mt-3" href="{%url 'owner:blog'%}">
+              <button class="btn btn-primary">
+                Blog
+              </button>
+              <i class="my-auto fa-solid fa-blog"></i>
+            </a>
+            
+            <a class="p-2 d-flex justify-content-between w-100 box mt-3" href="{%url 'owner:emailSetting'%}">
+              <button class="btn btn-danger">
+                Email
+              </button>
+              <i class="my-auto fa-solid fa-envelope-circle-check"></i>
+            </a>
+
+            <a class="p-2 d-flex justify-content-between w-100 box mt-3" href="{%url 'owner:smsSetting'%}">
+              <button class="btn btn-info text-light">
+                SMS
+              </button>
+              <i class="my-auto fa-solid fa-mobile-android"></i>
+            </a>
+            <a class="p-2 d-flex justify-content-between w-100 box mt-3" href="{%url 'owner:ticketView'%}">
+              <button class="btn btn-secondary text-light">
+                Support
+              </button>
+              <i class="my-auto fa-solid fa-users-slash"></i>
+            </a>
+            <a class="p-2 d-flex justify-content-between w-100 box mt-3" href="{%url 'owner:siteInfo'%}">
+              <button class="btn btn-danger text-light">
+                Site Information
+              </button>
+              <i class="my-auto fa-solid fa-info-circle"></i>
+            </a>
           </div>
-
         </div>
       {% endblock inside %}
     </div>

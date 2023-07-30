@@ -165,7 +165,7 @@ Transaction Details {% endblock title %} {% block inside %}
                             </p>
 
                             <b>
-                                Ram Prasad Yadav
+                                {{trans.recipient.first_name}} {{trans.recipient.last_name}}
                             </b>
                             
                         </div>
@@ -175,7 +175,7 @@ Transaction Details {% endblock title %} {% block inside %}
                             </p>
 
                             <p class="text-secondary">
-                                Citizen Bank Limited
+                                {{trans.bank.bank_name}}
                             </p>
                             
                         </div>
@@ -185,7 +185,7 @@ Transaction Details {% endblock title %} {% block inside %}
                             </p>
 
                             <p class="text-secondary">
-                                0021255622111
+                                {{trans.bank.account_number}}
                             </p>
                             
                         </div>
@@ -195,11 +195,18 @@ Transaction Details {% endblock title %} {% block inside %}
                             </p>
 
                             <p class="text-secondary">
-                                Ram Prasad Yadav
+                                {{trans.bank.account_name}}
                             </p>
                             
                         </div>
                     </div>
+                    {% if trans.transaction_screenshot %}
+                        <h5>
+                            Payment Receipt 
+                        </h5>
+                        <hr>
+                        <img src="{{trans.transaction_screenshot.image.url}}" alt="" style="height: auto; width: 100%;">
+                    {% endif %}
                     
                     
                 </div>

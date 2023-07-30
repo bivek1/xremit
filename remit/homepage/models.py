@@ -71,7 +71,6 @@ class Customer(models.Model):
     number = models.BigIntegerField(null = True)
     mail_address = models.CharField(max_length=100, null = True, blank = True)
     state = models.CharField(max_length=100, null = True, blank = True)
-    zip_code = models.IntegerField(null = True, blank = True)
     city = models.CharField(max_length=100, null = True, blank = True)
     country = models.CharField(max_length=100, null = True, blank = True)
     address = models.CharField(max_length = 200, null = True, blank = True)
@@ -111,6 +110,13 @@ class SourceFund(models.Model):
     def __str__(self):
         return self.name
 
+class OTPcode(models.Model):
+    customer = models.OneToOneField(Customer, related_name='customer_otp',on_delete=models.CASCADE, null= True, blank= True)
+    code = models.IntegerField()
+
+    def __str__(self):
+        return str(self.code)
+    
 class Restriction(models.Model):
     minimum_amount = models.IntegerField()
     maximum_amount = models.IntegerField()
@@ -227,10 +233,10 @@ class EmailList(models.Model):
     
 
 class Currency(models.Model):
-    country = models.ForeignKey(Country, related_name='currency_country', on_delete=models.CASCADE)
-    currecy_rate = models.IntegerField()
-    conversion_rate = models.IntegerField()
-    commision_rate = models.IntegerField()
+    country = models.OneToOneField(Country, related_name='currency_country', on_delete=models.CASCADE)
+    currecy_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    conversion_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    commision_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     currecy_sign = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add= True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -281,11 +287,11 @@ class Transaction(models.Model):
     recipient = models.ForeignKey(Recipient, related_name='recipient_transaction', on_delete=models.CASCADE)
     sending_currency = models.ForeignKey(Currency, related_name='sending_currency', on_delete=models.CASCADE)
     receiving_currency = models.ForeignKey(Currency, related_name='receiving_currency', on_delete=models.CASCADE)
-    fee = models.IntegerField()
-    converting_rate = models.IntegerField()
-    commision_rate = models.IntegerField(null=True, blank=True)
-    sent = models.IntegerField()
-    received = models.IntegerField()
+    fee = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    converting_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    commision_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    sent = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    received = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     sent_money_to_us = models.BooleanField(default=False)
     sent_to_client = models.BooleanField(default=False)
     status = models.CharField(max_length= 200, choices=(
@@ -309,7 +315,9 @@ class Transaction(models.Model):
         return ss
 
 
-
+class ScreenShot(models.Model):
+    transaction = models.OneToOneField(Transaction, related_name='transaction_screenshot' ,on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='screenshot/')
 
 class KYC(models.Model):
     image = models.ImageField(upload_to='kyc_image')
@@ -628,7 +636,7 @@ class Ticket(models.Model):
         return self.subject
     
 class TicketReply(models.Model):
-    ticket = models.ForeignKey(Ticket, related_name='ticket_reply', on_delete=models.CASCADE)
+    ticket = models.ForeignKey(Ticket, related_name='ticket_reply', on_delete=models.CASCADE, null = True, blank=True)
     description = RichTextUploadingField()
     date_added = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now = True)

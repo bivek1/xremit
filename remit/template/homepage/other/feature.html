@@ -6,19 +6,28 @@
 {% endblock title %}
     
 {% block inside %}
-<div class="row bg-white m-0 pt-5 pb-5">
-    <div class="mt-3 mb-3 text-center">
-        <span class="breadcum-front text-light">
-            <i class="fa fa-arrow-alt-circle-right"></i>
+<div class="row m-0" id="topbarpage">
+    <div class="d-flex my-auto">
+        
+        <h2 class="head-para">
             <a href="{%url 'homepage:homepage'%}">
-                Homepage
-            </a>/
+                Homepage 
+            </a>
+            
+        </h2>
+        
+        <p class="head-para">
+            <i class="fa fa-arrow-alt-circle-right"></i>
+        </p>
+        <h2 class="head-para">
             Features
-        </span>
+        </h2>
+       
     </div>
-    <h3 class="head-home text-center mt-3">
-        Features XRemit
-    </h3>
+   
+</div>
+<div class="row bg-white m-0 pt-5 pb-5">
+
     {% for j in feature_b %}       
         <div class="col-12 col-lg-3 mt-2">
             <a href="{%url 'homepage:featureDetail' j.id j.name %}">

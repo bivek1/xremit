@@ -37,9 +37,6 @@
           </button>
           {% include 'customer/notverified.html' %}
         {% endif %}
-          
-       
-      
       </div>
 
 
@@ -57,10 +54,56 @@
                         {%endif%}
                        {{i.last_name}}
                     </h6>
-                    <p class="text-danger">
+                    <p class="text-danger p-0 m-0">
                       <i class="fa fa-location-dot"></i>
                       {{i.country}}, {{i.city}}, {{i.state}}, {{i.zip_code}}, {{i.address}}
                     </p>
+                    
+                      <span class="text-success" onclick="addRec('{{i.id}}', '{{i.first_name}} {%if i.middle_name%}{{i.middle_name}}{%endif%}{{i.last_name}}')" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}">
+                        <i class="fa fa-arrow-circle-right fa-bounce"></i>
+                        Add Bank
+                      </span>
+
+                      <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                            
+                                <div class="modal-body">
+                                  
+                                    <h5 class="text-center text-dark">
+                                        Add New Bank
+                                    </h5>
+                                    <form action="{%url 'customer:bank'%}" method="post">
+                                        <h6>Select your Recipients</h6>
+                                        <select class="form-control mb-3 mt-3" name = "recipient" id="id_recipient">
+                                            <option value="0">
+                                                Select Recipients....
+                                            </option>
+                                            {% for i in recipient %}
+                                                <option value="{{i.id}}">
+                                                    {{i.first_name}} {%if i.middle_name%} {{i.middle_name}} {%endif%} {{i.last_name}}
+                                                </option>
+                                            {% endfor %}
+                                                
+                                        </select>
+                                        {{form}}
+                                        {% csrf_token %}
+                                        <button class="btn btn-success mt-3" type="submit">
+                                            Add Bank
+                                        </button>
+                                    </form>
+                                    
+                                    <div class="text-end mt-2">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                
+                                </div>
+                            
+                        </div>
+                        </div>
+                    </div>
+                    
+                   
                   </span>
 
             </div>
@@ -118,5 +161,12 @@
       </div>
     </div>
 </div>
+
+<script>
+  function addRec(id, name){
+    $('#id_account_name').val(name)
+    $('#id_recipient').val(id)
+  }
+</script>
 {% endblock inside %}
     

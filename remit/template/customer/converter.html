@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" />
+      </div>
+      <div>
+        <label for="fromCurrency">From Currency:</label>
+        <select id="fromCurrency">
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+          <!-- Add more currency options as needed -->
+        </select>
+      </div>
+      <div>
+        <label for="toCurrency">To Currency:</label>
+        <select id="toCurrency">
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+          <!-- Add more currency options as needed -->
+        </select>
+      </div>
+      <button onclick="convertCurrency()">Convert</button>
+      <div id="result"></div>
+
+      
+      <script>
+        const exchangeRates = {
+            USD: 1,     // 1 USD = 1 USD (Base currency)
+            EUR: 0.85,  // 1 USD = 0.85 EUR
+            GBP: 0.73,  // 1 USD = 0.73 GBP
+            AUD: 1.5,  // 1 USD = 0.73 GBP
+            NP: 130,  // 1 USD = 0.73 GBP
+            // Add more exchange rates as needed
+        };
+
+        function convertCurrency() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            const fromCurrency = document.getElementById('fromCurrency').value;
+            const toCurrency = document.getElementById('toCurrency').value;
+
+            if (isNaN(amount)) {
+                alert('Please enter a valid amount.');
+                return;
+            }
+
+            if (!exchangeRates[fromCurrency] || !exchangeRates[toCurrency]) {
+                alert('Invalid currency selection.');
+                return;
+            }
+
+            const result = (amount / exchangeRates[fromCurrency]) * exchangeRates[toCurrency];
+
+            document.getElementById('result').innerText = `${amount} ${fromCurrency} = ${result.toFixed(2)} ${toCurrency}`;
+        }
+
+
+      </script>
+</body>
+</html>
