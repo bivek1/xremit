@@ -661,6 +661,7 @@ a{
     background-image: linear-gradient(92.88deg, #292177 9.16%, #2325aa 43.89%, #423fd7 64.72%);
     color: white;
     padding: 25px;
+    overflow: scroll;
 }
 
 #topbarpage .head-para{
@@ -904,6 +905,12 @@ a{
     .docFile img {
         width: auto;
         height: 30px;
+    }
+    #topbarpage {
+        padding: 10px;
+    }
+    #topbarpage .head-para{
+        font-size: 10px;
     }
     #ticketBoxN{
         display: block;

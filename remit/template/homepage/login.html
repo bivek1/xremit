@@ -8,7 +8,7 @@
 
 {% block inside %}
     <div class="container-fluid d-flex">
-        <div class="row w-100">
+        <div class="row w-100 m-0">
             <div class="mt-1 p-2 text-center">
                 <span class="breadcum-front">
                     <i class="fa fa-arrow-alt-circle-right"></i>
@@ -18,7 +18,7 @@
                     Login
                 </span>
             </div>
-            <div class="col-11 col-lg-7 m-auto mt-4">
+            <div class="col-12 col-lg-7 m-auto mt-4">
                 <div class="row p-0 m-0 p-2 mt-2" id="login-card">
                     <div class="col-lg-6 col-md-6 col-12 p-0 m-auto text-center" >
                         <img  class="my-auto" src="{%if info.image%} {{info.image.url}} {%else%}{%static 'resources/side-login.jpg'%} {%endif%}" alt="" style="height: 100%; width: 70%;">

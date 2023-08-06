@@ -29,7 +29,7 @@
     </div>
     <div class="row backBox p-0 m-0">
   
-        <div class="row contentBox">
+        <div class="row contentBox m-0">
 
             <div class="bookContent p-2">
                
@@ -277,14 +277,14 @@
                                     <div id="tripInfo">
                                         <div class="row p-2">
                                         
-                                            <div class="col-10 col-lg-6 m-auto col-md-8">
+                                            <div class="col-12 col-lg-6 m-auto col-md-8">
                                                 <h5 class="text-center">
                                                     Review Details
                                                 </h5>   
-                                                <div class="row p-2 text-center" id="slowloder2">
+                                                <div class="row p-1 text-center" id="slowloder2">
                                                     <i class="fa-solid fa-spinner fa-spin"></i>
                                                 </div>
-                                                <div class="receipt-card p-3" id="receipt">
+                                                <div class="receipt-card p-2" id="receipt">
                                                     <div class="d-flex justify-content-between">
                                                         <h5>
                                                             Transfer Details
@@ -855,6 +855,8 @@
 
   
   function toggleBorder(element, id) {
+        var element = document.getElementById("reason");
+        element.scrollIntoView({ behavior: "smooth" });
         $('#slowloder').show()
         console.log(id)
         receipient_id = id
