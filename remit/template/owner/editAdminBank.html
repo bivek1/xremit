@@ -48,11 +48,16 @@
                         {{form.country}}
                         {{form.country.errors}}
                     </div>
-
+                   
                     <div class="col-6 col-lg-6 mt-2">
                         <p class="text-secondary">SWIFT CODE*</p>
                         {{form.swift_code }}
                         {{form.swift_code.errors}}
+                    </div>
+                    <div class="col-12 col-lg-12 mt-2">
+                        <p class="text-secondary">Branch*</p>
+                        {{form.branch }}
+                        {{form.branch.errors}}
                     </div>
 
                     {% csrf_token %}

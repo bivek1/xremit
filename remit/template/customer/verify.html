@@ -38,29 +38,48 @@ Verification {% endblock title %} {% block inside %}
       </div>
       {% endif %} {% if cm %}
       <div class="alert alert-light">
-        <small class="d-block mt-3"> {{cm.document_type}} Front Image </small>
+        
         {% if cm.document_front_image %}
-
+        <small class="d-block mt-3"> Licence Front Image </small>
         <img
           src="{{cm.document_front_image.url}}"
           alt=""
           height="auto;"
           width="100%;"
         />
-        {%else%}
-        <p class="text-center">Not Available</p>
+       
         {% endif %}
-        <small class="d-block mt-3"> {{cm.document_type}} Back Image </small>
+        
         {% if cm.document_back_image %}
-
+        <small class="d-block mt-3"> Licence Back Image </small>
         <img
           src="{{cm.document_back_image.url}}"
           alt=""
           height="auto;"
           width="100%;"
         />
-        {%else%}
-        <p class="text-center">Not Available</p>
+        {% endif %}
+
+        {% if cm.business_image %}
+        <small class="d-block mt-3"> National ID Image </small>
+        <img
+          src="{{cm.business_image.url}}"
+          alt=""
+          height="auto;"
+          width="100%;"
+        />
+       
+        {% endif %}
+
+        {% if cm.passport_image %}
+        <small class="d-block mt-3"> Passport Image </small>
+        <img
+          src="{{cm.passport_image.url}}"
+          alt=""
+          height="auto;"
+          width="100%;"
+        />
+       
         {% endif %}
       </div>
       {%endif%}
@@ -102,7 +121,7 @@ Verification {% endblock title %} {% block inside %}
         </div>
 
         {% endif %}
-        <form action="" method="post" enctype="multipart/form-data">
+        <form action="" method="post" enctype="multipart/form-data" id="submitForm">
           <div class="row m-0 pb-4" id="profile">
             <h5 class="mt-2">User Image Information*</h5>
             <hr />
@@ -207,9 +226,9 @@ Verification {% endblock title %} {% block inside %}
             
             <div class="col-lg-4 col-4  text-center" id="registration">
               <div class="docFile box" onclick="selectDocument(this, 'registration')">
-                <img src="{%static 'resources/registration.png'%}" alt="">
+                <img src="{%static 'resources/idcard.png'%}" alt="">
                 <p class="text-secondary  mt-1">
-                  Business Registration
+                 National ID
                 </p>
               </div>
              
@@ -270,6 +289,9 @@ Verification {% endblock title %} {% block inside %}
               <div class="m-0 mt-2 row document-image-box">
                   <div class="col-6 my-auto">
                     <h6>Upload back image of your licence</h6>
+                    <small class="text-warning">
+                      If available only
+                    </small>
                     {{form.document_back_image}} {{form.document_back_image.erros}}
                   </div>
                   <div class="col-6 my-auto text-center">
@@ -372,13 +394,17 @@ Verification {% endblock title %} {% block inside %}
                       <label>Passport Issued Country</label>
                       {{form.passport_issued_country}}
                     </div>
+                    <div class="col-12">
+                      <label>Passport Number</label>
+                      {{form.passport_number}}
+                    </div>
                     
                   </div>
               </div>
             </div>
 
             <div class="col-12 mt-3" id="addDocumentRegistration">
-              <h5>Please Upload Your Valid Image of Your Business Registration..</h5>
+              <h5>Please Upload Your Valid Image of Your National ID Card..</h5>
           
               <!-- Hidding div of class -->
               <div class="row m-0 mt-2">
@@ -390,7 +416,7 @@ Verification {% endblock title %} {% block inside %}
                   <div class="m-0 mt-2 row document-image-box">
                
                     <div class="col-6 my-auto">
-                      <h6>Upload scanned copy of your business registration*</h6>
+                      <h6>Upload scanned copy of your Nationall ID*</h6>
                       {{form.business_image}} {{form.business_image.erros}}
                     </div>
                     <div class="col-6 my-auto text-center">
@@ -418,7 +444,7 @@ Verification {% endblock title %} {% block inside %}
                   <div class="col-12 mt-2">
                      
                       <label for="Pass">
-                        Business Registration Date:
+                        ID issued Date:
                       </label>
                         {{form.business_registration_date}}
                       
@@ -427,7 +453,7 @@ Verification {% endblock title %} {% block inside %}
                   <div class="col-12 mt-2">
                      
                     <label for="Pass">
-                      Business Registration Number:
+                      National ID Number:
                     </label>
                       {{form.registraion_number}}
                     
@@ -443,12 +469,11 @@ Verification {% endblock title %} {% block inside %}
           {% if user.customer.kyc_verified %}
             
           {%else%}
-            <button type="submit" class="btn btn-primary w-100 mt-3">
+            <button type="submit" class="btn btn-primary w-100 mt-3" id="verifyBtn">
               {% if cm %} Update {%else%} Verify {%endif%}
             </button>
           {% endif %}
-            
-          
+
         </form>
       </div>
     </div>
@@ -456,24 +481,31 @@ Verification {% endblock title %} {% block inside %}
 </div>
 
 <script>
+  $('#verifyBtn').hide()
   let document_type 
   $('#addDocumentLicence').hide()
   $('#addDocumentPassport').hide()
   $('#addDocumentRegistration').hide()
 
 
+  user_image_loaded = 0
   function showImage(input) {
     var file = input.files[0];
     var reader = new FileReader();
-
-    reader.onload = function (e) {
-      var imageElement = document.getElementById("image-preview");
-      imageElement.src = e.target.result;
-      imageElement.style.display = "block";
-
-      var labelElement = document.getElementById("custom-label");
+    try{
+        reader.onload = function (e) {
+        var imageElement = document.getElementById("image-preview");
+        imageElement.src = e.target.result;
+        imageElement.style.display = "block";
+        user_image_loaded = 1
+        var labelElement = document.getElementById("custom-label");
     
-    };
+      };
+    }
+    catch{
+      pass
+    }
+    
 
     reader.readAsDataURL(file);
   }
@@ -542,7 +574,7 @@ Verification {% endblock title %} {% block inside %}
 
 
   function selectDocument(element, type) {
-
+    $('#verifyBtn').show()
     if(type == "licence"){
       document_type = 'licence'
       $('#id_document_type').val('Driver licence')
@@ -552,7 +584,7 @@ Verification {% endblock title %} {% block inside %}
     }
     else if(type == "registration"){
       document_type = 'registration'
-      $('#id_document_type').val('Business Registration/licence')
+      $('#id_document_type').val('National ID')
       $('#addDocumentPassport').hide()
       $("#addDocumentLicence").hide()
       $('#addDocumentRegistration').show()
@@ -577,5 +609,67 @@ Verification {% endblock title %} {% block inside %}
    
   }
 
+
+
+  // To Check Details and Redirect user to page forms validation
+
+
+  function submitFo(){
+    if(user_image_loaded == 0){
+      alert('Please upload your image')
+      var element = document.getElementById("profile");
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+    if(document_type == 'licence'){
+      file = document.getElementById('id_document_front_image');
+      date_r= $('#id_issue_date').val()
+      expire_r= $('#id_expiry_date').val()
+      nums = $('#id_licence_number').val()
+      if (file.files.length === 0 || date_r === "", expire_r === 0, nums === ""){
+        alert('Please add All Licence details')
+        return false
+      }
+      else{
+        return true
+      }
+    
+    }
+    else if(document_type == 'registration'){
+      file = document.getElementById('id_business_image');
+      date_r= $('#id_business_registration_date').val()
+      nums = $('#id_registraion_number').val()
+      if (file.files.length === 0 || date_r === "" || nums==="" ){
+          
+          alert('Please add all National Id details')
+          return false
+        }
+        else{
+          return true
+        }
+     }
+     else{
+      file = document.getElementById('id_passport_image');
+      issue= $('#id_passport_issue_date').val()
+      expiry = $('#id_passport_expiry_date').val()
+      loc = $('#id_passport_issued_country').val()
+      nums = $('#id_passport_number').val()
+      if (file.files.length === 0 || issue === "" || expiry === "" || loc === "" || nums === ""){
+          
+          alert('Please add all passport details')
+          return false
+        }
+        else{
+          return true
+        }
+     }
+  }
+
+"{%if not cm%}"
+  document.getElementById('submitForm').addEventListener('submit', function(event){
+    if(!submitFo()){
+      event.preventDefault();
+    }
+  })
+"{%endif%}"
 </script>
 {% endblock inside %}

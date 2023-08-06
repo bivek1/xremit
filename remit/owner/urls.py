@@ -146,6 +146,7 @@ urlpatterns = [
     # path('closeTicket/<int:id>', views.closeTicket, name ="closeTicket"),
     path('seen-notification', views.seenNotification, name="seenNotification"),
     path('all-notification', views.allNotification, name="allNotification"),
+    path('allRead', views.allRead, name="allRead"),
     path('transaction-owner-alllist', views.transactionView, name = "transaction"),
     path('transaction-details/8178171-transaction-code-wi-API/<int:id>', views.transactionDetail, name = "transactionDetail"),
     path('KYC-VERIFICATION-DETAILS/KYCVERIFIEDMETHOD-121/<int:id>', views.kycVerification, name="kycVerification"),
@@ -154,4 +155,9 @@ urlpatterns = [
 
     path('edit-admin-bank-account/<int:id>', views.editAdminBank, name="editAdminBank"),
     path('delete-admin-bank-account/<int:id>', views.deleteAdminBank, name="deleteAdminBank"),
+
+    path('add-note/<int:id>', views.addNote, name='addNote'),
+    path('delete-note/<int:id>', views.deleteNote, name='deleteNote'),
+    path('edit-note/<int:id>', views.editNote, name='editNote'),
+
 ]   

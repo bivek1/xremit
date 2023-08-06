@@ -20,7 +20,88 @@
     </div>
 
     <div class="row p-0 m-0 mt-3">
-        <div class="col-12">
+        <div class="col-12 col-lg-3 mt-2 ">
+        
+            <div class="dashboard-box">
+                <div class="my-auto">
+                    <h6>Total Transaction</h6>
+                    
+                </div>
+                <div class="my-auto">
+                    <div class="text-center das-img text-success">
+                        <i class="fa fa-money-bill-transfer"></i>
+                        <h3>
+                            {{total_tr}}
+                        </h3>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-3 mt-2 ">
+        
+            <div class="dashboard-box">
+                <div class="my-auto">
+                    <h6>Today Transaction</h6>
+                    
+                </div>
+                <div class="my-auto">
+                    <div class="text-center das-img text-warning">
+                        <i class="fa fa-money-bill-1-wave"></i>
+                        <h3>
+                            {{today_trans}}
+                        </h3>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-12 col-lg-3 mt-2 ">
+        
+            <div class="dashboard-box">
+                <div class="my-auto">
+                    <h6>Total Transaction (Cost)</h6>
+                    
+                </div>
+                <div class="my-auto">
+                    <div class="text-center das-img text-danger">
+                        <i class="fa fa-money-bill-transfer"></i>
+                        <h3>
+                            {{total_cost}}
+                        </h3>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-3 mt-2 ">
+        
+            <div class="dashboard-box">
+                <div class="my-auto">
+                    <h6>Today Transaction (Cost)</h6>
+                    
+                </div>
+                <div class="my-auto">
+                    <div class="text-center das-img text-danger">
+                        <i class="fa fa-money-bill-transfer"></i>
+                        <h3>
+                            {{today_cost}}
+                        </h3>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 mt-2">
             {% for i in transaction %}
                 <div class="transaction-div p-2" id="login-card" data-bs-toggle="modal" data-bs-target="#exampleModalEdit{{i.id}}">
                     <div class="d-flex">
@@ -87,6 +168,9 @@
                         
                             <div class="modal-body">
                                 <div class="text-center">
+                                    <p class="badge bg-danger p-2">
+                                        <i class="fa fa-calendar"></i> Transaction Date: {{i.created_at}}
+                                    </p>
                                     {% if i.status == 'Pending' %}
                                     <p class="text-warning p-0 m-0">
                                         <i class="fa fa-circle-dot"></i>
@@ -219,6 +303,11 @@
                                                 </p>
                                                 
                                             </div>
+                                            <p>
+                                                <span class="m-0 badge bg-success">
+                                                  Branch:{{i.bank.branch}}
+                                                </span>  
+                                            </p>
 
                                             
                                             {% if i.transaction_screenshot %}

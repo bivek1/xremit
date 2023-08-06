@@ -37,7 +37,7 @@
               <i class="fa fa-dashboard mt-2"></i>  
             </div>
             
-            <span class="ms-3 my-auto text-primary text-bold">
+            <span class="ms-3 my-auto text-primary text-bold sidebar-link">
               Dashboard
             </span>
             
@@ -52,7 +52,7 @@
             <div class="text-center">
               <i class="fa fa-users mt-2"></i>  
             </div>
-            <span class="ms-3 my-auto text-primary text-bold">
+            <span class="ms-3 my-auto text-primary text-bold sidebar-link">
               Agent
             </span> 
           </div>
@@ -67,7 +67,7 @@
                 <i class="fa-solid fa-users-line mt-2"></i>  
               </div>
             
-              <span class="ms-3 my-auto text-primary text-bold"> 
+              <span class="ms-3 my-auto text-primary text-bold sidebar-link"> 
                 Customer
               </span>
             </div>
@@ -80,7 +80,7 @@
             <div class="text-center">
               <i class="fa fa-money-bills mt-2"></i>   
             </div>
-            <span class="ms-3 my-auto text-primary text-bold">
+            <span class="ms-3 my-auto text-primary text-bold sidebar-link">
               Currency
             </span> 
           </div>
@@ -97,7 +97,7 @@
               <i class="fa fa-cog mt-2"></i>  
             
           </div>
-          <span class="ms-3 my-auto text-primary text-bold">
+          <span class="ms-3 my-auto text-primary text-bold sidebar-link">
             Site Settings
           </span>
         </div>
@@ -110,7 +110,7 @@
               <div class="text-center">
                 <i class="fa fa-user mt-2"></i>  
               </div>
-              <span class="ms-3 my-auto text-primary text-bold">
+              <span class="ms-3 my-auto text-primary text-bold sidebar-link">
                 Profile
               </span>
             </div>
@@ -123,7 +123,7 @@
               <div class="text-center">
                 <i class="fa-solid fa-money-bill-transfer mt-2"></i>
               </div>
-              <span class="ms-3 my-auto text-primary text-bold">
+              <span class="ms-3 my-auto text-primary text-bold sidebar-link">
                 Transaction
               </span>
             </div>
@@ -136,7 +136,7 @@
             <div class="text-center">
               <i class="fa-solid fa-globe mt-2"></i>
             </div>
-            <span class="ms-3 my-auto text-primary text-bold">
+            <span class="ms-3 my-auto text-primary text-bold sidebar-link">
               Country
             </span>
           </div>
@@ -149,7 +149,7 @@
             <div class="text-center">
               <i class="fa-solid fa-building-columns  mt-2"></i>  
             </div>
-            <span class="ms-3 my-auto text-primary text-bold">
+            <span class="ms-3 my-auto text-primary text-bold sidebar-link">
               Bank
             </span>
           </div>
@@ -163,7 +163,7 @@
                 <div class="text-center">
                   <i class="fa-solid fa-inbox mt-2"></i>
                 </div>
-                <span class="ms-3 my-auto text-primary text-bold">
+                <span class="ms-3 my-auto text-primary text-bold sidebar-link">
                   Email Setting
                 </span>
           </div>
@@ -177,7 +177,7 @@
             <div class="text-center">
               <i class="fa-solid fa-blog mt-2"></i>
             </div>
-            <span class="ms-3 my-auto text-primary text-bold">
+            <span class="ms-3 my-auto text-primary text-bold sidebar-link">
               Blog
             </span>
           </div>
@@ -205,7 +205,7 @@
               <div class="text-center">
                 <i class="fa-solid fa-comments mt-2"></i>  
               </div>
-              <span class="ms-3 my-auto text-primary text-bold">
+              <span class="ms-3 my-auto text-primary text-bold sidebar-link">
                 SMS Setting
               </span>
             </div>
@@ -219,7 +219,7 @@
                 <div class="text-center">
                   <i class="fa fa-coins mt-2"></i>   
                 </div>
-                <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                <span class="ms-3 my-auto text-primary text-bold sidebar-link ">
                   Default Currency
                 </span> 
               </div>
@@ -233,7 +233,7 @@
               <div class="text-center">
                 <i class="fa-solid fa-ban mt-2"></i>
               </div>
-              <span class="ms-3 my-auto text-primary text-bold">
+              <span class="ms-3 my-auto text-primary text-bold sidebar-link">
                 Banned User
               </span>
             </div>
@@ -246,7 +246,7 @@
             <div class="text-center">
               <i class="fa fa-sign-out-alt mt-2"></i>
             </div>
-            <span class="ms-3 my-auto text-primary text-bold">
+            <span class="ms-3 my-auto text-primary text-bold sidebar-link">
               Logout
             </span>
           </div>
@@ -773,6 +773,9 @@
                                   <div class="modal-body">
                                     
                                       <div class="text-center">
+                                          <p class="badge bg-danger p-2">
+                                            <i class="fa fa-calendar"></i> Transaction Date: {{i.created_at}}
+                                          </p>
                                           {% if i.status == 'Pending' %}
                                           <p class="text-warning p-0 m-0">
                                               <i class="fa fa-circle-dot"></i>
@@ -929,6 +932,16 @@
                                                     </p>
                                                     
                                                 </div>
+                                                <div class="d-flex justify-content-between">
+                                                  <p class="text-secondary">
+                                                     Branch
+                                                  </p>
+                      
+                                                  <p class="text-secondary">
+                                                      {{i.bank.branch}}
+                                                  </p>
+                                                  
+                                              </div>
                                               </div>
                                               
                                               

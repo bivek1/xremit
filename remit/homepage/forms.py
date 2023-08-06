@@ -23,6 +23,7 @@ class AdminBankForm(forms.ModelForm):
             'bank_name': forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Australian High Com Bank'}),
             'country': forms.Select(attrs={'class':'form-control mt-2','placeholder':'Australia'}),
             'swift_code': forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'AHCB21S'}),
+            'branch': forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Melbourne, VIC'}),
         }
 
 # Support Ticket
@@ -63,7 +64,7 @@ class ReplyForm(forms.ModelForm):
 
         widgets= {
     
-            'description': CKEditorUploadingWidget(),
+            'description': forms.Textarea(attrs={'class':'form-control reply-ticket', 'placeholder':'Write your reply here...'}),
             'ticket':forms.Select(attrs={'hidden':True})
         }
 
@@ -91,6 +92,7 @@ class BankForm(forms.ModelForm):
             'account_number': forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'02264871564112121BA'}),
             'bank_name': forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Australian High Com Bank'}),
             'country': forms.Select(attrs={'class':'form-control mt-2','placeholder':'Australia'}),
+            'branch': forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Melbourne, VIC'}),
             'swift_code': forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'AHCB21S'}),
         }
 

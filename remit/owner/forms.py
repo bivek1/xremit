@@ -206,14 +206,14 @@ class CurrencyForm(forms.ModelForm):
         labels={
             'country': 'Select the country*',
             'currecy_rate':'Write Currency rate in rate unit of USD i.e. 1USD = 1.50 AUD*',
-            'conversion_rate':'Enter the your conversion service rate*',
+            'conversion_rate':'Commission that you take for this transfer*',
             'commision_rate':'Enter agent commision rate if any',
             'currecy_sign':'Enter the currecy sign of Country i.e. AUD for Australia*'
         }
         widgets= {
             'country':forms.Select(attrs={'class':'form-control mt-2'}),
             'currecy_rate':forms.NumberInput(attrs={'step':'any','class':'form-control mt-2','placeholder':'1.5 AUD in USD unit'}),
-            'conversion_rate':forms.NumberInput(attrs={'step':'any','class':'form-control mt-2', 'placeholder':'Your conversion rate of selected country currency'}),
+            'conversion_rate':forms.NumberInput(attrs={'step':'any','class':'form-control mt-2', 'placeholder':'Your commsion rate of selected country currency'}),
             'commision_rate':forms.NumberInput(attrs={'step':'any',' class':'form-control mt-2', 'placeholder':'Your commsion rate for agent of selected country currency'}),
             'currecy_sign':forms.TextInput(attrs={'class':'form-control mt-2', 'placeholder':'Sign of selected country currency: NPR, AUD, USD'}),
         }

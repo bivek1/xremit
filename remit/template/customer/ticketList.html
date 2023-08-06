@@ -43,7 +43,7 @@
                 </button>
             </a>
      
-            <div class="d-flex align-items-start mt-2">
+            <div class="mt-2" id="ticketBoxN">
             
                 <div class="left-ticket-box p-2 nav flex-column nav-pills me-3 " id="v-pills-tab" role="tablist" aria-orientation="vertical">
                     
@@ -59,12 +59,12 @@
 
                     
                 </div>
-                <div class="tab-content flex-shrink-1" id="v-pills-tabContent" style="width: 70%;">
-                    {{form.media}}
+                <div class="tab-content flex-shrink-1 tab-data" id="v-pills-tabContent" style="width: 70%;">
+                    
                     {% for i in ticket %}
-                  
+                    
                     <div class="tab-pane fade  {%if i.id == check%}show active{%endif%}" id="v-pills-{{i.id}}" role="tabpanel" aria-labelledby="v-pills-{{i.id}}-tab">
-                        <h5 class="head-para text-dark text-capitalize">
+                        <h5 class="head-para text-dark text-capitalize mt-3">
                             <i class="fa fa-ticket"></i>
                             {{i.subject}}
                         </h5>
@@ -75,14 +75,30 @@
                                     <div class="d-flex p-2">
                                         <img src="{%if request.user.customer.profil_pic%}{{request.user.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
                                         <div class="p-2" id="ticketDescription">
-                                            {{i.description|safe}}
-                                        </div>
-                                        <div class="d-flex ticket-image-list">
-                                            {% for j in i.customer_support.all %}
-                                                <img src="{{j.image.url}}" alt="">
-                                            {% endfor %}
+                                            <div>
+                                                {{i.description|safe}}
+                                            </div>
+                                           
+                                            
+                                            {% if i.customer_support.all %}
+                                                <hr>
+                                                <p>
+                                                    Issues Images:
+                                                </p>
+                                                {% for p in i.customer_support.all%}
+                                                <a href="{{p.file.url}}" target="_blank">
+                                                    <img src="{{p.file.url}}" alt="" srcset="" style="height: 40px; width: auto; margin:5px;">
+                                                </a>
+                                                    
+                                                {% endfor %}
+                                            {% endif %}
+                                                
+                                           
                                         </div>
                                     </div>
+                                   
+                                    
+                                   
                                 
                                 </div>
 
@@ -98,12 +114,13 @@
                                                     <p>Admin</p>
                                                 {% endif %}
                                             </div>
-                                            
-                                                
-                                            
+
                                             <div class="p-2" id="ticketDescription">
                                                 {{j.description|safe}}
                                             </div>
+                                            
+                                           
+                                                
                                           
                                         </div>
                                     
@@ -192,13 +209,13 @@
                                                     <h5>
                                                         Reply in details
                                                     </h5>
-                                                    <small> You can paste the image directly to the box</small>
+                                                  
                                                     <hr>
                                                     {{form.description}}
                                               
-                                                    {{form.media}}
+                                                
                                                     {% csrf_token %}
-                                                    <button type="submit" class="btn btn-danger">
+                                                    <button type="submit" class="btn btn-danger mt-2">
                                                         <i class="fa fa-reply"></i> Reply
                                                     </button>
                                                 </form>

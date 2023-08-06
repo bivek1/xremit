@@ -174,46 +174,127 @@ KYC Details {% endblock title %} {% block inside %}
                     {{kycs.document_type}}
                 </div>
                 <div class="row p-0 m-0">
-                    <div class="col-12 col-lg-6 mt-2">
+                    <div class="col-12 col-lg-12 mt-2">
                         <h5>
-                            Document Image
+                            Document Details
                         </h5>
-                        {% if kycs.document_front_image %}
-                            <a href="{{kycs.document_front_image.url}}" target="_blank">
-                                <img src="{{kycs.document_front_image.url}}" alt="" style="width: 100%; height: auto;">
-                            </a>
                         
-            
-                        {% endif %}
-                        {% if kycs.passport_image %}
-                            <a href="col-12 col-lg-6 mt-2" target="_blank">
-                                <img src="{{kycs.passport_image.url}}" alt="" style="width: 100%; height: auto;">
-                            </a>
-                
+                        {% if  kycs.document_type == 'Driver licence'%}
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                
+                                    <td>Licence number</td>
+                                    <td>Issued date</td>
+                                    <td>Expiry date</td>
+                                    
+                                </tr>
+                                <tr>
+                                
+                                    <td>{{kycs.licence_number}}</td>
+                                    <td>{{kycs.issue_date}}</td>
+                                    <td>{{kycs.expiry_date}}</td>
+                                    
+                                </tr>
+                               
+                                </tbody>
+                            </table>
+                            <div class="d-flex justify-content-around">
+                                
+                                    
+                                {% if kycs.document_front_image %}
+                                <div>
+                                    <p>Licence Front Image</p>
+                                    <a href="{{kycs.document_front_image.url}}" target="_blank">
+                                        <img src="{{kycs.document_front_image.url}}" alt="" style="width: 50%; height: auto;">
+                                    </a>
+                                </div>
+                                  
+                                {% endif %}
+                                {% if kycs.document_back_image %}
+                                    <div>
+                                        <p>Licence Back Image</p>
+                                        <a href="{{kycs.document_back_image.url}}" target="_blank">
+                                            <img src="{{kycs.document_back_image.url}}" alt="" style="width: 50%; height: auto;">
+                                        </a>
+                                    </div>
+                                  
+                                {% endif %}
+
+                                
+                                </div>
+                            
                         {% endif %}
 
-                        {% if kycs.business_image %}
-                            <a href="col-12 col-lg-6 mt-2" target="_blank">
-                                <img src="{{kycs.business_image.url}}" alt="" style="width: 100%; height: auto;">
-                            </a>
-                
+
+                        {% if  kycs.document_type == 'National ID'%}
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                
+                                    <td>National ID number</td>
+                                    <td>Issued date</td>
+                                
+                                </tr>
+                                <tr>
+                                
+                                    <td>{{kycs.registraion_number}}</td>
+                                    <td>{{kycs.business_registration_date}}</td>
+                                
+                                    
+                                </tr>
+                                <tr>
+                                
+                                    {% if kycs.business_image %}
+                                        <p>National ID Image</p>
+                                        <a href="{{kycs.business_image.url}}" target="_blank">
+                                            <img src="{{kycs.business_image.url}}" alt="" style="width: 100%; height: auto;">
+                                        </a>
+                                    {% endif %}
+                                    
+
+                                    
+                                </tr>
+                                
+                                </tbody>
+                            </table>
                         {% endif %}
-                       
-                        
-                    </div>
-                    <div class="col-12 col-lg-6 mt-2">
-                        {% if kycs.document_back_image %}
-                            <h5>
-                                Document Back Image
-                            </h5>
-                            <a href="col-12 col-lg-6 mt-2" target="_blank">
-                                <img src="{{kycs.document_back_image.url}}" alt="" style="width: 100%; height: auto;">
-                            </a>
-                    
+
+                        {% if  kycs.document_type == 'Passport'%}
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                
+                                    <td>Issued Date</td>
+                                    <td>Expiry Date</td>
+                                    <td>Issued Country</td>
+                                    <td>Passport Number</td>
+                                </tr>
+                                <tr>
+                                
+                                    <td>{{kycs.passport_issue_date}}</td>
+                                    <td>{{kycs.passport_expiry_date}}</td>
+                                    <td>{{kycs.passport_issued_country}}</td>
+                                    <td>{{kycs.passport_number}}</td>
+                                
+                                    
+                                </tr>
+                                <tr>
+                                
+                                    {% if kycs.passport_image %}
+                                        <p>Passport Image</p>
+                                        <a href="{{kycs.passport_image.url}}" target="_blank">
+                                            <img src="{{kycs.passport_image.url}}" alt="" style="width: 100%; height: auto;">
+                                        </a>
+                                    {% endif %}
+                                
+                                </tr>
+                                
+                                </tbody>
+                            </table>
                         {% endif %}
-                            
-                        
                     </div>
+                   
                 </div>
                     
                 {% if kycs.customer.kyc_verified %}

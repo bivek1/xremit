@@ -2,7 +2,7 @@
 
 
 {% block title %}
-    About XRemit
+    About {{site.title}}
 {% endblock title %}
     
 {% block inside %}
@@ -17,7 +17,7 @@
             <i class="fa fa-arrow-alt-circle-right"></i>
         </p>
         <h2 class="head-para">
-            About XRemit
+            About {{site.title}}
         </h2>
        
     </div>
@@ -37,7 +37,7 @@
     <div class="about-now mt-2 row m-0">
         <div class="col-12 p-4">
             <h2 class="head-home text-center">
-                ABOUT XREMIT
+                ABOUT {{site.title}}
             </h2>
             <p class="text-primary text-center">
                 {{about.about_us|truncatewords:50|striptags}}

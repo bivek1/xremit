@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'owner.apps.OwnerConfig',
     'customer.apps.CustomerConfig',
     'ckeditor',
+    'pwa',
 ]
 
 MIDDLEWARE = [

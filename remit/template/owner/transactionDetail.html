@@ -77,9 +77,127 @@ Transaction Details {% endblock title %} {% block inside %}
             
         
             <div class="text-center mt-3">
-                <p class="badge bg-danger p-2">
-                    <i class="fa fa-calendar"></i> Transaction Date: {{trans.created_at}}
-                </p>
+                <div class="d-flex justify-content-between">
+                    <p class="badge bg-danger p-2">
+                        <i class="fa fa-calendar"></i> Transaction Date: {{trans.created_at}}
+                    </p>
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <i class="fa fa-plus-circle"></i> Add Note
+
+                    </button>
+
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                            
+                                <div class="modal-body">
+                                   
+                            
+                                    <h5 class="text-dark"> Add Note</h5>
+                                    <form action="{%url 'owner:addNote' trans.id%}" method="post">
+                                        <Textarea class="form-control" name="note" style="height: 100px;" placeholder="Add your note here"></Textarea>
+                                        {% csrf_token %}
+                                        <button class="btn btn-primary mt-2" type="submit">Add Note</button>
+                                    </form>
+                                    <div class="text-end mt-2">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <!-- Delete URL -->
+                                      
+                                        
+                                    </div>
+                                
+                                </div>
+                            
+                        </div>
+                        </div>
+                    </div>
+                </div>
+               
+                {% if trans.transaction_note.all %}
+                <h5>Transaction Note</h5>
+                <hr>
+                    <div class="row m-0 mt-2">
+                       
+                        {% for i in trans.transaction_note.all %}
+                            <div class="col-lg-4 col-12 mt-2">
+                                <p> <i class="fa fa-note-sticky"></i> {{i.note}}</p>
+                                <small class="text-center">{{i.created_at}}</small>
+                                <div class="text-center d-flex justify-content-center " >
+                                    <a class="p-2 m-2"  data-bs-toggle="modal" data-bs-target="#exampleModalEdit{{i.id}}">
+                                        <i class="fa fa-pencil-square p-3 bg-light"></i>
+                                    </a>
+                                      <!-- Edit Model -->
+                                      <div class="modal fade" id="exampleModalEdit{{i.id}}" tabindex="-1" aria-labelledby="exampleModalEditLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                            
+                                                <div class="modal-body">
+                                                    <div class="text-center">
+                                                        Edit {{i.name}}
+                                                    </div>
+                                                    <hr>
+                                                    <h5 class="text-dark"> Edit Note</h5>
+                                                    <form action="{%url 'owner:editNote' i.id%}" method="post">
+                                                        <Textarea class="form-control" name="notes" value ="{{i.note}}" placeholder="{{i.note}}" style="height: 100px;" ></Textarea>
+                                                        {% csrf_token %}
+                                                        <button class="btn btn-primary mt-2" type="submit">Edit Note</button>
+                                                    </form>
+                                                                
+                                                                                                                    
+                                                    <div class="text-end mt-2">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    </div>
+                                                
+                                                </div>
+                                            
+                                        </div>
+                                        </div>
+                                    </div>
+                                <!-- Edit Model -->
+                                    
+                                    
+                                    <a class="p-2  m-2 text-danger" data-bs-toggle="modal" data-bs-target="#exampleModalDelete{{i.id}}" >
+                                        <i class="fa fa-trash p-3 bg-light"></i>
+                                    </a>
+                                    
+
+                                    <!-- Delete Model -->
+                                        <div class="modal fade" id="exampleModalDelete{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                
+                                                    <div class="modal-body">
+                                                        <div class="text-center">
+                                                            <img src="{%static 'resources/delete.gif'%}" alt="" style="width: 30%;">
+                                                        </div>
+                                                
+                                                        <h5 class="text-dark"> Are you sure want to delete this note</h5>
+                                                    
+                                                        <div class="text-end mt-2">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change my mind</button>
+                                                            <!-- Delete URL -->
+                                                            <a href="{%url 'owner:deleteNote' i.id%}">
+                                                                <button type="button" class="btn btn-danger">
+                                                                    <i class="fa fa-trash"></i> Delete
+                                                                </button>
+                                                            </a>
+                                                            
+                                                        </div>
+                                                    
+                                                    </div>
+                                                
+                                            </div>
+                                            </div>
+                                        </div>
+                                    <!-- Delete Model -->
+                                    </div>
+                            </div>
+                        {% endfor %}
+                            
+                    </div>
+                {% endif %}
+                    
+               
                 <hr>
                 <h6 class="text-primary">
                     Transfer Money to {{trans.recipient.first_name}} {%if trans.recipient.middle_name%} {{trans.recipient.middle_name}} {%endif%} {{trans.recipient.last_name}}
@@ -196,6 +314,16 @@ Transaction Details {% endblock title %} {% block inside %}
 
                             <p class="text-secondary">
                                 {{trans.bank.account_name}}
+                            </p>
+                            
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <p class="text-secondary">
+                               Branch
+                            </p>
+
+                            <p class="text-secondary">
+                                {{trans.bank.branch}}
                             </p>
                             
                         </div>

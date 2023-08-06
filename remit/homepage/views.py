@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, DetailView
-from .models import Feature, Service, Client, Testomonial, Footor, Brand, AboutUs, ChooseUs, HomeService
+from .models import LoginInterface, signupInterface, Feature, Service, Client, Testomonial, Footor, Brand, AboutUs, ChooseUs, HomeService
 from .models import Blog, CustomUser
 from django.contrib.auth import authenticate
 from django.urls import reverse
@@ -27,6 +27,7 @@ from .location import get_user_country
 from owner.models import BlockPlace
 from .ipaddress import log_user_login
 from django.http import JsonResponse
+from owner.models import SiteSetting
 from .otp import generate_random_code
 
 def set_session_small(request):
@@ -37,6 +38,17 @@ def set_session_big(request):
     request.session['navbar'] = 'big'
     return JsonResponse({'status':'ok'})
 
+
+def siteInfo():
+    site = SiteSetting.objects.all()    
+    if site:
+        for i in site:
+            site = i
+            break
+    dist ={
+        'site':site
+    }
+    return dist
 
 # Password Reset form
 def checkPassword(request):
@@ -76,6 +88,7 @@ def password_reset_request(request):
 					'token': default_token_generator.make_token(user),
 					'protocol': 'http',
 					}
+                    
 					email = render_to_string(email_template_name, c)
 					try:
 						send_mail(subject, email, settings.EMAIL_HOST_USER , [user.email], fail_silently=False)
@@ -120,8 +133,7 @@ def Homepage(request):
             break
 
   
-    test_last = Testomonial.objects.last()
-    testomonial = Testomonial.objects.all().exclude(id = test_last.id)[:5]
+    testomonial = Testomonial.objects.all()[:5]
     client = Client.objects.all().order_by('-id')[:5]
 
     brand = Brand.objects.all().order_by('-id')[:4]
@@ -145,7 +157,7 @@ def Homepage(request):
         'about':about,
         'homes':homes,
         'service_man':Service.objects.all()[:4],
-        'last_test':test_last,
+       
         'testomonial':testomonial,
         'social':SocialLink.objects.all(),
         'client':client,
@@ -161,6 +173,8 @@ def Homepage(request):
         'third_fo':Footor.objects.filter(row='Third'),
         'default_currency':asa
     }
+    other_info = siteInfo()
+    dist.update(other_info)
 
     return render(request, template_name, dist)
     
@@ -202,12 +216,20 @@ def OPTV(request):
 
 def LoginV(request):
     social=SocialLink.objects.all()
+    loginss = LoginInterface.objects.all()
+    for i in loginss:
+        loginss = i
+        break
     dist = {
         'social':social,
         'first_fo':Footor.objects.filter(row='First'),
         'second_fo':Footor.objects.filter(row='Second'),
         'third_fo':Footor.objects.filter(row='Third'),
+        'info':loginss
+
     }
+
+    dist.update(siteInfo())
     tempate_name = 'homepage/login.html'
     if request.method == 'POST':
         username = request.POST['email']
@@ -240,12 +262,19 @@ def LoginV(request):
     
 
 def Register(request):
+    sisas = signupInterface.objects.all()
+    for i in sisas:
+        sisas = i 
+        break
     dist = {
         'social':SocialLink.objects.all(),
         'first_fo':Footor.objects.filter(row='First'),
         'second_fo':Footor.objects.filter(row='Second'),
         'third_fo':Footor.objects.filter(row='Third'),
+        'sisas':sisas
+
     }
+    dist.update(siteInfo())
     tempate_name = 'homepage/register.html'
     if request.method == 'POST':
         first_name = request.POST['first_name']
@@ -291,6 +320,7 @@ def serviceView(request):
         'second_fo':Footor.objects.filter(row='Second'),
         'third_fo':Footor.objects.filter(row='Third'),
     }
+    dist.update(siteInfo())
     return render(request, "homepage/other/service.html", dist)
 
 def serviceDetail(request, id, name):
@@ -303,6 +333,7 @@ def serviceDetail(request, id, name):
         'second_fo':Footor.objects.filter(row='Second'),
         'third_fo':Footor.objects.filter(row='Third'),
     }
+    dist.update(siteInfo())
     return render(request, "homepage/other/serviceDetail.html", dist)
 
 
@@ -324,6 +355,7 @@ def aboutView(request):
         'second_fo':Footor.objects.filter(row='Second'),
         'third_fo':Footor.objects.filter(row='Third'),
     }
+    dist.update(siteInfo())
     return render(request, "homepage/other/about.html", dist)
 
 def blogView(request):
@@ -335,6 +367,7 @@ def blogView(request):
         'second_fo':Footor.objects.filter(row='Second'),
         'third_fo':Footor.objects.filter(row='Third'),
     }
+    dist.update(siteInfo())
     return render(request, "homepage/other/blog.html", dist)
 
 def blogDetail(request, id, name):
@@ -347,6 +380,7 @@ def blogDetail(request, id, name):
         'second_fo':Footor.objects.filter(row='Second'),
         'third_fo':Footor.objects.filter(row='Third'),
     }
+    dist.update(siteInfo())
     return render(request, "homepage/other/blogDetail.html", dist)
 
 def countryView(request):
@@ -358,6 +392,7 @@ def countryView(request):
         'second_fo':Footor.objects.filter(row='Second'),
         'third_fo':Footor.objects.filter(row='Third'),
     }
+    dist.update(siteInfo())
     return render(request, "homepage/other/country.html", dist)
 
 def currencyView(request):
@@ -370,6 +405,7 @@ def currencyView(request):
         'second_fo':Footor.objects.filter(row='Second'),
         'third_fo':Footor.objects.filter(row='Third'),
     }
+    dist.update(siteInfo())
     return render(request, "homepage/other/currency.html", dist)
 
 def featureView(request):
@@ -381,6 +417,7 @@ def featureView(request):
         'second_fo':Footor.objects.filter(row='Second'),
         'third_fo':Footor.objects.filter(row='Third'),
     }
+    dist.update(siteInfo())
     return render(request, "homepage/other/feature.html", dist)
 
 def featureDetail(request, id, name):
@@ -393,6 +430,7 @@ def featureDetail(request, id, name):
         'second_fo':Footor.objects.filter(row='Second'),
         'third_fo':Footor.objects.filter(row='Third'),
     }
+    dist.update(siteInfo())
     return render(request, "homepage/other/featureDetail.html", dist)
 
 def sitemapView(request):
@@ -403,6 +441,7 @@ def sitemapView(request):
         'second_fo':Footor.objects.filter(row='Second'),
         'third_fo':Footor.objects.filter(row='Third'),
     }
+    dist.update(siteInfo())
     return render(request, "homepage/other/sitemap.html", dist)
 
 def privacyView(request):
@@ -413,6 +452,7 @@ def privacyView(request):
         'second_fo':Footor.objects.filter(row='Second'),
         'third_fo':Footor.objects.filter(row='Third'),
     }
+    dist.update(siteInfo())
     return render(request, "homepage/other/privacy.html", dist)
 
 def termsView(request):
@@ -423,6 +463,7 @@ def termsView(request):
         'second_fo':Footor.objects.filter(row='Second'),
         'third_fo':Footor.objects.filter(row='Third'),
     }
+    dist.update(siteInfo())
     return render(request, "homepage/other/terms.html", dist)
 
 def contactView(request):
@@ -434,6 +475,7 @@ def contactView(request):
         'second_fo':Footor.objects.filter(row='Second'),
         'third_fo':Footor.objects.filter(row='Third'),
     }
+    
     if request.method == 'POST':
         form = ContactForm(request.POST)
 

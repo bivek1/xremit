@@ -1,4 +1,5 @@
-
+from django.db.models.aggregates import Sum
+import datetime
 from django.shortcuts import render
 from django.views.generic import View, UpdateView
 from homepage.models import Feature, Service, Client, Testomonial, Footor, Brand, AboutUs, ChooseUs, HomeService
@@ -21,7 +22,7 @@ from homepage.forms import AdminBankForm, BankForm, RestrictionForm, UserCreateF
 
 from .forms import BlockForm, PurposeForm, FundForm, DefaultForm, EmailSettingForm, SMSSettingForm, LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, BrandForm, FootorForm, SocialForm, PolicyForm, TermForm, EmailListForm, SMSListForm
 from django.http import JsonResponse
-from homepage.models import LoginLogs
+from homepage.models import LoginLogs, TransactionNote
 # Create your views here.
 
 
@@ -41,7 +42,7 @@ def editAdminBank(request, id):
         'form':form,
         'bank':rec
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = AdminBankForm(request.POST, instance=rec)
@@ -66,7 +67,7 @@ def defaultCurrency(request):
         'currency':Currency.objects.all(),
         'default_currency':asa
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == "POST":
         currency_s = Currency.objects.get(id = request.POST['send_currency']) 
@@ -114,26 +115,39 @@ def seenNotification(request):
         tic.save()
         return JsonResponse({'staus':'ok'})
 
-   
+def allRead(request):
+    tic = AdminNotification.objects.filter(seen = False)
+    for i in tic:
+        i.seen = True
+        i.save()
+    return HttpResponseRedirect(reverse('owner:allNotification'))
 
-def notification():
-   noti = AdminNotification.objects.filter(seen= False).order_by('-id')
-   count = noti.count()
-
-   li = {
-       'noti':noti,
-       'noti_count':count
-   }
-   return li
+def notification(request):
+    noti = AdminNotification.objects.filter(seen= False).order_by('-id')
+    count = noti.filter(seen= False).count()
+    try:
+       navbarstatus= request.session['navbar']
+    except:
+        navbarstatus= 'big'
+    li = {
+        'noti':noti,
+        'noti_count':count,
+        'navbarstatus':navbarstatus
+    }
+    return li
 
 
 def allNotification(request):
     noti = AdminNotification.objects.all().order_by('-id')
-    count = noti.count()
-
+    count = noti.filter(seen= False).count()
+    try:
+       navbarstatus= request.session['navbar']
+    except:
+        navbarstatus= 'big'
     dist = {
         'noti':noti,
-        'noti_count':count
+        'noti_count':count,
+        'navbarstatus':navbarstatus
     }
 
     return render(request, "owner/notification.html", dist)
@@ -142,10 +156,30 @@ def allNotification(request):
 def transactionView(request):
     trans = Transaction.objects.all().order_by('-id')
     total_t = trans.count()
+    rejected = trans.filter(status = "Rejected").count()
+    pending = trans.filter(status = "Pending").count()
+    complete = trans.filter(status = "Completed").count()
+    cancelled = trans.filter(status = "Cancelled").count()
+    today_trans = trans.filter(created_at__date = datetime.date.today()).count()
+    total_cost = trans.aggregate(sum_amount=Sum('sent'))['sum_amount']
+    today_total = Transaction.objects.filter(created_at__date = datetime.date.today()).aggregate(sum_amount=Sum('sent'))['sum_amount']
     dist = {
-        'transaction':trans, 'total_t':total_t
+        'total_cost':total_cost,
+        'fees':trans.aggregate(sum_amount=Sum('fee'))['sum_amount'],
+        'today_cost':today_total if today_total else 0,
+        'today_trans':today_trans,
+        'transaction':trans, 'total_t':total_t,
+        'rejected':rejected,
+        'pending':pending,
+        'complete':complete,
+        'cancelled':cancelled,
+        'transCancelled':trans.filter(status= "Cancelled"),
+        'transRejected':trans.filter(status= "Rejected"),
+        'transComplete':trans.filter(status= "Completed"),
+        'transPending':trans.filter(status= "Pending"),
+
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
 
     return render(request, "owner/transaction.html", dist)
@@ -157,7 +191,7 @@ def transactionDetail(request, id):
         'trans':trans,
         'alltrans':alltrans
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
 
     return render(request, 'owner/transactionDetail.html', dist)
@@ -207,7 +241,7 @@ def emailSetting(request):
             dist.update({'sendform':sendform})
             messages.error(request, "something went wrong")
 
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
    
     return render(request, "owner/email.html", dist)
@@ -228,7 +262,7 @@ def addEmailSetting(request, id):
             'form': form
         }
 
-        noti = notification()
+        noti = notification(request)
         dist.update(noti)
 
         messages.error(request, "Something went wrong")
@@ -253,7 +287,7 @@ def smsSetting(request):
         'sendform':SMSListForm(),
         'defautForm':defautForm
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
 
     if request.method == 'POST':
@@ -297,7 +331,7 @@ def addSMSSetting(request, id):
             'form': form
         }
 
-        noti = notification()
+        noti = notification(request)
         dist.update(noti)
 
         messages.error(request, "Something went wrong")
@@ -313,7 +347,7 @@ def bannedSetting(request):
         'banned':banned
     }
 
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     return render(request, "owner/banned.html", dist)
 
@@ -333,7 +367,7 @@ def bankView(request):
         'total_bank':total_bank,
         'Adminbank':Adminbank,
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = AdminBankForm(request.POST)
@@ -359,7 +393,7 @@ def editBank(request, id):
         'form':form,
         'bank':rec
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = BankForm(request.POST, instance=rec)
@@ -398,7 +432,7 @@ def filterBank(request):
         'total_bank':total_bank,
         'recipient':Recipient.objects.all()
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = AdminBankForm(request.POST)
@@ -432,7 +466,7 @@ def blogView(request):
         'total_blog':total_bank,
        
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = BlogForm(request.POST, request.FILES)
@@ -456,7 +490,7 @@ def editBlog(request, id):
         'blog':rec,
         'total_blog':Blog.objects.all().count()
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = BlogForm(request.POST, request.FILES, instance=rec)
@@ -489,7 +523,7 @@ def ticketList(request):
         'check':check,
         'form':ReplyForm()
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
    
     return render(request, "owner/ticket.html", dist)
@@ -569,7 +603,7 @@ class Dashboard(View):
         }
 
         dist.update(public)
-        noti = notification()
+        noti = notification(request)
         dist.update(noti)
         
         return render(request, self.template_name, dist)
@@ -591,7 +625,7 @@ def addRestriction(request, id):
             'form': form
         }
 
-        noti = notification()
+        noti = notification(request)
         dist.update(noti)
 
         messages.error(request, "Something went wrong")
@@ -608,7 +642,7 @@ class CustomerView(View):
         }
    
     def get(self, request, *args, **kwargs):
-        noti = notification()
+        noti = notification(request)
         self.dist.update(noti)
         return render(request, self.template_name, self.dist)
     def post(self, request, *args, **kwars):
@@ -670,7 +704,7 @@ def customerProfile(request, id):
         'login_log' : LoginLogs.objects.filter(customer =real_customer.customer)
     
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         try: 
@@ -710,7 +744,7 @@ def AgentView(request):
             'button':"Add new agent",
             'agent': CustomUser.objects.filter(user_type = "agent").order_by('-id')
         }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti) 
     if request.method == 'POST':
         form = AgentForm(request.POST)
@@ -758,7 +792,7 @@ def agentProfile(request, id):
         'form_head':"Update Agent",
         'button':"Update Agent",
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         try: 
@@ -804,7 +838,7 @@ class AddFeature(View):
             'button':'Add Features',
         }
      
-        noti = notification()
+        noti = notification(request)
         dist.update(noti)
         return render(request, self.template_name, dist)
     def post(self, request, *args, **kwargs):
@@ -851,7 +885,7 @@ class AddBrand(View):
             'button':'Add Brands',
         }
      
-        noti = notification()
+        noti = notification(request)
         dist.update(noti)
         return render(request, self.template_name, dist)
     def post(self, request, *args, **kwargs):
@@ -896,7 +930,7 @@ class AddService(View):
             'button':'Add Service',
         }
       
-        noti = notification()
+        noti = notification(request)
         dist.update(noti)
 
         return render(request, self.template_name, dist)
@@ -949,7 +983,7 @@ class AddClient(View):
             'button':'Add Client',
         }
        
-        noti = notification()
+        noti = notification(request)
         dist.update(noti)
         return render(request, self.template_name, dist)
     def post(self, request, *args, **kwargs):
@@ -998,7 +1032,7 @@ class AddTestomonial(View):
             'blog':blog,
             'button':'Add Testomonial',
         }
-        noti = notification()
+        noti = notification(request)
         dist.update(noti)
 
         return render(request, self.template_name, dist)
@@ -1046,7 +1080,7 @@ class AddBlog(View):
             'button':'Add Blog',
         }
 
-        noti = notification()
+        noti = notification(request)
         dist.update(noti)
         return render(request, self.template_name, dist)
     def post(self, request, *args, **kwargs):
@@ -1073,7 +1107,7 @@ class Profile(View):
         dist = {
             'form':form
         }
-        noti = notification()
+        noti = notification(request)
         dist.update(noti)
         return render(request, self.template_name, dist)
 
@@ -1148,7 +1182,7 @@ def site(request):
         'login':login,
         'signup':signup
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         if site:
@@ -1220,7 +1254,7 @@ def footerView(request):
         'footer':footer,
         'form': form
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = FootorForm(request.POST)
@@ -1233,6 +1267,35 @@ def footerView(request):
             messages.error(request,"something went wrong")
 
     return render(request, "owner/siteSetting/footor.html", dist)
+
+
+def addNote(request, id):
+    note = request.POST['note']
+    trans = Transaction.objects.get(id = id)
+
+    TransactionNote.objects.create(note = note, transaction = trans)
+    messages.success(request, "Successfully added note")
+    return HttpResponseRedirect(reverse('owner:transactionDetail', args=[id]))
+
+
+def editNote(request, id):
+    aa =  TransactionNote.objects.get(id=id)
+
+    aa.note = request.POST['notes']
+    aa.save()
+    trans= aa.transaction.id
+    messages.success(request, "Successfully updated note")
+    return HttpResponseRedirect(reverse('owner:transactionDetail', args=[trans]))
+
+
+def deleteNote(request, id):
+  
+    aa =  TransactionNote.objects.get(id=id)
+    trans= aa.transaction.id
+    aa.delete()
+    messages.success(request, "Successfully deleted note")
+    return HttpResponseRedirect(reverse('owner:transactionDetail', args=[trans]))
+
 
 
 def SiteInformationView(request):
@@ -1283,7 +1346,7 @@ def SiteInformationView(request):
         'home':homes,
         'homeform':homeform
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     return render(request, "owner/siteSetting/siteInfo.html", dist)
 
@@ -1391,7 +1454,7 @@ def PolicyView(request):
         'policy_form':policy_form,
         'terms_form':terms_form
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     return render(request, "owner/siteSetting/policy.html", dist)
 
@@ -1450,7 +1513,7 @@ def SocialLinkView(request):
         'social':social_link,
         'form':form
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = SocialForm(request.POST)
@@ -1480,7 +1543,7 @@ def SEOView(request):
         'form':form,
         'site':site,
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         if site:
@@ -1547,7 +1610,7 @@ def countryView(request):
         'country':country,
         'form': form
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = CountryForm(request.POST, request.FILES)
@@ -1590,7 +1653,7 @@ def currencyView(request):
         'form': form,
         'country':Country.objects.all()
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = CurrencyForm(request.POST)
@@ -1635,7 +1698,7 @@ def pickupView(request):
         'form': form,
         'country':Country.objects.all()
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = PickupPointForm(request.POST, request.FILES)
@@ -1668,13 +1731,16 @@ def deletePickup(request, id):
 
 
 def kycView(request):
-    kyc = KYC.objects.all().order_by('-id')
+    kyc = KYC.objects.filter(customer__kyc_verified = False)
     
 
     dist = {
-        'kyc':kyc
+        'kyc':kyc.filter(customer__kyc_verified = True),
+        'kyc_not':kyc.filter(customer__kyc_verified = False),
+        'pending':kyc.filter(customer__kyc_verified = False).count(),
+        'verified_ss':kyc.filter(customer__kyc_verified = True).count()
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     return render(request, "owner/kyc.html", dist)
 
@@ -1691,7 +1757,7 @@ def kycVerification(request, id):
         'kycs':kyc,
         'country':con
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     return render(request, "owner/kycDetail.html", dist)
 
@@ -1740,7 +1806,7 @@ def purposeView(request):
         'purpose':purpose,
         'form': form
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = PurposeForm(request.POST)
@@ -1779,7 +1845,7 @@ def fundView(request):
         'fund':footer,
         'form': form
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = FundForm(request.POST)
@@ -1818,7 +1884,7 @@ def blockPlaceView(request):
         'blocksw':footer,
         'form': form
     }
-    noti = notification()
+    noti = notification(request)
     dist.update(noti)
     if request.method == 'POST':
         form = BlockForm(request.POST)

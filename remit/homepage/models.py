@@ -264,6 +264,7 @@ class BankAccount(models.Model):
     customer = models.ForeignKey(Customer, related_name='customer_bank', on_delete=models.CASCADE)
     recipient = models.ForeignKey(Recipient, related_name='recipient_bank', on_delete=models.CASCADE)
     account_name = models.CharField(max_length=300)
+    branch = models.CharField(max_length=200)
     account_number = models.CharField(max_length=500)
     bank_name = models.CharField(max_length=200)
     country = models.ForeignKey(Country, related_name='country_bank', on_delete=models.CASCADE)
@@ -275,6 +276,7 @@ class BankAccount(models.Model):
 class AdminBankAccount(models.Model):
     account_name = models.CharField(max_length=300)
     account_number = models.CharField(max_length=500)
+    branch = models.CharField(max_length=200)
     bank_name = models.CharField(max_length=200)
     country = models.ForeignKey(Country, related_name='admin_country_bank', on_delete=models.CASCADE)
     swift_code = models.CharField(max_length=200)
@@ -315,12 +317,21 @@ class Transaction(models.Model):
         return ss
 
 
+class TransactionNote(models.Model):
+    transaction = models.ForeignKey(Transaction, related_name='transaction_note' ,on_delete=models.CASCADE)
+    note = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.note
+
 class ScreenShot(models.Model):
     transaction = models.OneToOneField(Transaction, related_name='transaction_screenshot' ,on_delete=models.CASCADE)
     image = models.ImageField(upload_to='screenshot/')
 
 class KYC(models.Model):
-    image = models.ImageField(upload_to='kyc_image')
+    image = models.ImageField(upload_to='kyc_image', null = True, blank=True)
     customer = models.ForeignKey(Customer, related_name='kyc_customer', on_delete=models.CASCADE, null = True, blank=True)
     country = models.CharField(max_length=200)
     address = models.CharField(max_length=200)
@@ -335,7 +346,7 @@ class KYC(models.Model):
         ('Other', 'Other')
     ))
     document_type = models.CharField(max_length=200, choices=(
-        ('Business Registration/licence', 'Business Registration/licence'),
+        ('National ID', 'National ID'),
         ('Driver licence', 'Driver licence'),
         ('Passport', 'Passport'),
     ))
@@ -637,7 +648,7 @@ class Ticket(models.Model):
     
 class TicketReply(models.Model):
     ticket = models.ForeignKey(Ticket, related_name='ticket_reply', on_delete=models.CASCADE, null = True, blank=True)
-    description = RichTextUploadingField()
+    description = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now = True)
     replied_by = models.ForeignKey(CustomUser, related_name='user_reply', on_delete=models.CASCADE)

@@ -643,7 +643,7 @@ a{
 .breadcum{
     padding: 5px;
     font-weight:300;
-    background-color: rgb(241, 241, 241);
+    background-color: rgb(255, 255, 255);
     color: #110c5e;
     border-radius: 5px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
@@ -841,7 +841,7 @@ a{
 }
 .logo_show{
     height: auto;
-    width: 80%;
+    width: 20%;
 }
 
 .django-ckeditor-widget{
@@ -851,8 +851,19 @@ a{
     display: none;
 }
 
+#slowloder i{
+    font-size: 30px;
+    color: #1e1780;
+}
 
-
+#slowloder2{
+    font-size: 30px;
+    color: #003399;
+}
+#slowloder3{
+    font-size: 30px;
+    color: #003399;
+}
 .topHead{
     display: flex;
     justify-content: space-between;
@@ -885,7 +896,34 @@ a{
     padding-right: 20px;
     padding-left: 20px;
 }
+#ticketBoxN{
+    display: flex;
+    align-items: start;
+}
 @media only screen and (max-width: 600px) {
+    .docFile img {
+        width: auto;
+        height: 30px;
+    }
+    #ticketBoxN{
+        display: block;
+        margin-top: 10px;
+    }
+    .left-ticket-box{
+        width: 100%!important;
+        min-height: 300px!important;
+    }
+    .tab-data{
+        width: 100%!important;
+        margin-top: 10px;
+    }
+    .sidesupport{
+        width: 100%!important;
+        margin-top: 10px;
+    }
+    .docFile p {
+        font-size: 12px;
+    }
     .hidePhone {
       display: none;
     }
@@ -936,11 +974,16 @@ a{
 .footer{
     background-image: linear-gradient(92.88deg, #292177 9.16%, #2325aa 43.89%, #423fd7 64.72%);
 }
-
+.reply-ticket{
+    height: 200px;
+    width: 100%;
+}
 .footer-first img{
     height: auto;
     width:20%;
 }
+
+
 
 .footor-app img{
     height: auto;
@@ -1250,10 +1293,6 @@ z-index: 2; }
 }
 
 
-.left-ticket-box{
-    width: 26%; background-color: rgb(248, 248, 248);
-    min-height: 400px;
-}
 
 #des-holder{
     height: 400px;
@@ -1287,6 +1326,8 @@ label{
 .left-ticket-box{
     height: 500px;
     overflow: scroll;
+    width: 26%; background-color: rgb(248, 248, 248);
+    min-height: 400px;
 }
 
 /* DARK MODE STUDIO END */

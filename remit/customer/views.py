@@ -9,11 +9,17 @@ from homepage.forms import PasswordChangeFormUpdate, CustomerForm, TicketForm
 from django.http import JsonResponse
 from homepage.forms import TransactionForm, BankForm, ReplyForm
 from django.core import serializers
-from homepage.models import CustomerNotification,  AdminBankAccount, Ticket, AdminNotification, SendingPurpose, SourceFund, ScreenShot
+from homepage.models import CustomerNotification, Restriction, AdminBankAccount, Ticket, AdminNotification, SendingPurpose, SourceFund, ScreenShot
 from homepage.location import get_user_country, get_country_name
+import datetime
+from django.db.models import Sum
 
-
-
+def allRead(request):
+    tic = CustomerNotification.objects.filter(seen = False)
+    for i in tic:
+        i.seen = True
+        i.save()
+    return HttpResponseRedirect(reverse('customer:allNotification'))
 
 
 def search(request):
@@ -86,9 +92,10 @@ def ticketView(request):
             
             AdminNotification.objects.create(customer = request.user.customer, name ="Created a ticket: "+ aa.subject, types ="ticket", ids=aa.id)
             images = request.FILES.getlist("file[]")
+            print(images)
             for img in images:
-                image = SupportFile(file=img, support = aa)
-                image.save()
+                SupportFile.objects.create(file=img, support = aa)
+            
             messages.success(request, "Successfully created ticket")
             return HttpResponseRedirect(reverse('customer:ticketList'))
         else:
@@ -191,6 +198,7 @@ def bankView(request):
         form = BankForm(request.POST)
 
         if form.is_valid():
+            
             recp = request.POST['recipient']
             aa = form.save(commit= False)
             aa.customer = request.user.customer
@@ -277,6 +285,7 @@ def getBank(request):
             'account_name':bank.account_name,
             'account_number':bank.account_number,
             'bank_name':bank.bank_name,
+            'branch':bank.branch,
             'currency_rate':bank.country.currency_country.currecy_rate,
             'conversion_rate':bank.country.currency_country.conversion_rate,
             'currecy_sign':bank.country.currency_country.currecy_sign,
@@ -289,9 +298,19 @@ def getBank(request):
 
 # Create your views here.
 def customerDashboard(request):
+    transaction = Transaction.objects.filter(customer = request.user.customer).order_by('-id')
+    today_trans = transaction.filter(created_at__date = datetime.date.today()).count()
+    total_tr = transaction.count()
+    total_cost = transaction.aggregate(sum_amount=Sum('sent'))['sum_amount']
+    today_total = transaction.filter(created_at__date = datetime.date.today()).aggregate(sum_amount=Sum('sent'))['sum_amount']
     dist = {
+        'total_tr':total_tr,
+        'total_cost':total_cost,
+        'today_cost':today_total,
+        'today_trans':today_trans,
+
         'currency' : Currency.objects.all().order_by('-id')[:3],
-        'transaction': Transaction.objects.filter(customer = request.user.customer).order_by('-id')[:4]
+        'transaction':transaction[:4]
     }
     noti = notification(request)
     dist.update(noti)
@@ -369,13 +388,28 @@ def deleteRecipient(request, id):
 
 
 def sendMoney(request):
+    today_trans = Transaction.objects.filter(customer = request.user.customer).filter(created_at__date = datetime.date.today())
+    print(today_trans)
+    total_todat = 0 if not today_trans else today_trans.aggregate(sum_amount=Sum('sent'))['sum_amount']
+    print(total_todat)
+    restriction = Restriction.objects.first()
+    print(restriction.minimum_amount)
+    print(restriction.maximum_amount)
+    if total_todat:
+        exis = False if total_todat >= restriction.daily_transfer_remit else True
+        
+    else:
+        exis = True
     try:
         default = request.user.customer.customer_currency.currency
     except:
         default = Currency.objects.last()
+    print(exis)
     dist = {
         'recp':Recipient.objects.filter(customer__admin = request.user),
         'currency':Currency.objects.all(),
+        'exis':exis, 'total_todat':total_todat,
+        'restriction':restriction,
         'default':default,
         'form':TransactionForm(),
         'bankform': BankForm(),
@@ -416,9 +450,16 @@ def completePayment(request, id):
 
 def transactionView(request):
     transaction = Transaction.objects.filter(customer = request.user.customer).order_by('-id')
-
+    today_trans = transaction.filter(created_at__date = datetime.date.today()).count()
+    total_tr = transaction.count()
+    total_cost = transaction.aggregate(sum_amount=Sum('sent'))['sum_amount']
+    today_total = transaction.filter(created_at__date = datetime.date.today()).aggregate(sum_amount=Sum('sent'))['sum_amount']
     dist = {
-        'transaction':transaction
+        'transaction':transaction,
+        'total_tr':total_tr,
+        'total_cost':total_cost,
+        'today_cost':today_total,
+        'today_trans':today_trans
     }
     noti = notification(request)
     dist.update(noti)
@@ -500,8 +541,12 @@ def kycVerify(request):
             uses.save()
             # except:
             #     pass
-            AdminNotification.objects.create(customer =request.user.customer, name ="Applied for kyc verification" , types ="kyc", ids=aa.id)
-            messages.success(request, "Successfully sent for verification")
+            if cm:
+                AdminNotification.objects.create(customer =request.user.customer, name ="updated kyc details" , types ="kyc", ids=aa.id)
+                messages.success(request, "Successfully updated kyc details")
+            else:
+                AdminNotification.objects.create(customer =request.user.customer, name ="Applied for kyc verification" , types ="kyc", ids=aa.id)
+                messages.success(request, "Successfully sent for verification")
             return HttpResponseRedirect(reverse('customer:verify'))
         else:
             print(form.errors)

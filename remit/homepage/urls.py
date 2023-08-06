@@ -27,4 +27,5 @@ urlpatterns = [
     path('set_session_big', views.set_session_big, name = "set_session_big"),
     path("password_reset", views.password_reset_request, name="password_reset"),
     path('OTP-VERFIFICATION-CODE-SENT-AUTOMATICALLY', views.OPTV, name ='OTPV'),
+  
 ]

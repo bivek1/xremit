@@ -33,6 +33,7 @@ urlpatterns = [
     path('csutomer-seen-notification', views.seenNotification, name="seenNotification"),
     path('customer-all-notification', views.allNotification, name="allNotification"),
     path('search-customer-data/', views.search, name='search'),
+    path('customer-allRead', views.allRead, name="allRead"),
     path('customer-ticket-reply/<int:id>', views.replyTicket, name ="ticketReply"),
 
 

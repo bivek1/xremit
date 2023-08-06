@@ -9,7 +9,7 @@
 
 {% block inside %}
 <style>
-    #profile-pic-container {
+#profile-pic-container {
   width: 200px;
   height: 200px;
   border: 1px solid #ccc;
@@ -22,6 +22,10 @@
 #profile-pic {
   max-width: 100%;
   max-height: 100%;
+}
+#profile-pic-input{
+    width: 100px!important;
+    
 }
 </style>
 <div class="row p-0 m-0 mt-3">
@@ -119,17 +123,31 @@
                                     </div>
                                     <div class="col-lg-4 col-12 pt-3 pb-3 m-auto">
                                         {% if user.customer.profil_pic %}
+                                       
                                         <div class="text-center" id="profile-pic-container">
-                                            <img id="profile-pic" class="my-auto" src="{{user.customer.profil_pic.url}}" alt="" style="height: auto; width: 100%;">
+                                            <form action="{%url 'customer:updatePic'%}" method="POST" enctype="multipart/form-data">
+                                                <input class="mb-2" type="file" id="profile-pic-input" name ="profile" required>
+                                                <!-- <img class="my-auto" src="" alt="" id="profile-pic"> -->
+                                                <div class="text-center" id="profile-pic-container">
+                                                    <img id="profile-pic" class="my-auto" src="{{user.customer.profil_pic.url}}" alt="" style="height: auto; width: 100%;">
+                                                </div>
+                                              
+                                                {% csrf_token %}
+                                                <button id="shownbtn" class="btn btn-success" type="submit">
+                                                    Update Profile
+                                                </button>
+                                            
+                                            </form>
+                                           
+                                            
                                         </div>
-                                        <input type="file" id="profile-pic-input">
                                         
                                             
                                         {%else%}
                                         <div class="text-center" id="profile-pic-container">
                                             <form action="{%url 'customer:updatePic'%}" method="POST" enctype="multipart/form-data">
-                                                <input type="file" id="profile-pic-input" name ="profile" required>
-                                                <img src="" alt="" id="profile-pic">
+                                                <input class="mb-2" type="file" id="profile-pic-input" name ="profile" required>
+                                                <img class="my-auto" src="" alt="" id="profile-pic">
                                                 <i class="fa fa-user-circle text-primary my-auto" style="font-size: 130px;">
                 
                                                 </i> 
@@ -386,9 +404,11 @@
 </div>
 
 <script>
+    $('#shownbtn').hide()
     document.getElementById('profile-pic-input').addEventListener('change', function(event) {
     var input = event.target;
     if (input.files && input.files[0]) {
+        $('#shownbtn').show()
         $('.fa-user-circle').hide()
         var reader = new FileReader();
         reader.onload = function(e) {

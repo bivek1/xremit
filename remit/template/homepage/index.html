@@ -45,10 +45,10 @@
           </button>
           <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNav">
             <a href="{%url 'homepage:homepage'%}" class="d-flex">
-                <img src="{%static 'resources/logodark.png'%}" alt="" height="50px">
-                <h2 class="my-auto p-2" id="headlogo">
+                <img src="{%if site.light_logo %} {{site.light_logo.url}} {%else%}{%static 'resources/logodark.png'%} {%endif%}" alt="" height="50px">
+                <!-- <h2 class="my-auto p-2" id="headlogo">
                     Xremit
-                </h2>
+                </h2> -->
             </a>
             <ul class="navbar-nav m-auto">
             
@@ -304,7 +304,7 @@
                         Always safe
                     </h4>
                     <small class="text-light">
-                        xRemit is an authorised and regulated money transfer service. Our security checks protect your money and personal information at all times.
+                        {{site.title}} is an authorised and regulated money transfer service. Our security checks protect your money and personal information at all times.
                     </small>
                 </div>
             </div>
@@ -377,7 +377,7 @@
                         
                         <h2 class="head-home text-light mt-2">
                             
-                                ABOUT XREMIT
+                                ABOUT {{site.title}}
                             
                         </h2>
                         <p class="text-light">
@@ -556,13 +556,27 @@
             <div class="row p-0 m-0 ps-2 pe-2">
                 <div class="col-12 col-lg-3 mt-3 text-light">
                     <div class="d-flex footer-first">
-                        <img src="{%static 'resources/logo.png'%}" alt="XRemit">  
+                        <img src="{%static 'resources/logo.png'%}" alt="{{site.title}}">  
                         <b class="my-auto">
-                            <h4 class="ps-3">XRemit</h4>
+                            <h4 class="ps-3">{{site.title}}</h4>
                         </b>
                     </div>
-                    
+                    <hr>
                     <div class="mt-3">
+                       
+                        <p class="m-0 mt-2 text-light">
+                            <i class="fa fa-phone"></i> {{site.number_one}} {% if site.number_two  %}
+                            , {{site.number_two}}
+                          
+                           {% endif %}
+                        </p>
+                        <p class="m-0 mt-2 text-light">
+                            <i class="fa fa-envelopes-bulk"></i> {{site.email}} 
+                        </p>
+                        <p class="m-0 mt-2 text-light">
+                            <i class="fa fa-location-pin"></i> {{site.address}} 
+                        </p>
+                        <hr>
                         <a href="{{i.link}}">
                             <p>Privacy and Policy</p>
                            
@@ -572,6 +586,9 @@
                                 Terms and Conditions
                             </p>
                         </a>
+                        
+                            
+                      
                        
                     </div>
         
