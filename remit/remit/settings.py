@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-d18w#-=t(+1j^ai^bgg9#ld7omeuzgheqy(ng-ww9=%&d2c7vu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.75']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -151,3 +151,13 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Email Configuration
+EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
+EMAIL_HOST = 'mail.travelcrm.com.au'
+EMAIL_PORT = '465'
+EMAIL_HOST_USER = 'info@travelcrm.com.au'
+EMAIL_HOST_PASSWORD = 'travelcrm@123'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False

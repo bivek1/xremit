@@ -17,7 +17,6 @@ from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.conf import settings
-from django.core.mail import send_mail
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
 from .forms import ContactForm
@@ -29,6 +28,9 @@ from .ipaddress import log_user_login
 from django.http import JsonResponse
 from owner.models import SiteSetting
 from .otp import generate_random_code
+from django.conf import settings
+from django.core.mail import send_mail
+
 
 def set_session_small(request):
     request.session['navbar'] = 'small'
@@ -106,10 +108,7 @@ def handler404(request, exception):
 def Homepage(request):
     template_name = 'homepage/index.html'
     choose = ChooseUs.objects.all()
-    try:
-        default = request.user.customer.customer_currency.currency
-    except:
-        default = Currency.objects.last()
+   
 
     if choose:
         for i in choose:
@@ -258,7 +257,15 @@ def LoginV(request):
         #     if i.block == "Country":
         #         if blok['country'] == i.name or blok['region'] == i.name or blok['city'] == i.name :
         #             return render(request, 'homepage/blocked.html')
-        return render(request, tempate_name, dist)
+        if request.user.is_authenticated:
+            if request.user.user_type == 'owner':
+                return HttpResponseRedirect(reverse('owner:dashboard'))
+            elif request.user.user_type == "customer":
+                return HttpResponseRedirect(reverse('customer:dashboard'))
+            else:
+                return HttpResponseRedirect(reverse('agent:dashboard'))
+        else:
+            return render(request, tempate_name, dist)
     
 
 def Register(request):
@@ -286,6 +293,13 @@ def Register(request):
             obj = admin.customer
             obj.added_by = admin
             obj.save()
+            content = settings.EMAIL_HOST_USER
+            recipient_list = [admin.email, ]
+            sub = 'Successfully Created Account Syon Remit'
+            messa = "Syon Remit Welcome you to the easy money transfering app. Thank you for the registration."
+            # send_mail( sub, content, email_from, recipient_list )
+            try: send_mail(sub, messa, content, recipient_list, fail_silently=False, auth_user=None, auth_password=None, connection=None, html_message=None)
+            except:pass
         except:
             messages.error(request, "Email is already registered please try again with different email")
             return HttpResponseRedirect(reverse('homepage:register'))

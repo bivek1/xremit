@@ -70,10 +70,10 @@ class EmailListForm(forms.ModelForm):
 
         widgets = {
             'subject':forms.TextInput(attrs = {'class':'form-control','placeholder':'Subject of your email'}),
-            'customer':forms.TextInput(attrs = {'class':'form-control','hidden':True}),
-            'reciptient':forms.TextInput(attrs = {'class':'form-control','hidden':True}),
+            'customer':forms.Select(attrs = {'class':'form-control','hidden':True}),
+            'reciptient':forms.Select(attrs = {'class':'form-control','hidden':True}),
             'group':forms.Select(attrs = {'class':'form-control','hidden':True}),
-            'agent':forms.TextInput(attrs = {'class':'form-control','hidden':True}),
+            'agent':forms.Select(attrs = {'class':'form-control','hidden':True}),
             'message':CKEditorUploadingWidget()
         }
 

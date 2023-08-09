@@ -23,6 +23,8 @@ from homepage.forms import AdminBankForm, BankForm, RestrictionForm, UserCreateF
 from .forms import BlockForm, PurposeForm, FundForm, DefaultForm, EmailSettingForm, SMSSettingForm, LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, BrandForm, FootorForm, SocialForm, PolicyForm, TermForm, EmailListForm, SMSListForm
 from django.http import JsonResponse
 from homepage.models import LoginLogs, TransactionNote
+from django.conf import settings
+from django.core.mail import send_mail, BadHeaderError
 # Create your views here.
 
 
@@ -233,8 +235,33 @@ def emailSetting(request):
         sendform = EmailListForm(request.POST)
         
         if sendform.is_valid():
-            sendform.save()
-            messages.success(request, 'Successfully sent emails')
+            aa= sendform.save()
+            content = settings.EMAIL_HOST_USER
+            sub = aa.subject
+            messa = aa.message
+            try:
+                recipient_list = [aa.customer.admin.email, ]
+                
+            except:
+                pass
+
+            try:
+                recipient_list = [aa.agent.admin.email, ]
+                
+            except:
+                pass
+            try:
+                recipient_list = [aa.reciptient.email, ]
+                
+            except:
+                pass
+            try:
+                send_mail(sub, messa, content, recipient_list, fail_silently=False, auth_user=None, auth_password=None, connection=None, html_message=None)
+                messages.success(request, 'Successfully sent emails')
+            except:
+                messages.success(request, 'Emails can\'t be sent but saved as recent email')
+                
+            
             return HttpResponseRedirect(reverse('owner:emailSetting'))
         else:
             print(sendform.errors)

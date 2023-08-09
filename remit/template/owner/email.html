@@ -165,7 +165,7 @@ Email Settings
                             </span>
                             <hr class="m-0">
                             <div class="form-check mt-2">
-                                <input class="form-check-input"  name="allCustomer" type="checkbox" value="" id="allCustomer" onchange="getCustomerValueAll();">
+                                <input class="form-check-input"  name="allCustomer" type="checkbox" value="" id="allCustomer" onchange="getCustomerValueAll(this);">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     Select All Customer
                                 </label>
@@ -322,7 +322,7 @@ Email Settings
     
                                     Message:
                                     <span class="text-secondary">
-                                        {{i.message|safe|truncatewords:20}}
+                                        {{i.message|safe|truncatewords:6}}
                                     </span>
                                 
                             </small>

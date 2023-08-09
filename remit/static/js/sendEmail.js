@@ -1,6 +1,4 @@
 
-// $('#sendEmail').hide()
-// $('#customerList').hide()
 $('#recipientList').hide()
 $('#agentList').hide()
 
@@ -35,41 +33,17 @@ function selectEmail(elem, type){
     elem.classList.add('selected');
 }
 
-const checkbox = document.getElementById('allCustomer');
-const select = document.getElementById('customer');
-
-checkbox.addEventListener('change', function() {
-if (this.checked) {
-    select.disabled = true;
-} else {
-    select.disabled = false;
-}
-});
 
 
-const checkboxs = document.getElementById('allAgent');
-const selects = document.getElementById('agent');
 
-checkboxs.addEventListener('change', function() {
-if (this.checked) {
-    selects.disabled = true;
-} else {
-    selects.disabled = false;
-}
-});
 
-const checkboxss = document.getElementById('allRecipient');
-const selectss = document.getElementById('recipient');
 
-checkboxss.addEventListener('change', function() {
-if (this.checked) {
-    selectss.disabled = true;
-} else {
-    selectss.disabled = false;
-}
-});
+
 
 group = "Individual"
+
+
+
 
 function getCustomerValue(elem){
     $('#id_customer').val(elem.value)
@@ -78,9 +52,21 @@ function getCustomerValue(elem){
 }
 
 function getCustomerValueAll(elem){
+    const checkboxsas = document.getElementById('allCustomer');
+    const selectw = document.getElementById('customer');
     group = "Customer"
     document.getElementById('id_group').value = group
+    if (checkboxsas.checked) {
+        selectw.disabled = true;
+    } else {
+        selectw.disabled = false;
+    }
 }
+
+
+
+const checkboxss = document.getElementById('allRecipient');
+const selectss = document.getElementById('recipient');
 
 
 function getReceiptionValue(elem){
@@ -92,7 +78,17 @@ function getReceiptionValue(elem){
 function getReceiptionValueAll(elem){
     group = "Recipient"
     document.getElementById('id_group').value = group 
+    if (elem.checked) {
+        selectss.disabled = true;
+    } else {
+        selectss.disabled = false;
+    }
 }
+
+
+
+const checkboxs = document.getElementById('allAgent');
+const selectsss = document.getElementById('agent');
 
 
 function getAgentValue(elem){
@@ -105,4 +101,9 @@ function getAgentValue(elem){
 function getAgentValueAll(elem){
     group = "Agent"
     document.getElementById('id_group').value = group
+    if (elem.checked) {
+        selectsss.disabled = true;
+    } else {
+        selectsss.disabled = false;
+    }
 }

@@ -901,76 +901,13 @@ a{
     display: flex;
     align-items: start;
 }
-@media only screen and (max-width: 600px) {
-    .docFile img {
-        width: auto;
-        height: 30px;
-    }
-    #topbarpage {
-        padding: 10px;
-    }
-    #topbarpage .head-para{
-        font-size: 10px;
-    }
-    #ticketBoxN{
-        display: block;
-        margin-top: 10px;
-    }
-    .left-ticket-box{
-        width: 100%!important;
-        min-height: 300px!important;
-    }
-    .tab-data{
-        width: 100%!important;
-        margin-top: 10px;
-    }
-    .sidesupport{
-        width: 100%!important;
-        margin-top: 10px;
-    }
-    .docFile p {
-        font-size: 12px;
-    }
-    .hidePhone {
-      display: none;
-    }
-    .top-link{
-        font-size: 13px;
-    }
-    .maintain{
-        height: 0px;
-    }
-    .whole-content{
-        width: 100%;
-    }
-    .showphone{
-        display: inline;
-    }
-    .whole-content{
-        width: 100%!important;
-        /* float: right; */
-    }
-    .navbar{
-        display: none;
-    }
-    .curnBx {
-        width: 100%!important;
-    }
-    .show-in-phone{
-        display: block;
-        background-color: white;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 9999;
-    }
-    .main-elemen{
-        padding: 0px!important;
-    }
-  }
 
 
+
+.course-box img{
+    height: 100px;
+    width: auto;
+}
 .choose-bg{
     background-color: white;
     border-radius: 10px;
@@ -1135,6 +1072,7 @@ z-index: 2; }
 }
 
 .sidebarofxremit{
+    display: none;
     position: fixed;
     left: 0;
     top: 300px;
@@ -1307,6 +1245,13 @@ z-index: 2; }
     
 }
 
+.swiper-button-prev{
+    color: #1f0964;
+}
+
+.swiper-button-next{
+    color: #1f0964;
+}
 
 
 
@@ -1338,3 +1283,130 @@ label{
 }
 
 /* DARK MODE STUDIO END */
+
+
+
+
+
+
+
+@media only screen and (max-width: 600px) {
+    .docFile img {
+        width: auto;
+        height: 30px;
+    }
+    #topbarpage {
+        padding: 10px;
+    }
+    #topbarpage .head-para{
+        font-size: 10px;
+    }
+    #ticketBoxN{
+        display: block;
+        margin-top: 10px;
+    }
+    .left-ticket-box{
+        width: 100%!important;
+        min-height: 300px!important;
+    }
+    .tab-data{
+        width: 100%!important;
+        margin-top: 10px;
+    }
+    .sidesupport{
+        width: 100%!important;
+        margin-top: 10px;
+    }
+    .docFile p {
+        font-size: 12px;
+    }
+    .hidePhone {
+      display: none;
+    }
+    .top-link{
+        font-size: 13px;
+    }
+    .maintain{
+        height: 0px;
+    }
+    .whole-content{
+        width: 100%;
+    }
+    .showphone{
+        display: inline;
+    }
+    .whole-content{
+        width: 100%!important;
+        /* float: right; */
+    }
+    .navbar{
+        display: none;
+    }
+    .curnBx {
+        width: 100%!important;
+    }
+    .show-in-phone{
+        display: block;
+        /* position: fixed;
+        background-color: black;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999; */
+    }
+    .main-elemen{
+        padding: 0px!important;
+    }
+    .currecyBox input {
+        height: 12px;
+        font-size: 16px;
+    }
+
+    .navbar{
+        display: none;
+    }
+    .maintain{
+        height: 0px!important;
+    }
+    .course-box img{
+        height: 60px!important;
+    
+    }
+    #customer-view{
+        font-size: 18px;
+    }
+    .blockquote{
+        font-size: 14px;
+    }
+    .swiper {
+        width: 100%!important;
+    }
+    #acrossWorld{
+        font-size: 20px;
+    }
+
+    #latestblog{
+        font-size: 18px;
+    }
+    #feelproud{
+        font-size: 18px;
+    }
+    .brand-i img{
+        width: 80%!important;
+        height: auto!important;
+        margin: auto 0;
+    }
+    #mobilebar i{
+        font-size: 18px;
+        color: white;
+        padding:5px;
+    }
+    #mobilebar{
+        margin-bottom: 10px;
+    }
+    .offcanvas{
+    
+        width: 80%!important;
+    }
+   
+  }

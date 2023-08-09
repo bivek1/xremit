@@ -93,42 +93,41 @@
             </ul>
           
             <div class="nav-item dropdown">
+
                 <a href="{%url 'homepage:login'%}" id="loginHome">
-                    LOGIN 
+                    
+                    {% if request.user.is_authenticated %}
+                        Dashboard
+                        {% else %}
+                            LOGIN 
+                    {% endif %}
+                        
+                    
                 </a>
+
+
+                {% if request.user.is_authenticated %}
+                    <a href="{%url 'homepage:logout'%}" class ="text-secondary" >
+                        <button class="btn btn-danger">
+                            Logout
+                        </button>
+                         
+                        
+                    </a> 
+                {% else %}
+                    <a href="{%url 'homepage:register'%}">
+                        <button class="btn btn-primary">
+                            SIGN UP
+                        </button>
+                    </a> 
+                {% endif %}
                
-                <a href="{%url 'homepage:register'%}">
-                    <button class="btn btn-primary">
-                        SIGN UP
-                    </button>
-                </a>
              
             </div>
           </div>
         </div>
     </nav>
-    <div class="row m-0 show-in-phone">
-        <div class="mt-3 p-2">
-            <div class="float-start" style="font-size: 30px;">
-                <i class="fa fa-bars"></i>
-            </div>
-            <div class="float-end">
-                <a href="{%url 'homepage:login'%}">
-                    <button class="btn btn-primary">
-                         LOGIN 
-                    </button>
-                </a>
-               
-                <a href="{%url 'homepage:register'%}">
-                    <button class="btn btn-danger">
-                        SIGN UP
-                    </button>
-                </a>
-            </div>
-          
-         
-        </div>
-    </div>
+   
    
     <div class="maintain">
 
@@ -141,6 +140,117 @@
             <div class="row m-0">
                 <div class="col-12 col-lg-11 m-auto">
                     <div class="row m-0 p-0">
+                        <div class="row m-0 show-in-phone">
+                            <div class="d-flex mt-3 p-2">
+                                <div class="float-start my-auto">
+                                   <img class="my-auto" src="{%if site.light_logo %} {{site.light_logo.url}} {%else%}{%static 'resources/logodark.png'%} {%endif%}" alt="" height="auto" width="20%">
+                                </div>
+                                <div class="float-end d-flex" id="mobilebar">
+                                    {% if request.user.is_authenticated %}
+                                        <a href="{%url 'homepage:logout'%}"  >
+                                            <i class="fa fa-sign-out"></i>
+                                        </a> 
+                                    {% else %}
+                                    <a href="{%url 'homepage:login'%}">
+                                        <i class="fa fa-sign-in"></i>
+                                
+                                    </a>
+                                    <a href="{%url 'homepage:register'%}">
+                                        <i class="fa fa-user-plus"></i>
+                                    </a>
+                                    {% endif %}
+                                    <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+                                        <i class="fa fa-bars"></i>
+                                    </a>
+
+                                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                                        <div class="offcanvas-header">
+                                          <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+                                          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                        </div>
+                                        <div class="offcanvas-body">
+                                            <div class="nav-item my-auto">
+                                                {% if user.user_type == 'owner' %}
+                                                <a  href="{%url 'owner:dashboard'%}" class="nav-link">
+                                                    Dashboard
+                                                </a>
+                                                {% endif %}
+                                                {% if user.user_type == 'customer' %}
+                                                    <a href="{%url 'customer:dashboard'%}" class="nav-link">
+                                                        <i class="fa fa-home"></i> Dashboard
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                            
+                                            <div class="nav-item my-auto mt-3">
+               
+                                                <a class="nav-link " aria-current="page" href="{%url 'homepage:homepage'%}">
+                                                    <!-- <i class="fa fa-home"></i>     -->
+                                                    HOME
+                                                
+                                                </a>
+                                              </div>
+                                              <div class="nav-item my-auto mt-3">
+                                                <a class="nav-link" href="{%url 'homepage:services'%}">
+                                                    <!-- <i class="fa fa-server"></i> -->
+                                                    SERVICES
+                                                
+                                                </a>
+                                              </div>
+                                              <div class="nav-item my-auto mt-3">
+                                                <a class="nav-link" href="{%url 'homepage:feature'%}">
+                                                    <!-- <i class="fa fa-info-circle"></i> -->
+                                                    FEATURES
+                                                </a>
+                                              </div>
+                                              <div class="nav-item my-auto mt-3">
+                                                <a class="nav-link" href="{%url 'homepage:currency'%}">
+                                                    <!-- <i class="fa fa-info-circle"></i> -->
+                                                    CURRENCY
+                                                </a>
+                                              </div>
+                                              <div class="nav-item my-auto mt-3">
+                                                <a class="nav-link" href="{%url 'homepage:country'%}">
+                                                    <!-- <i class="fa fa-info-circle"></i> -->
+                                                    COUNTRIES
+                                                </a>
+                                              </div>
+                                              <div class="nav-item my-auto mt-3">
+                                                <a class="nav-link" href="{%url 'homepage:blog'%}">
+                                                    <!-- <i class="fa fa-blog"></i> -->
+                                                    BLOG</a>
+                                              </div>
+                                            </ul>
+                                            <div class="todownoff mt-5">
+                       
+                                                <p class="m-0 mt-5">
+                                                    <i class="fa fa-phone text-dark""></i> {{site.number_one}} {% if site.number_two  %}
+                                                    , {{site.number_two}}
+                                                  
+                                                   {% endif %}
+                                                </p>
+                                                <p class="m-0 mt-2">
+                                                    <i class="fa fa-envelopes-bulk text-dark"></i> {{site.email}} 
+                                                </p>
+                                                <p class="m-0 mt-2">
+                                                    <i class="fa fa-location-pin text-dark""></i> {{site.address}} 
+                                                </p>
+                                                <hr>
+                                               
+                                                
+                                                    
+                                              
+                                               
+                                            </div>
+                                                
+                                            
+                                     
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-12 col-lg-6 my-auto ">
                             <div class="mt-5">
                                
@@ -311,19 +421,19 @@
         </div>     
        
         <div class="container-fluid m-0 p-0">
-            <div class="row m-0 mt-5 ps-5 pe-5">
-                <h5 class="text-center mb-3 head-home">
+            <div class="row m-0 mt-5 ps-3 pe-3">
+                <h5 class="text-center mb-3 head-para text-dark">
                     Our 
                    service can serve you the best</span>
                 </h5>
             
                 
                 {% for i in service_man  %}
-                    <div class="mt-2 col-12 col-lg-3 m-auto">
+                    <div class="mt-2 col-6 col-lg-3 m-auto">
                         <a href="{%url 'homepage:serviceDetail' i.id i.name%}">
                             <div class="course-box ps-2 pe-2 text-center">
-                                <img src="{%if i.image%}{{i.image.url}}{%endif%}" alt="" height="100px" width="auto">
-                                <h4 class="mt-3">{{i.name}}</h4>
+                                <img src="{%if i.image%}{{i.image.url}}{%endif%}" alt="">
+                                <h6 class="mt-3">{{i.name}}</h6>
                                
                             </div>
                         </a>
@@ -425,7 +535,7 @@
                 
                 </div>
         
-                <h3 class="text-center head-home mt-5">
+                <h3 class="text-center head-home mt-5" id="customer-view">
                 What our customer says about us
                 </h3>
                 <!-- Slider main container -->
@@ -435,7 +545,7 @@
                         <!-- Slides --> 
                         {% for i in  testomonial%}            
                             <div class="swiper-slide mt-3 col-lg-3 col-6 text-center">
-                                <figure class="text-center mt-5">
+                                <figure class="text-center mt-3">
                                     <blockquote class="blockquote">
                                     <p>{{i.description}}</p>
                                     </blockquote>
@@ -466,7 +576,7 @@
             
             <div class="row p-0 m-0 bg-white">
                 <div class="col-12 col-lg-10 mt-4 m-auto mt-3 pb-5">
-                    <h5 class="head-home text-center">
+                    <h5 class="head-home text-center" id="acrossWorld">
                         Send money across the country
                     </h5>
                     <div class="row m-0 pb-4">
@@ -484,7 +594,7 @@
                     </div>
         
         
-                    <h3 class="text-center head-home mt-5">
+                    <h3 class="text-center head-home mt-5" id="latestblog">
                         Our Latest News and Blog
                     </h3>
                     <div class="row m-0 mt-3">
@@ -530,12 +640,12 @@
                 
                     
         
-                    <h3 class="text-center head-home mt-5">
+                    <h3 class="text-center head-home mt-5" id="feelproud">
                         We feel proud to serve you
                     </h3>
                     <div class="row m-0 mt-3">
                         {% for i in brand%}            
-                            <div class="brand-i mt-3 col-lg-3 col-12 text-center">
+                            <div class="brand-i mt-3 col-lg-3 col-6 text-center">
                                 <img src="{{i.image.url}}" alt="">
                             </div>
                         {% endfor %}
@@ -556,7 +666,7 @@
             <div class="row p-0 m-0 ps-2 pe-2">
                 <div class="col-12 col-lg-3 mt-3 text-light">
                     <div class="d-flex footer-first">
-                        <img src="{%static 'resources/logo.png'%}" alt="{{site.title}}">  
+                        <img src="{%if site.light_logo %} {{site.light_logo.url}} {%else%}{%static 'resources/logodark.png'%} {%endif%}" alt="{{site.title}}">  
                         <b class="my-auto">
                             <h4 class="ps-3">{{site.title}}</h4>
                         </b>
