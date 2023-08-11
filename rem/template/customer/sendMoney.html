@@ -1,0 +1,1074 @@
+{% extends 'customer/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    Send Money
+{% endblock title %}
+    
+
+
+{% block inside %}
+
+<style>
+    .active{
+        color: red;
+    }
+    .completed{
+        color: rgb(12, 100, 12);
+    }
+
+</style>
+<div class="row p-0 m-0 mt-3">
+    <div class="mt-3 mb-3">
+      <span class="breadcum">
+        <a href="{%url 'customer:dashboard'%}">
+            Dashboard
+        </a>/
+        Send Money
+      </span>
+    </div>
+    <div class="row backBox p-0 m-0">
+  
+        <div class="row contentBox m-0">
+
+            <div class="bookContent p-2">
+               
+                <div class="BookBox ">
+                    <div class="topHead ps-4 pe-4 pt-3">
+                            <div class="top-link active  text-center my-auto" id="info">
+                                <i class="fa fa-dice-one me-2"></i>
+                                Recipients
+                                
+                            </div>
+                            
+                            <div class="top-link p-2 text-center" id ="book">
+                                <i class="fa fa-dice-two me-2"></i>
+                                Amount
+                            </div>
+                            <div class="top-link p-2 text-center" id ="trip">
+                                <i class="fa fa-dice-three me-2"></i>
+                                Review 
+                            </div>
+                            
+                            <div class="top-link p-2 text-center" id ="pay">
+                                <i class="fa fa-dice-four me-2"></i>
+                                Pay 
+                            </div>
+                            
+                    
+                    </div>
+                    <hr>
+                    
+                    {% if exis %}
+                            {% if user.customer.kyc_verified %}
+                                <div class="buttonContent p-2">
+                                    <div id="buttonInfo" class="gets">
+                                        <div class="row p-2" id="recipient">
+                                            <h5 class="text-center">
+                                                Select Your Recipients
+                                            </h5>
+                                            <div class="row m-0">
+                                                {% for i in  recp%}
+                                                    <div class="col-12 col-md-6 col-lg-4" >
+                                                        <div class="box p-2 mb-3" id="login-card"  onclick="toggleBorder(this, '{{i.id}}')" >
+                                                            <div class="d-flex">
+                                                                
+                                                            
+                                                                <span class="ps-2 my-auto" >
+                                                                    <p class="text-primary p-0 m-0 text-capitalize">
+                                                                        {{i.first_name}}  {% if i.middle_name %}
+                                                                        {{i.middle_name}} 
+                                                                        {% endif %}{{i.last_name}}
+                                                                    </p>
+                                                                    
+                                                                    <span class="badge bg-success">
+                                                                        {{i.transaction_type}}
+                                                                    </span>
+                                                                    <small class="d-block" style="font-size: 12px;">
+                                                                        <i class="fa fa-location-dot"></i> {{i.city}}, {{i.state}}, {{i.zip_code}}, {{i.address}}
+                                                                    </small>
+                                                                    
+                                                                </span>
+                                                            </div>
+                                                            <hr>
+                                                            <div class="d-flex justify-content-between p-2">
+                                                                {% if i.country.flag_img %}
+                                                                    <img class="my-auto" src="{{i.country.flag_img.url}}" alt="" style="height: 15px; width: auto;">
+                                                                {% endif %}
+                                                                <small class="text-secondary my-auto">
+                                                                    
+                                                                    {{i.country}}
+                                                                </small>
+                                                                
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        
+                                                    </div>
+                                                {% endfor %}
+                                                <hr>
+                                                <p class="text-center m-0 text-success">You can add new receipient from here.</p>
+                                                <a href="{%url 'customer:addRecipient'%}" id="addnewrfromsendmoney">
+                                                    <p class="text-center text-primary">
+                                                        <i class="fa fa-plus-square text-success"></i>
+                                                        Add New Receiptions
+                                                    </p>
+                                                </a>
+                                            </div>
+                                            
+                                            
+                                                
+                                        </div>
+
+                                        <div class="row p-2 text-center" id="slowloder">
+                                            <i class="fa-solid fa-spinner fa-spin"></i>
+                                        </div>
+                                        <div class="row p-2 text-center" id="reason">
+                                            <hr>
+                                            <h6 class="text-center mt-3">
+                                                Choose Receiptions Bank
+                                            </h6>
+                                            <div class="col-12 col-lg-10 m-auto">
+                                                <div class="row m-0" id="bankList">
+                                                    
+                                                </div>
+                                                <div>
+                                                    <hr>
+                                                    <p class="text-center m-0 text-warning">You can add new bank from here.</p>
+                                                    
+                                                    <a href="{%url 'customer:bank'%}">
+                                                        <p class="text-center text-primary">
+                                                            <i class="fa fa-plus-square text-success"></i>
+                                                            Add New Bank
+                                                        </p>
+                                                    </a>
+                                                
+                                                
+                                                
+                                                </div>
+                                                <button type="button" class="btn btn-primary p-2 mt-3 w-100" id="procees_one">
+                                                    Proceed
+                                                </button>
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                
+                                    <div id="flightInfo">
+                                        <div class="col-11 col-lg-6 mt-3 m-auto" >
+                                          
+                                            <div  class="p-3 box" id="login-card" >
+                                                <h6 class="text-center mt-3">
+                                                    SEND MONEY
+                                                </h6>
+                                                <hr>
+                                                <p class="text-danger" id="infoerror">
+                                                    
+                                                </p>
+                                                <div class="currecyBox mt-2">
+                                                    <div class="left-currency">
+                                                        <span class="text-secondary sendMoneyText p-2">You Send</span>
+                                                        <input class="ps-2" type="number" step="any" name="sendingMoney" id="sendingMoney" placeholder="1000" min="{{restriction.minimum_amount}}" max="{{restriction.maximum_amount}}" onkeyup="checkCurrency();">
+                                                    </div>
+
+                                                    <div class="dropdown">
+                                                        <a class="right-currency my-auto" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" >
+                                                            <img id="sending_currency_img" class="my-auto" src="{{default.country.flag_img.url}}">
+                                                            <small id="sending_currency_sign"   class="my-auto">{{default.currecy_sign}}</small>
+                                                            <i class="fa fa-caret-down p-1 my-auto"></i>
+                                                        </a>
+                                                        
+                                                        
+                                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                            {% for i in currency %}
+                                                                <div class="right-currency-drop mb-1 p-1" onclick="changeState('{{i.id}}', '{{i.country.flag_img}}' , '{{i.currecy_sign}}');">
+                                                                    <img class="my-auto" src="{{i.country.flag_img.url}}">
+                                                                    <small class="my-auto">{{i.currecy_sign}}</small>
+                                                                </div>
+
+                                                            {% endfor %}
+                                                        </ul>
+                                                        
+                                                        
+                                                    
+                                                    </div>
+                                                        
+                                                </div>
+                                
+                                                <div class="ps-3 pe-3 mt-2 mb-2">
+                                                    <p class="m-0 d-flex justify-content-between">
+                                                        <span id ="fee" class="small">
+                                                        
+                                                                {{default.conversion_rate}} {{default.currecy_sign}} 
+                                                            
+                                                        </span>
+                                                        <span class="small">
+                                                            Total Fees
+                                                        </span>
+                                                    </p>
+                                
+                                                    <p class="m-0 d-flex justify-content-between">
+                                                        <span id ="converting_amt" class="small">
+                                                    
+                                                                0 {{default.currecy_sign}} 
+                                                            
+                                                        </span>
+                                                        <span class="small">
+                                                            Amout we'll convert
+                                                        </span>
+                                                    </p>
+                                                    <p class="m-0 d-flex justify-content-between">
+                                                        <span id="rate" class="small">
+                                                        
+                                                            {{default.conversion_rate}} 
+                                                            
+                                                        </span>
+                                                        <span class="small">
+                                                            Conversion rate 1 USD
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                
+                                                <div class="currecyBox">
+                                                    <div class="left-currency">
+                                                        <span class="sendMoneyText p-2">Receiptions gets</span>
+                                                        <input class="ps-2" type="text" name="gets" id="gets" placeholder="84000" disabled>
+                                                    </div>
+                                                    
+                                                    <div class="dropdown">
+                                                        <a class="right-currency my-auto" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <img id="recv_currency_img" class="my-auto" src="{{default.country.flag_img.url}}">
+                                                            <small id="recv_currency_sign" class="my-auto">{{default.currecy_sign}}</small>
+                                                            <i class="fa fa-caret-down p-1 my-auto"></i>
+                                                        </a>
+                                                        
+                                                        
+                                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                            {% for i in currency %}
+                                                                <div class="right-currency-drop mb-2 p-1" onclick="changeStateTwo('{{i.id}}', '{{i.country.flag_img}}' , '{{i.currecy_sign}}');">
+                                                                    <img class="my-auto" src="{{i.country.flag_img.url}}">
+                                                                    <small class="my-auto">{{i.currecy_sign}}</small>
+                                                                </div>
+
+                                                            {% endfor %}
+                                                        </ul>
+                                                        
+                                                        
+                                                    
+                                                    </div>
+                                
+                                                </div>
+                                
+                                                <small class="text-secondary">
+                                                    By sending money you accept our 
+                                                    <a href="http://">
+                                                        terms and condition
+                                                    </a>
+                                                </small>
+                                                <button type="button" class="btn btn-primary p-2 mt-3 w-100" id="procees_two">
+                                                    Proceed
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                
+                                    <div id="tripInfo">
+                                        <div class="row p-2">
+                                        
+                                            <div class="col-12 col-lg-6 m-auto col-md-8">
+                                                <h5 class="text-center">
+                                                    Review Details
+                                                </h5>   
+                                                <div class="row p-1 text-center" id="slowloder2">
+                                                    <i class="fa-solid fa-spinner fa-spin"></i>
+                                                </div>
+                                                <div class="receipt-card p-2" id="receipt">
+                                                    <div class="d-flex justify-content-between">
+                                                        <h5>
+                                                            Transfer Details
+                                                        </h5>
+                                                        <span style="cursor: pointer;" class="text-primary" onclick="switchAmount();">
+                                                            Edit
+                                                        </span>
+                                                    </div>
+                                                    
+                                                    <div class="d-flex justify-content-between">
+                                                        <p>
+                                                            You Send
+                                                        </p>
+
+                                                        <b id="r_sent_money">
+                                                            1000 AUD
+                                                        </b>
+
+                                                    </div>
+
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="text-secondary">
+                                                            Total Fee
+                                                        </p>
+
+                                                        <p class="text-secondary" id="r_commision">
+                                                            -3 AUD
+                                                        </p>
+                                                        
+                                                    </div>
+
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="text-secondary">
+                                                            Amount to convert
+                                                        </p>
+
+                                                        <p class="text-secondary" id="r_covert">
+                                                        
+                                                        </p>
+                                                        
+                                                    </div>
+
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="text-secondary">
+                                                            Conversion rate
+                                                        </p>
+
+                                                        <p class="text-secondary" id="r_rate">
+                                                            87
+                                                        </p>
+                                                        
+                                                    </div>
+
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="text-secondary">
+                                                            Other get
+                                                        </p>
+
+                                                        <b id="receiving_amt_id">
+                                                            9854 NPR
+                                                        </b>
+                                                        
+                                                    </div>
+                                                    <h6 class="mt-2 text-center">You are sending money to this person</h6>
+                                                    <hr>
+                                                    <div class="d-flex justify-content-between">
+                                                        <b>
+                                                            Recipients Bank Details
+                                                        </b>
+                                                        <small style="cursor: pointer;" class="text-primary" onclick="switchReciptient()">
+                                                            Change
+                                                        </small>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="text-secondary">
+                                                            Name
+                                                        </p>
+
+                                                        <p id="recpNamedd">
+                                                            
+                                                        </p>
+                                                        
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="text-secondary">
+                                                            Bank Name
+                                                        </p>
+
+                                                        <p class="text-secondary" id="bankName">
+                                                        
+                                                        </p>
+                                                        
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="text-secondary">
+                                                            Account Number
+                                                        </p>
+
+                                                        <p class="text-secondary" id="bankAccount">
+                                                            
+                                                        </p>
+                                                        
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="text-secondary">
+                                                            Account Name
+                                                        </p>
+
+                                                        <p class="text-secondary" id="accountName">
+                                                            
+                                                        </p>
+                                                        
+                                                    </div>
+
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="text-secondary">
+                                                            Branch Name
+                                                        </p>
+
+                                                        <p class="text-secondary" id="branchName">
+                                                            
+                                                        </p>
+                                                        
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-primary p-2 mt-3 w-100" id="procees_three">
+                                                        Proceed
+                                                    </button>
+
+                                                </div>
+                                            
+                                                <div class="p-3" id="review2">
+                                                    <div class="text-center">
+                                                        <img src="{%static 'resources/transfer.webp'%}" alt="">
+                                                    </div>
+                                                    
+                                                    <h3 class="text-dark text-center">
+                                                        Xremit won't take money from your bank automatically
+                                                    </h3>
+                                                    <small class="text-center">
+                                                        You'll nedd to do this a bit from your side to pay by bank transfer
+                                                    </small>
+                                                    <div class="d-flex justify-content-start p-2">
+                                                        <i class="fa fa-file text-secondary p-2 my-auto"></i>
+                                                        <span class="text-secondary p-2">
+                                                            We'll give you our bank account details
+                                                        </span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between p-2">
+                                                        <i class="fa fa-bank text-secondary p-2 my-auto"></i>
+                                                        <span class="text-secondary p-2">
+                                                            You will have to transfer your money from your bank account to us
+                                                        </span>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between p-2">
+                                                        <i class="fa fa-rocket text-secondary p-2 my-auto"></i>
+                                                        <span class="text-secondary p-2">
+                                                            Once, we get your payment. We'll start the transfer asap.
+                                                        </span>
+                                                    </div>
+
+                                                    <button type="button" class="btn btn-primary p-2 mt-3 w-100" id="procees_four">
+                                                        I Understand and Proceed
+                                                    </button>
+                                                </div>
+
+                                                <div class="p-3 text-center" id="review3">
+                                                    <i class="fa fa-question-circle text-warning" style="font-size: 100px;"></i>
+                                                    <h5>
+                                                        What's the reason for your transfer?
+                                                    </h5>
+                                                    <small>
+                                                        To make this money transfering service safe and secure. Please let us know your reason for the transfer.
+                                                    </small>
+
+                                                    <select name="reason" id="" class="form-control" onchange="addSendPurpose(this)">
+                                                        
+                                                        {% for i in purpose  %}
+                                                            <option value="{{i.id}}">{{i.name}}</option>
+                                                        {% endfor %}
+                                                            
+                                                    </select>
+
+                                                    <h5>
+                                                        What's the source of your fund?
+                                                    </h5>
+                                                    
+
+                                                    <select name="reason" id="" class="form-control" onchange="addFund(this)">
+                                                        
+                                                        {% for i in fund  %}
+                                                            <option value="{{i.id}}">{{i.name}}</option>
+                                                        {% endfor %}
+                                                            
+                                                    </select>
+                                                    <button type="button" class="btn btn-primary p-2 mt-3 w-100" id="procees_five">
+                                                        I Understand and Proceed
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                            
+                                            
+
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="row p-2 text-center" id="slowloder3">
+                                        <i class="fa-solid fa-spinner fa-spin"></i>
+                                    </div>
+                                    <div class="row" id="complete">
+                                        <div class="col-12 col-lg-10  m-auto p-2 text-center">
+                                            <i class="fa fa-check-circle text-success" style="font-size: 100px;"></i>
+                                            <H4 class="text-center">Final Review</H4>
+                                            <div>
+                                                <div class="d-flex justify-content-between">
+                                                    <h5>
+                                                        Transfer Details
+                                                    </h5>
+                                                    <span style="cursor: pointer;" class="text-primary" onclick="switchAmount();">
+                                                        Edit
+                                                    </span>
+                                                </div>
+                                                
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="text-secondary ">
+                                                        You Send
+                                                    </p>
+
+                                                    <b id="next_sent_money">
+                                                        1000 AUD
+                                                    </b>
+
+                                                </div>
+
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="text-secondary">
+                                                        Total Fee
+                                                    </p>
+
+                                                    <p class="text-secondary" id="next_commision">
+                                                        -3 AUD
+                                                    </p>
+                                                    
+                                                </div>
+
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="text-secondary">
+                                                        Amount to converting
+                                                    </p>
+
+                                                    <p class="text-secondary" id="next_convert">
+                                                        1000
+                                                    </p>
+                                                    
+                                                </div>
+
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="text-secondary">
+                                                        Conversion Rate
+                                                    </p>
+
+                                                    <p class="text-secondary" id="next_rate">
+                                                        87
+                                                    </p>
+                                                    
+                                                </div>
+
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="text-secondary">
+                                                        Other get
+                                                    </p>
+
+                                                    <b id="next_receiving_amt_id">
+                                                        9854 NPR
+                                                    </b>
+                                                    
+                                                </div>
+                                                <h6 class="mt-2">You are sending money to this person</h6>
+                                                <hr>
+
+                                                <div class="d-flex justify-content-between">
+                                                    <b>
+                                                        Recipients Details
+                                                    </b>
+                                                    <small style="cursor: pointer;" class="text-primary" onclick="switchReciptient()">
+                                                        Change
+                                                    </small>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="text-secondary">
+                                                        Name
+                                                    </p>
+
+                                                    <b id="recName1">
+                                                        Ram Prasad Yadav
+                                                    </b>
+                                                    
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="text-secondary">
+                                                        Bank Name
+                                                    </p>
+
+                                                    <p class="text-secondary" id="bankName1">
+                                                        
+                                                    </p>
+                                                    
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="text-secondary">
+                                                        Account Number
+                                                    </p>
+
+                                                    <p class="text-secondary" id="bankAccount1">
+                                                        
+                                                    </p>
+                                                    
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="text-secondary">
+                                                        Account Name
+                                                    </p>
+
+                                                    <p class="text-secondary" id="accountName1">
+                                                        
+                                                    </p>
+                                                    
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="text-secondary">
+                                                        Branch
+                                                    </p>
+
+                                                    <p class="text-secondary" id="branchName1">
+                                                        
+                                                    </p>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="d-flex">
+                                                <form action="" method="POST" >
+                                                    <div hidden>
+                                                        {{form}}
+                                                    </div>
+                                                        
+                                                
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-success m-2">
+                                                        Make a Payment
+                                                    </button>
+                                                </form>
+                                                
+                                                <a href="{%url 'customer:dashboard'%}">
+                                                    <button type="button" class="btn btn-danger m-2">
+                                                        Cancel Transfer
+                                                    </button>
+                                                </a>
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+
+                                </div>
+                            {%else%}
+                                    <div class="row m-0">
+                                        <div class="col-lg-9 col-12 m-auto">
+                                            <div class="modal-body">
+                                                <div class="text-center">
+                                                    <img src="{%static 'resources/notv.gif'%}" alt="" style="width: 30%;">
+                                                    <h5 class="text-danger">Required</h5>
+                                                </div>
+                                        
+                                                <h5 class="text-dark text-center"> 
+                                                    We are sorry to inform you that yout KYC is not verified yet.
+                                                </h5>
+                                
+                                                <p class="badge bg-danger badge-lg text-center d-block">
+                                                    Thus you can not perform following action until your KYC is verified
+                                                </p>
+                                                <div>
+                                                    <ul class="list-group">
+                                                        <li class="list-group-item active ">
+                                                            <i class="fa fa-times-circle"></i> Cannot add Recipients
+                                                        </li>
+                                                        <li class="list-group-item active mt-2">
+                                                            <i class="fa fa-times-circle"></i> Cannot add Bank Account
+                                                        </li>
+                                                        <li class="list-group-item active mt-2">
+                                                            <i class="fa fa-times-circle"></i> Cannot Send Money
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <hr>
+                                                {% if not user.customer.kyc_verified %}
+                                                    <div class="alert alert-light">
+                                                        <img src="{%static 'resources/not-verified.png'%}" alt="" height="30px;" width="30px;">
+                                                        <span class="text-danger">
+                                                            Your KYC is not verified yet.
+                                                        </span>
+                                                        Please follow the link to verify.
+                                                        <a href="{%url 'customer:verify'%}" class="text-success">
+                                                            Verify now
+                                                        </a>
+                                                        
+                                                    </div>
+                                                {%else%}
+                                                    <div class="alert alert-light">
+                                                        <img src="{%static 'resources/verified.png'%}" alt="" height="30px;" width="30px;">
+                                                        <span class="text-danger">
+                                                            Your KYC is  verified
+                                                        </span>
+                                                    
+                                                    </div>
+                                
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                            {% endif %}
+                    {%else%} 
+                    <div class="row m-0 text-center p-2">
+                        <h5>
+                            Your daily tansfer is exceed for today
+                        </h5>
+                        <small>
+                            You have made  AUD {{total_todat}} transaction today
+                        </small>
+                    </div>
+                    {% endif %}
+                        
+                    
+                
+                </div>
+             
+                
+            </div>
+              
+        </div>
+ 
+    </div>
+
+</div>
+
+
+<script>
+  $('#receipt').hide()
+  $('#complete').hide()
+  $('#slowloder3').hide()
+  $('#flightInfo').hide()
+  $('#reason').hide()
+  $('#review2').hide()
+  $('#review3').hide()
+  $('#tripInfo').hide()
+  $('#complete').hide()
+  $('#slowloder').hide()
+  $('#procees_one').hide()
+  $('#procees_one').click(function(){
+   
+    $('#buttonInfo').hide()
+    $('#flightInfo').show()
+    $('#info').removeClass('active')
+    $('#info').addClass('completed')        
+    $('#book').addClass('active')
+    
+    // $('#login-card').show().delay(2000).fadeIn();
+   
+       
+  })
+  
+  $('#procees_two').click(function(){
+    
+    if(document.getElementById('sendingMoney').value == '' || document.getElementById('gets').value ==""){
+            $('#infoerror').text("Sending money can't be zero") 
+            $('#infoerror').show()
+    }
+      
+    else if(parseInt(document.getElementById('sendingMoney').value) <= parseInt('{{restriction.minimum_amount}}')){
+        
+        $('#infoerror').text("Amount less than "+ '{{restriction.minimum_amount}} is restricted' ) 
+        $('#infoerror').show()
+       
+        // $('#infoerror').show()   
+    }
+    else if(parseInt(document.getElementById('sendingMoney').value) >= parseInt('{{restriction.maximum_amount}}')){
+        
+        $('#infoerror').text("Amount more than "+ '{{restriction.maximum_amount}} is restricted' ) 
+        $('#infoerror').show();
+       
+        // $('#infoerror').show()   
+    }
+    else{
+       
+        setTimeout(function() {
+           $('#slowloder2').hide();
+           $('#receipt').show().delay(2000).fadeIn;
+        }, 2000);
+            
+        $('#infoerror').hide();
+        $('#flightInfo').hide();
+        $('#book').addClass('completed');
+        $('#tripInfo').show().fadeIn(1000);
+        $('#trip').addClass('active');
+        
+        // $('#receipt').show()
+
+    }
+
+  })
+
+
+  $('#procees_three').click(function(){
+        $('#receipt').hide().fadeOut(1000)
+        $('#flightInfo').hide()
+        $('#buttonInfo').hide()
+        
+        $('#review2').show().fadeIn(1000)
+        // $('#complete').show()
+
+  })
+  $('#procees_four').click(function(){
+        // $('#receipt').hide().fadeOut(1000)
+        // $('#flightInfo').hide()
+        // $('#buttonInfo').hide()
+        // $('#tripInfo').hide()
+        // $('#complete').show()
+        // $('#trip').addClass('completed')
+        // $('#pay').addClass('active')
+        $('#receipt').hide().fadeOut(1000)
+        $('#flightInfo').hide()
+        $('#buttonInfo').hide()
+        $('#review2').hide()
+        $('#review3').show().fadeIn(1000)
+  })
+  $('#procees_five').click(function(){
+        $('#slowloder3').show();
+        $('#receipt').hide().fadeOut(1000)
+        $('#flightInfo').hide()
+        $('#buttonInfo').hide()
+        $('#tripInfo').hide()
+        setTimeout(function() {
+           $('#slowloder3').hide();
+           $('#complete').show().delay(2000).fadeIn;
+        }, 2000);
+        
+        $('#trip').addClass('completed')
+        $('#pay').addClass('active')
+  })
+
+
+  function switchReciptient(){
+        $('#flightInfo').hide()
+        $('#complete').hide()
+        $('#buttonInfo').show()
+        $('#tripInfo').hide().fadeOut(1000);
+  }
+
+  function switchAmount(){
+        $('#flightInfo').show()
+        $('#complete').hide()
+        $('#buttonInfo').hide()
+        $('#tripInfo').hide().fadeOut(1000);
+        $('#info').removeClass('active')
+        $('#info').addClass('completed')        
+        $('#book').addClass('active')
+  }
+
+  
+  function toggleBorder(element, id) {
+        var element = document.getElementById("reason");
+        element.scrollIntoView({ behavior: "smooth" });
+        $('#slowloder').show()
+        console.log(id)
+        receipient_id = id
+        $('#id_recipient').val(id)
+        // Remove border from all divs
+        $('#reason').hide().slideDown(1000);
+        
+        const boxes = document.getElementsByClassName('box');
+        for (let i = 0; i < boxes.length; i++) {
+            boxes[i].classList.remove('selected');
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '{%url "customer:findBank"%}', // Replace with the actual URL of your view
+            dataType: 'json',
+            data: {
+                'id': id, // Send the data as a key-value pair
+                'csrfmiddlewaretoken': '{{ csrf_token }}' // Include the CSRF token for security
+            },
+            success: function(data) {
+                bank = JSON.parse(data)
+                console.log(bank)
+               
+                // console.log(response.bank)
+                $('.banN').remove()
+                
+                for(i in bank){
+                    var ansdata = '<div class="col-lg-6 col-12 mt-2 p-2 banN" onclick=senddata(this,'+ bank[i]['pk']+ ')> <div class="bankhere p-2"><p class="text-secondary p-0 m-0">Bank Name:</p><p class="text-dark p-0 m-0" id="bankNameList">'+bank[i]['fields']['bank_name']+'</p><div class="d-flex justify-content-between mt-2"><p class="text-secondary"> Account Number:</p> <p class="text-secondary" id="bankNumberList">'+bank[i]['fields']['account_number']+'</p> </div> <div class="d-flex justify-content-between"> <p class="text-secondary"> Account Name: </p> <p class="text-secondary" id="bankSwiftList">'+bank[i]['fields']['account_name']+'</p> </div> <div class="d-flex justify-content-between"> <p class="text-secondary"> Branch </p> <p class="text-secondary" id="bankSwiftList">'+bank[i]['fields']['branch']+'</p> </div></div></div>'
+                    console.log(ansdata)
+                    $('#bankList').append(ansdata)
+                    // console.log(bank[i]['fields']['account_name'] + bank[i]['fields']['account_number']+ bank[i]['fields']['bank_name'] + bank[i]['fields']['country']+ bank[i]['fields']['swift_code'])
+                }
+            }
+      });
+      
+      setTimeout(function() {
+            $('#slowloder').hide()
+            $('#reason').show().slideDown(1000);
+        }, 2000);
+       
+        
+        
+        // Add border to the clicked div
+        element.classList.add('selected');
+    }
+
+    
+
+    function addSendPurpose(em){
+        $('#id_sending_purpose').val(em.val)
+    }
+    function addFund(em){
+        $('#id_source_of_fund').val(em.val)
+    }
+
+</script>
+
+
+<script>
+
+    currency_rate = '{{default.currecy_rate}}'
+    receiving_rate = 0
+    fee = '{{default.conversion_rate}}'
+    cur_sign = '{{default.currecy_sign}}'
+    re_cur_sign = ""
+    converting_amt = 0
+    sending_amt = document.getElementById('fee').value
+    receiving_amt = 0 
+    receipient_id = 0
+    $('#id_sending_currency').val('{{default.id}}')
+
+    function checkCurrency(){
+        sending_amt = document.getElementById('sendingMoney').value
+        console.log(sending_amt)
+        
+        // $('#converting_amt').text(converting_amt +"  " + cur_sign)
+        if (sending_amt != ''){
+            converting_amt =parseFloat(sending_amt) - parseFloat(fee)
+        }
+        else{
+            converting_amt = 0
+        }
+        if (converting_amt <= 0 ){converting_amt = 0}
+        $('#converting_amt').text(converting_amt +"  " + cur_sign  )
+        $('#rate').text(parseFloat(receiving_rate).toFixed(2) + "  " + re_cur_sign) 
+        $('#fee').text(parseFloat(fee).toFixed(2)  + "  " + cur_sign)
+        receiving_amt = (converting_amt / currency_rate) * receiving_rate;
+        recieving_two_digit_nuumber = parseFloat(receiving_amt).toFixed(2)
+        
+        $('#gets').val(recieving_two_digit_nuumber)
+        
+        $('#r_sent_money').text(sending_amt + "  " + cur_sign)
+        $('#r_commision').text("-" + parseFloat(fee).toFixed(2) + "  " + cur_sign)
+        $('#r_covert').text(converting_amt +"  " + cur_sign)
+        $('#r_rate').text(parseFloat(receiving_rate).toFixed(2) + "  " + re_cur_sign)
+        $('#receiving_amt_id').text(parseFloat(receiving_amt).toFixed(2) + " " + re_cur_sign)
+
+        $('#next_sent_money').text(sending_amt + "  " + cur_sign)
+        $('#next_commision').text("-" + parseFloat(fee).toFixed(2) + "  " + cur_sign)
+        $('#next_convert').text(converting_amt +"  " + cur_sign)
+        $('#next_rate').text(parseFloat(receiving_rate).toFixed(2) + "  " + re_cur_sign)
+        $('#next_receiving_amt_id').text(parseFloat(receiving_amt).toFixed(2) + " " + re_cur_sign)
+
+        $('#id_sent').val(parseFloat(sending_amt).toFixed(2))
+        $('#id_received').val(parseFloat(receiving_amt).toFixed(2))
+        $('#id_converting_rate').val(parseFloat(currency_rate).toFixed(2))
+        $('#id_fee').val(parseFloat(fee).toFixed(2))
+        $('#id_customer').val('{{customer.id}}')
+
+    }
+
+
+    function changeState(id, src, sign){
+        $('#sending_currency_sign').text(sign);
+        path ='/media/' + src
+        $('#sending_currency_img').attr('src', path);
+        $('#id_sending_currency').val(parseInt(id))
+        $.ajax({
+            type: 'POST',
+            url: '{%url "customer:changeCurone"%}', // Replace with the actual URL of your view
+            data: {
+                'id': id, // Send the data as a key-value pair
+                'csrfmiddlewaretoken': '{{ csrf_token }}' // Include the CSRF token for security
+            },
+            success: function(response) {
+               
+                currency_rate =parseFloat(response.currency_rate).toFixed(2) 
+                fee = parseFloat(response.fee).toFixed(2)
+                cur_sign = response.cur_sign
+                checkCurrency()
+            
+            }
+      });
+  
+    }
+
+
+    function changeStateTwo(id, src, sign){
+        
+        $('#recv_currency_sign').text(sign);
+        path ='/media/' + src
+        $('#recv_currency_img').attr('src', path);
+        $('#id_receiving_currency').val(parseInt(id))
+        $.ajax({
+            type: 'POST',
+            url: '{%url "customer:changeCurone"%}', // Replace with the actual URL of your view
+            data: {
+                'id': id, // Send the data as a key-value pair
+                'csrfmiddlewaretoken': '{{ csrf_token }}' // Include the CSRF token for security
+            },
+            success: function(response) {
+                receiving_rate =parseFloat(response.currency_rate).toFixed(2) 
+                fee = parseFloat(response.fee).toFixed(2)
+                re_cur_sign = response.cur_sign
+               
+                checkCurrency()
+            
+            }
+      });
+  
+    }
+
+    function senddata(elem, id){
+        $('#procees_one').show()
+        $('#id_bank').val(id)
+        // // Remove border from all divs
+        $.ajax({
+            type: 'POST',
+            url: '{%url "customer:getBank"%}', // Replace with the actual URL of your view
+            dataType: 'json',
+            data: {
+                'id': id, // Send the data as a key-value pair
+                'csrfmiddlewaretoken': '{{ csrf_token }}' // Include the CSRF token for security
+            },
+            success: function(data) {
+                console.log(data.repName)
+                console.log(data.account_name)
+                $('#id_receiving_currency').val(data.id)
+                $('#recpNamedd').text(data.repName)
+                $('#bankName').text(data.bank_name)
+                $('#bankAccount').text(data.account_number)
+                $('#accountName').text(data.account_name)
+                $('#branchName').text(data.branch)
+                $('#recName1').text(data.repName)
+                $('#bankName1').text(data.bank_name)
+                $('#bankAccount1').text(data.account_number)
+                $('#branchName1').text(data.branch)
+                $('#accountName1').text(data.account_name)
+                re_cur_sign = data.currecy_sign
+                receiving_rate = data.currency_rate
+                fee = data.conversion_rate
+                
+                $('#recv_currency_sign').text(re_cur_sign);
+                // console.log(data.img)
+                path = data.img
+                $('#recv_currency_img').attr('src', path);
+                $('#id_sending_currency').val('{{default.id}}')
+                checkCurrency()
+            }
+        })
+
+        const ss = document.getElementsByClassName('banN');
+        for (let i = 0; i < ss.length; i++) {
+            ss[i].classList.remove('bankselected');
+        }
+        elem.classList.add('bankselected');
+       
+    }
+   
+</script>
+
+
+{% endblock inside %}
+    

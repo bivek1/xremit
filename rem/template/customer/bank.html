@@ -1,0 +1,206 @@
+{% extends 'customer/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    Bank Account
+{% endblock title %}
+    
+
+
+{% block inside %}
+<div class="row p-0 m-0 mt-3">
+    <div class="mt-3 mb-3">
+      <span class="breadcum">
+        <a href="{%url 'customer:dashboard'%}">
+            Dashboard
+        </a>/
+        Bank Account
+      </span>
+    </div>
+
+    <div class="row p-0 m-0 mt-3">
+        <div class="d-flex justify-content-between">
+            <h5>
+              Bank List
+            </h5>
+           
+            {% if user.customer.kyc_verified %}
+            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Add New Bank
+            </button>
+          {%else%}
+            <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModalNotVerified">
+                Add New Bank
+            </button>
+            {% include 'customer/notverified.html' %}
+          {% endif %}
+
+           
+            
+        <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <img src="{%static 'resources/bank.png'%}" alt="" style="width: 30%;">
+                        </div>
+                
+                        <h5 class="text-center">
+                            Add New Bank
+                        </h5>
+                        <form action="" method="post">
+                            <h6>Select your Recipients</h6>
+                            <select class="form-control mb-3 mt-3" name = "recipient">
+                                <option value="0">
+                                    Select Recipients....
+                                </option>
+                                {% for i in recipient %}
+                                    <option value="{{i.id}}" onchange ="addOther('{{i.first_name}} {%if i.middle_name%} {{i.middle_name}} {%endif%} {{i.last_name}}', '{{i.country.id}}')">
+                                        {{i.first_name}} {%if i.middle_name%} {{i.middle_name}} {%endif%} {{i.last_name}}
+                                    </option>
+                                {% endfor %}
+                                    
+                            </select>
+                            {{form}}
+                            {% csrf_token %}
+                            <button class="btn btn-success mt-3" type="submit">
+                                Add Bank
+                            </button>
+                        </form>
+                        
+                        <div class="text-end mt-2">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    
+                    </div>
+                
+            </div>
+            </div>
+        </div>
+          
+        </div>
+        <hr>
+        
+        {% for i in bank  %}
+            <div class="mt-3 col-12 col-lg-4">
+                <div class="p-2 mb-3" id="login-card"  onclick="toggleBorder(this, '{{i.id}}')" >
+                    <div>
+
+                        <span >
+                            <span class="m-0 badge bg-success">
+                                Branch:{{i.branch}}
+                            </span>
+                            <p class="text-secondary p-0 m-0">
+                                Bank Name:
+                            </p>
+
+                            <p class="text-dark p-0 m-0">
+                                {{i.bank_name}}
+                            </p>
+                                
+                          
+                            <div class="d-flex justify-content-between mt-2">
+                                <p class="text-secondary">
+                                    Account Number:
+                                </p>
+
+                                <p class="text-secondary">
+                                    {{i.account_number}}
+                                </p>
+                                
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p class="text-secondary">
+                                    Account Name:
+                                </p>
+
+                                <p class="text-secondary">
+                                    {{i.account_name}}
+                                </p>
+                                
+                            </div>
+                            <span class="badge bg-secondary">
+                                {{i.recipient.first_name}} {{i.recipient.last_name}}
+                            </span>
+                            
+                        </span>
+                    </div>
+                    <hr>
+                    <div class="text-center d-flex justify-content-between">
+                     
+                      
+                        {% if i.country.flag_img %}
+                            <img class="my-auto" src="{{i.country.flag_img.url}}" alt="" height="20px" width="auto%">
+                        {% endif %}
+               
+                        <div class="my-auto">
+                            <small>Swift Code</small>
+                            <h5>
+                                {{i.swift_code}}
+                            </h5>
+                        </div>
+                       
+                    </div>
+                    <hr>
+                    <div class="text-center d-flex justify-content-center " >
+                     <a class="p-2 m-2" href="{%url 'customer:editBank' i.id%}" >
+                        <i class="fa fa-pencil-square p-3 bg-light"></i>
+                     </a>
+                       
+                    
+                    <a class="p-2  m-2 text-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}" >
+                        <i class="fa fa-trash p-3 bg-light"></i>
+                    </a>
+                    
+
+
+                    <!-- Delete Model -->
+                        <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                
+                                    <div class="modal-body">
+                                        <div class="text-center">
+                                            <img src="{%static 'resources/delete.gif'%}" alt="" style="width: 30%;">
+                                        </div>
+                                
+                                        <h5 class="text-dark"> Are you sure want to delete {{i.bank_name}} </h5>
+                                    
+                                        <div class="text-end mt-2">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change my mind</button>
+                                            <!-- Delete URL -->
+                                            <a href="{%url 'customer:deleteBank' i.id%}">
+                                                <button type="button" class="btn btn-danger">
+                                                    <i class="fa fa-trash"></i> Delete
+                                                </button>
+                                            </a>
+                                            
+                                        </div>
+                                    
+                                    </div>
+                                
+                            </div>
+                            </div>
+                        </div>
+                    <!-- Delete Model -->
+                    </div>
+                    
+                </div>
+            </div>
+        {% endfor %}
+            
+        
+    </div>
+</div>
+
+<script>
+    function addOther(name, country){
+        console.log(name)
+        console.log(country)
+        $('#id_account_name').val(name)
+        $('#id_country').val(country)
+    }
+</script>
+{% endblock inside %}
+    

@@ -1,0 +1,134 @@
+{% extends 'customer/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    Notification List
+{% endblock title %}
+    
+
+{% block inside %}
+
+<div class="row p-0 m-0 mt-3">
+    <div class="mt-3 mb-3">
+      <span class="breadcum">
+        <a href="{%url 'customer:dashboard'%}">
+            Dashboard
+        </a>/
+            Notification List
+      </span>
+    </div>
+
+    <div class="row p-0 m-0">
+
+       <div class="col-12 col-lg-7 m-auto" id="ticket-box"  style="height: 80vh; overflow: scroll;">
+            <h5>Notification List</h5>
+            <hr>
+            <ul class="mt-3 list-unstyled" >
+
+                
+                {% for i in notis %}
+
+                    {% if i.types == 'ticket' %}
+                        <li>
+                        <a class="dropdown-item" href="{%url 'customer:ticketView'%}">
+                            <div class="d-flex ">
+                                <img class="my-auto" src="{%if i.customer.profil_pic%}{{i.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                                    <div class="p-2">
+                                    {% if i.seen %}
+                                        <p class="m-0 text-secondary">
+                                            {{i.name}}
+                                        </p>
+                                        <small>
+                                            {{i.created_at}}
+                                        </small>
+                                    {%else%}
+                                        <p class="m-0">
+                                            {{i.name}}
+                                        </p>
+                                        <b>
+                                            {{i.created_at}}
+                                        </b>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>          
+                        </li>
+                    {% endif %}
+
+                    {% if i.types == 'kyc' %}
+                        <li>
+                            <a class="dropdown-item" href="{%url 'customer:verify'%}">
+                            <div class="d-flex ">
+                                <img class="my-auto" src="{%if i.customer.profil_pic%}{{i.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                                <div class="p-2">
+                                    {% if i.seen %}
+                                        <p class="m-0 text-secondary">
+                                            {{i.name}}
+                                        </p>
+                                        <small>
+                                            {{i.created_at}}
+                                        </small>
+                                    {%else%}
+                                        <p class="m-0">
+                                            {{i.name}}
+                                        </p>
+                                        <b>
+                                            {{i.created_at}}
+                                        </b>
+                                    {% endif %}
+                                    
+                                </div>
+                            </div>
+                            </a>          
+                        </li>
+                    {% endif %}
+
+                    {% if i.types == 'transaction' %}
+                        <li>
+                            <a class="dropdown-item" href="{%url 'customer:transaction'%}">
+                                <div class="d-flex ">
+                                    <img class="my-auto" src="{%if i.customer.profil_pic%}{{i.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                                    <div class="p-2">
+                                        {% if i.seen %}
+                                        <p class="m-0 text-secondary">
+                                            Transaction {{i.name}}
+                                        </p>
+                                        <small>
+                                            {{i.created_at}}
+                                        </small>
+                                        {%else%}
+                                            <p class="m-0">
+                                                Transaction {{i.name}}
+                                            </p>
+                                            <b>
+                                                {{i.created_at}}
+                                            </b>
+                                        {% endif %}
+                                        
+                                    </div>
+                                </div>
+                            </a>          
+                        </li>
+                    {% endif %}
+                 
+                {% endfor %}
+              
+              </ul>
+       </div>
+       <a class="text-center text-success mt-2" href="{%url 'customer:allRead'%}">
+        <p>
+            <i class="fa fa-check"></i>
+            Mark all as read
+        </p>
+   </a>
+    </div>
+</div>
+
+<script>
+    function ticketid(id){
+        console.log(id)
+        $('#id_ticket').val(parseInt(id))
+    }
+</script>
+{% endblock inside %}
+    

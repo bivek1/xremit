@@ -1,0 +1,130 @@
+{% extends 'homepage/index.html' %}
+
+
+{% block title %}
+    Sitemap {{site.title}}
+{% endblock title %}
+    
+{% block inside %}
+<div class="row m-0" id="topbarpage">
+    <div class="d-flex my-auto">
+        
+        <h2 class="head-para">
+            <a href="{%url 'homepage:homepage'%}">
+                Homepage
+            </a>
+             
+        </h2>
+  
+        <p class="head-para">
+            <i class="fa fa-arrow-alt-circle-right"></i>
+        </p>
+        <h2 class="head-para">
+            Sitemap
+        </h2>
+       
+    </div>
+   
+</div>
+<div class="row bg-white m-0 pt-5 pb-5">
+
+    <div class="row p-0 m-0 mt-4">
+        <div class="col-12 col-lg-3 mt-2 ">
+            <a href="{%url 'homepage:homepage'%}">
+                <div class="color-1 p-3">
+                    <i class="fa fa-dot-circle"></i> Homepage
+                </div>
+            </a>
+        </div>
+        <div class="col-12 col-lg-3 mt-2">
+            <a href="{%url 'homepage:login'%}">
+                <div class="color-1 p-3">
+                    <i class="fa fa-dot-circle"></i> Login
+                </div>
+            </a>
+        </div>
+        <div class="col-12 col-lg-3 mt-2 ">
+            <a href="{%url 'homepage:register'%}">
+                <div class="color-1 p-3">
+                    <i class="fa fa-dot-circle"></i> Register
+                </div>
+            </a>
+        </div>
+        <div class="col-12 col-lg-3 mt-2 ">
+            <a href="{%url 'homepage:contact'%}">
+                <div class="color-1 p-3">
+                    <i class="fa fa-dot-circle"></i> contact
+                </div>
+            </a>
+        </div>
+
+        <!-- First -->
+
+
+        <div class="col-12 col-lg-3 mt-2 ">
+            <a href="{%url 'homepage:services'%}">
+                <div class="color-2 p-3">
+                    <i class="fa fa-dot-circle"></i> Service
+                </div>
+            </a>
+        </div>
+        <div class="col-12 col-lg-3 mt-2 ">
+            <a href="{%url 'homepage:about'%}">
+                <div class="color-2 p-3">
+                    <i class="fa fa-dot-circle"></i> About {{site.title}}
+                </div>
+            </a>
+        </div>
+        <div class="col-12 col-lg-3 mt-2 ">
+            <a href="{%url 'homepage:feature'%}">
+                <div class="color-2 p-3">
+                    <i class="fa fa-dot-circle"></i> Feature
+                </div>
+            </a>
+        </div>
+        <div class="col-12 col-lg-3 mt-2 ">
+            <a href="{%url 'homepage:blog'%}">
+                <div class="color-2 p-3">
+                    <i class="fa fa-dot-circle"></i> Blog
+                </div>
+            </a>
+        </div>
+
+        <!-- First -->
+
+        <div class="col-12 col-lg-3 mt-2 ">
+            <a href="{%url 'homepage:currency'%}">
+                <div class="color-3 p-3">
+                    <i class="fa fa-dot-circle"></i> Currency
+                </div>
+            </a>
+        </div>
+        <div class="col-12 col-lg-3 mt-2 ">
+            <a href="{%url 'homepage:country'%}">
+                <div class="color-3 p-3">
+                    <i class="fa fa-dot-circle"></i> Country
+                </div>
+            </a>
+        </div>
+        <div class="col-12 col-lg-3 mt-2 ">
+            <a href="{%url 'homepage:privacy'%}">
+                <div class="color-3 p-3">
+                    <i class="fa fa-dot-circle"></i> Privacy and Policy
+                </div>
+            </a>
+        </div>
+        <div class="col-12 col-lg-3 mt-2 ">
+            <a href="{%url 'homepage:terms'%}">
+                <div class="color-3 p-3">
+                    <i class="fa fa-dot-circle"></i> Terms and Condition
+                </div>
+            </a>
+        </div>
+
+        <!-- First -->
+    </div>
+  
+        
+</div>
+{% endblock inside %}
+    

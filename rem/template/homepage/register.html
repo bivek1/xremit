@@ -1,0 +1,127 @@
+
+{% extends 'homepage/index.html' %}
+{% load static %}
+
+{% block title %}
+    Create a new account
+{% endblock title %}
+
+
+{% block inside %}
+    <div class="container-fluid d-flex">
+        <div class="row w-100 m-0">
+            <div class="mt-1 p-2 text-center">
+                <span class="breadcum-front">
+                    <i class="fa fa-arrow-alt-circle-right"></i>
+                    <a href="{%url 'homepage:homepage'%}">
+                        Homepage
+                    </a>/
+                    Sign up
+                </span>
+            </div>
+            <div class="col-12 col-lg-8 m-auto mt-4">
+                <div class="row p-0 m-0" id="login-card">
+                    <div class="col-lg-6 col-md-6 col-12 p-0 m-0 m-auto text-center" >
+                        
+                        {% if sisas.video  %}
+                        <video id="register-video"  autoplay loop muted class="p-0 m-0" src="{{sisas.video.url}}">
+                        </video>
+                        {% else %}
+
+                            {% if sisas.image %}
+                                <img class="my-auto" src="{{sisas.image.url}}" alt="" srcset="" height="auto" width="100%">
+                            {%else%}
+                            <video id="register-video"  autoplay loop muted class="p-0 m-0" src="{%static 'resources/register.mp4'%}">
+                            </video>
+                            {% endif %}
+                            
+                        {% endif %}
+                            
+                        
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-12 p-0 m-0 mt-2 m-auto">
+                        <div class="p-2">
+                            <h4 class="text-primary  text-center">
+                                {{sisas.name}} 
+                            </h4> 
+                            <hr>
+                            <h5 class="text-dark text-center">
+                                {{sisas.information }}
+                            </h5>
+                        </div>
+                           
+                        <div class="p-2">
+                            <form action="" method="post">
+                                <div class="row p-0 m-0">
+                                    <div class="col-6   m-0 mt-2">
+                                        <small for="email">First Name</small>
+                                        <div class=" login-flex d-flex mt-2">
+                                            <!-- <i class="fa fa-f my-auto p-2"></i> -->
+                                            <input type="text" name="first_name" class="form-control"  placeholder="First Name" required id="">
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="col-6  m-0 mt-2">
+                                        <small for="email">Last Name</small>
+                                        <div class=" login-flex d-flex mt-2">
+                                            <!-- <i class="fa fa-l my-auto p-2"></i> -->
+                                            <input type="text" name="last_name" class="form-control"  placeholder="Last Name" required id="">
+                                        </div>
+                                        
+                                    </div>
+    
+                                    <div class="col-12 m-0 mt-2">
+                                        <small  for="email">Email</small>
+                                        <div class="p-0 m-0 login-flex d-flex mt-2">
+                                            <!-- <i class="fa fa-user my-auto p-2"></i> -->
+                                            <input type="text" name="email" class="form-control"  placeholder="someone@email.com" required id="">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-12 m-0 mt-2">
+                                        <small for="email">Password</small>
+                                        <div class=" login-flex d-flex mt-2">
+                                            <!-- <i class="fa fa-key my-auto p-2"></i> -->
+                                            <input type="password" name="password" class="form-control"  placeholder="*************" required id="">
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                </div>
+                        
+                                {% csrf_token %}
+                                <div class="p-2 text-center">
+                                    <button class="btn btn-primary mt-3 w-100" type="submit">
+                                        Create an account
+                                    </button>
+                                    <small class="text-secondary">
+                                        Already had an account? <a class="text-primary" href="{%url 'homepage:login'%}"> Login</a>
+                                    </small>
+                                </div>
+                                
+                               <hr>
+                                <div class="mt-3 text-center">
+                                    <small>Your Trusted Money Transfer</small>
+                                </div>
+                                <h6 class="text-center mt-2">
+                                    Follow us on:
+                                </h6>
+                                <p class=" text-center">
+                                    {% for i in social%}
+                                        <i class="m-2 {{i.icon}}"></i>
+                                    {% endfor %}
+                                </p>
+                                
+                            </form>
+                        </div>
+                    </div>
+                  
+                </div>
+                
+            </div>
+           
+
+        </div>
+    </div>
+{% endblock inside %}
+    

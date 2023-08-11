@@ -1,0 +1,46 @@
+{% extends 'homepage/index.html' %}
+
+
+{% block title %}
+    Services {{site.title}}
+{% endblock title %}
+    
+{% block inside %}
+<div class="row m-0" id="topbarpage">
+    <div class="d-flex my-auto">
+        <h2 class="head-para">
+            <a href="{%url 'homepage:homepage'%}">
+                Homepage 
+            </a>
+            
+        </h2>
+        <p class="head-para">
+            <i class="fa fa-arrow-alt-circle-right"></i>
+        </p>
+        <h2 class="head-para">
+            Services
+        </h2>
+       
+    </div>
+   
+</div>
+
+<div class="row bg-white m-0 pt-5 pb-5 p-2">
+    {% for i in service_man  %}
+        <div class="mt-2 col-12 col-lg-3 m-auto">
+            <a href="{%url 'homepage:serviceDetail' i.id i.name%}">
+                <div class="course-box ps-2 pe-2">
+                    <img src="{%if i.image%}{{i.image.url}}{%endif%}" alt="" height="60px" width="auto">
+                    <h4 class="mt-3">{{i.name}}</h4>
+                    <small>
+                        {{i.description|truncatewords:15|safe|striptags}}
+                    </small>
+                </div>
+            </a>
+            
+        </div>
+    {% endfor %}
+        
+</div>
+{% endblock inside %}
+    

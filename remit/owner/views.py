@@ -23,10 +23,27 @@ from homepage.forms import AdminBankForm, BankForm, RestrictionForm, UserCreateF
 from .forms import BlockForm, PurposeForm, FundForm, DefaultForm, EmailSettingForm, SMSSettingForm, LoginInterfaceForm, signupInterfaceForm, AboutForm, SEOForm, BrandForm, FootorForm, SocialForm, PolicyForm, TermForm, EmailListForm, SMSListForm
 from django.http import JsonResponse
 from homepage.models import LoginLogs, TransactionNote
-from django.conf import settings
+
 from django.core.mail import send_mail, BadHeaderError
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from owner.models import SiteSetting
+from django.conf import settings
+
 # Create your views here.
 
+
+def siteInfo():
+    site = SiteSetting.objects.all()    
+    if site:
+        for i in site:
+            site = i
+            break
+    dist ={
+        'site':site
+    }
+    return dist
 
 def deleteAdminBank(request, id):
     bank = AdminBankAccount.objects.get(id = id)
@@ -235,34 +252,65 @@ def emailSetting(request):
         sendform = EmailListForm(request.POST)
         
         if sendform.is_valid():
-            aa= sendform.save()
+            aa = sendform.save()
             content = settings.EMAIL_HOST_USER
             sub = aa.subject
             messa = aa.message
             try:
-                recipient_list = [aa.customer.admin.email, ]
-                
+                us = Customer.objects.get(id = request.POST['customer'])
+                recipient_list = [us.admin.email, ]
             except:
                 pass
 
             try:
-                recipient_list = [aa.agent.admin.email, ]
+                us = Agent.objects.get(id = request.POST['agent'])
+                recipient_list = [us.admin.email, ]
                 
             except:
                 pass
             try:
-                recipient_list = [aa.reciptient.email, ]
+                us = Recipient.objects.get(id = request.POST['reciptient'])
+                recipient_list = [us.email, ]
                 
             except:
                 pass
-            try:
-                send_mail(sub, messa, content, recipient_list, fail_silently=False, auth_user=None, auth_password=None, connection=None, html_message=None)
-                messages.success(request, 'Successfully sent emails')
-            except:
-                messages.success(request, 'Emails can\'t be sent but saved as recent email')
-                
+            recipient_list = []
+            us = request.POST['group']
+            if us == 'Customer':
+                allCustomer = Customer.objects.all()
+                for i in allCustomer:
+                    recipient_list.append(i.admin.email)
+
+            if us == 'Agent':
+                allCustomer = Agent.objects.all()
+                for i in allCustomer:
+                    recipient_list.append(i.admin.email)
+
+            if us == 'Recipient':
+                allCustomer = Recipient.objects.all()
+                for i in allCustomer:
+                    recipient_list.append(i.email)
+            print(us)
+            print(recipient_list)
+            content = settings.EMAIL_HOST_USER
+
+            other_info = siteInfo()
             
-            return HttpResponseRedirect(reverse('owner:emailSetting'))
+           
+            dist_info = {
+                'sub': sub, 'message':strip_tags(messa),
+            }
+            dist_info.update(other_info)
+            html_message = render_to_string('component/email.html', dist_info)
+            pain_html_msg = strip_tags(html_message)
+            try: 
+                msg = EmailMultiAlternatives(sub, pain_html_msg, content, recipient_list)
+                msg.attach_alternative(html_message, "text/html")
+                msg.send()
+            except:
+                messages.error(request,"Failed to sent email. Please ask to verify customer email")    
+                
+                return HttpResponseRedirect(reverse('owner:emailSetting'))
         else:
             print(sendform.errors)
             dist.update({'sendform':sendform})
@@ -590,8 +638,36 @@ def changeStatus(request, id):
     trans.status = status
     trans.save()
     CustomerNotification.objects.create(customer = trans.customer, name =str(trans.status), types ="transaction", ids=trans.id)
-
-    messages.success(request, "successfully changed status")
+    content = settings.EMAIL_HOST_USER
+    
+    if trans.status == 'Completed':
+        sub = 'Successfully completed a Transaction Syon Remit'
+        messa = "Your transaction is completed successfully."
+    elif trans.status == 'Cancelled':
+        sub = 'Your transaction is cancelled'
+        messa = "Your transaction is completed cancelled."
+    elif trans.status == 'Rejected':
+        sub = 'Your transaction is rejected'
+        messa = "We are sorry to inform you that your transaction is rejected"
+    else:
+        sub = 'Your transaction is still in pending'
+        messa = "We are sorry to inform you that your transaction is still in pending. It may takes few days more to complete your transaction."
+    other_info = siteInfo()
+    
+    recipient_list = [trans.customer.admin.email]
+    dist_info = {
+        'sub': sub, 'message':messa, 'trans':trans
+    }
+    dist_info.update(other_info)
+    html_message = render_to_string('component/transaction.html', dist_info)
+    pain_html_msg = strip_tags(html_message)
+    try: 
+        msg = EmailMultiAlternatives(sub, pain_html_msg, content, recipient_list)
+        msg.attach_alternative(html_message, "text/html")
+        msg.send()
+    except:
+        messages.error(request,"Transaction completed. However failed to sent email. Please ask to verify customer email")
+   
     return HttpResponseRedirect(reverse('owner:transactionDetail', args=[trans.id]))
 
 class Dashboard(View):
@@ -632,7 +708,23 @@ class Dashboard(View):
         dist.update(public)
         noti = notification(request)
         dist.update(noti)
-        
+
+
+       
+        restriction = Restriction.objects.first()
+    
+        try:
+            default = Currency.objects.first()
+        except:
+            default = Currency.objects.last()
+       
+        nexts = {
+            'recp':Recipient.objects.filter(customer__admin = request.user),
+            'restriction':restriction,
+            'default':default,
+        }
+        dist.update(nexts)
+
         return render(request, self.template_name, dist)
     
 
@@ -1784,6 +1876,7 @@ def kycVerification(request, id):
         'kycs':kyc,
         'country':con
     }
+   
     noti = notification(request)
     dist.update(noti)
     return render(request, "owner/kycDetail.html", dist)
@@ -1797,6 +1890,26 @@ def verifyView(request, id):
         cm=i
         break
 
+
+    sub = 'Your KYC is verified'
+    messa = "We congraulate you for verifying your kyc. And you can add Bank, recipient and send money."
+   
+    other_info = siteInfo()
+    
+    recipient_list = [user.admin.email]
+    dist_info = {
+        'sub': sub, 'message':messa
+    }
+    dist_info.update(other_info)
+    content = settings.EMAIL_HOST_USER
+    html_message = render_to_string('component/email.html', dist_info)
+    pain_html_msg = strip_tags(html_message)
+    try: 
+        msg = EmailMultiAlternatives(sub, pain_html_msg, content, recipient_list)
+        msg.attach_alternative(html_message, "text/html")
+        msg.send()
+    except:
+        messages.error(request,"KYC verified. However failed to sent email. Please ask to verify customer email")
     cust = user
     cust.kyc_verified = True
     cust.save()
@@ -1817,6 +1930,25 @@ def rejectView(request, id):
     cust = user
     cust.rejected = True
     cust.save()
+
+    sub = 'Your KYC is rejected'
+    messa = "We are sorry to inform you that your kyc is rejected, please update your details and try again."
+    other_info = siteInfo()
+    
+    recipient_list = [user.admin.email]
+    dist_info = {
+        'sub': sub, 'message':messa
+    }
+    dist_info.update(other_info)
+    content = settings.EMAIL_HOST_USER
+    html_message = render_to_string('component/email.html', dist_info)
+    pain_html_msg = strip_tags(html_message)
+    try: 
+        msg = EmailMultiAlternatives(sub, pain_html_msg, content, recipient_list)
+        msg.attach_alternative(html_message, "text/html")
+        msg.send()
+    except:
+        messages.error(request,"KYC rejected. However failed to sent email. Please ask to verify customer email")
     CustomerNotification.objects.create(customer = cust, name ="Sorry Your KYC Has Been Rejected.", types ="kyc", ids=cust.id)
     messages.success(request, "Successfully Rejected KYC")
     

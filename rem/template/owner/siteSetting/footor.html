@@ -1,0 +1,211 @@
+{% extends 'owner/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+   Footer Management
+{% endblock title %}
+
+
+
+{% block inside %}
+<style>
+    label{
+       
+        padding: 0px!important;
+    }
+</style>
+<div class="row p-0 m-0 mt-3">
+         
+    <div> 
+      <div class="topBox mt-3 p-2">
+        <h4 class="text-primary text-capitalize">
+            <i class="fa fa-f"></i> Footer Setting
+        </h4>
+        <small>Manipulate your site footer setting from here...</small>
+      </div>
+    </div>
+    
+    <div class="mt-3 mb-3">
+      <span class="breadcum">
+        <a href="{%url 'owner:dashboard'%}">
+            Dashboard
+        </a>/
+        <a href="{%url 'owner:site'%}">
+            Site Setting
+        </a>/
+        
+        Footer Settings
+  
+      </span>
+    </div>
+
+
+    <div class="row m-0  mt-3">
+        <h6 class="p-0">
+            Footer settings
+        </h6>
+        <hr>
+        <div class="row p-0 m-0 mt-3">
+
+            <div class="col-lg-4 col-12 m-0 p-0 mt-1">
+                <div id="login-card" class="p-1">
+                    <h5 class="m-2">Add New Footer</h5>
+                   
+                    <form action="" method="post" class="p-2">
+                        <div class="row p-0 m-0">
+                            {{form}}
+                            {% csrf_token %}
+                            <button class="btn btn-primary mt-3" type="submit">
+                                Add Footer
+                            </button>
+    
+                        </div>
+                        
+                        
+                    </form>
+                </div>
+            </div>
+    
+            <div class="col-lg-8 col-12 mt-1 ">
+               
+                <div class="p-2 card">
+                    <div class="login-flex d-flex my-auto" style="width: 100%;">
+                        <i class="fa fa-magnifying-glass my-auto p-2"></i>
+                        <input type="text" name="search"  id="search" onkeyup="SearchName()" class="form-control"  placeholder="Search Footer by their name" required id="">
+                    </div>
+                    <table class="table border-1">
+                
+                        <tbody>
+                            
+                            {% for i in footer  %}
+                            <tr>
+                                <td>
+                                    <div class="item-list-div mt-2 p-1">
+                                        <div class="d-flex justify-content-between">
+                                                
+                                                <div class="m-0">
+                                                    <p class="badge bg-warning">
+                                                        {{i.row}}
+                                                    </p>
+                                                    <p class="p-0 m-0">
+                                                        {{i.name}} 
+                                                    </p>
+
+                                                </div>
+                                                <div class="my-auto">
+                                            
+                                                    <button class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#exampleModalEdit{{i.id}}">
+                                                        <i class="fa fa-eye-dropper"></i>
+                                                        Edit
+                                                    </button>
+        
+                                                    <!-- Edit Model -->
+                                                        <div class="modal fade" id="exampleModalEdit{{i.id}}" tabindex="-1" aria-labelledby="exampleModalEditLabel" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered">
+                                                                <div class="modal-content">
+                                                                
+                                                                    <div class="modal-body">
+                                                                        <div class="text-center">
+                                                                            Edit {{i.name}}
+                                                                        </div>
+                                                                        <hr>
+                                                                        <form action="{%url 'owner:editFooter' i.id%}" method="post">
+                                                                            <label for="name"> Footer Name</label>
+                                                                            <input class="form-control" type="text" value = "{{i.name}}" name="footer_name" id="" required>
+                                                                            <label for="name"> Link of footer </label>
+                                                                            <input class="form-control" type="text" value = "{{i.link}}" name="footer_link" id="" required>
+                                                                            {% csrf_token %}
+                                                                            <button type="submit" class="btn btn-danger mt-2">
+                                                                                <i class="fa fa-pencil"></i> Edit
+                                                                            </button>
+                                                                
+                                                                        </form>
+                                                                    
+                                                                                                                                        
+                                                                        <div class="text-end mt-2">
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                        </div>
+                                                                    
+                                                                    </div>
+                                                                
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                    <!-- Edit Model -->
+                                    
+                                                
+                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}"> 
+                                                        <i class="fa fa-trash-alt"></i>
+                                                        Delete
+                                                    </button>
+        
+                                                    <!-- Delete Model -->
+                                                        <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog modal-dialog-centered">
+                                                                <div class="modal-content">
+                                                                
+                                                                    <div class="modal-body">
+                                                                        <div class="text-center">
+                                                                            <img src="{%static 'resources/delete.gif'%}" alt="" style="width: 30%;">
+                                                                        </div>
+                                                                
+                                                                        <h5>Are you sure want to delete {{i.name}}</h5>
+                                                                    
+                                                                        <div class="text-end mt-2">
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change my mind</button>
+                                                                            <!-- Delete URL -->
+                                                                            <a href="{%url 'owner:deleteFooter' i.id%}">
+                                                                                <button type="button" class="btn btn-danger">
+                                                                                    <i class="fa fa-trash"></i> Delete
+                                                                                </button>
+                                                                            </a>
+                                                                            
+                                                                        </div>
+                                                                    
+                                                                    </div>
+                                                                
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                    <!-- Delete Model -->
+            
+                                                </div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <small>
+                                                <i class="fa fa-link"></i>
+                                                {{i.link}}
+                                            </small>
+                                            
+                                        
+                                        </div>
+
+                                       
+                                      
+                                    </div>
+
+                                 
+                                </td>
+                              
+                            </tr>
+                             
+                            {% endfor %}
+                            <div id="items-container"></div>
+                         
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+      
+
+    
+    </div>
+
+   
+</div>
+
+{% endblock inside %}
+    
+    

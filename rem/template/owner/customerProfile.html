@@ -1,0 +1,749 @@
+{% extends 'owner/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    Customer
+{% endblock title %}
+
+
+
+{% block inside %}
+<div class="row p-0 m-0 mt-3">
+         
+
+    
+    <div class="mt-3 mb-3">
+      <span class="breadcum">
+        <a href="{%url 'owner:dashboard'%}">
+            Dashboard
+        </a>/
+        <a href="{%url 'owner:customer'%}">
+            Customer
+        </a>/
+        {{real_customer.get_full_name}} Profile
+      </span>
+    </div>
+
+    
+    <div class="row p-0 m-0 mt-3">
+
+        <div class="col-lg-12 col-12 ps-0 mt-3">
+            <div class="p-1">
+               
+
+                <div class="col-12  mt-2">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                          <p class="nav-link active text-primary" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</p>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <p class="nav-link text-primary" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Edit</p>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <p class="nav-link text-primary" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button" role="tab" aria-controls="messages" aria-selected="false">KYC</p>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <p class="nav-link text-primary" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Recipient</p>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <p class="nav-link text-primary" id="transaction-tab" data-bs-toggle="tab" data-bs-target="#transaction" type="button" role="tab" aria-controls="transaction" aria-selected="false">Transaction</p>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <p class="nav-link text-primary" id="bank-tab" data-bs-toggle="tab" data-bs-target="#bank" type="button" role="tab" aria-controls="bank" aria-selected="false">Bank List</p>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <p class="nav-link text-primary" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab" aria-controls="login" aria-selected="false">Login Logs</p>
+                        </li>
+                    </ul>
+                </div>
+    
+    
+                <div class="col-12 mt-2 p-0">
+                    <div class="tab-content">
+                        <div style="background-color:white;" class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="row p-1">
+                                <div class=" col-lg-8 col-md-6 col-12 pt-3 pb-3">
+                                    {% if not real_customer.customer.kyc_verified %}
+                                        <div class="alert alert-light">
+                                            <img src="{%static 'resources/not-verified.png'%}" alt="" height="30px;" width="30px;">
+                                            <span class="text-danger">
+                                               KYC is not verified .
+                                            </span>
+                                           
+                                        </div>
+                                      {%else%}
+                                        <div class="alert alert-light">
+                                          <img src="{%static 'resources/verified.png'%}" alt="" height="30px;" width="30px;">
+                                          <span class="text-danger">
+                                              KYC verified
+                                          </span>
+                                        
+                                        </div>
+                      
+                                      {% endif %}
+                                    <div class="contactDetails p-2">
+                                        <h6>Contact Details</h6>
+                                        <h4 class="text-primary text-capitalize">
+                                            {{real_customer.get_full_name}}
+                                        </h4>
+                                        <p class="text-secondary p-0 m-0">Primary Email</p>
+                                        <small>
+                                        <i class="fa fa-envelope"></i>
+                                        {{real_customer.email}}</small>
+                                        <p class="text-secondary p-0 m-0">Number</p>
+                                        <small>
+                                        <i class="fa fa-mobile"></i>
+                                        {{real_customer.customer.number}}</small>
+                                    </div>
+                                    <hr>
+                                    <p class="m-0">Addition settings <i class="fa fa-cog"></i></p>
+                                    {% if real_customer.customer.banned%}
+                                    <a href="{%url 'owner:banCustomerDisable' real_customer.customer.id%}">
+                                        <button type="button" class="btn btn-danger">
+                                            <i class="fa fa-ban"></i> Disable Banned status
+                                        </button>
+                                    </a>
+                                    {%else%}
+                                    <button class="btn btn-danger btm-sm me-2" data-bs-toggle="modal" data-bs-target="#exampleModalBanned">
+                                        <i class="fa fa-ban"></i>
+                                        Ban this user?
+                                    </button>
+                                    {% endif %}
+                                  
+                                    <!-- Banned Model -->
+                                    <div class="modal fade" id="exampleModalBanned" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                            
+                                                <div class="modal-body">
+                                                    <div class="text-center">
+                                                        <img src="{%static 'resources/ban.webp'%}" alt="" style="width: 30%;">
+                                                    </div>
+                                            
+                                                    <h5>Are you sure want to ban {{real_customer.get_full_name}}</h5>
+                                                    <small>Banning customer will disable all the function that customer can perform</small>
+                                                    <div class="text-end mt-2">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change my mind</button>
+                                                        <a href="{%url 'owner:banCustomer' real_customer.customer.id%}">
+                                                            <button type="button" class="btn btn-danger">
+                                                                <i class="fa fa-ban"></i> Ban Now
+                                                            </button>
+                                                        </a>
+                                                        
+                                                    </div>
+                                                
+                                                </div>
+                                            
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Banned Model -->
+
+                                    <button class="btn btn-secondary btm-sm ms-2">
+                                        <i class="fa fa-trash"></i>
+                                        Delete this user?
+                                    </button>
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-12 mt-3 text-center my-auto">
+                                    <div class="my-auto">
+                                        {% if real_customer.customer.profil_pic %}
+                                            <img class="my-auto" src="{{real_customer.customer.profil_pic.url}}" alt="" style="height: auto; width: 80%;">
+                                        {%else%}
+                                            <i class="fa fa-user-circle text-primary my-auto" style="font-size: 100px;">
+                                            </i> 
+                                        {% endif %}
+                                    </div>
+                                  
+                                </div>
+                            </div>
+        
+                        </div>
+                        <!-- ENquires -->
+                        <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="m-0 p-0">
+                                <div class="p-2" id="login-card">
+                               
+                                    <form action="" method="post">
+                                        <div class="row p-0 m-0">
+                                            <div class="col-6">
+                                                <label for="first_name">First Name</label>
+                                                <input type="text" name="first_name" id="" value="{{real_customer.first_name}}" required class="form-control" placeholder="First Name">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="last_name">Last Name</label>
+                                                <input type="text" name="last_name" id="" value="{{real_customer.last_name}}" required class="form-control" placeholder="Last Name">
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="email">Email</label>
+                                                <input type="email" name="email" id="" value="{{real_customer.email}}" required class="form-control" placeholder="Email Address">
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="email">{{form.number.label_tag}}</label>
+                                                {{form.number}}
+                                                {{form.number.errors}}
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="email">{{form.mail_address.label_tag}}</label>
+                                                {{form.mail_address}}
+                                                {{form.mail_address.errors}}
+                                            </div>
+                    
+                                            <div class="col-12">
+                                                <label for="email">{{form.country.label_tag}}</label>
+                                                {{form.country }}
+                                                {{form.country.errors}}
+                                            </div>
+                    
+                                            <div class="col-12">
+                                                <label for="email">{{form.city.label_tag}}</label>
+                                                {{form.city}}
+                                                {{form.city.errors}}
+                                            </div>
+                    
+                    
+                                            <div class="col-6">
+                                                <label for="email">{{form.state.label_tag}}</label>
+                                                {{form.state}}
+                                                {{form.state.errors}}
+                                            </div>
+                                            <div class="col-6">
+                                                <label for="email">{{form.address.label_tag}}</label>
+                                                {{form.address}}
+                                                {{form.address.errors}}
+                                            </div>
+                                        
+                                            {% csrf_token %}
+                                            <button class="btn btn-primary mt-3 m-auto w-80" type="submit">
+                                                <i class="fa fa-user-plus"></i>  {{button}}
+                                            </button>
+                    
+                                        </div>
+                                    
+                                    </form>
+                                </div>
+                            </div>
+                        
+                        </div>
+                        <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+                            <div class="m-0 p-0">
+                                
+                                {% if cm %}
+                                <div class="p-2" id="login-card">
+                
+                                    <h5>KYC DATA</h5>
+                                    {% if cm.customer.kyc_verified %}
+                                        <span class="badge bg-success">
+                                            Verified
+                                        </span>
+                                    {%else%}
+                                        <span class="badge bg-warning">
+                                            Pending Verification
+                                        </span>
+                                    {%endif%}
+                                    <div class="d-flex justify-content-between mt-3">
+                                        <small>
+                                            <b>
+                                                First Name
+                                            </b>
+                                        </small>
+                                        <p class="text-secondary">
+                                            {{cm.customer.admin.first_name}}
+                                        </p>
+                                    </div>
+                                    
+                                    {% if cm.customer.admin.middle_name %}
+                                        <div class="d-flex justify-content-between">
+                                            <small>
+                                                <b>
+                                                    Middle Name
+                                                </b>
+                                                
+                                            </small>
+                                            <p class="text-secondary">
+                                                {{cm.customer.admin.middle_name}}
+                                            </p>
+                                        </div>
+                                    {% endif %}
+                                        
+                                    <div class="d-flex justify-content-between">
+                                        <small>
+                                            <b>
+                                                Last Name
+                                            </b>
+                                        </small>
+                                        <p class="text-secondary">
+                                            {{cm.customer.admin.last_name}}
+                                        </p>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <small class="text-dark">
+                                            <b>
+                                                <i class="fa fa-envelope-circle-check"></i>
+                                                Email
+                                            </b>
+                                            
+                                        </small>
+                                        <p class="text-secondary">
+                                            {{cm.customer.admin.email}}
+                                        </p>
+                                    </div>
+                    
+                                    <div class="d-flex justify-content-between">
+                                        <small class="text-dark">
+                                            <b>
+                                                <i class="fa fa-mobile-phone"></i>
+                                                Number
+                                            </b>
+                                            
+                                        </small>
+                                        <p class="text-secondary">
+                                            {{cm.number}}
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="alert-info mt-2">
+                                        <div class="row m-0 p-0">
+                                            <div class="col-12 col-lg-6">
+                                                <h5>Real Image of the user</h5>
+                                                <hr>
+                                                <img src="{{cm.image.url}}" alt="" style="height: auto; width: 100%;"> 
+                                            </div>
+                                            <div class="col-12 col-lg-6">
+                                                <h5>Additional Information</h5>
+                                                <hr>
+                                                <div class="d-flex justify-content-between">
+                                                    <small class="text-dark">
+                                                        <b>
+                                                            <i class="fa fa-location-dot"></i>
+                                                            Address
+                                                        </b>
+                                                        
+                                                    </small>
+                                                    <p class="text-secondary">
+                                                        {{cm.address}}
+                                                    </p>
+                                                </div>
+                    
+                                                <div class="d-flex justify-content-between">
+                                                    <small class="text-dark">
+                                                        <b>
+                                                            <i class="fa fa-location-pin"></i>
+                                                            State
+                                                        </b>
+                                                        
+                                                    </small>
+                                                    <p class="text-secondary">
+                                                        {{cm.state}}
+                                                    </p>
+                                                </div>
+                                               
+                                                <div class="d-flex justify-content-between">
+                                                    <small class="text-dark">
+                                                        <b>
+                                                            <i class="fa fa-city"></i>
+                                                            City
+                                                        </b>
+                                                        
+                                                    </small>
+                                                    <p class="text-secondary">
+                                                        {{cm.city}}
+                                                    </p>
+                                                </div>
+                                                <div class="d-flex justify-content-between alert alert-light">
+                                                    
+                                                   <small>
+                                                    Country
+                                                   </small>
+                                                    
+                                                    <h5 class="text-dark my-auto">
+                                                        {{cm.country}}
+                                                    </h6>
+                                                </div>
+                    
+                                                
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="d-flex justify-content-between alert alert-warning mt-3">
+                                        <small class="text-dark my-auto">
+                                            <b>
+                                                <i class="fa fa-transgender"></i>
+                                                Gender
+                                            </b>
+                                            
+                                        </small>
+                                        <p class="text-secondary my-auto">
+                                            {{cm.gender}}
+                                        </p>
+                                    </div>
+                                    <h4>
+                                        Verification recieved date: {{cm.created_at}}
+                                    </h4>
+                                    <div class="alert alert-danger">
+                                        <i class="fa fa-info-circle"></i> 
+                                        Has Uploaded:
+                                        {{cm.document_type}}
+                                    </div>
+                                    <div class="row p-0 m-0">
+                                        <div class="col-12 col-lg-6 mt-2">
+                                            <h5>
+                                                Document Front Image
+                                            </h5>
+                                            <a href="{{cm.document_front_image.url}}" target="_blank">
+                                                <img src="{{cm.document_front_image.url}}" alt="" style="width: 100%; height: auto;">
+                                            </a>
+                                            
+                                        </div>
+                                        <div class="col-12 col-lg-6 mt-2">
+                                            <h5>
+                                                Document Back Image
+                                            </h5>
+                                            
+                                            {% if cm.document_back_image %}
+                                                <a href="col-12 col-lg-6 mt-2" target="_blank">
+                                                    <img src="{{cm.document_back_image.url}}" alt="" style="width: 100%; height: auto;">
+                                                </a>
+                                                
+                                            {%else%}
+                                                <small>Not Available</small>
+                                            {% endif %}
+                                                
+                                            
+                                        </div>
+                                    </div>
+                                        
+                                    {% if cm.customer.kyc_verified %}
+                                        <button class="btn btn-success w-100 mt-3" disabled>
+                                            <i class="fa fa-check-circle"></i>
+                                            Verified
+                                        </button> 
+                                    {%else%}
+                                    
+                                    <button class="btn btn-danger mt-2 w-100" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        Verify Account
+                                    </button>
+                    
+                                    <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                            
+                                                <div class="modal-body">
+                                                    <h5>
+                                                        Are you sure want to verify the account
+                                                    </h5>
+                                                    <p class="text-secondary">
+                                                        Make sure the documents and the inforamtion are legit. 
+                                                    </p>
+                                                    
+                                                    {% if cm %}
+                                                    <a href="{%url 'owner:reject' cm.customer.id%}">
+                                                        <button
+                                                        type="button"
+                                                        class="btn btn-secondary"
+                                                        data-bs-dismiss="modal"
+                                                        >
+                                                        <i class="fa fa-times-circle"></i> 
+                                                        Reject Document
+                                                        </button>
+                                                    </a>
+                                                    {% endif %}
+                                                    
+                                                    {% if cm %}
+                                                        <!-- verify URL -->
+                                                    <a href="{%url 'owner:verify' cm.customer.id%}">
+                                                        <button type="button" class="btn btn-danger">
+                                                        <i class="fa fa-check-circle"></i> Verify Account
+                                                        </button>
+                                                    </a>
+                                                    {% endif %}
+                                                        
+                                                        
+                                                   
+                                                    
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                    
+                                   
+                                    {% endif %}
+                                </div>
+                                    {%else%}
+                                    <p class="text-secondary">
+                                        Customer has not updated their kyc.
+                                    </p>
+                                    
+
+                                {% endif %}
+                                    
+                                
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                            
+                            
+                            {% if not  reciepient%}
+                            <p class="text-secondary">
+                                No any receipient has been added by customer.
+                            </p>
+                            {% endif %}
+                                
+                            {% for i in reciepient %}
+                                <div class="transaction-div p-2">
+                                <div class="d-flex">
+                                
+                                        <i class="trans-icon fa fa-user-circle"></i>
+                                        <span class="ps-2 my-auto" >
+                                        <h6 class="text-primary">
+                                            {{i.first_name}} 
+                                            {%if i.middle_name%}
+                                                {{i.middle_name}}
+                                            {%endif%}
+                                            {{i.last_name}}
+                                        </h6>
+                                        <p class="text-danger">
+                                            <i class="fa fa-location-dot"></i>
+                                            {{i.country}}, {{i.city}}, {{i.state}}, {{i.zip_code}}, {{i.address}}
+                                        </p>
+                                        </span>
+                    
+                                </div>
+                                
+                                <div class="d-flex">
+                                    
+                                    {% if i.country.flag_img %}
+                                        <img class=" my-auto" src="{{i.country.flag_img.url}}" alt="" height="30px;" width="auto">
+                                    {% endif %}
+                                </div>
+                                </div>
+                            {% endfor %}
+                         
+                        </div>
+                        <div  class="tab-pane" id="transaction" role="tabpanel" aria-labelledby="transaction-tab">
+                              
+                            {% if not  transaction%}
+                            <p class="text-secondary">
+                                No any transaction has been done by customer.
+                            </p>
+                            {% endif %}
+                            {% for i in transaction %}
+                                <a href="{%url 'owner:transactionDetail' i.id%}">
+                                    <div class="transaction-div p-2" id="login-card" data-bs-toggle="modal" data-bs-target="#exampleModalEdit{{i.id}}">
+                                        <div class="d-flex">
+                                        
+                                            <i class="trans-icon fa fa-arrow-alt-circle-up"></i>
+                                            <span class="ps-2 my-auto" >
+                                                <h6 class="text-primary">
+                                                Transfer Money to {{i.recipient.first_name}} {%if i.recipient.middle_name%} {{i.recipient.middle_name}} {%endif%} {{i.recipient.last_name}}
+                                                </h6>
+                                                
+                                                {% if i.status == 'Pending' %}
+                                                    <p class="text-warning p-0 m-0">
+                                                        <i class="fa fa-circle-dot"></i>
+                                                        Pending
+                                                    </p>
+                                                {% endif %}
+                        
+                                                {% if i.status == 'Cancelled' %}
+                                                    <p class="text-danger p-0 m-0">
+                                                        <i class="fa fa-circle-dot"></i>
+                                                        Cancelled
+                                                    </p>
+                                                {% endif %}
+                        
+                                                {% if i.status == 'Completed' %}
+                                                    <p class="text-success p-0 m-0">
+                                                        <i class="fa fa-circle-dot"></i>
+                                                        Completed
+                                                    </p>
+                                                {% endif %}
+                                                {% if i.status == 'Rejected' %}
+                                                <p class="text-danger p-0 m-0">
+                                                    <i class="fa fa-circle-dot"></i>
+                                                    Rejected
+                                                </p>
+                                                {% endif %}
+                        
+                                                <small class="text-secondary" style="font-size: 12px;">
+                                                    Click to view report
+                                                </small>
+                                            </span>
+                                            
+                                        
+                                        </div>
+                                        
+                                        <div>
+                                        <h6 class="text-danger">
+                                            - {{i.sent}} {{i.sending_currency.currecy_sign}}
+                                        </h6>
+                                        <p class="text-success">
+                                        
+                                            <b>
+                                                {{i.received}} {{i.receiving_currency.currecy_sign}}
+                                            </b>
+                                        </p>
+                                        </div>
+                                    </div>
+                                </a>
+                            {% endfor %}
+    
+                        </div>
+
+                        <div  class="tab-pane" id="bank" role="tabpanel" aria-labelledby="bank-tab">
+                            <div class="row p-0 m-0">
+                                {% if not  bankA%}
+                                <p class="text-secondary">
+                                    Empty
+                                </p>
+                                {% endif %}
+                                {% for i in bankA  %}
+                                <div class="mt-3 col-12 col-lg-4">
+                                    <div class="p-2 mb-3" id="login-card"  onclick="toggleBorder(this, '{{i.id}}')" >
+                                        <div>
+                    
+                                            <span class="p-2" >
+                                                
+                                                <p class="text-secondary p-0 m-0">
+                                                    Bank Name:
+                                                </p>
+                    
+                                                <p class="text-dark p-0 m-0">
+                                                    {{i.bank_name}}
+                                                </p>
+                                                    
+                                            
+                                                <div class="d-flex justify-content-between mt-2">
+                                                    <p class="text-secondary">
+                                                        Account Number:
+                                                    </p>
+                    
+                                                    <p class="text-secondary">
+                                                        {{i.account_number}}
+                                                    </p>
+                                                    
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="text-secondary">
+                                                        Account Name:
+                                                    </p>
+                    
+                                                    <p class="text-secondary">
+                                                        {{i.account_name}}
+                                                    </p>
+                                                    
+                                                </div>
+                                                <span class="badge bg-secondary">
+                                                    {{i.recipient.first_name}} {{i.recipient.last_name}}
+                                                </span>
+                                                
+                                            </span>
+                                        </div>
+                                        <hr>
+                                        <div class="text-center d-flex justify-content-between">
+                                        
+                                        
+                                            {% if i.country.flag_img %}
+                                                <img class="my-auto" src="{{i.country.flag_img.url}}" alt="" height="20px" width="auto%">
+                                            {% endif %}
+                                
+                                            <div class="my-auto">
+                                                <small>Swift Code</small>
+                                                <h5>
+                                                    {{i.swift_code}}
+                                                </h5>
+                                            </div>
+                                        
+                                        </div>
+                                        <hr>
+                                        <div class="text-center d-flex justify-content-center " >
+                                        <a class="p-2 m-2" href="{%url 'owner:editBank' i.id%}" >
+                                            <i class="fa fa-pencil-square p-3 bg-light"></i>
+                                        </a>
+                                        
+                                        
+                                        <a class="p-2  m-2 text-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}" >
+                                            <i class="fa fa-trash p-3 bg-light"></i>
+                                        </a>
+                                        
+                    
+                    
+                                        <!-- Delete Model -->
+                                            <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                    
+                                                        <div class="modal-body">
+                                                            <div class="text-center">
+                                                                <img src="{%static 'resources/delete.gif'%}" alt="" style="width: 30%;">
+                                                            </div>
+                                                    
+                                                            <h5 class="text-dark"> Are you sure want to delete {{i.bank_name}} </h5>
+                                                        
+                                                            <div class="text-end mt-2">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change my mind</button>
+                                                                <!-- Delete URL -->
+                                                                <a href="{%url 'owner:deleteBank' i.id%}">
+                                                                    <button type="button" class="btn btn-danger">
+                                                                        <i class="fa fa-trash"></i> Delete
+                                                                    </button>
+                                                                </a>
+                                                                
+                                                            </div>
+                                                        
+                                                        </div>
+                                                    
+                                                </div>
+                                                </div>
+                                            </div>
+                                        <!-- Delete Model -->
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            </div>
+                           
+    
+                        </div>
+
+                        <div  class="tab-pane" id="login" role="tabpanel" aria-labelledby="login-tab">
+                            {% if not  login_log%}
+                            <p class="text-secondary">
+                                No any login logs available
+                            </p>
+                            {% endif %}
+                            <ul>
+                                {% for i in login_log  %}
+                                    <li>
+                                        <small> 
+                                            {{i.location}} at {{i.created_at}} with ip address {{i.ip_aadress}}
+                                        </small>
+                                        
+                                    </li>
+                                {% endfor %}
+                               
+                            </ul>
+                           
+                                
+    
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+
+           
+
+        </div>
+
+    
+    </div>
+  
+   
+</div>
+
+{% endblock inside %}
+    
+    

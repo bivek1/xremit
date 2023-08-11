@@ -145,7 +145,7 @@ Email Settings
                             <h5>Select Customer to send email</h5>
                             <hr>
                             <select name="customer" id="customer"  class="form-control mb-2" onchange="getCustomerValue(this);">
-                                
+                                <option value="1">---------</option>
                                 {% for i in customer  %}
                                     <option value="{{i.id}}">{{i.admin.first_name}}
 
@@ -177,6 +177,7 @@ Email Settings
                             <h5>Select Receiptions to send email</h5>
                             <hr>
                             <select name="recipient" id="recipient"  class="form-control mb-2" onchange="getReceiptionValue(this);">
+                                <option value="1">---------</option>
                                 {% for i in recipient  %}
                                     <option value="{{i.id}}">{{i.first_name}}
 
@@ -206,6 +207,7 @@ Email Settings
                             <h5>Select Agent to send email</h5>
                             <hr>
                             <select name="agent" id="agent"  class="form-control mb-2" onchange="getAgentValue(this)">
+                                <option value="1">---------</option>
                                 {% for i in agent %}
                                     <option value="{{i.id}}">{{i.admin.first_name}}
                                         {% if i.admin.middle_name %}

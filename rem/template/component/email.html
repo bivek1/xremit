@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Verify your OTP
+{% endblock title %}
+
+
+{% block content %}
+    <div class="container-fluid back-img d-flex">
+        <div class="row w-100">
+            <div class="col-12 col-lg-9 m-auto">
+                <div class="row p-0 m-0 p-2 mt-2" id="login-card">    
+                    <img src="{%if site.light_logo %} {{site.light_logo.url}} {%else%}{%static 'resources/logodark.png'%} {%endif%}" alt="{{site.title}}" height="100px" width="auto">  
+                    <h3 class="head-para text-primary text-center">
+                       {{sub}}
+                    </h3>
+                    <hr>
+                    <p class="text-center">
+                        {{message}}
+                    </p>
+                </div>
+                
+            </div>
+           
+
+        </div>
+    </div>
+{% endblock content %}
+    

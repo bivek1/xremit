@@ -1,0 +1,100 @@
+{% extends 'customer/dashboard.html' %}
+
+
+{% block title %}
+   Update Recipients
+{% endblock title %}
+    
+
+
+{% block inside %}
+<div class="row p-0 m-0 mt-3">
+    <div class="mt-3 mb-3">
+      <span class="breadcum">
+        <a href="{%url 'customer:dashboard'%}">
+            Dashboard
+        </a>/
+        <a href="{%url 'customer:recipient'%}">
+            Recipients
+        </a>/ Update New Recipients
+        
+      </span>
+    </div>
+
+    <div class="row p-0 m-0 mt-3">
+        <h5>Update New Recipients</h5>
+        <hr>
+        <div class="p-2">
+            <form action="" method="post">
+                <div class="row p-0 m-0 p-2" id="login-card">
+                    <div class="col-12 col-lg-12 mt-2">
+                        <p class="text-secondary">Please choose the type of transction</p>
+                        {{form.transaction_type}}
+                        {{form.transaction_type.errors}}
+                    </div>
+                    <div class="col-6 col-lg-6 mt-2">
+                        <p class="text-secondary">First Name*</p>
+                        {{form.first_name}}
+                        {{form.first_name.errors}}
+                    </div>
+                    <div class="col-6 col-lg-6 mt-2">
+                        <p class="text-secondary">Middle Name</p>
+                        {{form.middle_name}}
+                        {{form.middle_name.errors}}
+                    </div>
+                    <div class="col-6 col-lg-6 mt-2">
+                        <p class="text-secondary">Last Name*</p>
+                        {{form.last_name}}
+                        {{form.last_name.errors}}
+                    </div>
+                    <div class="col-6 col-lg-6 mt-2">
+                        <p class="text-secondary">City Name*</p>
+                        {{form.city}}
+                        {{form.city.errors}}
+                    </div>
+
+                    <div class="col-6 col-lg-6 mt-2">
+                        <p class="text-secondary">Postal Code*</p>
+                        {{form.zip_code}}
+                        {{form.zip_code.errors}}
+                    </div>
+
+                
+
+                    <div class="col-6 col-lg-6 mt-2">
+                        <p class="text-secondary">Phone Number*</p>
+                        {{form.number}}
+                        {{form.number.errors}}
+                    </div>
+
+                    <div class="col-12 col-lg-12 mt-2">
+                        <p class="text-secondary">Country*</p>
+                        {{form.country}}
+                        {{form.country.errors}}
+                    </div>
+
+                    <div class="col-6 col-lg-6 mt-2">
+                        <p class="text-secondary">Address*</p>
+                        {{form.address}}
+                        {{form.address.errors}}
+                    </div>
+
+                    <div class="col-6 col-lg-6 mt-2">
+                        <p class="text-secondary">Sate*</p>
+                        {{form.state}}
+                        {{form.state.errors}}
+                    </div>
+
+                    {% csrf_token %}
+
+                    <button class="btn btn-primary mt-3 w-100">
+                        Update Recipients
+                    </button>
+                </div>
+            </form>
+        </div>
+       
+    </div>
+</div>
+{% endblock inside %}
+    

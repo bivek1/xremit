@@ -1,0 +1,209 @@
+{% extends 'owner/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+   Social Link Management
+{% endblock title %}
+
+
+
+{% block inside %}
+<style>
+    label{
+       
+        padding: 0px!important;
+    }
+</style>
+<div class="row p-0 m-0 mt-3">
+         
+    <div> 
+      <div class="topBox mt-3 p-2">
+        <h4 class="text-primary text-capitalize">
+            <i class="fa fa-f"></i> Social Link Setting
+        </h4>
+        <small>Manipulate your site Social Link setting from here...</small>
+      </div>
+    </div>
+    
+    <div class="mt-3 mb-3">
+      <span class="breadcum">
+        <a href="{%url 'owner:dashboard'%}">
+            Dashboard
+        </a>/
+        <a href="{%url 'owner:site'%}">
+            Site Setting
+        </a>/
+        Social Link Settings
+  
+      </span>
+    </div>
+
+
+    <div class="row m-0  mt-3">
+        <h5 class="p-0">
+            Social Link settings
+        </h5>
+        <hr>
+        <div class="row p-0 m-0 mt-3">
+
+          <div class="col-lg-4 col-12 m-0 p-0">
+              <div id="login-card" class="p-2">
+                  <h5 class="p-2">Add New Social Link</h5>
+                <hr>
+                  <form action="" method="post" class="p-2">
+                      <div class="row p-0 m-0">
+                          {{form}}
+                          {{form.errors}}
+                          {% csrf_token %}
+                          <button class="btn btn-primary mt-3" type="submit">
+                              Add Social Link
+                          </button>
+  
+                      </div>
+                      
+                      
+                  </form>
+              </div>
+          </div>
+  
+          <div class="col-lg-8 col-12 mt-2">
+            
+              <div class="card p-2">
+                  <div class=" login-flex d-flex my-auto" style="width: 100%;">
+                      <i class="fa fa-magnifying-glass my-auto p-2"></i>
+                      <input type="text" name="search"  id="search" onkeyup="SearchName()" class="form-control"  placeholder="Search Social Link by their name" required id="">
+                     </div>
+                  <table class="table border-1" id="myTable">
+              
+                      <tbody>
+                          
+                          {% for i in social %}
+                          <tr>
+                      
+                              <td>
+                                
+                                    <div class="item-list-div mt-2 p-1">
+                                        <div class="d-flex justify-content-between">
+                                            <p class="m-0 p-2 text-primary">
+                                                <i class="{{i.icon}}"></i>
+                                                  {{i.name}}
+                                            </p>
+                                            <div class="my-auto">
+                                          
+                                                <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#exampleModalEdit{{i.id}}">
+                                                    <i class="fa fa-eye-dropper"></i>
+                                                    Edit
+                                                </button>
+      
+                                                <!-- Edit Model -->
+                                                    <div class="modal fade" id="exampleModalEdit{{i.id}}" tabindex="-1" aria-labelledby="exampleModalEditLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                            
+                                                                <div class="modal-body">
+                                                                    <div class="text-center">
+                                                                        Edit {{i.name}}
+                                                                    </div>
+                                                                    <hr>
+                                                                    <form action="{%url 'owner:editSocialLink' i.id%}" method="post">
+                                                                        <label for="name"> Social Link Name</label>
+                                                                        <input class="form-control" type="text" value = "{{i.name}}" name="social_link_name" id="" required>
+                                                                        <label for="name"> Icon Social Link </label>
+                                                                        <input class="form-control" type="text" value = "{{i.icon}}" name="social_icon" id="" required>
+                                                                        <label for="name"> Link of Social Link </label>
+                                                                        <input class="form-control" type="text" value = "{{i.link}}" name="social_link" id="" required>
+                                                                        {% csrf_token %}
+                                                                        <button type="submit" class="btn btn-danger mt-2">
+                                                                            <i class="fa fa-pencil"></i> Edit
+                                                                        </button>
+                                                              
+                                                                    </form>
+                                                                
+                                                                                                                                    
+                                                                    <div class="text-end mt-2">
+                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                    </div>
+                                                                
+                                                                </div>
+                                                            
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                <!-- Edit Model -->
+                                   
+                                             
+                                                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}"> 
+                                                    <i class="fa fa-trash-alt"></i>
+                                                    Delete
+                                                </button>
+      
+                                                <!-- Delete Model -->
+                                                    <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                            
+                                                                <div class="modal-body">
+                                                                    <div class="text-center">
+                                                                        <img src="{%static 'resources/delete.gif'%}" alt="" style="width: 30%;">
+                                                                    </div>
+                                                            
+                                                                    <h5>Are you sure want to delete {{i.name}}</h5>
+                                                                   
+                                                                    <div class="text-end mt-2">
+                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change my mind</button>
+                                                                        <!-- Delete URL -->
+                                                                        <a href="{%url 'owner:deleteSocialLink' i.id%}">
+                                                                            <button type="button" class="btn btn-danger">
+                                                                                <i class="fa fa-trash"></i> Delete
+                                                                            </button>
+                                                                        </a>
+                                                                        
+                                                                    </div>
+                                                                
+                                                                </div>
+                                                            
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                <!-- Delete Model -->
+        
+                                            </div>
+                                        </div>
+                                        <div class="mt-2">
+                                            <b>
+                                                <small class="text-primary">
+                                                    <i class="fa fa-globe p-2"></i>
+                                                    {{i.link}}
+                                                </small>
+                                            </b>
+                                            
+                                        
+                                        </div>
+  
+                                        
+                                      
+                                    </div>
+
+                              </td>
+            
+                            
+                          </tr>
+                           
+                          {% endfor %}
+                          <div id="items-container"></div>
+                       
+                      </tbody>
+                  </table>
+              </div>
+              
+          </div>
+        </div>
+
+    </div>
+
+   
+</div>
+
+{% endblock inside %}
+    
+    

@@ -1,0 +1,454 @@
+{% extends 'owner/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    Transaction
+{% endblock title %}
+
+
+
+{% block inside %}
+<div class="row p-0 m-0 mt-3">
+    
+    <div class="mt-3 mb-3">
+      <span class="breadcum">
+        <a href="{%url 'owner:dashboard'%}">
+            Dashboard
+        </a>/
+        Transaction
+      </span>
+    </div>
+
+
+    <div class="row p-0 m-0 mt-3">
+        <div class="d-flex justify-content-between">
+            <h5>
+              Transaction List
+            </h5>
+            
+        </div>
+        <hr>
+       
+        <div class="col-12 col-lg-12 mt-2 ">
+        
+            <div class="dashboard-box">
+                <div class="my-auto">
+                    <h6>Total Transaction (Cost)</h6>
+                    
+                </div>
+                <div class="my-auto">
+                    <div class="text-center das-img text-danger">
+                        <i class="fa fa-money-bill-transfer"></i>
+                        <h3>
+                            {{total_cost}}
+                        </h3>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4 mt-2 ">
+        
+            <div class="dashboard-box">
+                <div class="my-auto">
+                    <h6>Today Transaction</h6>
+                    
+                </div>
+                <div class="my-auto">
+                    <div class="text-center das-img text-warning">
+                        <i class="fa fa-money-bill-1-wave"></i>
+                        <h3>
+                            {{today_trans}}
+                        </h3>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-4 mt-2 ">
+        
+            <div class="dashboard-box">
+                <div class="my-auto">
+                    <h6>Today Transaction (Cost)</h6>
+                    
+                </div>
+                <div class="my-auto">
+                    <div class="text-center das-img text-danger">
+                        <i class="fa fa-money-bill-transfer"></i>
+                        <h3>
+                            {{today_cost}}
+                        </h3>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-4 mt-2 ">
+        
+            <div class="dashboard-box">
+                <div class="my-auto">
+                    <h6>Total Fees </h6>
+                    
+                </div>
+                <div class="my-auto">
+                    <div class="text-center das-img text-danger">
+                        <i class="fa fa-money-bill-transfer"></i>
+                        <h3>
+                            {{today_cost}}
+                        </h3>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-12  mt-2">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                
+              
+                <li class="nav-item" role="presentation">
+                    <p class="nav-link active text-warning" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab" aria-controls="pending" aria-selected="true">
+                      <small class="my-auto">
+                          <i class="fa fa-procedures"></i>
+                          Total Pending <span class="badge bg-warning">{{pending}}</span>
+                      </small>
+                     
+                    </p>
+                  </li>
+              
+                  <li class="nav-item" role="presentation">
+                    <p class="nav-link  text-success" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
+                      <small class="my-auto">
+                          <i class="fa fa-check-circle"></i>
+                          Total Completed <span class="badge bg-success">{{complete}}</span>
+                      </small>
+                     
+                    </p>
+                  </li>
+             
+                <li class="nav-item" role="presentation">
+                    <p class="nav-link text-danger" id="transaction-tab" data-bs-toggle="tab" data-bs-target="#transaction" type="button" role="tab" aria-controls="transaction" aria-selected="false">
+                      
+                        <small class="my-auto">
+                            <i class="fa fa-ban"></i>
+                            Total Rejected
+                            <span class="badge bg-danger">{{rejected}}</span>
+                        </small>
+                      
+                    </p>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <p class="nav-link text-primary" id="transaction1-tab" data-bs-toggle="tab" data-bs-target="#transaction1" type="button" role="tab" aria-controls="transaction1" aria-selected="false">
+                        <small class="my-auto">
+                            <i class="fa fa-times-circle"></i>
+                            Total Cancelled <span class="badge bg-primary">{{cancelled}}</span>
+                        </small>
+                        
+                    </p>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="col-12 mt-2 p-0">
+            <div class="tab-content">
+                <div style="background-color:white;" class="tab-pane active" id="pending" role="tabpanel" aria-labelledby="pending-tab">
+                    <div class="row p-2 m-0">
+                        <div class="col-12">
+                            {% for i in transPending %}
+                                <a href="{%url 'owner:transactionDetail' i.id%}">
+                                    <div class="transaction-div p-2" id="login-card" data-bs-toggle="modal" data-bs-target="#exampleModalEdit{{i.id}}">
+                                        <div class="d-flex">
+                                        
+                                            <i class="trans-icon fa fa-arrow-alt-circle-up"></i>
+                                            <span class="ps-2 my-auto" >
+                                                <h6 class="text-primary">
+                                                Transfer Money to {{i.recipient.first_name}} {%if i.recipient.middle_name%} {{i.recipient.middle_name}} {%endif%} {{i.recipient.last_name}}
+                                                </h6>
+                                                
+                                                {% if i.status == 'Pending' %}
+                                                    <p class="text-warning p-0 m-0">
+                                                        <i class="fa fa-circle-dot"></i>
+                                                        Pending
+                                                    </p>
+                                                {% endif %}
+                        
+                                                {% if i.status == 'Cancelled' %}
+                                                    <p class="text-danger p-0 m-0">
+                                                        <i class="fa fa-circle-dot"></i>
+                                                        Cancelled
+                                                    </p>
+                                                {% endif %}
+                        
+                                                {% if i.status == 'Completed' %}
+                                                    <p class="text-success p-0 m-0">
+                                                        <i class="fa fa-circle-dot"></i>
+                                                        Completed
+                                                    </p>
+                                                {% endif %}
+                                                {% if i.status == 'Rejected' %}
+                                                <p class="text-danger p-0 m-0">
+                                                    <i class="fa fa-circle-dot"></i>
+                                                    Rejected
+                                                </p>
+                                                {% endif %}
+                        
+                                                <small class="text-secondary" style="font-size: 12px;">
+                                                    Click to view report
+                                                </small>
+                                            </span>
+                                            
+                                        
+                                        </div>
+                                        
+                                        <div>
+                                        <h6 class="text-danger">
+                                            - {{i.sent}} {{i.sending_currency.currecy_sign}}
+                                        </h6>
+                                        <p class="text-success">
+                                        
+                                            <b>
+                                                {{i.received}} {{i.receiving_currency.currecy_sign}}
+                                            </b>
+                                        </p>
+                                        </div>
+                                    </div>
+                                </a>
+                           
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+    
+                <div class="tab-pane" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="m-0 p-2">
+                        <div class="row m-0 p-2" id="login-card">
+                         
+                            <div class="col-12">
+                                {% for i in transComplete %}
+                                    <a href="{%url 'owner:transactionDetail' i.id%}">
+                                        <div class="transaction-div p-2" id="login-card" data-bs-toggle="modal" data-bs-target="#exampleModalEdit{{i.id}}">
+                                            <div class="d-flex">
+                                            
+                                                <i class="trans-icon fa fa-arrow-alt-circle-up"></i>
+                                                <span class="ps-2 my-auto" >
+                                                    <h6 class="text-primary">
+                                                    Transfer Money to {{i.recipient.first_name}} {%if i.recipient.middle_name%} {{i.recipient.middle_name}} {%endif%} {{i.recipient.last_name}}
+                                                    </h6>
+                                                    
+                                                    {% if i.status == 'Pending' %}
+                                                        <p class="text-warning p-0 m-0">
+                                                            <i class="fa fa-circle-dot"></i>
+                                                            Pending
+                                                        </p>
+                                                    {% endif %}
+                            
+                                                    {% if i.status == 'Cancelled' %}
+                                                        <p class="text-danger p-0 m-0">
+                                                            <i class="fa fa-circle-dot"></i>
+                                                            Cancelled
+                                                        </p>
+                                                    {% endif %}
+                            
+                                                    {% if i.status == 'Completed' %}
+                                                        <p class="text-success p-0 m-0">
+                                                            <i class="fa fa-circle-dot"></i>
+                                                            Completed
+                                                        </p>
+                                                    {% endif %}
+                                                    {% if i.status == 'Rejected' %}
+                                                    <p class="text-danger p-0 m-0">
+                                                        <i class="fa fa-circle-dot"></i>
+                                                        Rejected
+                                                    </p>
+                                                    {% endif %}
+                            
+                                                    <small class="text-secondary" style="font-size: 12px;">
+                                                        Click to view report
+                                                    </small>
+                                                </span>
+                                                
+                                            
+                                            </div>
+                                            
+                                            <div>
+                                            <h6 class="text-danger">
+                                                - {{i.sent}} {{i.sending_currency.currecy_sign}}
+                                            </h6>
+                                            <p class="text-success">
+                                            
+                                                <b>
+                                                    {{i.received}} {{i.receiving_currency.currecy_sign}}
+                                                </b>
+                                            </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                               
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                
+                </div>
+              
+               
+                <div  class="tab-pane" id="transaction" role="tabpanel" aria-labelledby="transaction-tab">
+                
+                    <div class="p-2" id="login-card">
+                        <div class="col-12">
+                            {% for i in transRejected %}
+                                <a href="{%url 'owner:transactionDetail' i.id%}">
+                                    <div class="transaction-div p-2" id="login-card" data-bs-toggle="modal" data-bs-target="#exampleModalEdit{{i.id}}">
+                                        <div class="d-flex">
+                                        
+                                            <i class="trans-icon fa fa-arrow-alt-circle-up"></i>
+                                            <span class="ps-2 my-auto" >
+                                                <h6 class="text-primary">
+                                                Transfer Money to {{i.recipient.first_name}} {%if i.recipient.middle_name%} {{i.recipient.middle_name}} {%endif%} {{i.recipient.last_name}}
+                                                </h6>
+                                                
+                                                {% if i.status == 'Pending' %}
+                                                    <p class="text-warning p-0 m-0">
+                                                        <i class="fa fa-circle-dot"></i>
+                                                        Pending
+                                                    </p>
+                                                {% endif %}
+                        
+                                                {% if i.status == 'Cancelled' %}
+                                                    <p class="text-danger p-0 m-0">
+                                                        <i class="fa fa-circle-dot"></i>
+                                                        Cancelled
+                                                    </p>
+                                                {% endif %}
+                        
+                                                {% if i.status == 'Completed' %}
+                                                    <p class="text-success p-0 m-0">
+                                                        <i class="fa fa-circle-dot"></i>
+                                                        Completed
+                                                    </p>
+                                                {% endif %}
+                                                {% if i.status == 'Rejected' %}
+                                                <p class="text-danger p-0 m-0">
+                                                    <i class="fa fa-circle-dot"></i>
+                                                    Rejected
+                                                </p>
+                                                {% endif %}
+                        
+                                                <small class="text-secondary" style="font-size: 12px;">
+                                                    Click to view report
+                                                </small>
+                                            </span>
+                                            
+                                        
+                                        </div>
+                                        
+                                        <div>
+                                        <h6 class="text-danger">
+                                            - {{i.sent}} {{i.sending_currency.currecy_sign}}
+                                        </h6>
+                                        <p class="text-success">
+                                        
+                                            <b>
+                                                {{i.received}} {{i.receiving_currency.currecy_sign}}
+                                            </b>
+                                        </p>
+                                        </div>
+                                    </div>
+                                </a>
+                           
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div  class="tab-pane" id="transaction1" role="tabpanel" aria-labelledby="transaction1-tab">
+                
+                    <div class="p-2" id="login-card">
+                        <div class="col-12">
+                            {% for i in transCancelled %}
+                                <a href="{%url 'owner:transactionDetail' i.id%}">
+                                    <div class="transaction-div p-2" id="login-card" data-bs-toggle="modal" data-bs-target="#exampleModalEdit{{i.id}}">
+                                        <div class="d-flex">
+                                        
+                                            <i class="trans-icon fa fa-arrow-alt-circle-up"></i>
+                                            <span class="ps-2 my-auto" >
+                                                <h6 class="text-primary">
+                                                Transfer Money to {{i.recipient.first_name}} {%if i.recipient.middle_name%} {{i.recipient.middle_name}} {%endif%} {{i.recipient.last_name}}
+                                                </h6>
+                                                
+                                                {% if i.status == 'Pending' %}
+                                                    <p class="text-warning p-0 m-0">
+                                                        <i class="fa fa-circle-dot"></i>
+                                                        Pending
+                                                    </p>
+                                                {% endif %}
+                        
+                                                {% if i.status == 'Cancelled' %}
+                                                    <p class="text-danger p-0 m-0">
+                                                        <i class="fa fa-circle-dot"></i>
+                                                        Cancelled
+                                                    </p>
+                                                {% endif %}
+                        
+                                                {% if i.status == 'Completed' %}
+                                                    <p class="text-success p-0 m-0">
+                                                        <i class="fa fa-circle-dot"></i>
+                                                        Completed
+                                                    </p>
+                                                {% endif %}
+                                                {% if i.status == 'Rejected' %}
+                                                <p class="text-danger p-0 m-0">
+                                                    <i class="fa fa-circle-dot"></i>
+                                                    Rejected
+                                                </p>
+                                                {% endif %}
+                        
+                                                <small class="text-secondary" style="font-size: 12px;">
+                                                    Click to view report
+                                                </small>
+                                            </span>
+                                            
+                                        
+                                        </div>
+                                        
+                                        <div>
+                                        <h6 class="text-danger">
+                                            - {{i.sent}} {{i.sending_currency.currecy_sign}}
+                                        </h6>
+                                        <p class="text-success">
+                                        
+                                            <b>
+                                                {{i.received}} {{i.receiving_currency.currecy_sign}}
+                                            </b>
+                                        </p>
+                                        </div>
+                                    </div>
+                                </a>
+                           
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+            
+            </div>
+        </div>
+
+      
+        
+    </div>
+</div>
+
+{% endblock inside %}
+    
+    

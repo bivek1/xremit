@@ -1,0 +1,113 @@
+{% extends 'customer/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    Default Currency
+{% endblock title %}
+    
+
+
+{% block inside %}
+<div class="row p-0 m-0 mt-3">
+    <div class="mt-3 mb-3">
+      <span class="breadcum">
+        <a href="{%url 'customer:dashboard'%}">
+            Dashboard
+        </a>/
+            Default Currency
+      </span>
+    </div>
+
+    <div class="row p-0 m-0 mt-3">
+        <div class="d-flex justify-content-between">
+            <h5>
+                Your Default Currency
+            </h5>
+
+          
+        </div>
+        <hr>
+        
+        <div class="col-12 col-lg-8 mt-2 m-auto">
+            {% if user.customer.customer_currency %}
+                <div class="alert alert-light d-flex justify-content-between">
+                    <div>
+                        <img src="{{user.customer.customer_currency.currency.country.flag_img.url}}" alt="" height="30px;" width="30px;">
+                        <span class="text-danger">
+                            Your default Currency is
+                        </span>
+                    </div>
+                    <h5 >
+                        {{user.customer.customer_currency.currency.currecy_sign}}
+                    </h5>
+
+                </div>
+                {%else%}
+                <div class="alert alert-light d-flex justify-content-between">
+                    <h5>You haven't choosed any currency</h5>
+                </div>
+            {%endif%}
+            
+            <div id="login-card" class="p-0 m-0">
+                <img src="{%static 'resources/default.gif'%}" alt="" height="auto" width="100%;">
+                <div class="p-3">
+                    
+                    {% if user.customer.customer_currency %}
+                        <h5 class="text-center">
+                            Update your currency....
+                        </h5>
+                        <hr>
+                        <form action="" method="post">
+                            <h6>Select Your Currency*</h6>
+                            <select class="form-control" id="" name="currency">
+                                {% for i in currency  %}
+                                    <option value="{{i.id}}">{{i.currecy_sign}}</option>
+                                {% endfor %}
+
+                            </select>
+                            {% csrf_token %}
+                            <button class="btn btn-success mt-4">
+                                Update Currency
+                            </button>
+                        </form>
+                
+                    {%else%}
+                        <h5 class="text-center">
+                            You do not have setup your default currency....
+                        </h5>
+                        <hr>
+                        <form action="" method="post">
+                            <h6>Select Your Currency*</h6>
+                            <select class="form-control" id="" name="currency">
+                                {% for i in currency  %}
+                                    <option value="{{i.id}}">{{i.currecy_sign}}</option>
+                                {% endfor %}
+
+                            </select>
+                            {% csrf_token %}
+                            <button class="btn btn-success mt-4">
+                                Update Currency
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+                
+                    
+            </div>
+        </div>
+       
+            
+        
+    </div>
+</div>
+
+<script>
+    function addOther(name, country){
+        console.log(name)
+        console.log(country)
+        $('#id_account_name').val(name)
+        $('#id_country').val(country)
+    }
+</script>
+{% endblock inside %}
+    

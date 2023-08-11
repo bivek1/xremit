@@ -13,6 +13,23 @@ from homepage.models import CustomerNotification, Restriction, AdminBankAccount,
 from homepage.location import get_user_country, get_country_name
 import datetime
 from django.db.models import Sum
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from owner.models import SiteSetting
+from django.conf import settings
+
+
+def siteInfo():
+    site = SiteSetting.objects.all()    
+    if site:
+        for i in site:
+            site = i
+            break
+    dist ={
+        'site':site
+    }
+    return dist
 
 def allRead(request):
     tic = CustomerNotification.objects.filter(seen = False)
@@ -425,8 +442,28 @@ def sendMoney(request):
             aa = form.save(commit= False)
             aa.customer = request.user.customer
             aa.save()
+
+            
             AdminNotification.objects.create(customer =request.user.customer, name ="Transanction Made" , types ="transaction", ids=aa.id)
             messages.success(request, "Your transaction is added and is in pending. You will get notified afer your payment is made")
+            content = settings.EMAIL_HOST_USER
+            sub = 'Successfully Made a Transaction Syon Remit'
+            messa = "Your transaction is added and is in pending. You will get notified afer your payment is made"
+            other_info = siteInfo()
+            # try:
+            recipient_list = [aa.customer.admin.email]
+            dist_info = {
+                'sub': sub, 'message':messa, 'trans':aa
+            }
+            dist_info.update(other_info)
+            html_message = render_to_string('component/transaction.html', dist_info)
+            pain_html_msg = strip_tags(html_message)
+            try: 
+                msg = EmailMultiAlternatives(sub, pain_html_msg, content, recipient_list)
+                msg.attach_alternative(html_message, "text/html")
+                msg.send()
+            except:
+                messages.error(request,"Transaction added, you will notified. However failed to sent email. Please verify your email")
             return HttpResponseRedirect(reverse('customer:completePayment' ,args=[aa.id]))
         else:
             messages.success(request, form.errors.as_text)

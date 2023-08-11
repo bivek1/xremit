@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Verify your OTP
+{% endblock title %}
+
+
+{% block content %}
+    <div class="container-fluid back-img d-flex">
+        <div class="row w-100">
+            <div class="col-12 col-lg-9 m-auto">
+                <div class="row p-0 m-0 p-2 mt-2" id="login-card">    
+                    <h3 class="head-para text-primary">
+                        OTP VERIFICATION
+                    </h3>
+                    <h5>Enter the code you received on your phone</h5>     
+                    <form action="" method="post">
+                        <input type="number" name="otp" id="" class="form-control" placeholder="4 DIGIT CODE" required>
+                        <small>
+                            Enter the code you received on your mobile phone. 
+                            <span class="text-danger">
+                                <a href="http://">
+                                    Didn't get the code?
+                                </a>
+                                
+                            </span>
+                        </small>
+                        {% csrf_token %}
+                        <br>
+                        <button type="submit" class="btn btn-primary mt-3">
+                            Verify
+                        </button>
+                    </form>     
+                    
+                </div>
+                
+            </div>
+           
+
+        </div>
+    </div>
+{% endblock content %}
+    

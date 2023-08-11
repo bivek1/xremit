@@ -1,0 +1,388 @@
+{% extends 'owner/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+SMS Settings
+{% endblock title %}
+
+
+
+{% block inside %}
+<div class="row p-0 m-0 mt-3">
+        
+    <div class="mt-3 mb-3">
+      <span class="breadcum">
+        <a href="{%url 'owner:dashboard'%}">
+            Dashboard
+        </a>/
+        SMS Settings
+      </span>
+    </div>
+
+
+    <div class="row m-0  mt-3">
+        <h5 class="p-0">
+           SMS Settings
+        </h5>
+
+        <div class="row p-0 m-0 mt-1">
+          <hr>
+          <div class="col-12 p-2">
+                  <div class="text-center">
+                      <button class="btn btn-success" data-bs-toggle="modal"
+                      data-bs-target="#exampleModal">
+                          <i class="fa fa-envelope-circle-check"></i>
+                          SMS Settings
+                      </button>
+                      <button class="btn btn-danger" data-bs-toggle="modal"
+                      data-bs-target="#exampleModalNumber">
+                          <i class="fa fa-envelope-circle-check"></i>
+                          Default Number
+                      </button>
+                  </div>
+
+                  <div
+                class="modal fade"
+                id="exampleModalNumber"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+                >
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-body">
+                              <div class="text-center">
+                                  <img
+                                  src="{%static 'resources/smssetting.gif'%}"
+                                  alt=""
+                                  style="width: 30%"
+                                  />
+                              </div>
+                              <h5 class="text-center">
+                                  Update SMS Setting
+                              </h5>
+                              <hr>
+                              <form action="{%url 'owner:addDefaultNumber'%}" method="post">
+                                  <p class="m-0 p-0 mt-2">
+                                      Provide your phone number from your twilo*
+                                  </p> 
+                                  {{defautForm}}
+                                  <br>
+                                  {% csrf_token %}
+                                  <p class="badge bg-success">
+                                    You can add multiple number and choose a specific number while messaging
+                                  </p>
+                                  <button class="btn btn-primary mt-2" type="submit">
+                                      Add Number
+                                  </button>
+                              </form>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Default Number Model -->
+                
+                    <!-- EMalil setting Model -->
+                <div
+                class="modal fade"
+                id="exampleModal"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+                >
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-body">
+                              <div class="text-center">
+                                  <img
+                                  src="{%static 'resources/smssetting.gif'%}"
+                                  alt=""
+                                  style="width: 30%"
+                                  />
+                              </div>
+                              <h5 class="text-center">
+                                  Update SMS Setting
+                              </h5>
+                              <hr>
+                              <form action="{%if sms%} {%url 'owner:addSMSSetting' sms.id%} {%else%} {%url 'owner:addSMSSetting' 0%} {%endif%}" method="post">
+                                  <p class="m-0 p-0 mt-2">
+                                      Provide account_sid from your twilo*
+                                  </p> 
+                                  {{form.account_sid}}
+                                  {{form.account_sid.errors}}
+
+                                  <p class="m-0 p-0 mt-2">
+                                      Provide authentication token from twilo*
+                                  </p> 
+                                  {{form.auth_token}}
+                                  {{form.auth_token.errors}}
+
+                                  <br>
+                                  {% csrf_token %}
+                                  <button class="btn btn-primary mt-2" type="submit">
+                                      Update Settings
+                                  </button>
+                              </form>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <!-- EMalil setting Model -->
+          </div>
+          <hr>
+          <div class="col-lg-7 col-12 mt-2">
+              <div class="p-2" id = "login-card">
+      
+                  <div class="row m-0 mt-2">
+                      <h5 class="text-primary">
+                          Select whom you want to 
+                          <span class="bg-success text-light p-2">
+                              <i class="fa fa-envelope-open"></i> send SMS
+                          </span>
+                      </h5>
+
+                      <div class="col-lg-4 col-4 text-center mt-2 " id="customer">
+                          <div class="docFile box selected" onclick="selectEmail(this, 'customer')">
+                          <img src="{%static 'resources/customer.png'%}" alt="" >
+                          <p class="text-secondary  mt-1">
+                              Customer
+                          </p>
+                          </div>
+                      
+                      </div>
+
+                      <div class="col-lg-4 col-4  text-center mt-2" id="agent">
+                      <div class="docFile box" onclick="selectEmail(this, 'agent')">
+                          <img src="{%static 'resources/agent.png'%}" alt="">
+                          <p class="text-secondary  mt-1">
+                          Agent
+                          </p>
+                      </div>
+                      
+                      </div>
+          
+                      <div class="col-lg-4 col-4  text-center mt-2" id="receip">
+                          <div class="docFile box" onclick="selectEmail(this, 'receip')">
+                            <img src="{%static 'resources/region.png'%}" alt="">
+                            <p class="text-secondary  mt-1">
+                              Recipients
+                            </p>
+                          </div>
+                         
+                      </div>
+
+                      
+                      <div class="col-12 mt-2" id="customerList">
+                          <h5>Select Customer to send email</h5>
+                          <hr>
+                          <select name="customer" id="customer"  class="form-control mb-2" onchange="getCustomerValue(this);">
+                              
+                              {% for i in customer  %}
+                                  <option value="{{i.id}}|{{i.number}}">{{i.admin.first_name}}
+                                      {% if i.admin.middle_name %}
+                                          {{i.admin.middle_name}}
+                                      {% endif %}
+                                      {{i.admin.last_name}}
+                                          
+                                  </option>
+                              {% endfor %}
+                                  
+                              
+                          </select>
+                          <span class="text-secondary mt-2">
+                             You can select all customer
+                          </span>
+                          <hr class="m-0">
+                          <div class="form-check mt-2">
+                              <input class="form-check-input"  name="allCustomer" type="checkbox" value="" id="allCustomer" onchange="getCustomerValueAll();">
+                              <label class="form-check-label" for="flexCheckDefault">
+                                  Select All Customer
+                              </label>
+                          </div>
+                      
+                      </div>
+
+                      <div class="col-12 mt-2" id="recipientList">
+                          <h5>Select Receiptions to send SMS</h5>
+                          <hr>
+                          <select name="recipient" id="recipient"  class="form-control mb-2" onchange="getReceiptionValue(this, '{{i.number}}');">
+                              {% for i in recipient  %}
+                                  <option value="{{i.id}}">{{i.first_name}}
+
+                                      {% if i.middle_name %}
+                                          {{i.middle_name}}
+                                      {% endif %}
+                                      {{i.last_name}}
+                                          
+                                  </option>
+                              {% endfor %}
+                          </select>
+                          <span class="text-secondary mt-2">
+                              You can select all recipient
+                           </span>
+                           <hr class="m-0">
+                          <div class="form-check mt-2">
+                              <input class="form-check-input"  name="allRecipient" type="checkbox" value="" id="allRecipient" onchange="getReceiptionValueAll();">
+                              <label class="form-check-label" for="flexCheckDefault">
+                                  Select All Recipient
+                              </label>
+                          </div>
+
+                          
+                      </div>
+
+                      <div class="col-12 mt-2" id="agentList">
+                          <h5>Select Agent to send SMS</h5>
+                          <hr>
+                          <select name="agent" id="agent"  class="form-control mb-2" onchange="getAgentValue(this, '{{i.number}}')">
+                            {% for i in agent %}
+                                <option value="{{i.id}}">{{i.admin.first_name}}
+                                    {% if i.admin.middle_name %}
+                                        {{i.admin.middle_name}}
+                                    {% endif %}
+                                    {{i.admin.last_name}}
+                                        
+                                </option>
+                            {% endfor %}
+                          </select>
+                          <span class="text-secondary mt-2">
+                              You can select all agent
+                           </span>
+                           <hr class="m-0">
+                          <div class="form-check mt-2">
+                              <input class="form-check-input"  name="allAgent" type="checkbox" value="" id="allAgent" onchange="getAgentValueAll()">
+                              <label class="form-check-label" for="flexCheckDefault">
+                                  Select All Agent
+                              </label>
+                          </div>
+                      </div>
+                     
+
+                      <div class="col-12 mt-2" id="sendEmail">
+                          <hr>
+                          <h5>COMPOSE YOUR 
+                              <span class="bg-warning p-2">
+                                  SMS HERE
+                              </span>
+                              </h5>
+                          <hr>
+                          <form action="" method="post">
+
+                                <label class="mt-2" for="">
+                                    <b>
+                                        Select Your Sending Number*
+                                    </b>
+                                    
+                                </label>
+                                {{sendform.from_sim}}
+                                {{sendform.from_sim.errors}}
+
+                                <label class="mt-2" for="">
+                                    
+                                    <b>
+                                        Receiver mobile number*
+                                    </b>
+                                    
+                                </label>
+                                {{sendform.to}}
+                                {{sendform.to.errors}}
+                              <label class="mt-2" for="">
+                                  <b>
+                                      Write a Subject of SMS*
+                                  </b>
+                                  
+                              </label>
+                              {{sendform.subject}}
+                              {{sendform.subject.errors}}
+                              <label class="mt-2" for="">
+                                  <b>
+                                      Write a Subject of Email*
+                                  </b>
+                                  
+                              </label>
+                              {{sendform.message}}
+                              {{sendform.message.errors}}
+                              {{sendform.agent}}
+                              {{sendform.customer}}
+                              {{sendform.reciptient}}
+                              {{sendform.group}}
+                              {{sendform.media}}
+                              {% csrf_token %}
+                              <button class="btn btn-primary mt-2 w-100" type="submit">
+                                  Send Mail
+                              </button>
+                          </form>
+                         
+                      </div>
+
+                  </div>
+              </div>
+            
+          </div>
+
+          <div class="col-lg-5 col-12 mt-2">
+              <div class="p-2" id="login-card">
+                  <h6>Recent SMS List</h6>
+                  {% for i in all_email %}
+                      <div class="emailBox mt-2 p-2">
+                          <div class="d-flex justify-content-between">
+                              <small>
+                                  {% if  i.group  == "Individual"%}
+
+                                      {% if i.customer %}
+                                      <span class="badge bg-success">
+                                          Customer
+                                      </span>
+                                      {{i.customer.number}}
+                                      {% endif %}
+
+                                      {% if i.reciptient %}
+                                          <span class="badge bg-danger">
+                                              Reciptient
+                                          </span>
+                                          {{i.reciptient.number}}
+                                      {% endif %}
+                                      {% if i.agent %}
+                                          <span class="badge bg-warning">
+                                              Agent
+                                          </span>
+                                          {{i.agent.number}}
+                                      {% endif %}
+                                  {%else%}
+                                      <span class="badge bg-primary p-2">
+                                          Group:
+                                          {{i.group}}  
+                                      </span>
+                                      
+                                  {% endif %}
+                              </small>
+
+                              <small>
+                                  {{i.created_at}}
+                              </small>
+                          </div>
+                          
+                          <small class="mt-1">
+  
+                                  Message:
+                                  <span class="text-secondary">
+                                      {{i.message|safe|truncatewords:20}}
+                                  </span>
+                              
+                          </small>
+                      </div>
+                  {% endfor %}
+              </div>
+              
+            
+                  
+          </div>
+      </div>
+    
+    </div>
+</div>
+<script src="{%static 'js/sendSMS.js'%}"></script>
+{% endblock inside %}
+    
+    

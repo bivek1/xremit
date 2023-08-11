@@ -1,0 +1,256 @@
+{% extends 'customer/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    Ticket List
+{% endblock title %}
+    
+
+{% block inside %}
+<style>
+    .left-ticket-box{
+        border-radius: 10px;
+    }
+    .left-ticket-box  .active{
+        color: white!important;
+        background-color: rgb(255, 174, 69)!important;
+
+    }
+    .left-ticket-box .nav-link:hover{
+        background-color: rgb(255, 222, 178)!important;
+        transition-duration: 200ms;
+    }
+</style>
+
+<div class="row p-0 m-0 mt-3">
+    <div class="mt-3 mb-3">
+      <span class="breadcum">
+        <a href="{%url 'customer:dashboard'%}">
+            Dashboard
+        </a>/
+            Ticket List
+      </span>
+    </div>
+
+    <div class="row p-0 m-0">
+
+       <div class="col-12 col-lg-12 m-auto" id="ticket-box">
+            <h5>Ticket List</h5>
+            <hr>
+            <a href="{%url 'customer:ticketView'%}">
+                <button class="btn btn-danger ">
+                    <i class="fa fa-plus"></i> Create New Ticket
+                </button>
+            </a>
+     
+            <div class="mt-2" id="ticketBoxN">
+            
+                <div class="left-ticket-box p-2 nav flex-column nav-pills me-3 " id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    
+                   
+                    <div class="pb-5">
+                        {% for i in ticket %}
+                            <button style="text-align: left; width: 100%;" class=" mt-2 nav-link text-dark{%if i.id == check%} active{%endif%}" id="v-pills-{{i.id}}-tab" data-bs-toggle="pill" data-bs-target="#v-pills-{{i.id}}" type="button" role="tab" aria-controls="v-pills-{{i.id}}" aria-selected="true"> <b>#{{i.id}}</b> {{i.subject}}</button>
+                        {% endfor %}
+                    </div>
+                   
+
+                    
+
+                    
+                </div>
+                <div class="tab-content flex-shrink-1 tab-data" id="v-pills-tabContent" style="width: 70%;">
+                    
+                    {% for i in ticket %}
+                    
+                    <div class="tab-pane fade  {%if i.id == check%}show active{%endif%}" id="v-pills-{{i.id}}" role="tabpanel" aria-labelledby="v-pills-{{i.id}}-tab">
+                        <h5 class="head-para text-dark text-capitalize mt-3">
+                            <i class="fa fa-ticket"></i>
+                            {{i.subject}}
+                        </h5>
+                        <hr>
+                        <div class="row m-0">
+                            <div class="col-12 col-lg-9 mt-2" id="des-holder">
+                                <div class="text-dark ticket-des">
+                                    <div class="d-flex p-2">
+                                        <img src="{%if request.user.customer.profil_pic%}{{request.user.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                                        <div class="p-2" id="ticketDescription">
+                                            <div>
+                                                {{i.description|safe}}
+                                            </div>
+                                           
+                                            
+                                            {% if i.customer_support.all %}
+                                                <hr>
+                                                <p>
+                                                    Issues Images:
+                                                </p>
+                                                {% for p in i.customer_support.all%}
+                                                <a href="{{p.file.url}}" target="_blank">
+                                                    <img src="{{p.file.url}}" alt="" srcset="" style="height: 40px; width: auto; margin:5px;">
+                                                </a>
+                                                    
+                                                {% endfor %}
+                                            {% endif %}
+                                                
+                                           
+                                        </div>
+                                    </div>
+                                   
+                                    
+                                   
+                                
+                                </div>
+
+                                
+                                {% for j in i.ticket_reply.all   %}
+                                    <div class="text-dark ticket-des">
+                                        <div class="d-flex p-2">
+                                            <div>
+                                                {% if j.replied_by.customer.id == user.customer.id %}
+                                                    <img src="{%if request.user.customer.profil_pic%}{{request.user.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                                                {%else%}
+                                                    <img src="{%static 'resources/logo.png'%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                                                    <p>Admin</p>
+                                                {% endif %}
+                                            </div>
+
+                                            <div class="p-2" id="ticketDescription">
+                                                {{j.description|safe}}
+                                            </div>
+                                            
+                                           
+                                                
+                                          
+                                        </div>
+                                    
+                                    </div>
+                                {% endfor %}
+                                    
+                            </div>
+                            <div class="col-12 col-lg-3 mt-2" id="sidesupport">
+                                <div class="d-flex text-dark">
+                                    <p class="my-auto text-warning">
+                                        <i class="fa fa-sign"></i>
+                                    </p>
+                                   
+                                    <div class="m-0 p-2">
+                                        <small class="m-0 text-secondary">Status</small>
+                                        <div class="m-0">
+                                            {% if i.status == 'pending' %}
+                                                <span class="badge bg-primary">
+                                                    <i class="fa-solid fa-circle-pause"></i> pending
+                                                </span>
+                                            {% endif %}
+                                            {% if i.status == 'answered' %}
+                                                <span class="badge bg-success">
+                                                    <i class="fa-solid fa-check-circle"></i> Answered
+                                                </span>
+                                            {% endif %}
+                                            {% if i.status == 'closed' %}
+                                                <span class="badge bg-success">
+                                                    <i class="fa-solid fa-check-circle"></i> Closed
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="d-flex text-dark">
+                                    <p class="my-auto text-info">
+                                        <i class="fa fa-ticket"></i> 
+                                    </p>
+                                   
+                                    <div class="m-0 p-2">
+                                        <small class="d-block  text-secondary">Ticket</small>
+                                        <small class="m-0">
+                                            <b>
+                                                #{{i.id}}
+                                            </b>
+                                            
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex text-dark">
+                                    <p class="my-auto text-danger">
+                                        <i class="fa fa-calendar"></i>
+                                    </p>
+                                   
+                                    <div class="m-0 p-2">
+                                        <small class="d-block  text-secondary">Created At</small>
+                                        <small class="m-0">
+                                            {{i.date_added}}
+                                        </small>
+                                    </div>
+                                </div>
+
+                             
+                                {% if i.status == 'closed' %}
+                                    <button class="btn btn-danger mt-2 btn-reply-ticket" >
+                                        <i class="fa fa-ban"></i> Closed
+                                    </button>
+                                    <h6>
+                                        Closed Date: {{i.updated_date}}
+                                    </h6>
+                                {%else%}       
+                                    <button class="btn btn-primary mt-2 btn-reply-ticket" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}" onclick="ticketid('{{i.id}}')">
+                                        <i class="fa fa-reply"></i> Reply Ticket
+                                    </button>
+                                {%endif%}
+
+                                <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered  modal-lg">
+                                        <div class="modal-content ">
+                                        
+                                            <div class="modal-body">
+                                                <form action="{%url 'customer:ticketReply' i.id%}" method="post" enctype="multipart/form-data">
+                                                    <h5>
+                                                        Reply in details
+                                                    </h5>
+                                                  
+                                                    <hr>
+                                                    {{form.description}}
+                                              
+                                                
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger mt-2">
+                                                        <i class="fa fa-reply"></i> Reply
+                                                    </button>
+                                                </form>
+                                               
+                                                <div class="text-end mt-2">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                   
+                                                </div>
+                                            
+                                            </div>
+                                        
+                                    </div>
+                                    </div>
+                                  </div>
+                        
+                            </div>
+                        </div>
+                    </div>
+                   
+                    {% endfor %}
+                        
+                    
+                </div>
+                
+               
+            </div>
+       </div>
+    </div>
+</div>
+
+<script>
+    function ticketid(id){
+        console.log(id)
+        $('#id_ticket').val(parseInt(id))
+    }
+</script>
+{% endblock inside %}
+    

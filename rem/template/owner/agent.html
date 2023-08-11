@@ -1,0 +1,228 @@
+{% extends 'owner/dashboard.html' %}
+{% load static %}
+
+{% block title %}
+    Agent
+{% endblock title %}
+
+
+
+{% block inside %}
+<div class="row p-0 m-0 mt-3">
+         
+    <div> 
+      <div class="topBox mt-3 p-2">
+        <h4 class="text-primary">{{head}}</h4>
+        <small>This is Agent details page where you can addd-update-delete Agent/small>
+      </div>
+    </div>
+    
+    <div class="mt-3 mb-3">
+      <span class="breadcum">
+        <a href="{%url 'owner:dashboard'%}">
+            Dashboard
+        </a>/
+            Agent
+      </span>
+    </div>
+
+    
+    <div class="row p-0 m-0 mt-3">
+
+        <div class="col-lg-5 col-12 m-0 p-0 mt-2">
+            
+            <div id="login-card" class="p-0 m-0">
+                <h5 class="m-0 p-2 text-capitalize text-center">{{form_head}}</h5>
+                <hr>
+               
+                <form class="p-2" action="" method="post">
+                    <div class="row p-0 m-0">
+                        <div class="col-6 mt-2">
+                            <label for="first_name">First Name</label>
+                            <input type="text" name="first_name" id="" required class="form-control" placeholder="First Name">
+                        </div>
+                        <div class="col-6 mt-2">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" name="last_name" id="" required class="form-control" placeholder="Last Name">
+                        </div>
+                        <div class="col-12 mt-2">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" id="" required class="form-control" placeholder="Email Address">
+                        </div>
+                        <div class="col-6 mt-2">
+                            <label for="email">
+                                Agent Phone Number*
+                            </label>
+                            {{agent_form.number}}
+                            {{agent_form.number.errors}}
+                        </div>
+                        <div class="col-6 mt-2">
+                            <label for="email">
+                                Mail Address*
+                            </label>
+                            {{agent_form.mail_address}}
+                            {{agent_form.mail_address.errors}}
+                        </div>
+ 
+                        <div class="col-12 mt-2">
+                            <label for="email">{{agent_form.country.label_tag}}</label>
+                            {{agent_form.country}}
+                            {{agent_form.country.errors}}
+                        </div>
+
+                        <div class="col-6 mt-2">
+                            <label for="email">{{agent_form.city.label_tag}}</label>
+                            {{agent_form.city}}
+                            {{agent_form.city.errors}}
+                        </div>
+
+                        <div class="col-6 mt-2">
+                            <label for="email">{{agent_form.zip_code.label_tag}}</label>
+                            {{agent_form.zip_code}}
+                            {{agent_form.zip_code.errors}}
+                        </div>
+
+                        <div class="col-6 mt-2">
+                            <label for="email">{{agent_form.state.label_tag}}</label>
+                            {{agent_form.state}}
+                            {{agent_form.state.errors}}
+                        </div>
+                        <div class="col-6 mt-2">
+                            <label for="email">{{agent_form.address.label_tag}}</label>
+                            {{agent_form.address}}
+                            {{agent_form.address.errors}}
+                        </div>
+                        
+
+                        <div class="col-12">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" id="" required class="form-control" placeholder="Password">
+                        </div>
+                        {% csrf_token %}
+                        <button class="btn btn-primary mt-3" type="submit">
+                            <i class="fa fa-user-plus"></i>  {{button}}
+                        </button>
+
+                    </div>
+                    
+                    
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-7 col-12 mt-2">
+            <div class="p-2 card">
+                <div class=" login-flex d-flex my-auto" style="width: 100%;">
+                    <i class="fa fa-magnifying-glass my-auto p-2"></i>
+                    <input type="text" name="search"  id="search" onkeyup="SearchName()" class="form-control"  placeholder="Search Agent by their name" required id="">
+                   </div>
+                <table class="table border-1 " id="myTable">
+            
+                    <tbody>
+                        
+                        {% if not agent %}
+                            <h6 class="text-center text-secondary mt-3">
+                                No Agent has been added
+                            </h6>
+                        {% endif %}
+                            
+                        {% for i in agent  %}
+                            <tr>
+                                <td>
+                                    <div class="item-list-div mt-2 p-1">
+                                        <div class="d-flex justify-content-between">
+                                            {% if i.agent.profil_pic %}
+                                                <img class="my-auto" src="{{i.agent.profil_pic.url}}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                                            {%else%}
+                                                <i class="fa fa-user-circle my-auto" style="font-size: 30px;">
+                                                </i> 
+                                            {% endif %}
+                                            <p class="m-0 p-2">
+                                                {{i.get_full_name}}
+                                            </p>
+
+                                            <div class="my-auto">
+                                                <a href="{%url 'owner:agentProfile' i.id%}">
+                                                    <button class="btn btn-sm btn-info text-white">
+                                                        
+                                                        <span class="text-light">
+                                                            <i class="fa fa-eye-dropper"></i>
+                                                            View and Edit
+                                                        </span>
+                                                    </button>
+                                                </a>
+                                            
+                                                <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.id}}"> 
+                                                    <i class="fa fa-trash-alt"></i>
+                                                    Delete
+                                                </button>
+        
+                                                <div class="modal fade" id="exampleModal{{i.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-content">
+                                                        
+                                                            <div class="modal-body">
+                                                                <div class="text-center">
+                                                                    <img src="{%static 'resources/delete.gif'%}" alt="" style="width: 30%;">
+                                                                </div>
+                                                        
+                                                                <h5>Are you sure want to delete {{i.get_full_name}}</h5>
+                                                                <small>Deleting agent will delete agent transaction history as well</small>
+                                                                <div class="text-end mt-2">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Change my mind</button>
+                                                                    <!-- Delete URL -->
+                                                                    <a href="{%url 'owner:deleteAgent' i.id%}">
+                                                                        <button type="button" class="btn btn-danger">
+                                                                            <i class="fa fa-trash"></i> Delete
+                                                                        </button>
+                                                                    </a>
+                                                                    
+                                                                </div>
+                                                            
+                                                            </div>
+                                                        
+                                                    </div>
+                                                    </div>
+                                                </div>
+        
+                                            </div>
+                                        </div>
+                                    
+                                    
+                                        <div class="mt-2">
+                                        
+                                            <small class="p-1">
+                                                <i class="fa fa-mobile p-2"></i>
+                                                {{i.agent.number}}
+                                            </small>
+                                            <small class="p-1">
+                                                <i class="fa fa-envelope-circle-check p-2"></i>
+                                                {{i.email}}
+                                            </small>
+                                        </div>
+                                    
+                                            
+                                    </div>
+                                </td>
+                            
+                            </tr>
+                        {% endfor %}
+                        <!-- <div id="items-container"></div> -->
+                     
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+  
+   
+</div>
+
+
+
+
+
+{% endblock inside %}
+    
+    

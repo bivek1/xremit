@@ -1,0 +1,675 @@
+{% extends 'customer/dashboard.html' %} {% load static %} {% block title %} KYC
+Verification {% endblock title %} {% block inside %}
+
+<div class="row p-0 m-0 mt-3">
+  <div class="mt-3 mb-3">
+    <span class="breadcum">
+      <a href="{%url 'customer:dashboard'%}"> Dashboard </a>/ KYC Verification
+    </span>
+  </div>
+
+  <div class="row p-0 m-0 mt-3">
+    <div class="col-12">
+      <h5>KYC Verification</h5>
+      <hr />
+    </div>
+    <div class="col-12 col-lg-3">
+      {% if cm.customer.kyc_verified %}
+      <div class="alert alert-danger">
+        <ul>
+          <li>YOUR KYC IS VERIFIED</li>
+        </ul>
+      </div>
+      {%else%}
+      <div class="alert alert-danger">
+        <ul>
+          <li>Make your your upload valid document.</li>
+          <li>
+            Your name, number and profile image must match with your document
+            image.
+          </li>
+          <li>Your document should be clear and not shakey</li>
+          <li>Your infomation should be legit and valid</li>
+          <li>
+            By verifying your kyc, it is made sure that you agree to our terms
+            and policy
+          </li>
+        </ul>
+      </div>
+      {% endif %} {% if cm %}
+      <div class="alert alert-light">
+        
+        {% if cm.document_front_image %}
+        <small class="d-block mt-3"> Licence Front Image </small>
+        <img
+          src="{{cm.document_front_image.url}}"
+          alt=""
+          height="auto;"
+          width="100%;"
+        />
+       
+        {% endif %}
+        
+        {% if cm.document_back_image %}
+        <small class="d-block mt-3"> Licence Back Image </small>
+        <img
+          src="{{cm.document_back_image.url}}"
+          alt=""
+          height="auto;"
+          width="100%;"
+        />
+        {% endif %}
+
+        {% if cm.business_image %}
+        <small class="d-block mt-3"> National ID Image </small>
+        <img
+          src="{{cm.business_image.url}}"
+          alt=""
+          height="auto;"
+          width="100%;"
+        />
+       
+        {% endif %}
+
+        {% if cm.passport_image %}
+        <small class="d-block mt-3"> Passport Image </small>
+        <img
+          src="{{cm.passport_image.url}}"
+          alt=""
+          height="auto;"
+          width="100%;"
+        />
+       
+        {% endif %}
+      </div>
+      {%endif%}
+    </div>
+    <div class="col-12 col-lg-9">
+      <div class="p-3" id="login-card">
+        {% if not user.customer.kyc_verified %} {% if cm %}
+        <div class="alert alert-light">
+          <img
+            src="{%static 'resources/verified.png'%}"
+            alt=""
+            height="30px;"
+            width="30px;"
+          />
+          <span class="text-danger"> Your KYC Verfication is Pending </span>
+        </div>
+        {%else%}
+
+        <div class="alert alert-light">
+          <img
+            src="{%static 'resources/not-verified.png'%}"
+            alt=""
+            height="30px;"
+            width="30px;"
+          />
+          <span class="text-danger"> Your KYC is not verified yet. </span>
+        </div>
+
+        {% endif %} {%else%}
+
+        <div class="alert alert-light">
+          <img
+            src="{%static 'resources/verified.png'%}"
+            alt=""
+            height="30px;"
+            width="30px;"
+          />
+          <span class="text-danger"> Your KYC is verified </span>
+        </div>
+
+        {% endif %}
+        <form action="" method="post" enctype="multipart/form-data" id="submitForm">
+          <div class="row m-0 pb-4" id="profile">
+            <h5 class="mt-2">User Image Information*</h5>
+            <hr />
+            <div class="col-6 my-auto">
+              <div class="mt-1 text-center">
+                {{form.image}}
+                <b>
+                  <small class="text-primary text-small d-block">Choose your real image</small>
+                </b>
+                
+                <label
+                  for="image-upload"
+                  id="custom-label"
+                  class="custom-label text-center"
+                >
+                  <p>Select your image</p>
+                  <i class="fa fa-plus-square" style="font-size: 40px"></i>
+                </label>
+              </div>
+            </div>
+            <div class="col-6 text-center my-auto">
+              <img
+                id="image-preview"
+                class="my-auto  m-auto"
+                src="{%if cm.image%}{{cm.image.url}}{%else%}{%static 'resources/not-available.png'%}{%endif%}"
+                alt="Preview"
+              />
+            </div>
+          </div>
+
+          <div class="row m-0 p-2 pb-4 mt-3" id="personal">
+            <h5>Your Personal Details</h5>
+            <hr />
+            <div class="col-12 col-lg-12 mt-2">
+              <h6>Please Select Your Country*</h6>
+              {{form.country}} {{form.country.erros}}
+            </div>
+
+            <div class="col-12 col-lg-6 mt-2">
+              <h6>Enter your address*</h6>
+              {{form.address}} {{form.address.erros}}
+            </div>
+
+            <div class="col-12 col-lg-6 mt-2">
+              <h6>Enter your state*</h6>
+              {{form.state}} {{form.state.erros}}
+            </div>
+
+            <div class="col-12 col-lg-12 mt-2">
+              <h6>Enter your city*</h6>
+              {{form.city}} {{form.city.erros}}
+            </div>
+
+            <!-- <div class="col-12 col-lg-6 mt-2">
+              <h6>Enter your zip code*</h6>
+              {{form.zip_code}} {{form.zip_code.erros}}
+            </div> -->
+
+            <div class="col-12 col-lg-6 mt-2">
+              <h6>Enter your postal code*</h6>
+              {{form.postal_address}} {{form.postal_address.erros}}
+            </div>
+
+            <div class="col-12 col-lg-6 mt-2">
+              <h6>Enter your gender*</h6>
+              {{form.gender}} {{form.gender.erros}}
+            </div>
+
+            <div class="col-12 col-lg-12 mt-2">
+              <h6>Enter your Phone number*</h6>
+              {{form.number}} {{form.number.erros}}
+            </div>
+
+            <div class="col-12 col-lg-12 mt-2">
+              <h6>Enter your Date of Birth*</h6>
+              {{form.date_of_birth}} {{form.date_of_birth.erros}}
+            </div>
+          </div>
+        
+          <div class="row m-0 p-2 pb-4 mt-2" id="document">
+            <h4 class="mt-2 mb-2 text-primary">
+              Please select your document
+            </h4>
+            <small>
+              You should upload any one of these document
+              <span class="text-danger">
+                making sure the document is image file.
+              </span> 
+            </small>
+
+
+
+            <div class="col-lg-4 col-4 text-center" id="licence" >
+              <div class="docFile box" onclick="selectDocument(this, 'licence')">
+                <img src="{%static 'resources/licence.png'%}" alt="" >
+                <p class="text-secondary  mt-1">
+                    Driving Licence
+                </p>
+              </div>
+            
+            </div>
+            
+            <div class="col-lg-4 col-4  text-center" id="registration">
+              <div class="docFile box" onclick="selectDocument(this, 'registration')">
+                <img src="{%static 'resources/idcard.png'%}" alt="">
+                <p class="text-secondary  mt-1">
+                 National ID
+                </p>
+              </div>
+             
+            </div>
+
+            <div class="col-lg-4 col-4  text-center" id="passport">
+              <div class="docFile box" onclick="selectDocument(this, 'passport')">
+                <img src="{%static 'resources/passport.jpg'%}" alt="">
+                <p class="text-secondary  mt-1">
+                  Passport
+                </p>
+              </div>
+             
+            </div>
+
+            
+            <div class="col-12 mt-3" id="addDocumentLicence">
+              <h5>Please Upload Your Valid Image of Your Licence..</h5>
+          
+              <!-- Hidding div of class -->
+              <div class="mt-2">
+                <div class="alert alert-info">
+                  <i class="fa fa-info-circle"></i>
+                  Please upload valid and clear document. Submmision of expired
+                  and unclear image will result the rejection of kyc verification.
+                </div>
+              
+              </div>
+
+              <div class="m-0 mt-2 row document-image-box">
+               
+                <div class="col-6 my-auto">
+                  <h6>Upload Front image of your licence*</h6>
+                  {{form.document_front_image}} {{form.document_front_image.erros}}
+                </div>
+                <div class="col-6 my-auto text-center">
+                  {% if cm.document_front_image %}
+                  <img
+                    src="{{cm.document_front_image.url}}"
+                    alt=""
+                    id="front_image"
+                    height="100px;"
+                    width="auto;"
+                  />
+                  {%else%}
+                  <img
+                    src="{%static 'resources/not-available.png'%}"
+                    alt=""
+                    height="100px;"
+                    id="front_image"
+                    width="auto;"
+                  />
+                  {% endif %}
+                </div>
+              
+              </div>
+  
+              <div class="m-0 mt-2 row document-image-box">
+                  <div class="col-6 my-auto">
+                    <h6>Upload back image of your licence</h6>
+                    <small class="text-warning">
+                      If available only
+                    </small>
+                    {{form.document_back_image}} {{form.document_back_image.erros}}
+                  </div>
+                  <div class="col-6 my-auto text-center">
+                    {% if cm.document_back_image %}
+                    <img
+                      src="{{cm.document_back_image.url}}"
+                      alt=""
+                      id="back_image"
+                      height="100px;"
+                      width="auto;"
+                    />
+                    {%else%}
+                    <img
+                      src="{%static 'resources/not-available.png'%}"
+                      alt=""
+                      height="100px;"
+                      id="back_image"
+                      width="auto;"
+                    />
+                    {% endif %}
+                  </div>
+                 
+              </div>
+              <div class="row m-0 mt-2">
+                <div class="col-6">
+                  <label for="Pass">
+                    Licence Issued Date:
+                  </label>
+                  {{form.issue_date}}
+                </div>
+                <div class="col-6">
+                  <label for="Pass">
+                    Licence Expiry Date:
+                  </label>
+                  {{form.expiry_date}}
+                </div>
+                <div class="col-12">
+                  <label for="Pass">
+                    Licence Number:
+                  </label>
+                  {{form.licence_number}}
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-12 mt-3" id="addDocumentPassport">
+              <h5>Please Upload Your Valid Image of Your Passport..</h5>
+          
+              <!-- Hidding div of class -->
+              <div class="mt-2">
+                  <div class="alert alert-info">
+                    <i class="fa fa-info-circle"></i>
+                    Please upload valid and clear document. Submmision of expired
+                    and unclear image will result the rejection of kyc verification.
+                  </div>
+                  <div class="m-0 mt-2 row document-image-box">
+               
+                    <div class="col-6 my-auto">
+                      <h6>Upload scanned copy of your passport*</h6>
+                      {{form.passport_image}} {{form.passport_image.erros}}
+                    </div>
+                    <div class="col-6 my-auto text-center">
+                      {% if cm.passport_image %}
+                      <img
+                        src="{{cm.passport_image.url}}"
+                        alt=""
+                        id="passport_image"
+                        height="100px;"
+                        width="auto;"
+                      />
+                      {%else%}
+                      <img
+                        src="{%static 'resources/not-available.png'%}"
+                        alt=""
+                        height="100px;"
+                        id="passport_image"
+                        width="auto;"
+                      />
+                      {% endif %}
+                    </div>
+                  
+                  </div>
+                  <div class="row m-0 mt-2">
+                      <div class="col-6">
+                        <label for="Pass">
+                          Passport Issued Date:
+                        </label>
+                        {{form.passport_issue_date}}
+                      </div>
+                      <div class="col-6">
+                        <label for="Pass">
+                          Passport Expiry Date:
+                        </label>
+                        {{form.passport_expiry_date}}
+                      </div>
+                  </div>
+                  <div class="row m-0 mt-2">
+                    <div class="col-12">
+                      <label>Passport Issued Country</label>
+                      {{form.passport_issued_country}}
+                    </div>
+                    <div class="col-12">
+                      <label>Passport Number</label>
+                      {{form.passport_number}}
+                    </div>
+                    
+                  </div>
+              </div>
+            </div>
+
+            <div class="col-12 mt-3" id="addDocumentRegistration">
+              <h5>Please Upload Your Valid Image of Your National ID Card..</h5>
+          
+              <!-- Hidding div of class -->
+              <div class="row m-0 mt-2">
+                  <div class="alert alert-info">
+                    <i class="fa fa-info-circle"></i>
+                    Please upload valid and clear document. Submmision of expired
+                    and unclear image will result the rejection of kyc verification.
+                  </div>
+                  <div class="m-0 mt-2 row document-image-box">
+               
+                    <div class="col-6 my-auto">
+                      <h6>Upload scanned copy of your Nationall ID*</h6>
+                      {{form.business_image}} {{form.business_image.erros}}
+                    </div>
+                    <div class="col-6 my-auto text-center">
+                      {% if cm.business_image %}
+                      <img
+                        src="{{cm.business_image.url}}"
+                        alt=""
+                        id="registration_image"
+                        height="100px;"
+                        width="auto;"
+                      />
+                      {%else%}
+                      <img
+                        src="{%static 'resources/not-available.png'%}"
+                        alt=""
+                        height="100px;"
+                        id="registration_image"
+                        width="auto;"
+                      />
+                      {% endif %}
+                    </div>
+                  
+                  </div>
+                  
+                  <div class="col-12 mt-2">
+                     
+                      <label for="Pass">
+                        ID issued Date:
+                      </label>
+                        {{form.business_registration_date}}
+                      
+                  </div>
+
+                  <div class="col-12 mt-2">
+                     
+                    <label for="Pass">
+                      National ID Number:
+                    </label>
+                      {{form.registraion_number}}
+                    
+                </div>
+              </div>
+            </div>
+
+            {{form.document_type}}
+           
+          </div>
+          {% csrf_token %}
+          
+          {% if user.customer.kyc_verified %}
+            
+          {%else%}
+            <button type="submit" class="btn btn-primary w-100 mt-3" id="verifyBtn">
+              {% if cm %} Update {%else%} Verify {%endif%}
+            </button>
+          {% endif %}
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('#verifyBtn').hide()
+  let document_type 
+  $('#addDocumentLicence').hide()
+  $('#addDocumentPassport').hide()
+  $('#addDocumentRegistration').hide()
+
+
+  user_image_loaded = 0
+  function showImage(input) {
+    var file = input.files[0];
+    var reader = new FileReader();
+    try{
+        reader.onload = function (e) {
+        var imageElement = document.getElementById("image-preview");
+        imageElement.src = e.target.result;
+        imageElement.style.display = "block";
+        user_image_loaded = 1
+        var labelElement = document.getElementById("custom-label");
+    
+      };
+    }
+    catch{
+      pass
+    }
+    
+
+    reader.readAsDataURL(file);
+  }
+
+  function showBackImage(input){
+    var file = input.files[0];
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      var imageElement = document.getElementById("back_image");
+      imageElement.src = e.target.result;
+    
+    };
+
+    reader.readAsDataURL(file);
+  }
+
+
+  function showFrontImage(input){
+    var file = input.files[0];
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      if (document_type == "registration"){
+        var imageElement = document.getElementById("registration_image");
+        
+      }else if(document_type == "licence"){
+        var imageElement = document.getElementById("front_image");
+      }else{
+        var imageElement = document.getElementById("passport_image");
+      }
+      
+      imageElement.src = e.target.result;
+    
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function showPassportImage(input){
+    var file = input.files[0];
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+
+      var imageElement = document.getElementById("passport_image");
+   
+      imageElement.src = e.target.result;
+    
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function showBusinessImage(input){
+    var file = input.files[0];
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+
+      var imageElement = document.getElementById("registration_image");
+   
+      imageElement.src = e.target.result;
+    
+    };
+    reader.readAsDataURL(file);
+  }
+
+
+  function selectDocument(element, type) {
+    $('#verifyBtn').show()
+    if(type == "licence"){
+      document_type = 'licence'
+      $('#id_document_type').val('Driver licence')
+      $('#addDocumentRegistration').hide()
+      $('#addDocumentPassport').hide()
+      $("#addDocumentLicence").show()
+    }
+    else if(type == "registration"){
+      document_type = 'registration'
+      $('#id_document_type').val('National ID')
+      $('#addDocumentPassport').hide()
+      $("#addDocumentLicence").hide()
+      $('#addDocumentRegistration').show()
+    }else{
+        document_type = 'passport'
+        $('#id_document_type').val('Passport')
+        $("#addDocumentLicence").hide()
+        $('#addDocumentRegistration').hide()
+        $('#addDocumentPassport').show()
+    }
+    // Remove border from all divs
+    const boxes = document.getElementsByClassName('box');
+    for (let i = 0; i < boxes.length; i++) {
+        boxes[i].classList.remove('selected');
+    }
+
+    // $('#reason').show().slideDown(1000);
+      
+        
+    //   // Add border to the clicked div
+      element.classList.add('selected');
+   
+  }
+
+
+
+  // To Check Details and Redirect user to page forms validation
+
+
+  function submitFo(){
+    if(user_image_loaded == 0){
+      alert('Please upload your image')
+      var element = document.getElementById("profile");
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+    if(document_type == 'licence'){
+      file = document.getElementById('id_document_front_image');
+      date_r= $('#id_issue_date').val()
+      expire_r= $('#id_expiry_date').val()
+      nums = $('#id_licence_number').val()
+      if (file.files.length === 0 || date_r === "", expire_r === 0, nums === ""){
+        alert('Please add All Licence details')
+        return false
+      }
+      else{
+        return true
+      }
+    
+    }
+    else if(document_type == 'registration'){
+      file = document.getElementById('id_business_image');
+      date_r= $('#id_business_registration_date').val()
+      nums = $('#id_registraion_number').val()
+      if (file.files.length === 0 || date_r === "" || nums==="" ){
+          
+          alert('Please add all National Id details')
+          return false
+        }
+        else{
+          return true
+        }
+     }
+     else{
+      file = document.getElementById('id_passport_image');
+      issue= $('#id_passport_issue_date').val()
+      expiry = $('#id_passport_expiry_date').val()
+      loc = $('#id_passport_issued_country').val()
+      nums = $('#id_passport_number').val()
+      if (file.files.length === 0 || issue === "" || expiry === "" || loc === "" || nums === ""){
+          
+          alert('Please add all passport details')
+          return false
+        }
+        else{
+          return true
+        }
+     }
+  }
+
+"{%if not cm%}"
+  document.getElementById('submitForm').addEventListener('submit', function(event){
+    if(!submitFo()){
+      event.preventDefault();
+    }
+  })
+"{%endif%}"
+</script>
+{% endblock inside %}

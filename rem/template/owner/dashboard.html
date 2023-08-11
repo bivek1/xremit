@@ -1,0 +1,1136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {{user.get_full_name}} Dashboard
+{% endblock title %}
+    
+
+{% block navbar %}
+  
+{% endblock navbar %}
+  
+
+
+  
+
+{% block content %}
+<div class="p-0 m-0 ">
+    <!-- Side Bar -->
+    <div class="p-3 side-bar pb-5 hidePhone" >
+    
+        <div class="d-flex justify-content-between">
+            <h3 class="text-primary text-center text-capitalize" id="text-head">
+              xRemit
+            </h3>
+            <p class="my-auto shortcut text-center" onclick="makesmall();">
+              <i class=" ps-3 fa-solid fa-arrows-turn-to-dots"></i>
+            </p>
+        </div>
+        <hr>
+        {%url 'owner:dashboard' as dashboardaa%}
+        <a href="{{dashboardaa}}">
+          <div class="mt-3 p-2  {% if request.path == dashboardaa %}
+          activedb
+{% endif %} side-item">
+            <div class="text-center activedbs">
+              <i class="fa fa-dashboard mt-2"></i>  
+            </div>
+            
+            <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+              Dashboard
+            </span>
+            
+          </div>
+        </a>
+       
+        {%url 'owner:agent' as agentaa%}
+        <a href="{{agentaa}}">
+          <div class="mt-2 p-2 side-item {% if request.path == agentaa %}
+          activedb
+        {% endif %}">
+            <div class="text-center">
+              <i class="fa fa-users mt-2"></i>  
+            </div>
+            <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+              Agent
+            </span> 
+          </div>
+        </a>
+
+        {%url 'owner:customer' as customeraa%}
+        <a href="{{customeraa}}">
+            <div class="mt-2 p-2 side-item {% if request.path == customeraa %}
+            activedb
+        {% endif %}">
+              <div class="text-center">
+                <i class="fa-solid fa-users-line mt-2"></i>  
+              </div>
+            
+              <span class="ms-3 my-auto text-primary text-bold sidebar-link"> 
+                Customer
+              </span>
+            </div>
+        </a>
+        {%url 'owner:currency' as currencyaa%}
+        <a href="{{currencyaa}}">
+          <div class="mt-2 p-2 side-item {% if request.path == currencyaa %}
+          activedb
+      {% endif %}">
+            <div class="text-center">
+              <i class="fa fa-money-bills mt-2"></i>   
+            </div>
+            <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+              Currency
+            </span> 
+          </div>
+        </a>
+       
+        
+      {%url 'owner:site' as siteaa%}
+      <a href="{{siteaa}}">
+        <div class="mt-2 p-2 side-item {% if request.path == siteaa %}
+          activedb
+        {% endif %}">
+          <div class="text-center">
+            
+              <i class="fa fa-cog mt-2"></i>  
+            
+          </div>
+          <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+            Site Settings
+          </span>
+        </div>
+      </a>
+        {%url 'owner:profile' as profileaa%}
+        <a href="{{profileaa}}">
+            <div class="mt-2 p-2 side-item {% if request.path == profileaa %}
+            activedb
+{% endif %}">
+              <div class="text-center">
+                <i class="fa fa-user mt-2"></i>  
+              </div>
+              <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                Profile
+              </span>
+            </div>
+        </a>
+        {%url 'owner:transaction' as transactionaa%}
+        <a href="{{transactionaa}}">
+            <div class="mt-2 p-2 side-item {% if request.path == transactionaa %}
+            activedb
+{% endif %}">
+              <div class="text-center">
+                <i class="fa-solid fa-money-bill-transfer mt-2"></i>
+              </div>
+              <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                Transaction
+              </span>
+            </div>
+        </a>
+        {%url 'owner:country' as countryaa%}
+        <a href="{{countryaa}}">
+          <div class="mt-2 p-2 side-item  {% if request.path == countryaa %}
+              activedb
+            {% endif %}">
+            <div class="text-center">
+              <i class="fa-solid fa-globe mt-2"></i>
+            </div>
+            <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+              Country
+            </span>
+          </div>
+        </a>
+        {%url 'owner:bank' as bankaa%}
+        <a href="{{bankaa}}">
+          <div class="mt-2 p-2 side-item {% if request.path == bankaa %}
+          activedb
+{% endif %}">
+            <div class="text-center">
+              <i class="fa-solid fa-building-columns  mt-2"></i>  
+            </div>
+            <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+              Bank
+            </span>
+          </div>
+        </a>
+      
+        {%url 'owner:emailSetting' as emailaa%}
+        <a href="{{emailaa}}">
+          <div class="mt-2 p-2 side-item  {% if request.path == emailaa %}
+                    activedb
+                  {% endif %}">
+                <div class="text-center">
+                  <i class="fa-solid fa-inbox mt-2"></i>
+                </div>
+                <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                  Email Setting
+                </span>
+          </div>
+        </a>
+
+        {%url 'owner:blog' as blogaa%}
+        <a href="{{blogaa}}">
+          <div class="mt-2 p-2 side-item {% if request.path == blogaa %}
+          activedb
+        {% endif %}">
+            <div class="text-center">
+              <i class="fa-solid fa-blog mt-2"></i>
+            </div>
+            <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+              Blog
+            </span>
+          </div>
+        </a>
+        {%url 'owner:ticketView' as ticketaa%}
+        <a href="{{ticketaa}}">
+          <div class="mt-2 p-2 side-item {% if request.path == ticketaa %}
+          activedb
+{% endif %}" onclick="showLoader()">
+            <div class="text-center">
+              <i class="fa-solid fa-headphones-simple  mt-2"></i>  
+            </div>
+            <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+              Ticket
+            </span>
+          </div>
+        </a>
+       
+
+        {%url 'owner:smsSetting' as smsaa%}
+        <a href="{{smsaa}}">
+            <div class="mt-2 p-2 side-item  {% if request.path == smsaa %}
+                  activedb
+                  {% endif %}">
+              <div class="text-center">
+                <i class="fa-solid fa-comments mt-2"></i>  
+              </div>
+              <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                SMS Setting
+              </span>
+            </div>
+        </a>
+
+        {%url 'owner:default' as defaultCurrencyaa%}
+          <a href="{{defaultCurrencyaa}}">
+            <div class="mt-2 p-2 side-item {% if request.path == defaultCurrencyaa %}
+            activedb
+{% endif %}" onclick="showLoader()">
+                <div class="text-center">
+                  <i class="fa fa-coins mt-2"></i>   
+                </div>
+                <span class="ms-3 my-auto text-primary text-bold sidebar-link ">
+                  Default Currency
+                </span> 
+              </div>
+          </a>
+
+        {%url 'owner:bannedSetting' as banaa%}
+        <a href="{{banaa}}">
+            <div class="mt-2 p-2 side-item  {% if request.path == banaa %}
+                  activedb
+                  {% endif %}">
+              <div class="text-center">
+                <i class="fa-solid fa-ban mt-2"></i>
+              </div>
+              <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                Banned User
+              </span>
+            </div>
+        </a>
+      
+    
+
+        <a href="{%url 'homepage:logout'%}">
+          <div class="mt-2 p-2 side-item">
+            <div class="text-center">
+              <i class="fa fa-sign-out-alt mt-2"></i>
+            </div>
+            <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+              Logout
+            </span>
+          </div>
+        </a>
+       
+     
+    </div>
+   
+    <!-- SideBar -->
+    <div class="whole-content pb-5 mb-5">
+
+      <div class=" d-flex justify-content-between mt-3 p-2">
+
+        <div class="login-flex d-flex my-auto" style="width: 50%;">
+          <i class="fa fa-magnifying-glass my-auto p-2"></i>
+          <form action="{%url 'owner:search'%}" method="get" style="width: 100%;">
+            <input type="text" name="search" class="form-control" id="searchBtn"  placeholder="Ex: Customer, Agent, Currency and Country" required>
+          </form>
+         
+        </div>
+        <div class="my-auto navbar-icon">
+          <div class="dropdown d-inline" >
+            <span class="" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="far fa-bell p-2 menu-icon" style="position: relative;">
+                <span class="badge bg-danger" style="position: absolute; right: 3px;
+                top: 25px;" >{{noti_count}}</span>
+            
+              </i>
+            
+            </span>
+            <ul class="dropdown-menu mt-3" aria-labelledby="dropdownMenuButton1">
+              <h5 class="head-para text-light text-dark">
+                Notification List
+              </h5>
+              <hr>
+              {% if not noti %}
+                <p class="text-secondary p-2" style="width: 250px;">
+                  No Unseen notification left at the box <i class="fa fa-box"></i>
+                </p>
+              {% endif %}
+              {% for i in noti %}
+                <!-- {{i}} -->
+                {% if i.types == 'ticket' %}
+                  <li onclick="addSeen('{{i.id}}')">
+                    <a class="dropdown-item" href="{%url 'owner:ticketView'%}">
+                      <div class="d-flex ">
+                          <img class="my-auto" src="{%if i.customer.profil_pic%}{{i.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                          <div class="p-2">
+                            <p class="m-0">
+                              {{i.customer.admin.get_full_name}} {{i.name}}
+                            </p>
+                            <b>
+                              {{i.created_at}}
+                            </b>
+                              
+                          </div>
+                      </div>
+                    </a>          
+                  </li>
+                {% endif %}
+
+                {% if i.types == 'kyc' %}
+                  <li onclick="addSeen('{{i.id}}')">
+                      <a class="dropdown-item" href="{%url 'owner:kycVerification' i.ids%}">
+                        <div class="d-flex ">
+                            <img class="my-auto" src="{%if i.customer.profil_pic%}{{i.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                            <div class="p-2">
+                              <p class="m-0">
+                                {{i.customer.admin.get_full_name}} {{i.name}}
+                              </p>
+                              <b>
+                                {{i.created_at}}
+                              </b>
+                                
+                            </div>
+                        </div>
+                      </a>          
+                  </li>
+                {% endif %}
+
+                {% if i.types == 'transaction' %}
+                <li onclick="addSeen('{{i.id}}')">
+                    <a class="dropdown-item" href="{%url 'owner:transactionDetail' i.ids%}">
+                      <div class="d-flex" >
+                          <img class="my-auto" src="{%if i.customer.profil_pic%}{{i.customer.profil_pic.url}} {%else%} {%static 'resources/verified.png'%} {%endif%}" alt="" style="height: 50px; width: 50px; border-radius: 50%;">
+                          <div class="p-2">
+                              <p class="m-0">
+                                {{i.customer.admin.get_full_name}} {{i.name}}
+                              </p>
+                              <b>
+                                {{i.created_at}}
+                              </b>
+                
+                          </div>
+                      </div>
+                    </a>          
+                </li>
+              {% endif %}
+                
+              {% endfor %}
+              <hr>
+              <a href="{%url 'owner:allNotification'%}">
+                  <p class="text-center" id="notiall">
+                    <i class="fa fa-inbox"></i>  View All Notification
+                  </p>
+              </a>
+              
+            </ul>
+          </div>
+          <a href="{%url 'owner:profile'%}">
+            <i class="fa fa-cog p-2 menu-icon"></i>
+          </a>
+           <a href="{%url 'homepage:logout'%}">
+              <i class="fa fa-sign-out p-2 menu-icon"></i>
+           </a>
+           <a class="showphone" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+            <i class="fa fa-bars p-2 menu-icon"></i>
+          </a>
+          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header">
+              <h3 class="text-primary mt-3 text-center text-capitalize">
+                xRemit
+              </h3>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+             
+              <hr>
+              <a href="{%url 'owner:dashboard'%}">
+                <div class="mt-3 p-2  activedb side-item">
+                  <div class="text-center activedbs">
+                    <i class="fa fa-dashboard mt-2"></i>  
+                  </div>
+                  
+                  <span class="ms-3 my-auto text-primary text-bold">
+                    Dashboard
+                  </span>
+                  
+                </div>
+              </a>
+             
+              <a href="{%url 'owner:agent'%}">
+                <div class="mt-2 p-2 side-item">
+                  <div class="text-center">
+                    <i class="fa fa-users mt-2"></i>  
+                  </div>
+                  <span class="ms-3 my-auto text-primary text-bold">
+                    Agent
+                  </span> 
+                </div>
+              </a>
+        
+              <a href="{%url 'owner:customer'%}">
+                  <div class="mt-2 p-2 side-item">
+                    <div class="text-center">
+                      <i class="fa-solid fa-users-line mt-2"></i>  
+                    </div>
+                  
+                    <span class="ms-3 my-auto text-primary text-bold"> 
+                      Customer
+                    </span>
+                  </div>
+              </a>
+             
+              <a href="{%url 'owner:currency'%}">
+                <div class="mt-2 p-2 side-item">
+                  <div class="text-center">
+                    <i class="fa fa-money-bills mt-2"></i>   
+                  </div>
+                  <span class="ms-3 my-auto text-primary text-bold">
+                    Currency
+                  </span> 
+                </div>
+              </a>
+             
+              <a href="{%url 'owner:site'%}">
+                <div class="mt-2 p-2 side-item">
+                  <div class="text-center">
+                    <i class="fa fa-cog mt-2"></i>  
+                  </div>
+                  <span class="ms-3 my-auto text-primary text-bold">
+                    Site Settings
+                  </span>
+                </div>
+              </a>
+              {%url 'owner:profile' as profileaa%}
+              <a href="{{profileaa}}">
+                  <div class="mt-2 p-2 side-item {% if request.path == profileaa %}
+                  activedb
+      {% endif %}">
+                    <div class="text-center">
+                      <i class="fa fa-user mt-2"></i>  
+                    </div>
+                    <span class="ms-3 my-auto text-primary text-bold">
+                      Profile
+                    </span>
+                  </div>
+              </a>
+              {%url 'owner:transaction' as transactionaa%}
+              <a href="{{transactionaa}}">
+                  <div class="mt-2 p-2 side-item {% if request.path == transactionaa %}
+                  activedb
+      {% endif %}">
+                    <div class="text-center">
+                      <i class="fa-solid fa-money-bill-transfer mt-2"></i>
+                    </div>
+                    <span class="ms-3 my-auto text-primary text-bold">
+                      Transaction
+                    </span>
+                  </div>
+              </a>
+             
+              <a href="{%url 'owner:country'%}">
+                <div class="mt-2 p-2 side-item">
+                  <div class="text-center">
+                    <i class="fa-solid fa-globe mt-2"></i>
+                  </div>
+                  <span class="ms-3 my-auto text-primary text-bold">
+                    Country
+                  </span>
+                </div>
+              </a>
+              {%url 'owner:bank' as bankaa%}
+              <a href="{{bankaa}}">
+                <div class="mt-2 p-2 side-item {% if request.path == bankaa %}
+                activedb
+      {% endif %}">
+                  <div class="text-center">
+                    <i class="fa-solid fa-building-columns  mt-2"></i>  
+                  </div>
+                  <span class="ms-3 my-auto text-primary text-bold">
+                    Bank
+                  </span>
+                </div>
+              </a>
+            
+              {%url 'owner:emailSetting' as emailaa%}
+              <a href="{{emailaa}}">
+                <div class="mt-2 p-2 side-item  {% if request.path == emailaa %}
+                          activedb
+                        {% endif %}">
+                      <div class="text-center">
+                        <i class="fa-solid fa-inbox mt-2"></i>
+                      </div>
+                      <span class="ms-3 my-auto text-primary text-bold">
+                        Email Setting
+                      </span>
+                </div>
+              </a>
+      
+              {%url 'owner:blog' as blogaa%}
+              <a href="{{blogaa}}">
+                <div class="mt-2 p-2 side-item {% if request.path == blogaa %}
+                activedb
+              {% endif %}">
+                  <div class="text-center">
+                    <i class="fa-solid fa-blog mt-2"></i>
+                  </div>
+                  <span class="ms-3 my-auto text-primary text-bold">
+                    Blog
+                  </span>
+                </div>
+              </a>
+              {%url 'owner:ticketView' as ticketaa%}
+              <a href="{{ticketaa}}">
+                <div class="mt-2 p-2 side-item {% if request.path == ticketaa %}
+                activedb
+      {% endif %}" onclick="showLoader()">
+                  <div class="text-center">
+                    <i class="fa-solid fa-headphones-simple  mt-2"></i>  
+                  </div>
+                  <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                    Ticket
+                  </span>
+                </div>
+              </a>
+             
+      
+              {%url 'owner:smsSetting' as smsaa%}
+              <a href="{{smsaa}}">
+                  <div class="mt-2 p-2 side-item  {% if request.path == smsaa %}
+                        activedb
+                        {% endif %}">
+                    <div class="text-center">
+                      <i class="fa-solid fa-comments mt-2"></i>  
+                    </div>
+                    <span class="ms-3 my-auto text-primary text-bold">
+                      SMS Setting
+                    </span>
+                  </div>
+              </a>
+      
+              {%url 'owner:default' as defaultCurrencyaa%}
+                <a href="{{defaultCurrencyaa}}">
+                  <div class="mt-2 p-2 side-item {% if request.path == defaultCurrencyaa %}
+                  activedb
+      {% endif %}" onclick="showLoader()">
+                      <div class="text-center">
+                        <i class="fa fa-coins mt-2"></i>   
+                      </div>
+                      <span class="ms-3 my-auto text-primary text-bold sidebar-link">
+                        Default Currency
+                      </span> 
+                    </div>
+                </a>
+      
+              {%url 'owner:bannedSetting' as banaa%}
+              <a href="{{banaa}}">
+                  <div class="mt-2 p-2 side-item  {% if request.path == banaa %}
+                        activedb
+                        {% endif %}">
+                    <div class="text-center">
+                      <i class="fa-solid fa-ban mt-2"></i>
+                    </div>
+                    <span class="ms-3 my-auto text-primary text-bold">
+                      Banned User
+                    </span>
+                  </div>
+              </a>
+            
+          
+      
+              <a href="{%url 'homepage:logout'%}">
+                <div class="mt-2 p-2 side-item">
+                  <div class="text-center">
+                    <i class="fa fa-sign-out-alt mt-2"></i>
+                  </div>
+                  <span class="ms-3 my-auto text-primary text-bold">
+                    Logout
+                  </span>
+                </div>
+              </a>
+            </div>
+          </div>
+           
+        </div>
+      </div>
+      {% block inside %}
+
+        <div class="row m-0 mt-3">
+         
+          
+          <div class="mt-3 m-0">
+            <span class="breadcum">
+              Dashboard 
+            </span>
+          </div>
+          <div class="row">
+            <div class="mt-3 col-12 ">
+              <div>
+                  <div>
+                    <a href="{%url 'owner:kyc'%}">
+                      <div class="alert alert-light" id="kyc_rec">
+                        <img src="{%static 'resources/verified.png'%}" alt="" height="30px;" width="30px;">
+                        <span class="text-danger">
+                           VIEW KYC VERIFICATION REQUEST
+                        </span>
+                      </div>
+                    </a>
+                     
+                  </div>
+                
+                  <div class="p-2 d-flex mt-3 justify-content-between" id="login-card">
+                    <div class="text-center">
+                        <button class="btn btn-success" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                            <i class="fa fa-uniregistry"></i>
+                            Restriction
+                        </button>
+                    </div>
+                    <div class="my-auto">
+                      Manage your transaction restriction
+                    </div>
+
+
+                    <!-- EMalil setting Model -->
+                    <div
+                      class="modal fade"
+                      id="exampleModal"
+                      tabindex="-1"
+                      aria-labelledby="exampleModalLabel"
+                      aria-hidden="true"
+                      >
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                  
+                                      <h5 class="text-center">
+                                          Update Restriction Setting
+                                      </h5>
+                                     
+                                      <hr>
+                                      <form action="{%if restrict%} {%url 'owner:addRestriction' restrict.id%} {%else%} {%url 'owner:addRestriction' 0%} {%endif%}" method="post">
+                                      
+                                        <p class="m-0 p-0 mt-2">
+                                              Minimum Amount To Transfer*
+                                          </p> 
+                                          {{form.minimum_amount}}
+                                          {{form.minimum_amount.errors}}
+                                      
+                                          <p class="m-0 p-0 mt-2">
+                                            Maximum Amount To Transfer*
+                                          </p> 
+                                          {{form.maximum_amount }}
+                                          {{form.maximum_amount.errors}}
+
+                                          <p class="m-0 p-0 mt-2">
+                                              Daily Transfer Limit*
+                                          </p> 
+                                          {{form.daily_transfer_remit}}
+                                          {{form.daily_transfer_remit.errors}}
+
+                                          <p class="m-0 p-0 mt-2">
+                                            Maximum Cap Charge*
+                                          </p> 
+                                          {{form.maximum_cap_charge}}
+                                          {{form.maximum_cap_charge.errors}}
+
+
+                                        
+                                          <br>
+                                          {% csrf_token %}
+                                          <button class="btn btn-primary mt-2" type="submit">
+                                              Update Settings
+                                          </button>
+                                      </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                  </div>
+
+                  <div class="p-2 d-flex mt-3 justify-content-between" id="login-card">
+                      <a href="{%url 'owner:blockPlace'%}">
+                          <div class="text-center">
+                              <button class="btn btn-danger">
+                                  <i class="fa fa-ban"></i> Block Places
+                              </button>
+                          </div>
+                      </a>  
+                    
+                      <div class="my-auto">
+                        Disallow Country, Region and City
+                      </div>
+                  </div>
+                  <div class="d-flex justify-content-between mt-3">
+                      <h5 class="m-0 p-2 text-primary">Recent Transactions</h5>
+                      <a href="{%url 'owner:transaction'%}">
+                        <button class="btn btn-primary">
+                          See All
+                        </button>
+                      </a>
+                      
+                  </div>
+                 
+                 
+
+                  {% for i in transaction %}
+                      <div class="transaction-div p-2" id="login-card" data-bs-toggle="modal" data-bs-target="#exampleModalEdit{{i.id}}">
+                          <div class="d-flex">
+                          
+                              <i class="trans-icon fa fa-arrow-alt-circle-up"></i>
+                              <span class="ps-2 my-auto" >
+                                  <h6 class="text-primary">
+                                  Transfer Money to {{i.recipient.first_name}} {%if i.recipient.middle_name%} {{i.recipient.middle_name}} {%endif%} {{i.recipient.last_name}}
+                                  </h6>
+                                  
+                                  {% if i.status == 'Pending' %}
+                                      <p class="text-warning p-0 m-0">
+                                          <i class="fa fa-circle-dot"></i>
+                                          Pending
+                                      </p>
+                                  {% endif %}
+      
+                                  {% if i.status == 'Cancelled' %}
+                                      <p class="text-danger p-0 m-0">
+                                          <i class="fa fa-circle-dot"></i>
+                                          Cancelled
+                                      </p>
+                                  {% endif %}
+      
+                                  {% if i.status == 'Completed' %}
+                                      <p class="text-success p-0 m-0">
+                                          <i class="fa fa-circle-dot"></i>
+                                          Completed
+                                      </p>
+                                  {% endif %}
+                                  {% if i.status == 'Rejected' %}
+                                      <p class="text-danger p-0 m-0">
+                                          <i class="fa fa-circle-dot"></i>
+                                          Rejected
+                                      </p>
+                                  {% endif %}
+                                      
+                                  
+                                  <small class="text-secondary" style="font-size: 12px;">
+                                      Click to view report
+                                  </small>
+                              </span>
+                              
+                          
+                          </div>
+                          
+                          <div>
+                          <h6 class="text-danger">
+                              - {{i.sent|floatformat:2}} {{i.sending_currency.currecy_sign}}
+                          </h6>
+                          <p class="text-success">
+                          
+                              <b>
+                                  {{i.received|floatformat:2}} {{i.receiving_currency.currecy_sign}}
+                              </b>
+                          </p>
+                          </div>
+                      </div>
+      
+                      <!-- Transaction Model -->
+                      <div class="modal fade" id="exampleModalEdit{{i.id}}" tabindex="-1" aria-labelledby="exampleModalEditLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered model-lg">
+                              <div class="modal-content">
+                              
+                                  <div class="modal-body">
+                                    
+                                      <div class="text-center">
+                                          <p class="badge bg-danger p-2">
+                                            <i class="fa fa-calendar"></i> Transaction Date: {{i.created_at}}
+                                          </p>
+                                          {% if i.status == 'Pending' %}
+                                          <p class="text-warning p-0 m-0">
+                                              <i class="fa fa-circle-dot"></i>
+                                              Pending
+                                          </p>
+                                          {% endif %}
+      
+                                          {% if i.status == 'Cancelled' %}
+                                              <p class="text-danger p-0 m-0">
+                                                  <i class="fa fa-circle-dot"></i>
+                                                  Cancelled
+                                              </p>
+                                          {% endif %}
+      
+                                          {% if i.status == 'Completed' %}
+                                              <p class="text-success p-0 m-0">
+                                                  <i class="fa fa-circle-dot"></i>
+                                                  Completed
+                                              </p>
+                                          {% endif %}
+                                      </div>
+
+                                      <form class="mt-3" action="{%url 'owner:changeStatus' i.id%}" method="post">
+                                        <h6>Update the payment status</h6>
+                                        <hr>
+                                        <select class="form-control" name="status" id="">
+                                          <option value="Completed"> Completed </option>
+                                          <option value="Pending"> Pending </option>
+                                          <option value="Cancelled"> Cancelled </option>
+                                          <option value="Rejected"> Rejected </option>
+                                        </select>
+                                        {% csrf_token %}
+                                        <button class="btn btn-primary mt-3 w-100">
+                                          Update Status
+                                        </button>
+                                      </form>
+                                  
+                                      <div class="text-center mt-3">
+                                          <h6 class="text-primary">
+                                              Transfer Money to {{i.recipient.first_name}} {%if i.recipient.middle_name%} {{i.recipient.middle_name}} {%endif%} {{i.recipient.last_name}}
+                                          </h6>
+                                      </div>
+                                      <hr>
+                                      <div class="row" id="complete">
+                                          <div class="col-12 col-lg-10  m-auto p-2 text-center">
+                                          
+                                              
+                                              <div>
+                                                  <div class="d-flex justify-content-between">
+                                                      <h5>
+                                                          Transfer Details
+                                                      </h5>
+                                                  
+                                                  </div>
+                                                  
+                                                  <div class="d-flex justify-content-between">
+                                                      <p class="text-secondary">
+                                                          You Send
+                                                      </p>
+      
+                                                      <b>
+                                                          {{i.sent|floatformat:2}} {{i.sending_currency.currecy_sign}}
+                                                      </b>
+      
+                                                  </div>
+      
+                                                  <div class="d-flex justify-content-between">
+                                                      <p class="text-secondary">
+                                                          Total Fee
+                                                      </p>
+      
+                                                      <p class="text-secondary">
+                                                          {{i.fee|floatformat:2}} {{i.sending_currency.currecy_sign}}
+                                                      </p>
+                                                      
+                                                  </div>
+      
+                                                  <div class="d-flex justify-content-between">
+                                                      <p class="text-secondary">
+                                                          Amount after converting
+                                                      </p>
+      
+                                                      <p class="text-secondary">
+                                                          {{i.received|floatformat:2}} {{i.receiving_currency.currecy_sign}}
+                                                      </p>
+                                                      
+                                                  </div>
+      
+                                                  <div class="d-flex justify-content-between">
+                                                      <p class="text-secondary">
+                                                          Conversion Rate
+                                                      </p>
+      
+                                                      <p class="text-secondary">
+                                                      {{i.converting_rate|floatformat:2}}
+                                                      </p>
+                                                      
+                                                  </div>
+      
+                                                  <div class="d-flex justify-content-between">
+                                                      <p class="text-secondary">
+                                                          Other get
+                                                      </p>
+      
+                                                      <b>
+                                                          {{i.received|floatformat:2}} {{i.receiving_currency.currecy_sign}}
+                                                      </b>
+                                                      
+                                                  </div>
+                                                  <h6 class="mt-2">
+                                                      <i class="fa fa-bank"></i>
+                                                      Bank Details
+                                                  </h6>
+                                                  <hr>
+      
+                              
+                                                  <div class="d-flex justify-content-between">
+                                                    <p class="text-secondary">
+                                                        Name
+                                                    </p>
+    
+                                                    <b>
+                                                        {{i.recipient.first_name}} {{i.recipient.last_name}}
+                                                    </b>
+                                                    
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="text-secondary">
+                                                        Bank Name
+                                                    </p>
+    
+                                                    <p class="text-secondary">
+                                                        {{i.bank.bank_name}}
+                                                    </p>
+                                                    
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="text-secondary">
+                                                        Account Number
+                                                    </p>
+    
+                                                    <p class="text-secondary">
+                                                        {{i.bank.account_number}}
+                                                    </p>
+                                                    
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <p class="text-secondary">
+                                                        Account Name
+                                                    </p>
+    
+                                                    <p class="text-secondary">
+                                                        {{i.bank.account_name}}
+                                                    </p>
+                                                    
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                  <p class="text-secondary">
+                                                     Branch
+                                                  </p>
+                      
+                                                  <p class="text-secondary">
+                                                      {{i.bank.branch}}
+                                                  </p>
+                                                  
+                                              </div>
+                                              </div>
+                                              
+                                              
+                                          </div>
+                                      </div>
+                                      {% if i.transaction_screenshot %}
+                                        <h5>
+                                            Payment Receipt 
+                                        </h5>
+                                        <hr>
+                                        <img src="{{i.transaction_screenshot.image.url}}" alt="" style="height: auto; width: 100%;">
+                                      {% endif %}
+                                                                                                      
+                                      <div class="text-end mt-2">
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                      </div>
+                                  
+                                  </div>
+                              
+                              </div>
+                          </div>
+                      </div>
+                      <!-- Transaction Model -->
+                  {% endfor %}
+
+                  
+              </div>
+             
+             
+            </div>
+          </div>
+         
+          <div class="row mt-3">
+          
+            <div class="col-12 col-lg-3 mt-2 ">
+              <a href="">
+                  <div class="dashboard-box">
+                      <div class="my-auto">
+                          <h6>Customers</h6>
+                         
+                      </div>
+                      <div class="my-auto">
+                          <div class="text-center das-img">
+                              <img src="{%static 'resources/customer.png'%}" alt="" srcset="">
+                          </div>
+                         
+                      </div>
+                  </div>
+              </a>
+              
+            </div>
+  
+            <div class="col-12 col-lg-3 mt-2 ">
+              <a href="{%url 'owner:agent'%}">
+                  <div class="dashboard-box">
+                      <div class="my-auto">
+                          <h6>Agents</h6>
+                      </div>
+                      <div class="my-auto">
+                          <div class="text-center das-img">
+                              <img src="{%static 'resources/agent.png'%}" alt="" srcset="">
+                          </div>
+                      </div>
+                  </div>
+              </a>
+              
+            </div>
+
+            <div class="col-12 col-lg-3 mt-2 ">
+              <a href="{%url 'owner:transaction'%}">
+                  <div class="dashboard-box">
+                      <div class="my-auto">
+                          <h6>Transaction</h6>
+
+                      </div>
+                      <div class="my-auto">
+                          <div class="text-center das-img">
+                              <img src="{%static 'resources/transacton.png'%}" alt="" srcset="">
+                          </div>
+                         
+                      </div>
+                  </div>
+              </a>
+              
+            </div>
+
+            <div class="col-12 col-lg-3 mt-2 ">
+              <a href="{%url 'owner:ticketView'%}">
+                  <div class="dashboard-box">
+                      <div class="my-auto">
+                          <h6>Support</h6>
+                         
+                      </div>
+                      <div class="my-auto">
+                          <div class="text-center das-img">
+                              <img src="{%static 'resources/support.svg'%}" alt="" srcset="">
+                          </div>
+                         
+                      </div>
+                  </div>
+              </a>
+              
+            </div>
+          </div>
+
+
+          <div class="mt-2">
+            <a class="p-2 d-flex justify-content-between w-100 box mt-3" href="{%url 'owner:purpose'%}">
+                <button class="btn btn-primary">
+                  Sending Purpose
+                </button>
+                <i class="my-auto fa-solid fa-question"></i>
+            </a>
+            <a class="p-2 d-flex justify-content-between w-100 box mt-3" href="{%url 'owner:fund'%}">
+              <button class="btn btn-danger">
+                Source Fund
+              </button>
+              <i class="my-auto fa-solid fa-money-bill-1-wave"></i>
+            </a>
+            <a class="p-2 d-flex justify-content-between w-100 box mt-3" href="{%url 'owner:socialLink'%}">
+              <button class="btn btn-secondary">
+                Social Link
+              </button>
+              <i class="my-auto fa-brands fa-facebook"></i>
+            </a>
+
+            <a class="p-2 d-flex justify-content-between w-100 box mt-3" href="{%url 'owner:footer'%}">
+              <button class="btn btn-info text-light">
+                Footer
+              </button>
+              <i class="my-auto fa-solid fa-box-tissue"></i>
+            </a>
+
+            <a class="p-2 d-flex justify-content-between w-100 box mt-3" href="{%url 'owner:blog'%}">
+              <button class="btn btn-primary">
+                Blog
+              </button>
+              <i class="my-auto fa-solid fa-blog"></i>
+            </a>
+            
+            <a class="p-2 d-flex justify-content-between w-100 box mt-3" href="{%url 'owner:emailSetting'%}">
+              <button class="btn btn-danger">
+                Email
+              </button>
+              <i class="my-auto fa-solid fa-envelope-circle-check"></i>
+            </a>
+
+            <a class="p-2 d-flex justify-content-between w-100 box mt-3" href="{%url 'owner:smsSetting'%}">
+              <button class="btn btn-info text-light">
+                SMS
+              </button>
+              <i class="my-auto fa-solid fa-mobile-android"></i>
+            </a>
+            <a class="p-2 d-flex justify-content-between w-100 box mt-3" href="{%url 'owner:ticketView'%}">
+              <button class="btn btn-secondary text-light">
+                Support
+              </button>
+              <i class="my-auto fa-solid fa-users-slash"></i>
+            </a>
+            <a class="p-2 d-flex justify-content-between w-100 box mt-3" href="{%url 'owner:siteInfo'%}">
+              <button class="btn btn-danger text-light">
+                Site Information
+              </button>
+              <i class="my-auto fa-solid fa-info-circle"></i>
+            </a>
+          </div>
+        </div>
+      {% endblock inside %}
+    </div>
+    
+      
+</div>
+
+<script>
+
+  function addSeen(id){
+    $.ajax({
+            type: 'POST',
+            url: '{%url "owner:seenNotification"%}', // Replace with the actual URL of your view
+            data: {
+                'id': id, // Send the data as a key-value pair
+                'csrfmiddlewaretoken': '{{ csrf_token }}' // Include the CSRF token for security
+            },
+            success: function(response) {
+              console.log(response.status)
+            }
+    })
+  }
+</script>
+    
+{% endblock content %}
+    

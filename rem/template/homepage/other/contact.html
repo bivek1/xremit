@@ -1,0 +1,91 @@
+{% extends 'homepage/index.html' %}
+{% load static %}
+
+{% block title %}
+    Contact {{site.title}}
+{% endblock title %}
+    
+{% block inside %}
+<style>
+    #id_message{
+        height: 130px;
+    }
+</style>
+
+<div class="row m-0" id="topbarpage">
+    <div class="d-flex my-auto">
+        <a href="{%url 'homepage:homepage'%}">
+            <h2 class="head-para">
+                Homepage 
+            </h2>
+        </a>
+        <p class="head-para">
+            <i class="fa fa-arrow-alt-circle-right"></i>
+        </p>
+        <h2 class="head-para">
+            About {{site.title}}
+        </h2>
+       
+    </div>
+   
+</div>
+<div class="row bg-white m-0 pt-5 pb-5">
+    <div class="mt-3 mb-3 text-center">
+        <span class="breadcum-front text-light">
+            <i class="fa fa-arrow-alt-circle-right"></i>
+            <a href="{%url 'homepage:homepage'%}">
+                Homepage
+            </a>/
+            Contact
+        </span>
+    </div>
+    <h3 class="head-home text-center mt-3">
+        Contact {{site.title}}
+    </h3>
+    <p class="text-center text-secondary">Any Question or remarks write us a message</p>
+
+    <div class="col-12 col-lg-10  m-auto">
+        <div class="row p-0 m-0  contactBox">
+            <div class="col-lg-4 col-12 contact-side">
+                <h4 class="head-para text-center text-light m-0 ">
+                    Contact Information
+                </h4>
+                <p class="text-center text-light">
+                    Fill up the form and our team will get back to you soon
+                </p>
+                <div class="mt-5 text-light text-center">
+                    <p>
+                        <i class="fa fa-mobile"></i> 9898800
+                    </p>
+                    <p>
+                        <i class="fa fa-envelope"></i> {{site.title}}@gmail.com
+                    </p>
+                    <p>
+                        <i class="fa fa-location-pin"></i> Sydney, Mel Australia
+                    </p>
+                </div>
+
+                <div class="mt-3 text-center">
+                    <img src="{%static 'resources/logo.png'%}" alt="" width="30%" height="auto">
+                </div>
+                <h3 class="head-home text-light mt-3 text-center">
+                    {{site.title}}
+                </h3>
+
+                
+            </div>
+            <div class="col-lg-8 col-12 mt-3">
+                {{form}}
+                {% csrf_token %}
+
+                <button class="btn btn-warning mt-3" type="submit">
+                    Send
+                </button>
+            </div>
+        </div>
+    </div>
+    
+ 
+</div>
+{% endblock inside %}
+    

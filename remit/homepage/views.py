@@ -29,7 +29,27 @@ from django.http import JsonResponse
 from owner.models import SiteSetting
 from .otp import generate_random_code
 from django.conf import settings
-from django.core.mail import send_mail
+
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
+
+
+def changeCurone(request):
+    if request.method == 'POST':
+        my_data = request.POST.get('id')  # Get the sent data
+        currency = Currency.objects.get(id = int(my_data))
+        print(currency)
+        # Process the data and prepare the response
+        response_data = {
+            'currency_rate':  currency.currecy_rate,
+            'fee' : currency.conversion_rate,
+            'cur_sign' : currency.currecy_sign
+        }
+
+        return JsonResponse(response_data)  # Return the response as JSON
+
 
 
 def set_session_small(request):
@@ -156,7 +176,6 @@ def Homepage(request):
         'about':about,
         'homes':homes,
         'service_man':Service.objects.all()[:4],
-       
         'testomonial':testomonial,
         'social':SocialLink.objects.all(),
         'client':client,
@@ -170,7 +189,6 @@ def Homepage(request):
         'first_fo':Footor.objects.filter(row='First'),
         'second_fo':Footor.objects.filter(row='Second'),
         'third_fo':Footor.objects.filter(row='Third'),
-        'default_currency':asa
     }
     other_info = siteInfo()
     dist.update(other_info)
@@ -288,24 +306,37 @@ def Register(request):
         last_name = request.POST['last_name']
         username = request.POST['email']
         password = request.POST['password']
+        recipient_list = []
         try:
             admin = CustomUser.objects.create_user(first_name = request.POST['first_name'], last_name = request.POST['last_name'], email = request.POST['email'], username = request.POST['email'], password = request.POST['password'], user_type = 'customer')
             obj = admin.customer
             obj.added_by = admin
             obj.save()
-            content = settings.EMAIL_HOST_USER
-            recipient_list = [admin.email, ]
-            sub = 'Successfully Created Account Syon Remit'
-            messa = "Syon Remit Welcome you to the easy money transfering app. Thank you for the registration."
-            # send_mail( sub, content, email_from, recipient_list )
-            try: send_mail(sub, messa, content, recipient_list, fail_silently=False, auth_user=None, auth_password=None, connection=None, html_message=None)
-            except:pass
+            recipient_list.append(admin.email)
+           
         except:
             messages.error(request, "Email is already registered please try again with different email")
             return HttpResponseRedirect(reverse('homepage:register'))
         use = authenticate(request, username = username, password = password)
         if use is not None:
             login(request, use)
+            content = settings.EMAIL_HOST_USER
+            sub = 'Successfully Created Account Syon Remit'
+            messa = "Syon Remit Welcome you to the easy money transfering app. Thank you for the registration."
+            other_info = siteInfo()
+    
+            dist_info = {
+                'sub': sub, 'message':messa,
+              
+            }
+            dist_info.update(other_info)
+            html_message = render_to_string('component/email.html', dist_info)
+            pain_html_msg = strip_tags(html_message)
+            # try: 
+            msg = EmailMultiAlternatives(sub, pain_html_msg, content, recipient_list)
+            msg.attach_alternative(html_message, "text/html")
+            msg.send()
+            # except:pass
             messages.success(request, "Successfully Registered")
             return HttpResponseRedirect(reverse('customer:dashboard'))
         else:
