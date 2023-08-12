@@ -387,6 +387,8 @@ class KYC(models.Model):
     def __str__(self):
         return self.customer.admin.username
 
+
+
 # class LicenceDetail(models.Model):
 #     kyc = models.OneToOneField(KYC, related_name='kyc_document', on_delete=models.CASCADE)
 #     document_front_image = models.ImageField(upload_to="document/")

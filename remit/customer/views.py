@@ -9,7 +9,7 @@ from homepage.forms import PasswordChangeFormUpdate, CustomerForm, TicketForm
 from django.http import JsonResponse
 from homepage.forms import TransactionForm, BankForm, ReplyForm
 from django.core import serializers
-from homepage.models import CustomerNotification, Restriction, AdminBankAccount, Ticket, AdminNotification, SendingPurpose, SourceFund, ScreenShot
+from homepage.models import OTPcode, CustomerNotification, Restriction, AdminBankAccount, Ticket, AdminNotification, SendingPurpose, SourceFund, ScreenShot
 from homepage.location import get_user_country, get_country_name
 import datetime
 from django.db.models import Sum
@@ -18,8 +18,38 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from owner.models import SiteSetting
 from django.conf import settings
+import random
 
-
+def sendOTPgmail(request):
+    code = int(random.randint(1000, 9999))
+    print(code)
+    # try:
+    #     request.user.customer_otp = code
+    # except:
+    #     cod = OTPcode.objects.create(customer = request.user.customer, code = code)
+    content = settings.EMAIL_HOST_USER
+    sub = 'OTP CODE ' + str(code)
+    messa = "Your OTP CODE IS " + str(code)
+    other_info = siteInfo()
+    # try:
+    recipient_list = [request.user.customer.admin.email]
+    dist_info = {
+        'sub': sub, 'message':messa
+    }
+    print(recipient_list)
+    dist_info.update(other_info)
+    html_message = render_to_string('component/email.html', dist_info)
+    pain_html_msg = strip_tags(html_message)
+    # try: 
+    msg = EmailMultiAlternatives(sub, pain_html_msg, content, recipient_list)
+    msg.attach_alternative(html_message, "text/html")
+    msg.send()
+    print(msg)
+    return JsonResponse({'code':code})
+    # except:
+    #     messages.error(request,"Invalid Email Address. Please update your valid email.")
+    #     return HttpResponseRedirect(reverse('customer:twoFactor'))
+    
 def siteInfo():
     site = SiteSetting.objects.all()    
     if site:

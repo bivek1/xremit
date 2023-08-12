@@ -250,7 +250,7 @@ def emailSetting(request):
 
     if request.method == 'POST':
         sendform = EmailListForm(request.POST)
-        
+        recipient_list = []
         if sendform.is_valid():
             aa = sendform.save()
             content = settings.EMAIL_HOST_USER
@@ -274,22 +274,33 @@ def emailSetting(request):
                 
             except:
                 pass
-            recipient_list = []
+      
             us = request.POST['group']
             if us == 'Customer':
+                recipient_list = []
                 allCustomer = Customer.objects.all()
                 for i in allCustomer:
-                    recipient_list.append(i.admin.email)
+                    try:
+                        recipient_list.append(i.admin.email)
+                    except:
+                        pass
 
             if us == 'Agent':
                 allCustomer = Agent.objects.all()
                 for i in allCustomer:
-                    recipient_list.append(i.admin.email)
+                    try:
+                        recipient_list.append(i.admin.email)
+                    except:
+                        pass
 
             if us == 'Recipient':
                 allCustomer = Recipient.objects.all()
                 for i in allCustomer:
-                    recipient_list.append(i.email)
+                    try:
+                        recipient_list.append(i.email)
+                    except:
+                        pass
+           
             print(us)
             print(recipient_list)
             content = settings.EMAIL_HOST_USER
@@ -303,14 +314,15 @@ def emailSetting(request):
             dist_info.update(other_info)
             html_message = render_to_string('component/email.html', dist_info)
             pain_html_msg = strip_tags(html_message)
-            try: 
-                msg = EmailMultiAlternatives(sub, pain_html_msg, content, recipient_list)
-                msg.attach_alternative(html_message, "text/html")
-                msg.send()
-            except:
-                messages.error(request,"Failed to sent email. Please ask to verify customer email")    
+            # try: 
+            msg = EmailMultiAlternatives(sub, pain_html_msg, content, recipient_list)
+            msg.attach_alternative(html_message, "text/html")
+            msg.send()
+            messages.success(request,"Successfully send email.")
+            # except:
+            #     messages.error(request,"Failed to sent email. Please ask to verify customer email")    
                 
-                return HttpResponseRedirect(reverse('owner:emailSetting'))
+            return HttpResponseRedirect(reverse('owner:emailSetting'))
         else:
             print(sendform.errors)
             dist.update({'sendform':sendform})

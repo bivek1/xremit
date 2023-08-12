@@ -35,6 +35,7 @@ urlpatterns = [
     path('search-customer-data/', views.search, name='search'),
     path('customer-allRead', views.allRead, name="allRead"),
     path('customer-ticket-reply/<int:id>', views.replyTicket, name ="ticketReply"),
+    path('sendOTPgmail', views.sendOTPgmail, name = "sendOTPgmail"),
 
 
 ]   

@@ -56,13 +56,53 @@
                         </p>
                         {%else%}
 
-                        <a href="{%url 'customer:gmailOtp'%}">
+                        <a  data-bs-toggle="modal" data-bs-target="#exampleModalEmail" onclick="sendOTPEMAIl();"> 
                             <button class="btn btn-primary w-100 mb-2 mt-2">
                                 <i class="fa fa-lock"></i>
                                 Enable
                             </button>
                             
                         </a>
+                        <div class="modal fade" id="exampleModalEmail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                
+                                    <div class="modal-body">
+                                       
+                                        <h5 class="text-dark"> Enter OPT code sent in your email. </h5>
+                                        <small>This is required for the verification of your email</small>
+                                        <form action="{%url 'customer:gmailOtp'%}"  method="post">
+                                            <p class="text-danger" id="erroeinfo"></p>
+                                            <input type="number" name="otp" id="" class="form-control" placeholder="4 DIGIT CODE" required onkeyup="checkOTP(this);">
+                                            <small>
+                                                Enter the code you received on your email. 
+                                                <span class="text-danger">
+                                                    <a href="http://">
+                                                        Didn't get the code?
+                                                    </a>
+                                                    
+                                                </span>
+                                            </small>
+                                            {% csrf_token %}
+                                    
+                                            <button type="submit" class="btn btn-danger" disabled id="emailBtn">
+                                                VERIFY
+                                            </button>
+                                           
+                                        </form>                                       
+
+                                        <div class="text-end mt-2">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <!-- Delete URL -->
+                                         
+                                            
+                                        </div>
+                                    
+                                    </div>
+                                
+                            </div>
+                            </div>
+                        </div>
                         {%endif%}
                       
                     </div>
@@ -94,17 +134,57 @@
                             </span>
                         </p>
                         {%else%}
-                            <a href="{%url 'customer:phoneOtp'%}">
+                            <a data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 <button class="btn btn-success w-100 mb-2 mt-2">
                                     <i class="fa fa-lock"></i>
                                     Enable
                                 </button>
                             </a>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                    
+                                        <div class="modal-body">
+                                           
+                                            <h5 class="text-dark"> Enter OPT code sent in your mobile </h5>
+                                            <small>This is required for the verification of your mobile</small>
+                                            <form action="" method="post">
+                                                <input type="number" name="otp" id="" class="form-control" placeholder="4 DIGIT CODE" required>
+                                                <small>
+                                                    Enter the code you received on your mobile phone. 
+                                                    <span class="text-danger">
+                                                        <a href="http://">
+                                                            Didn't get the code?
+                                                        </a>
+                                                        
+                                                    </span>
+                                                </small>
+                                                {% csrf_token %}
+                                                <br>
+                                                <button type="submit" class="btn btn-primary mt-3">
+                                                    Verify
+                                                </button>
+                                            </form>     
+                                            <a href="{%url 'customer:phoneOtp'%}" >
+                                                <button type="button" class="btn btn-danger">
+                                                    VERIFY
+                                                </button>
+                                            </a>
+
+                                            <div class="text-end mt-2">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <!-- Delete URL -->
+                                             
+                                                
+                                            </div>
+                                        
+                                        </div>
+                                    
+                                </div>
+                                </div>
+                            </div>
                         {% endif %}
-                            
-                        
-                        
-                       
+
                     </div>
                     
                 </div>
@@ -119,6 +199,28 @@
         console.log(country)
         $('#id_account_name').val(name)
         $('#id_country').val(country)
+    }
+    otp = 0
+    function sendOTPEMAIl(){
+        console.log('Sending OTP')
+        $.ajax({
+            // type: 'POST',
+            url: '{%url "customer:sendOTPgmail"%}', // Replace with the actual URL of your view
+           
+            success: function(response) { 
+            // console.log(response.code)
+            otp = response.code
+            }
+        })
+    }
+    function checkOTP(elem){
+        console.log(elem.value)
+        if (elem.value == otp){
+            document.getElementById('emailBtn').disabled  = false;
+            document.getElementById('erroeinfo').innerText = 'Code match'
+        }else{
+            document.getElementById('erroeinfo').innerText = 'Code Didn\'t match'
+        }
     }
 </script>
 {% endblock inside %}
