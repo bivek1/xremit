@@ -70,7 +70,7 @@
                                             <div class="row m-0">
                                                 {% for i in  recp%}
                                                     <div class="col-12 col-md-6 col-lg-4" >
-                                                        <div class="box p-2 mb-3" id="login-card"  onclick="toggleBorder(this, '{{i.id}}')" >
+                                                        <div class="boxaa p-2 mb-3" id="login-card"  onclick="toggleBorder(this, '{{i.id}}')" >
                                                             <div class="d-flex">
                                                                 
                                                             
@@ -137,7 +137,7 @@
                                                     <p class="text-center m-0 text-warning">You can add new bank from here.</p>
                                                     
                                                     <a href="{%url 'customer:bank'%}">
-                                                        <p class="text-center text-primary">
+                                                        <p class="text-center text-primary" id="bannassaas">
                                                             <i class="fa fa-plus-square text-success"></i>
                                                             Add New Bank
                                                         </p>
@@ -159,7 +159,7 @@
                                     <div id="flightInfo">
                                         <div class="col-11 col-lg-6 mt-3 m-auto" >
                                           
-                                            <div  class="p-3 box" id="login-card" >
+                                            <div  class="p-3" id="login-card" >
                                                 <h6 class="text-center mt-3">
                                                     SEND MONEY
                                                 </h6>
@@ -855,20 +855,20 @@
 
   
   function toggleBorder(element, id) {
-        var element = document.getElementById("reason");
-        element.scrollIntoView({ behavior: "smooth" });
         $('#slowloder').show()
+      
         console.log(id)
         receipient_id = id
         $('#id_recipient').val(id)
         // Remove border from all divs
         $('#reason').hide().slideDown(1000);
-        
-        const boxes = document.getElementsByClassName('box');
+      
+        const boxes = document.getElementsByClassName('boxaa');
         for (let i = 0; i < boxes.length; i++) {
             boxes[i].classList.remove('selected');
         }
-
+        // Add border to the clicked div
+        element.classList.add('selected');
         $.ajax({
             type: 'POST',
             url: '{%url "customer:findBank"%}', // Replace with the actual URL of your view
@@ -892,16 +892,18 @@
                 }
             }
       });
-      
+       
+        
       setTimeout(function() {
             $('#slowloder').hide()
             $('#reason').show().slideDown(1000);
+            var ths = document.getElementById("bannassaas");
+            ths.scrollIntoView({ behavior: "smooth" });
         }, 2000);
        
+       
         
-        
-        // Add border to the clicked div
-        element.classList.add('selected');
+       
     }
 
     

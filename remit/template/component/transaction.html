@@ -20,6 +20,13 @@
         <hr>
         <p style="text-align: center; color: grey;">
             {{message}}
+            
+            {% if link %}
+                <a href="{{link}}">
+                    CLICK HERE TO VIEW AND PRINT REPORT
+                </a>
+            {% endif %}
+                
         </p>
         <div  style="width: 100%;display: flex;justify-content: center;" >
             <div style="background-color: rgb(200, 200, 255); padding: 5px;">

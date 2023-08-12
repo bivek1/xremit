@@ -17,22 +17,59 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
+    <style>
+        @media print {
+        #complete {
+            background-color: white; /* Change background color for print */
+            border: none; /* Remove border for print */
+        }
+    }
+    </style>
+    
+
 </head>
 <body>
    <div class="container-fluid">
+       
         <div class="row" id="complete">
+            <div class="col-lg-6 col-md-6 col-12 p-0 m-auto text-center d-flex justify-content-center" >
+                <img  class="my-auto" src="{%if info.image%} {{info.image.url}} {%else%}{%static 'resources/logo.png'%} {%endif%}" alt="" style="height: 30px; width: auto;"> 
+                <p class="my-auto">Syon Remit</p>
+                
+            </div>
+           
             <div class="col-12 col-lg-10  m-auto p-2 text-center">
-                <i class="fa fa-check-circle text-success" style="font-size: 100px;"></i>
-                <H4 class="text-center">Your Transaction is completed</H4>
+                <p class="text-secondary d-flex justify-content-between">
+                    <span>
+                        Issued Date:
+                        {{trans.created_at}}
+                    </span>
+                    <span>
+                        Completed Date:
+                        {{trans.updated_at}}
+                    </span>
+                    
+                </p>
+                <hr>
+                
+                {% if trans.status == "Completed" %}
+                <i class="fa fa-check-circle text-success" style="font-size: 50px;"></i>
+                {%else%}
+                <i class="fa fa-times-circle text-danger" style="font-size: 50px;"></i>
+                {% endif %}
+                    
+               
+                <H4 class="text-center">Your Transaction is {{trans.status}}</H4>
                 <div>
                     <div class="d-flex justify-content-between">
                         <h5>
                             Transfer Details
                         </h5>
+                      
                     
                     </div>
                     
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-between mt-3">
                         <p class="text-secondary">
                             You Send
                         </p>
@@ -134,6 +171,12 @@
                 </div>
             </div>
         </div>
+        
+        <button class="btn btn-primary my-auto w-100 mt-5 mb-5" id="printButton" onclick="window.print()">
+            Print
+        </button>
    </div> 
 </body>
+
+
 </html>

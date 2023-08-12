@@ -31,5 +31,4 @@ urlpatterns = [
     path('customer-sendOTPgmail', views.sendOTPgmail, name = "sendOTPgmail"),
     path('customer-sendOTPsms', views.sendOTPsms, name = "vrsendOTPsms"),
     path('customer-recipt-payment-is-sucessfull/<int:id>', views.paymentSuccessfull, name = "paymentSuccessfull"),
-
 ]

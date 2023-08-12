@@ -733,18 +733,20 @@ def changeStatus(request, id):
     trans = Transaction.objects.get(id = id)
     trans.status = status
     trans.save()
+   
     CustomerNotification.objects.create(customer = trans.customer, name =str(trans.status), types ="transaction", ids=trans.id)
     content = settings.EMAIL_HOST_USER
     
+    link = "http://"+request.get_host()+'/customer-recipt-payment-is-sucessfull/'+str(trans.id)
     if trans.status == 'Completed':
         sub = 'Successfully completed a Transaction Syon Remit'
-        messa = "Your transaction is completed successfully."
+        messa = "Your transaction is completed successfully. View your report "
     elif trans.status == 'Cancelled':
         sub = 'Your transaction is cancelled'
-        messa = "Your transaction is completed cancelled."
+        messa = "Your transaction is cancelled. View your report "
     elif trans.status == 'Rejected':
         sub = 'Your transaction is rejected'
-        messa = "We are sorry to inform you that your transaction is rejected"
+        messa = "We are sorry to inform you that your transaction is rejected. View your report "
     else:
         sub = 'Your transaction is still in pending'
         messa = "We are sorry to inform you that your transaction is still in pending. It may takes few days more to complete your transaction."
@@ -752,7 +754,7 @@ def changeStatus(request, id):
     
     recipient_list = [trans.customer.admin.email]
     dist_info = {
-        'sub': sub, 'message':messa, 'trans':trans
+        'sub': sub, 'message':messa, 'trans':trans, 'link':link
     }
     dist_info.update(other_info)
     html_message = render_to_string('component/transaction.html', dist_info)
@@ -763,7 +765,14 @@ def changeStatus(request, id):
         msg.send()
     except:
         messages.error(request,"Transaction completed. However failed to sent email. Please ask to verify customer email")
-   
+    
+    
+
+    try:
+        TwilioOTPSMS(messa + " " + link, trans.customer.number)
+    except:
+        pass
+    messages.success(request,"Change Status")
     return HttpResponseRedirect(reverse('owner:transactionDetail', args=[trans.id]))
 
 class Dashboard(View):

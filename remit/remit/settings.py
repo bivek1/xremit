@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'remit.LoginCheckMiddleWare.LoginCheckMiddleWare',
 ]
 
 ROOT_URLCONF = 'remit.urls'
@@ -161,3 +162,69 @@ EMAIL_HOST_USER = 'info@travelcrm.com.au'
 EMAIL_HOST_PASSWORD = 'travelcrm@123'
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+
+
+PWA_CONFIG = {
+        "name": "Syon Remit",
+        "short_name": "Syon Remit",
+        "theme_color": "#7820f5",
+        "background_color": "#7820f5",
+        "display": "standalone",
+        "orientation": "portrait",
+        "scope": "/",
+        "start_url": "/",
+        "icons": [
+                {
+                        "src": "/static/pwa/icons/icon-72x72.png",
+                        "type": "image/png",
+                        "sizes": "72x72"
+                },
+                {
+                        "src": "/static/pwa/icons/icon-96x96.png",
+                        "type": "image/png",
+                        "sizes": "96x96"
+                },
+                {
+                        "src": "/static/pwa/icons/icon-128x128.png",
+                        "type": "image/png",
+                        "sizes": "128x128"
+                },
+                {
+                        "src": "/static/pwa/icons/icon-144x144.png",
+                        "type": "image/png",
+                        "sizes": "144x144"
+                },
+                {
+                        "src": "/static/pwa/icons/icon-152x152.png",
+                        "type": "image/png",
+                        "sizes": "152x152"
+                },
+                {
+                        "src": "/static/pwa/icons/icon-192x192.png",
+                        "type": "image/png",
+                        "sizes": "192x192"
+                },
+                {
+                        "src": "/static/pwa/icons/icon-384x384.png",
+                        "type": "image/png",
+                        "sizes": "384x384"
+                },
+                {
+                        "src": "/static/pwa/icons/icon-512x512.png",
+                        "type": "image/png",
+                        "sizes": "512x512"
+                }
+                ],
+        "lang": "en",
+        "dir": "ltr",
+        "description": "Send Money to Nepal",
+        "version": "1.",
+        "manifest_version": "1.0",
+        "permissions": [
+                "notifications",
+                "webRequest"
+        ],
+        "author": "Wake and Tech Nepal"
+}
+

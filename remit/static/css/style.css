@@ -1009,8 +1009,13 @@ a{
     height: 50px;
 
 }
-
-.box.selected{
+.boxaa {
+    cursor: pointer;
+}
+.boxaa:hover{
+    background-color: #88a8e7!important;
+}
+.selected{
     border: 2px solid rgb(69, 78, 206);
     animation-name: bounce;
     background-color: rgb(129, 136, 241);
