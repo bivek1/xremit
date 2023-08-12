@@ -77,7 +77,7 @@
                                             <small>
                                                 Enter the code you received on your email. 
                                                 <span class="text-danger">
-                                                    <a href="http://" onclick="sendOTPEMAIl();">
+                                                    <a onclick="sendOTPEMAIl();">
                                                         Didn't get the code? Send again
                                                     </a>
                                                     
@@ -93,9 +93,8 @@
 
                                         <div class="text-end mt-2">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <!-- Delete URL -->
+                                           
                                          
-                                            
                                         </div>
                                     
                                     </div>
@@ -135,7 +134,7 @@
                         </p>
                         {%else%}
                             <a data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                <button class="btn btn-success w-100 mb-2 mt-2">
+                                <button class="btn btn-success w-100 mb-2 mt-2" onclick="sendOTPSMS();">
                                     <i class="fa fa-lock"></i>
                                     Enable
                                 </button>
@@ -148,28 +147,25 @@
                                            
                                             <h5 class="text-dark"> Enter OPT code sent in your mobile </h5>
                                             <small>This is required for the verification of your mobile</small>
-                                            <form action="" method="post">
-                                                <input type="number" name="otp" id="" class="form-control" placeholder="4 DIGIT CODE" required>
+                                            <form action="{%url 'customer:phoneOtp'%}" method="post">
+                                                <p class="text-danger" id="inasas"></p>
+                                                <input type="number" name="otp" id="" class="form-control" placeholder="4 DIGIT CODE" required onkeyup="checkSMSOTP(this);">
                                                 <small>
                                                     Enter the code you received on your mobile phone. 
                                                     <span class="text-danger">
-                                                        <a href="http://">
-                                                            Didn't get the code?
+                                                        <a  onclick="sendOTPSMS();">
+                                                            Didn't get the code? Send again.
                                                         </a>
                                                         
                                                     </span>
                                                 </small>
                                                 {% csrf_token %}
                                                 <br>
-                                                <button type="submit" class="btn btn-primary mt-3">
+                                                <button type="submit" class="btn btn-primary mt-3" disabled id="smsBtnv">
                                                     Verify
                                                 </button>
                                             </form>     
-                                            <a href="{%url 'customer:phoneOtp'%}" >
-                                                <button type="button" class="btn btn-danger">
-                                                    VERIFY
-                                                </button>
-                                            </a>
+                                            
 
                                             <div class="text-end mt-2">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -210,6 +206,7 @@
             success: function(response) { 
             // console.log(response.code)
             otp = response.code
+            document.getElementById('erroeinfo').innerText = 'Code Sent'
             }
         })
     }
@@ -220,6 +217,31 @@
             document.getElementById('erroeinfo').innerText = 'Code match'
         }else{
             document.getElementById('erroeinfo').innerText = 'Code Didn\'t match'
+        }
+    }
+
+    function sendOTPSMS(){
+        console.log('Sending OTP')
+        $.ajax({
+            // type: 'POST',
+            url: '{%url "customer:vrsendOTPsms"%}', // Replace with the actual URL of your view
+           
+            success: function(response) { 
+            // console.log(response.code)
+            otp = response.code
+            document.getElementById('inasas').innerText = 'Code sent'
+            }
+        })
+    }
+
+    function checkSMSOTP(elem){
+        console.log(elem.value)
+        if (elem.value == otp){
+            document.getElementById('smsBtnv').disabled  = false;
+            document.getElementById('inasas').innerText = 'Code match'
+        }else{
+            document.getElementById('inasas').innerText = 'Code Didn\'t match'
+            document.getElementById('smsBtnv').disabled  = true;
         }
     }
 </script>

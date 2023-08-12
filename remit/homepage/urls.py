@@ -28,6 +28,8 @@ urlpatterns = [
     path("password_reset", views.password_reset_request, name="password_reset"),
     path('OTP-VERFIFICATION-CODE-SENT-AUTOMATICALLY', views.OPTV, name ='OTPV'),
     path('front-changeCurone', views.changeCurone, name ="changeCurone"),
-    path('verify-sendOTPgmail', views.sendOTPgmail, name = "sendOTPgmail"),
+    path('customer-sendOTPgmail', views.sendOTPgmail, name = "sendOTPgmail"),
+    path('customer-sendOTPsms', views.sendOTPsms, name = "vrsendOTPsms"),
+    path('customer-recipt-payment-is-sucessfull/<int:id>', views.paymentSuccessfull, name = "paymentSuccessfull"),
 
 ]

@@ -21,24 +21,22 @@
                 <img src="{%static 'resources/transacton.png'%}" alt="" height="auto;" width="100%">
                 
                 <div>
-                    <h5>Your Transaction has been successfully done..</h5>
-                    <small>Please note that unless we received money from you, your transcation will not be updated</small>
+                    <h5>Your Transaction has been added successfully</h5>
+                   
                     <p class="text-success d-flex justify-content-between">
                         <i class="fa fa-check-circle my-auto p-2"></i>
                         <span>
-                            Once your trancation is proceed you will get notification in your email or mobile number. 
+                            Once your trancation is completed you will get notification in your email or mobile number. 
                         </span>
                     </p>
-                    <h5>HOLD ON STAY ON THIS PAGE AND MAKE YOUR PAYMENT FROM BANK</h5>
-                    <p>After sending moeny to our respective bank. Please send us screen shot</p>
-                    <hr />
+                    <hr>
                     <form action="" method="post" enctype="multipart/form-data">
+                        <h5 class="head-para text-dark">
+                            Send screenshot of your payment to us
+                        </h5>
                         <div class="d-flex justify-content-between">
                             <div class="text-center my-auto">
                                 <input type="file" class="custom-input" name="screenshot" id="image-upload" onchange="showImage(this);"  accept="image/*" required>
-                                <b>
-                                  <small class="text-primary text-small d-block">Add screen shot of reciept</small>
-                                </b>
                                 
                                 <label
                                   for="image-upload"
@@ -70,11 +68,11 @@
         <div class="col-12 col-lg-6 mt-3">
             <div id="login-card" class="row m-0" >
                 <div class="text-success mt-2">
-                    Please send us your money on our bank details
+                    Our Bank Details
                 </div>
                 <hr>
                 {% for i in adminBank  %}
-                <div class="col-12 col-lg-6">
+                <div class="col-12 col-lg-12">
                     <div class="p-2 mb-3" id="login-card"  onclick="toggleBorder(this, '{{i.id}}')" >
                         <div>
     

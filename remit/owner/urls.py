@@ -125,9 +125,11 @@ urlpatterns = [
     # Email and SMS Settings
     path('email-setting', views.emailSetting, name = "emailSetting"),
     path('addEmailSetting/<int:id>', views.addEmailSetting, name = "addEmailSetting"),
-    path('addSMSSetting/<int:id>', views.addSMSSetting, name = "addSMSSetting"),
+    path('addSMSSetting', views.addSMSSetting, name = "addSMSSetting"),
+     path('updateSMSSetting/<int:id>', views.updateSMSSetting, name = "updateSMSSetting"),
     path('sms-setting', views.smsSetting, name = "smsSetting"),
     path('addDefaultNumber', views.addDefaultNumber, name = "addDefaultNumber"),
+    path('updateDefaultNumber/<int:id>', views.updateDefaultNumber, name = "updateDefaultNumber"),
     path('banned-user-settings', views.bannedSetting, name = "bannedSetting"),
     path('banCustomer/<int:id>', views.banCustomer, name= "banCustomer"),
     path('banCustomerDisable/<int:id>', views.banCustomerDisable, name = "banCustomerDisable"),

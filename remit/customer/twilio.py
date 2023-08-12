@@ -1,18 +1,24 @@
 import os
 from twilio.rest import Client
-
+from homepage.models import DefaultNumber, SMSSetting
 
 # Find your Account SID and Auth Token at twilio.com/console
 # and set the environment variables. See http://twil.io/secure
-account_sid = os.environ['TWILIO_ACCOUNT_SID']
-auth_token = os.environ['TWILIO_AUTH_TOKEN']
-client = Client(account_sid, auth_token)
 
-message = client.messages \
-                .create(
-                     body="Join Earth's mightiest heroes. Like Kevin Bacon.",
-                     from_='+1 762 600 3093',
-                     to='+15558675310'
-                 )
+defs = DefaultNumber.objects.first()
+sm = SMSSetting.objects.first()
 
-print(message.sid)
+account_sid = sm.account_sid
+auth_token = sm.auth_token
+def TwilioOTPSMS(code, num):
+
+    client = Client(account_sid, auth_token)
+
+    message = client.messages \
+                    .create(
+                        body=str(code),
+                        from_='+'+str(defs.number),
+                        to='+'+str(num)
+                    )
+
+    print(message.sid)

@@ -48,12 +48,13 @@
                         OTP VERIFICATION
                     </h3>
                     <h5>Enter the code you received on your phone</h5>     
-                    <form action="" method="post">
-                        <input type="number" name="otp" id="" class="form-control" placeholder="4 DIGIT CODE" required>
+                    <form action="{%url 'customer:dashboard'%}" method="post">
+                        <p class="text-danger" id="smserror"></p>
+                        <input type="number" name="otp" id="" class="form-control" placeholder="4 DIGIT CODE" required onkeyup="aacheckSMSOTP(this);">
                         <small>
                             Enter the code you received on your mobile phone. 
                             <span class="text-danger">
-                                <a href="http://">
+                                <a onclick="sendOTPSMS();">
                                     Didn't get the code? Send Again
                                 </a>
                                 
@@ -61,11 +62,148 @@
                         </small>
                         {% csrf_token %}
                         <br>
-                        <button type="submit" class="btn btn-primary mt-3">
+                        <button type="submit" class="btn btn-primary mt-3" disabled id="smsBtn">
                             Verify
                         </button>
                     </form>     
                     
+                </div> 
+            {% endif %}
+
+
+            {% if  user.customer.security == 'both' %}
+                <div class="row p-0 m-0 p-2 mt-2">    
+                    
+                    <div class="col-12 col-lg-6 m-auto">
+                        <div id="login-card" class="p-2">
+                            <h3 class="head-para text-primary">
+                                OTP VERIFICATION
+                            </h3>
+                            <h3 class="text-primary text-center">
+                                Send me OPT in gmail
+                            </h3>
+                            <div class="d-flex justify-content-between p-1 mt-2">
+                                <img src="{%static 'resources/emaillock.png'%}" alt="" class="my-auto" height="50px" width="10%">
+                                <small class="my-auto">
+                                    <i class="fa-brands fa-google"></i>
+                                    {{user.email}} 
+                                </small>
+                            </div>
+                           
+    
+                            <a  data-bs-toggle="modal" data-bs-target="#exampleModalEmail" onclick="sendOTPEMAIl();"> 
+                                <button class="btn btn-primary w-100 mb-2 mt-2">
+                                    Send
+                                </button>
+                                
+                            </a>
+                            <div class="modal fade" id="exampleModalEmail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                    
+                                        <div class="modal-body">
+                                           
+                                            <h5 class="text-dark"> Enter OPT code sent in your email. </h5>
+                                            <small>This is required for the verification of your email</small>
+                                            <form action="{%url 'customer:dashboard'%}"  method="post">
+                                                <p class="text-danger" id="erroeinfo"></p>
+                                                <input type="number" name="otp" id="" class="form-control" placeholder="4 DIGIT CODE" required onkeyup="checkOTP12(this);">
+                                                <small>
+                                                    Enter the code you received on your email. 
+                                                    <span class="text-danger">
+                                                        <a onclick="sendOTPEMAIl();">
+                                                            Didn't get the code? Send again
+                                                        </a>
+                                                        
+                                                    </span>
+                                                </small>
+                                                {% csrf_token %}
+                                                <br>
+                                                <button type="submit" class="btn btn-danger" disabled id="emailBtn">
+                                                    VERIFY
+                                                </button>
+                                               
+                                            </form>                                       
+    
+                                            <div class="text-end mt-2">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                               
+                                             
+                                            </div>
+                                        
+                                        </div>
+                                    
+                                </div>
+                                </div>
+                            </div>
+                            
+                          
+                        </div>
+
+                        <div id="login-card" class="p-2 mt-3">
+                            <h3 class="text-primary text-center">
+                                Text (SMS) me OPT
+                            </h3>
+                            <div class="d-flex justify-content-between p-1 mt-2">
+                                <img src="{%static 'resources/phonelock.jpg'%}" alt="" class="my-auto" height="100px" width="100px">
+                                <small class="my-auto">
+                                    <i class="fa fa-mobile"></i>
+                                   {{user.customer.number}}
+                                </small>
+                               
+                            </div>
+                            
+                           
+                                <a data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    <button class="btn btn-success w-100 mb-2 mt-2" onclick="sendOTPSMS();">
+                                        
+                                        Send
+                                    </button>
+                                </a>
+                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                        
+                                            <div class="modal-body">
+                                               
+                                                <h5 class="text-dark"> Enter OPT code sent in your mobile </h5>
+                                                <small>This is required for the verification of your mobile</small>
+                                                <form action="{%url 'customer:dashboard'%}" method="post">
+                                                    <p class="text-danger" id="inasas"></p>
+                                                    <input type="number" name="otp" id="" class="form-control" placeholder="4 DIGIT CODE" required onkeyup="checkSMSOTP(this);">
+                                                    <small>
+                                                        Enter the code you received on your mobile phone. 
+                                                        <span class="text-danger">
+                                                            <a onclick="sendOTPSMS();">
+                                                                Didn't get the code? Send again.
+                                                            </a>
+                                                            
+                                                        </span>
+                                                    </small>
+                                                    {% csrf_token %}
+                                                    <br>
+                                                    <button type="submit" class="btn btn-primary mt-3" disabled id="smsBtnv">
+                                                        Verify
+                                                    </button>
+                                                </form>     
+                                                
+    
+                                                <div class="text-end mt-2">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <!-- Delete URL -->
+                                                 
+                                                    
+                                                </div>
+                                            
+                                            </div>
+                                        
+                                    </div>
+                                    </div>
+                                </div>
+                          
+    
+                        </div>
+                    </div>
                 </div> 
             {% endif %}
                 
@@ -78,9 +216,65 @@
     </div>
 </div>
 
-<script>
 
-   
+
+{% if user.customer.security == 'both' %}
+    <script>
+    otp = 0
+    function sendOTPEMAIl(){
+        console.log('Sending OTP')
+        $.ajax({
+            // type: 'POST',
+            url: '{%url "customer:sendOTPgmail"%}', // Replace with the actual URL of your view
+           
+            success: function(response) { 
+            // console.log(response.code)
+            otp = response.code
+            document.getElementById('erroeinfo').innerText = 'Code sent'
+            }
+        })
+    }
+    function checkOTP12(elem){
+        console.log(elem.value)
+        if (elem.value == otp){
+            document.getElementById('emailBtn').disabled  = false;
+            document.getElementById('erroeinfo').innerText = 'Code match'
+        }else{
+            document.getElementById('erroeinfo').innerText = 'Code Didn\'t match'
+            document.getElementById('emailBtn').disabled  = true;
+        }
+    }
+
+    function sendOTPSMS(){
+        console.log('Sending OTP')
+        $.ajax({
+            // type: 'POST',
+            url: '{%url "customer:vrsendOTPsms"%}', // Replace with the actual URL of your view
+           
+            success: function(response) { 
+            // console.log(response.code)
+            otp = response.code
+            document.getElementById('inasas').innerText = 'Code sent'
+            }
+        })
+    }
+
+    function checkSMSOTP(elem){
+        console.log(elem.value)
+        if (elem.value == otp){
+            document.getElementById('smsBtnv').disabled  = false;
+            document.getElementById('inasas').innerText = 'Code match'
+        }else{
+            document.getElementById('inasas').innerText = 'Code Didn\'t match'
+            document.getElementById('smsBtnv').disabled  = true;
+        }
+    }
+    </script>
+{% endif %}
+    
+
+<script>
+    
     function checkOTP(elem){
         nm = parseInt("{{code}}")
         console.log(elem.value)
@@ -89,8 +283,29 @@
             document.getElementById('erroeinfo').innerText = 'Code match'
         }else{
             document.getElementById('erroeinfo').innerText = 'Code Didn\'t match'
+            document.getElementById('emailBtn').disabled  = true;
         }
     }
+
+    function aacheckSMSOTP(elem){
+        nm = parseInt("{{code}}")
+        console.log(elem.value)
+        if (elem.value == nm){
+            document.getElementById('smsBtn').disabled  = false;
+            document.getElementById('smserror').innerText = 'Code match'
+        }else{
+            document.getElementById('smserror').innerText = 'Code Didn\'t match'
+            document.getElementById('smsBtn').disabled  = true;
+        }
+    }
+
+    window.onpopstate = function(event) {
+        $.ajax({
+            url:'{%url "homepage:logout"%}'
+        })
+    };
+
+   
 </script>
 {% endblock content %}
     

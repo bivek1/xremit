@@ -30,7 +30,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from owner.models import SiteSetting
 from django.conf import settings
-
+from customer.twilio import TwilioOTPSMS
 # Create your views here.
 
 
@@ -229,6 +229,9 @@ def banCustomerDisable(request, id):
     customer.save()
     messages.success(request ,"Successfully Allowed banned Customer")
     return HttpResponseRedirect(reverse('owner:customerProfile', args=[customer.admin.id]))
+
+
+
 # EMAIL AND SMS
 def emailSetting(request):
     email = EmailSetting.objects.all()
@@ -364,6 +367,9 @@ def smsSetting(request):
             email = i
             form = SMSSettingForm(instance=i)
             break
+    defs = DefaultNumber.objects.first()
+    if defs:
+        defautForm.fields['number'].initial = defs.number
     dist = {
         'form': form,
         'email':email,
@@ -372,7 +378,8 @@ def smsSetting(request):
         'agent':Agent.objects.all().order_by('-id'),
         'recipient': Recipient.objects.all().order_by('-id'),
         'sendform':SMSListForm(),
-        'defautForm':defautForm
+        'defautForm':defautForm,
+        'defs':defs
     }
     noti = notification(request)
     dist.update(noti)
@@ -381,7 +388,57 @@ def smsSetting(request):
         sendform = SMSListForm(request.POST)
         
         if sendform.is_valid():
-            sendform.save()
+            aa = sendform.save()
+        
+            messa = aa.message
+            try:
+                us = Customer.objects.get(id = request.POST['customer'])
+                TwilioOTPSMS(messa, us.number)
+            except:
+                pass
+
+            try:
+                us = Agent.objects.get(id = request.POST['agent'])
+                TwilioOTPSMS(messa, us.number)
+                
+            except:
+                pass
+            try:
+                us = Recipient.objects.get(id = request.POST['reciptient'])
+                TwilioOTPSMS(messa, us.number)
+              
+                
+            except:
+                pass
+      
+            us = request.POST['group']
+            print(us)
+            if us == 'Customer':
+                allCustomer = Customer.objects.all()
+                for i in allCustomer:
+                    try:
+                        TwilioOTPSMS(messa, i.number)
+                    except:
+                        pass
+
+            if us == 'Agent':
+                allCustomer = Agent.objects.all()
+                for i in allCustomer:
+                    try:
+                        TwilioOTPSMS(messa, i.number)
+                    except:
+                        pass
+
+            if us == 'Recipient':
+                allCustomer = Recipient.objects.all()
+                for i in allCustomer:
+                    try:
+                        TwilioOTPSMS(messa, i.number)
+                    except:
+                        pass
+           
+          
+           
             messages.success(request, 'Successfully sent sms')
             return HttpResponseRedirect(reverse('owner:smsSetting'))
         else:
@@ -401,16 +458,25 @@ def addDefaultNumber(request):
     else:
         messages.error(request, "Something went wrong")
         return HttpResponseRedirect(reverse('owner:smsSetting'))
+    
+def updateDefaultNumber(request, id):
+    form = DefaultForm(request.POST, instance = DefaultNumber.objects.get(id = id))
 
-def addSMSSetting(request, id):
-    if id == 0:
-        form = SMSSettingForm(request.POST)
-    else:
-        instance = SMSSetting.objects.get(id = id)
-        form = SMSSettingForm(request.POST, instance=instance)
     if form.is_valid():
         form.save()
-        messages.success(request, "Successfully updated SMS settings")
+        messages.success(request, "Successfully updated number")
+        return HttpResponseRedirect(reverse('owner:smsSetting'))
+    else:
+        messages.error(request, "Something went wrong")
+        return HttpResponseRedirect(reverse('owner:smsSetting'))
+    
+def addSMSSetting(request):
+ 
+    form = SMSSettingForm(request.POST)
+    
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Successfully added SMS settings")
         return HttpResponseRedirect(reverse('owner:smsSetting'))
     else:
         
@@ -424,6 +490,24 @@ def addSMSSetting(request, id):
         messages.error(request, "Something went wrong")
         return render(request, "owner/sms.html", dist) 
 
+def updateSMSSetting(request, id):
+
+    instance = SMSSetting.objects.get(id = id)
+    form = SMSSettingForm(request.POST, instance=instance)
+    if form.is_valid():
+        form.save()
+        messages.success(request, "Successfully updated SMS settings")
+        return HttpResponseRedirect(reverse('owner:smsSetting'))
+
+    dist = {
+        'form': form
+    }
+
+    noti = notification(request)
+    dist.update(noti)
+
+    messages.error(request, "Something went wrong")
+    return render(request, "owner/sms.html", dist) 
 
 # BANNED USER
 

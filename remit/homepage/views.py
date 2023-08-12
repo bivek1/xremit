@@ -20,7 +20,7 @@ from django.conf import settings
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse
 from .forms import ContactForm
-from homepage.models import Currency,SocialLink, Country, DefaultCurrencyAdmin, LoginLogs, OTPcode, DefaultCurrencyAdmin
+from homepage.models import Transaction, Currency,SocialLink, Country, DefaultCurrencyAdmin, LoginLogs, OTPcode, DefaultCurrencyAdmin
 # Create your views here.
 from .location import get_user_country
 from owner.models import BlockPlace
@@ -29,14 +29,59 @@ from django.http import JsonResponse
 from owner.models import SiteSetting
 from .otp import generate_random_code
 from django.conf import settings
-
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-
 import random
+from customer.twilio import TwilioOTPSMS
 
 
+def paymentSuccessfull(request, id):
+    trans = Transaction.objects.get(id = id)
+
+    dist = {
+        'trans':trans
+    }
+
+    return render(request, "homepage/recipt.html", dist)
+
+def sendOTPgmail(request):
+    code = int(random.randint(1000, 9999))
+    print(code)
+    # try:
+    #     request.user.customer_otp = code
+    # except:
+    #     cod = OTPcode.objects.create(customer = request.user.customer, code = code)
+    content = settings.EMAIL_HOST_USER
+    sub = 'OTP CODE ' + str(code)
+    messa = "Your OTP CODE IS " + str(code)
+    other_info = siteInfo()
+    # try:
+    recipient_list = [request.user.customer.admin.email]
+    dist_info = {
+        'sub': sub, 'message':messa
+    }
+    print(recipient_list)
+    dist_info.update(other_info)
+    html_message = render_to_string('component/email.html', dist_info)
+    pain_html_msg = strip_tags(html_message)
+    # try: 
+    msg = EmailMultiAlternatives(sub, pain_html_msg, content, recipient_list)
+    msg.attach_alternative(html_message, "text/html")
+    msg.send()
+    print(msg)
+    return JsonResponse({'code':code})
+    # except:
+    #     messages.error(request,"Invalid Email Address. Please update your valid email.")
+    #     return HttpResponseRedirect(reverse('customer:twoFactor'))
+
+
+def sendOTPsms(request):
+    code = int(random.randint(1000, 9999))
+    use = request.user.customer.number
+    print(code)
+    TwilioOTPSMS(code, use)
+    return JsonResponse({'code':code})
 
 def changeCurone(request):
     if request.method == 'POST':
@@ -229,8 +274,21 @@ class BlogV(DetailView):
     def get_context_data(self, **kwargs):
         return super().get_context_data(**kwargs)
 
+
+def sendOTPsms(request):
+    code = int(random.randint(1000, 9999))
+    use = request.user.customer.number
+    print(code)
+    TwilioOTPSMS(code, use)
+    return code
+
 def OPTV(request):   
-    code = sendOTPgmail(request)
+    if request.user.customer.security == 'email':
+        code = sendOTPgmail(request)
+    elif request.user.customer.security == 'sms':
+        code = sendOTPsms(request)
+    else:
+        code = None
     return render(request, "homepage/otp.html", {'code':code})
 
 def LoginV(request):

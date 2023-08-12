@@ -19,6 +19,7 @@ from django.utils.html import strip_tags
 from owner.models import SiteSetting
 from django.conf import settings
 import random
+from .twilio import TwilioOTPSMS
 
 def sendOTPgmail(request):
     code = int(random.randint(1000, 9999))
@@ -49,6 +50,14 @@ def sendOTPgmail(request):
     # except:
     #     messages.error(request,"Invalid Email Address. Please update your valid email.")
     #     return HttpResponseRedirect(reverse('customer:twoFactor'))
+
+
+def sendOTPsms(request):
+    code = int(random.randint(1000, 9999))
+    use = request.user.customer.number
+    print(code)
+    TwilioOTPSMS(code, use)
+    return JsonResponse({'code':code})
     
 def siteInfo():
     site = SiteSetting.objects.all()    
@@ -700,7 +709,7 @@ def phoneOtpView(request):
     else:
         cust.security = 'sms'
         cust.save()
-    messages.success(request, "Successfully added gmail security")
+    messages.success(request, "Successfully added sms OTP security")
     return HttpResponseRedirect(reverse('customer:twoFactor'))
 
 def updatePic(request):

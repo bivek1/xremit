@@ -150,7 +150,7 @@ class SMSSetting(models.Model):
   
 
     def __str__(self):
-        return str(self.to)
+        return str(self.account_sid)
     
 
 
@@ -195,9 +195,8 @@ class SMSList(models.Model):
     customer = models.ForeignKey(Customer, related_name='sms_customer', on_delete=models.DO_NOTHING, null = True, blank= True)
     reciptient = models.ForeignKey(Recipient, related_name='sms_recipient', on_delete=models.DO_NOTHING, null = True, blank= True)
     agent = models.ForeignKey(Recipient, related_name='sms_agent', on_delete=models.DO_NOTHING, null = True, blank= True)
-    to = models.BigIntegerField()
-    from_sim = models.ForeignKey(DefaultNumber, related_name='sending_number', on_delete=models.DO_NOTHING, null = True, blank=True)
-    message = RichTextUploadingField()
+    to = models.BigIntegerField(null = True, blank=True)
+    message = models.TextField()
     group = models.CharField(max_length=200, choices=(
         ('Agent', 'Agent'),
         ('Customer', 'Customer'),

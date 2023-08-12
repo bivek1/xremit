@@ -62,18 +62,20 @@ SMS Settings
                                   Update SMS Setting
                               </h5>
                               <hr>
-                              <form action="{%url 'owner:addDefaultNumber'%}" method="post">
+                              <form action="{%if defs %}{%url 'owner:updateDefaultNumber' defs.id%}{%else%}{%url 'owner:addDefaultNumber'%}{%endif%}" method="post">
                                   <p class="m-0 p-0 mt-2">
                                       Provide your phone number from your twilo*
                                   </p> 
                                   {{defautForm}}
                                   <br>
                                   {% csrf_token %}
-                                  <p class="badge bg-success">
-                                    You can add multiple number and choose a specific number while messaging
-                                  </p>
                                   <button class="btn btn-primary mt-2" type="submit">
-                                      Add Number
+                                      
+                                  {% if defs %}
+                                    Update Number
+                                  {%else%}
+                                    Add Number
+                                  {% endif %}
                                   </button>
                               </form>
                           </div>
@@ -104,7 +106,7 @@ SMS Settings
                                   Update SMS Setting
                               </h5>
                               <hr>
-                              <form action="{%if sms%} {%url 'owner:addSMSSetting' sms.id%} {%else%} {%url 'owner:addSMSSetting' 0%} {%endif%}" method="post">
+                              <form action="{%if email%} {%url 'owner:updateSMSSetting' email.id%} {%else%} {%url 'owner:addSMSSetting'%} {%endif%}" method="post">
                                   <p class="m-0 p-0 mt-2">
                                       Provide account_sid from your twilo*
                                   </p> 
@@ -269,15 +271,20 @@ SMS Settings
                           <hr>
                           <form action="" method="post">
 
-                                <label class="mt-2" for="">
-                                    <b>
-                                        Select Your Sending Number*
-                                    </b>
-                                    
-                                </label>
-                                {{sendform.from_sim}}
-                                {{sendform.from_sim.errors}}
-
+                               
+                                
+                                {% if defs %}
+                                    <label class="mt-2" for="">
+                                        <b>
+                                            Your Sending Number is {{defs.number}}
+                                        </b>
+                                        
+                                    </label>
+                                    {%else%}
+                                    <p>Please add your number</p>
+                                
+                                {% endif %}
+                                <br>
                                 <label class="mt-2" for="">
                                     
                                     <b>
@@ -287,17 +294,10 @@ SMS Settings
                                 </label>
                                 {{sendform.to}}
                                 {{sendform.to.errors}}
+                          
                               <label class="mt-2" for="">
                                   <b>
-                                      Write a Subject of SMS*
-                                  </b>
-                                  
-                              </label>
-                              {{sendform.subject}}
-                              {{sendform.subject.errors}}
-                              <label class="mt-2" for="">
-                                  <b>
-                                      Write a Subject of Email*
+                                      Write a message
                                   </b>
                                   
                               </label>
