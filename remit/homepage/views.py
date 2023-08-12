@@ -34,6 +34,8 @@ from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
+import random
+
 
 
 def changeCurone(request):
@@ -125,6 +127,30 @@ def handler404(request, exception):
 
 
 
+def sendOTPgmail(request):
+    code = int(random.randint(1000, 9999))
+    print(code)
+    content = settings.EMAIL_HOST_USER
+    sub = 'YOUR LOGIN OTP CODE ' + str(code)
+    messa = "Your login OTP code is " + str(code) + "please keep this code secret. Don't share this code to anyone.."
+    other_info = siteInfo()
+    # try:
+    recipient_list = [request.user.email,]
+    dist_info = {
+        'sub': sub, 'message':messa
+    }
+    print(recipient_list)
+    dist_info.update(other_info)
+    html_message = render_to_string('component/email.html', dist_info)
+    pain_html_msg = strip_tags(html_message)
+    # try: 
+    msg = EmailMultiAlternatives(sub, pain_html_msg, content, recipient_list)
+    msg.attach_alternative(html_message, "text/html")
+    msg.send()
+    print(msg)
+    return code
+
+
 def Homepage(request):
     template_name = 'homepage/index.html'
     choose = ChooseUs.objects.all()
@@ -203,33 +229,9 @@ class BlogV(DetailView):
     def get_context_data(self, **kwargs):
         return super().get_context_data(**kwargs)
 
-
-import random
-def OPTV(request):
-    
-   
-    if request.method == 'POST':
-
-        get_code = request.POST['otp']
-        print(code)
-        print(request.user.customer.customer_otp.code , get_code)
-        if get_code == request.user.customer.customer_otp.code:
-            return HttpResponseRedirect(reverse('customer:dashboard'))
-        else:
-            messages.error(request, "Invalid OPT. Try again")
-    else:
-        code = int(random.randint(1000, 9999))
-        print(code)
-        try:
-            op = request.user.customer.customer_otp
-            op.code = code
-            op.save()
-        except:
-            op = OTPcode.objects.create(customer = request.user.customer, code = code)
-            op.save()
-        
-        
-    return render(request, "homepage/otp.html")
+def OPTV(request):   
+    code = sendOTPgmail(request)
+    return render(request, "homepage/otp.html", {'code':code})
 
 def LoginV(request):
     social=SocialLink.objects.all()
@@ -257,9 +259,9 @@ def LoginV(request):
             if use.user_type == 'owner':
                 return HttpResponseRedirect(reverse('owner:dashboard'))
             elif use.user_type == "customer":
-                if use.customer.security == 'sms':
-                    # return HttpResponseRedirect(reverse('homepage:OTPV'))
-                    return HttpResponseRedirect(reverse('customer:dashboard'))
+                if not use.customer.security == 'none':
+                    return HttpResponseRedirect(reverse('homepage:OTPV'))
+                    # return HttpResponseRedirect(reverse('customer:dashboard'))
                 else:
                     return HttpResponseRedirect(reverse('customer:dashboard'))
             else:

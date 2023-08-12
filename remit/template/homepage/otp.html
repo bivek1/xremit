@@ -7,9 +7,42 @@
 
 
 {% block content %}
-    <div class="container-fluid back-img d-flex">
-        <div class="row w-100">
-            <div class="col-12 col-lg-9 m-auto">
+
+<div class="container-fluid back-img d-flex">
+    <div class="row w-100">
+        <div class="col-12 col-lg-9 m-auto">
+            
+            {% if user.customer.security == 'email' %}
+            <div class="row p-0 m-0 p-2 mt-2" id="login-card">    
+                <h3 class="head-para text-primary">
+                    OTP VERIFICATION
+                </h3>
+                <h5 class="text-dark"> Enter OPT code sent in your email. </h5>
+                <small>This is required for the verification of your email</small>
+                <form action="{%url 'customer:dashboard'%}"  method="post">
+                    <p class="text-danger" id="erroeinfo"></p>
+                    <input type="number" name="otp" id="" class="form-control" placeholder="4 DIGIT CODE" required onkeyup="checkOTP(this);">
+                    <small>
+                        Enter the code you received on your email. 
+                        <span class="text-danger">
+                            <a style="cursor: pointer;" onclick="sendOTPEMAIl();">
+                                Didn't get the code? Send again
+                            </a>
+                            
+                        </span>
+                    </small>
+                    {% csrf_token %}
+                    <br>
+                    <button type="submit" class="btn btn-danger" disabled id="emailBtn">
+                        VERIFY
+                    </button>
+                
+                </form>   
+            </div>
+            {% endif %}
+
+            
+            {% if  user.customer.security == 'sms' %}
                 <div class="row p-0 m-0 p-2 mt-2" id="login-card">    
                     <h3 class="head-para text-primary">
                         OTP VERIFICATION
@@ -21,7 +54,7 @@
                             Enter the code you received on your mobile phone. 
                             <span class="text-danger">
                                 <a href="http://">
-                                    Didn't get the code?
+                                    Didn't get the code? Send Again
                                 </a>
                                 
                             </span>
@@ -33,12 +66,31 @@
                         </button>
                     </form>     
                     
-                </div>
+                </div> 
+            {% endif %}
                 
-            </div>
+                
            
-
+            
         </div>
+        
+
     </div>
+</div>
+
+<script>
+
+   
+    function checkOTP(elem){
+        nm = parseInt("{{code}}")
+        console.log(elem.value)
+        if (elem.value == nm){
+            document.getElementById('emailBtn').disabled  = false;
+            document.getElementById('erroeinfo').innerText = 'Code match'
+        }else{
+            document.getElementById('erroeinfo').innerText = 'Code Didn\'t match'
+        }
+    }
+</script>
 {% endblock content %}
     

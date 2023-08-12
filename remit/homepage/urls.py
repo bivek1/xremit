@@ -28,5 +28,6 @@ urlpatterns = [
     path("password_reset", views.password_reset_request, name="password_reset"),
     path('OTP-VERFIFICATION-CODE-SENT-AUTOMATICALLY', views.OPTV, name ='OTPV'),
     path('front-changeCurone', views.changeCurone, name ="changeCurone"),
+    path('verify-sendOTPgmail', views.sendOTPgmail, name = "sendOTPgmail"),
 
 ]
